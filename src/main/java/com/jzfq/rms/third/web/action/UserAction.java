@@ -3,7 +3,7 @@ package com.jzfq.rms.third.web.action;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.jzfq.rms.third.bean.ResponseResult;
-import com.jzfq.rms.third.constant.ResponseCode;
+import com.jzfq.rms.third.common.constant.ResponseCode;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.bean.User;
 import com.jzfq.rms.third.service.IUserService;

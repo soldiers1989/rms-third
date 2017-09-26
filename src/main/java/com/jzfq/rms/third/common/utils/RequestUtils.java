@@ -1,10 +1,10 @@
-package com.jzfq.rms.third.utils.http;
+package com.jzfq.rms.third.common.utils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * @author 大连桔子分期科技有限公司

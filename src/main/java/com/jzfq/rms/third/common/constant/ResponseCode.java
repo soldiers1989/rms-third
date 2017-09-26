@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.constant;
+package com.jzfq.rms.third.common.constant;
 
 /**
  * @author 大连桔子分期科技有限公司

@@ -1,7 +1,7 @@
 package com.jzfq.rms.third.bean;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jzfq.rms.third.constant.ResponseCode;
+import com.jzfq.rms.third.common.constant.ResponseCode;
 
 /**
  * @author 大连桔子分期科技有限公司

@@ -3,8 +3,8 @@ package com.jzfq.rms.third.web.interceptor;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.bean.ResponseResult;
-import com.jzfq.rms.third.utils.http.RequestUtils;
-import com.jzfq.rms.third.constant.ResponseCode;
+import com.jzfq.rms.third.common.constant.ResponseCode;
+import com.jzfq.rms.third.common.utils.RequestUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;

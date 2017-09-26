@@ -1,6 +1,6 @@
 package com.jzfq.rms.third.web.filter;
 
-import com.jzfq.rms.third.utils.http.RequestUtils;
+import com.jzfq.rms.third.common.utils.RequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

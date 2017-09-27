@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.exception;
+package com.jzfq.rms.third.common.exception;
 
 /**
  * 业务层受检异常,异常发生时应该在日志中详细记录异常消息

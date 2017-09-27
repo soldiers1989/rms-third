@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper">
+    <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.GpjCarDetailModel">
+        <id column="n_bh" jdbcType="INTEGER" property="bh"/>
+        <result column="n_gpj_id" jdbcType="INTEGER" property="gpjId"/>
+        <result column="c_detail_model_name" jdbcType="VARCHAR" property="detailModelName"/>
+        <result column="dt_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="n_emission_standard" jdbcType="FLOAT" property="emissionStandard"/>
+        <result column="n_volume" jdbcType="FLOAT" property="volume"/>
+        <result column="n_listed_year" jdbcType="INTEGER" property="listedYear"/>
+        <result column="n_delisted_year" jdbcType="INTEGER" property="delistedYear"/>
+        <result column="c_detail_model_slug" jdbcType="VARCHAR" property="detailModelSlug"/>
+        <result column="n_price_bn" jdbcType="FLOAT" property="priceBn"/>
+        <result column="c_brand_name" jdbcType="VARCHAR" property="brandName"/>
+        <result column="c_brand_slug" jdbcType="VARCHAR" property="brandSlug"/>
+        <result column="c_model_name" jdbcType="VARCHAR" property="modelName"/>
+        <result column="c_model_slug" jdbcType="VARCHAR" property="modelSlug"/>
+        <result column="c_model_mum" jdbcType="VARCHAR" property="modelMum"/>
+        <result column="c_status" jdbcType="VARCHAR" property="status"/>
+        <result column="dt_opt_time" jdbcType="VARCHAR" property="optTime"/>
+        <result column="c_opt_user" jdbcType="TIMESTAMP" property="optUser"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    n_bh, n_gpj_id, c_detail_model_name, dt_update_time, n_emission_standard, n_volume, n_listed_year, n_delisted_year,
+    c_detail_model_slug, n_price_bn, c_brand_name, c_brand_slug, c_model_name, c_model_slug, c_model_mum, c_status, dt_opt_time, c_opt_user
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_gpj_car_detail_model
+        where n_bh = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByModelSlugList" parameterType="java.util.Set" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_gpj_car_detail_model
+        <where>
+            c_detail_model_slug in <foreach collection="slugs" item="item" index="index"
+                           open="(" separator="," close=")">#{item}</foreach>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_gpj_car_detail_model
+    where n_bh = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.GpjCarDetailModel">
+    insert into t_gpj_car_detail_model (n_bh, n_gpj_id, c_detail_model_name,
+      dt_update_time, n_emission_standard, n_volume,
+      n_listed_year, n_delisted_year, c_detail_model_slug,
+      n_price_bn, c_brand_name, c_brand_slug,
+      c_model_name, c_model_slug, c_model_mum, c_status, dt_opt_time, c_opt_user
+      )
+    values (#{bh,jdbcType=INTEGER}, #{gpjId,jdbcType=INTEGER}, #{detailModelName,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=TIMESTAMP}, #{emissionStandard,jdbcType=FLOAT}, #{volume,jdbcType=FLOAT},
+      #{listedYear,jdbcType=INTEGER}, #{delistedYear,jdbcType=INTEGER}, #{detailModelSlug,jdbcType=VARCHAR},
+      #{priceBn,jdbcType=FLOAT}, #{brandName,jdbcType=VARCHAR}, #{brandSlug,jdbcType=VARCHAR},
+      #{modelName,jdbcType=VARCHAR}, #{modelSlug,jdbcType=VARCHAR}, #{modelMum,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{optTime,jdbcType=TIMESTAMP}, #{optUser,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.GpjCarDetailModel">
+        insert into t_gpj_car_detail_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                n_bh,
+            </if>
+            <if test="gpjId != null">
+                n_gpj_id,
+            </if>
+            <if test="detailModel != null">
+                c_detail_model_name,
+            </if>
+            <if test="updateTime != null">
+                dt_update_time,
+            </if>
+            <if test="emissionStandard != null">
+                n_emission_standard,
+            </if>
+            <if test="volume != null">
+                n_volume,
+            </if>
+            <if test="listedYear != null">
+                n_listed_year,
+            </if>
+            <if test="delistedYear != null">
+                n_delisted_year,
+            </if>
+            <if test="detailModelSlug != null">
+                c_detail_model_slug,
+            </if>
+            <if test="priceBn != null">
+                n_price_bn,
+            </if>
+            <if test="brandName != null">
+                c_brand_name,
+            </if>
+            <if test="brandSlug != null">
+                c_brand_slug,
+            </if>
+            <if test="modelName != null">
+                c_model_name,
+            </if>
+            <if test="modelSlug != null">
+                c_model_slug,
+            </if>
+            <if test="modelMum != null">
+                c_model_mum,
+            </if>
+            <if test="status != null">
+                c_status,
+            </if>
+            <if test="optTime != null">
+                dt_opt_time,
+            </if>
+            <if test="optUser != null">
+                c_opt_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bh != null">
+                #{bh,jdbcType=INTEGER},
+            </if>
+            <if test="gpjId != null">
+                #{gpjId,jdbcType=INTEGER},
+            </if>
+            <if test="detailModelName != null">
+                #{detailModelName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="emissionStandard != null">
+                #{emissionStandard,jdbcType=FLOAT},
+            </if>
+            <if test="volume != null">
+                #{volume,jdbcType=FLOAT},
+            </if>
+            <if test="listedYear != null">
+                #{listedYear,jdbcType=INTEGER},
+            </if>
+            <if test="delistedYear != null">
+                #{delistedYear,jdbcType=INTEGER},
+            </if>
+            <if test="detailModelSlug != null">
+                #{detailModelSlug,jdbcType=VARCHAR},
+            </if>
+            <if test="priceBn != null">
+                #{priceBn,jdbcType=FLOAT},
+            </if>
+            <if test="brandName != null">
+                #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandSlug != null">
+                #{brandSlug,jdbcType=VARCHAR},
+            </if>
+            <if test="modelName != null">
+                #{modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="modelSlug != null">
+                #{modelSlug,jdbcType=VARCHAR},
+            </if>
+            <if test="modelMum != null">
+                #{modelMum,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="optTime != null">
+                #{optTime,jdbcType=VARCHAR},
+            </if>
+            <if test="optUser != null">
+                #{optUser,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.GpjCarDetailModel">
+        update t_gpj_car_detail_model
+        <set>
+            <if test="gpjId != null">
+                n_gpj_id = #{gpjId,jdbcType=INTEGER},
+            </if>
+            <if test="detailModel != null">
+                c_detail_model_name = #{detailModelName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                dt_update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="emissionStandard != null">
+                n_emission_standard = #{emissionStandard,jdbcType=FLOAT},
+            </if>
+            <if test="volume != null">
+                n_volume = #{volume,jdbcType=FLOAT},
+            </if>
+            <if test="listedYear != null">
+                n_listed_year = #{listedYear,jdbcType=FLOAT},
+            </if>
+            <if test="delistedYear != null">
+                n_delisted_year = #{delistedYear,jdbcType=INTEGER},
+            </if>
+            <if test="detailModelSlug != null">
+                c_detail_model_slug = #{detailModelSlug,jdbcType=INTEGER},
+            </if>
+            <if test="priceBn != null">
+                c_price_bn = #{priceBn,jdbcType=FLOAT},
+            </if>
+            <if test="brandName != null">
+                brand_name = #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandSlug != null">
+                c_brand_slug = #{brandSlug,jdbcType=VARCHAR},
+            </if>
+            <if test="modelName != null">
+                c_model_name = #{modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="modelSlug != null">
+                c_model_slug = #{modelSlug,jdbcType=VARCHAR},
+            </if>
+            <if test="modelMum != null">
+                c_model_mum = #{modelMum,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                c_status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="optTime != null">
+                dt_opt_time = #{optTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="optUser != null">
+                c_opt_user = #{optUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where n_bh = #{bh,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.GpjCarDetailModel">
+    update t_gpj_car_detail_model
+    set n_gpj_id = #{gpjId,jdbcType=INTEGER},
+      c_detail_model_name = #{detailModelName,jdbcType=VARCHAR},
+      dt_update_time = #{updateTime,jdbcType=TIMESTAMP},
+      n_emission_standard = #{emissionStandard,jdbcType=FLOAT},
+      n_volume = #{volume,jdbcType=FLOAT},
+      n_listed_year = #{listedYear,jdbcType=INTEGER},
+      n_delisted_year = #{delistedYear,jdbcType=INTEGER},
+      c_detail_model_slug = #{detailModelSlug,jdbcType=VARCHAR},
+      n_price_bn = #{priceBn,jdbcType=FLOAT},
+      c_brand_name = #{brandName,jdbcType=VARCHAR},
+      c_brand_slug = #{brandSlug,jdbcType=VARCHAR},
+      c_model_name = #{modelName,jdbcType=VARCHAR},
+      c_model_slug = #{modelSlug,jdbcType=VARCHAR},
+      c_model_mum = #{modelMum,jdbcType=VARCHAR},
+      c_status = #{status,jdbcType=VARCHAR},
+      c_opt_time = #{optTime,jdbcType=TIMESTAMP},
+      c_opt_user = #{optUser,jdbcType=VARCHAR}
+    where n_bh = #{bh,jdbcType=INTEGER}
+  </update>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        <foreach collection="list" item="i" index="index" open="" close="" separator=";">
+            insert into t_gpj_car_detail_model (n_gpj_id, c_detail_model_name,
+            dt_update_time, n_emission_standard, n_volume,
+            n_listed_year, n_delisted_year, c_detail_model_slug,
+            n_price_bn, c_brand_name, c_brand_slug,
+            c_model_name, c_model_slug, c_model_mum, c_status, dt_opt_time, c_opt_user
+            )
+            values (#{i.gpjId,jdbcType=INTEGER}, #{i.detailModelName,jdbcType=VARCHAR},
+            #{i.updateTime,jdbcType=TIMESTAMP}, #{i.emissionStandard,jdbcType=FLOAT}, #{i.volume,jdbcType=FLOAT},
+            #{i.listedYear,jdbcType=INTEGER}, #{i.delistedYear,jdbcType=INTEGER}, #{i.detailModelSlug,jdbcType=VARCHAR},
+            #{i.priceBn,jdbcType=FLOAT}, #{i.brandName,jdbcType=VARCHAR}, #{i.brandSlug,jdbcType=VARCHAR},
+            #{i.modelName,jdbcType=VARCHAR}, #{i.modelSlug,jdbcType=VARCHAR}, #{i.modelMum,jdbcType=VARCHAR},
+            #{i.status,jdbcType=VARCHAR}, #{i.optTime,jdbcType=TIMESTAMP}, #{i.optUser,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+</mapper>

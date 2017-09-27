@@ -1,6 +1,6 @@
 package com.jzfq.rms.third.persistence.dao;
 
-import com.jzfq.rms.third.bean.User;
+import com.jzfq.rms.third.common.pojo.User;
 
 import java.util.List;
 

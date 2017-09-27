@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->
+    <bean id="dataSyncScheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="syncCaseInfoTrigger"/><!--定时同步案件信息 -->
+            </list>
+        </property>
+    </bean>
+    <!-- 同步案件信息触发器-->
+    <bean id="syncCaseInfoTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean ="syncCaseInfoJob"/>
+        </property>
+        <property name="cronExpression">
+            <!-- 一秒一次-->
+            <value>0/1 * * * * ?</value>
+        </property>
+    </bean>
+
+
+    <bean name="gpjSync" class="com.jzfq.rms.third.support.gpj.impl.CarDetailModelSyncImpl"></bean>
+
+    <bean id="syncTask" class="com.jzfq.rms.third.support.gpj.impl.CarDetailModelObservable" init-method="init">
+        <property name="gongPingjiaService"  ref="gongPingjiaService"/>
+        <property name="observers">
+            <list>
+                <ref bean="gpjSync" />
+            </list>
+        </property>
+    </bean>
+
+    <!-- 同步案件信息任务-->
+    <bean id="syncCaseInfoJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 目标类-->
+        <property name="targetObject">
+            <ref bean="syncTask"/>
+        </property>
+        <!-- 目标方法-->
+        <property name="targetMethod">
+            <value>sync</value>
+        </property>
+        <!-- 多个job是否并发运行-->
+        <property name="concurrent">
+            <value>false</value>
+        </property>
+    </bean>
+</beans>

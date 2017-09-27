@@ -2,10 +2,10 @@ package com.jzfq.rms.third.web.action;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.jzfq.rms.third.bean.ResponseResult;
+import com.jzfq.rms.third.common.pojo.ResponseResult;
 import com.jzfq.rms.third.common.constant.ResponseCode;
-import com.jzfq.rms.third.exception.BusinessException;
-import com.jzfq.rms.third.bean.User;
+import com.jzfq.rms.third.common.exception.BusinessException;
+import com.jzfq.rms.third.common.pojo.User;
 import com.jzfq.rms.third.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

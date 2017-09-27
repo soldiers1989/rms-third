@@ -1,7 +1,7 @@
-package com.jzfq.rms.third.exception;
+package com.jzfq.rms.third.common.exception;
 
-import com.jzfq.rms.third.bean.ResponseResult;
 import com.jzfq.rms.third.common.constant.ResponseCode;
+import com.jzfq.rms.third.common.pojo.ResponseResult;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

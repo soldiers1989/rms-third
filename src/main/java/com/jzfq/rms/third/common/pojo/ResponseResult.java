@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.bean;
+package com.jzfq.rms.third.common.pojo;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.constant.ResponseCode;

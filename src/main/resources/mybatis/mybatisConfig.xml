@@ -4,11 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+    <!--<typeAliases>-->
+        <!--<typeAlias alias="User" type="com.jzfq.rms.third.common.pojo.User"/>-->
+    <!--</typeAliases>-->
+
+    <!--<mappers>-->
+        <!--<mapper resource="mybatis/userMapper.xml"/>-->
+    <!--</mappers>-->
+
+    <settings>
+        <setting name="logImpl" value="SLF4J" />
+    </settings>
+
     <typeAliases>
-        <typeAlias alias="User" type="com.jzfq.rms.third.bean.User"/>
+        <package name="com.jzfq.rms.third.common.domain"/>
     </typeAliases>
 
-    <mappers>
-        <mapper resource="mybatis/userMapper.xml"/>
-    </mappers>
+    <plugins>
+        <plugin interceptor="com.jzfq.rms.third.persistence.interceptor.PageInterceptor">
+            <property name="dbType" value="mysql"/>
+        </plugin>
+    </plugins>
+
 </configuration>

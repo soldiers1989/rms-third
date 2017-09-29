@@ -1,8 +1,5 @@
 package com.jzfq.rms.third.support.gpj.impl;
 
-import com.jzfq.rms.third.common.dto.CarDetailModelConditionDTO;
-import com.jzfq.rms.third.common.dto.ResponseDTO;
-import com.jzfq.rms.third.service.IGongPingjiaService;
 import com.jzfq.rms.third.support.gpj.IGPJSync;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +16,7 @@ public class CarDetailModelObservable extends Observable {
      * 监听器
      */
     private List<IGPJSync> observers;
-    /**
-     *
-     */
-    private IGongPingjiaService gongPingjiaService;
 
-    public void setGongPingjiaService(IGongPingjiaService gongPingjiaService) {
-        this.gongPingjiaService = gongPingjiaService;
-    }
 
     /**
      * @param observers 要初始化的监听器
@@ -58,14 +48,13 @@ public class CarDetailModelObservable extends Observable {
 
     public void sync() {
 
-        long currentSyncTime = System.currentTimeMillis();
         try {
-            log.info("开始执行案件同步任务");
-            CarDetailModelConditionDTO params = new CarDetailModelConditionDTO();
-            ResponseDTO dto = gongPingjiaService.queryCarDetailModels(params);
-            doSyncronizeWork();
-        } finally {
-            log.info("案件同步任务执行完成");
+            log.info("开始执行同步任务");
+            work();
+        } catch (Exception e){
+            log.error("同步任务出错：",e);
+        }finally {
+            log.info("同步任务执行完成");
         }
     }
 
@@ -73,11 +62,12 @@ public class CarDetailModelObservable extends Observable {
     /**
      *
      */
-    private void doSyncronizeWork() {
+    private void work() {
 
         Map<String,Object> map = new HashMap<>();
-        map.put("heheh",1);
         setChanged();
         notifyObservers(map);
     }
+
+
 }

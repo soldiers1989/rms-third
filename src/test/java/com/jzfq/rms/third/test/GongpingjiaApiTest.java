@@ -2,9 +2,9 @@ package com.jzfq.rms.third.test;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.domain.GpjCarDetailModel;
-import com.jzfq.rms.third.common.dto.CarDetailModelConditionDTO;
 import com.jzfq.rms.third.common.vo.RiskCarEvaluationVo;
 import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
+import com.jzfq.rms.third.persistence.mapper.SysTaskMapper;
 import com.jzfq.rms.third.service.IGongPingjiaService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,13 +25,15 @@ public class GongpingjiaApiTest {
 
     static String vin = "LE4GF4HB8DL254936";
     static String licensePlatHeader = "京A";
-
+    @Autowired
+    private SysTaskMapper sysTaskMapper;
     @Autowired
     private GpjCarDetailModelMapper gpjCarDetailModelMapper;
     @Autowired
     private IGongPingjiaService gongPingjiaService;
     @Test
     public void test(){
+        sysTaskMapper.selectByTaskSlug("www");
 //        if(StringUtils.isBlank(vin))
 //            throw new IllegalAccessError("入参vin 为空");
 //        if(StringUtils.isBlank(licensePlatHeader))
@@ -52,15 +54,21 @@ public class GongpingjiaApiTest {
 //        params.setStart_time("all");
 //        gongPingjiaService.queryCarDetailModels(params);
 
+//
+//        GpjCarDetailModel a = gpjCarDetailModelMapper.selectByPrimaryKey(1);
+//        Set<Integer> set = new HashSet<>();
+//        set.add(2);
+//        gpjCarDetailModelMapper.selectByModelSlugList(set);
+//        a = new GpjCarDetailModel();
+//        a.setGpjId(1);
+//        a.setDetailModelSlug("16801_ah");
+//        gpjCarDetailModelMapper.insert(a);
+//        System.out.println(a);
 
-        GpjCarDetailModel a = gpjCarDetailModelMapper.selectByPrimaryKey(1);
-        Set<Integer> set = new HashSet<>();
-        set.add(2);
-        gpjCarDetailModelMapper.selectByModelSlugList(set);
-        a = new GpjCarDetailModel();
-        a.setGpjId(1);
-        gpjCarDetailModelMapper.insert(a);
-        System.out.println(a);
+//        boolean b = StringUtils.
+
+
+
     }
 
 

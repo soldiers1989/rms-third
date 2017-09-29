@@ -11,7 +11,7 @@ public class GpjCarDetailModel {
 
     private Integer gpjId;
 
-    private float emissionStandard;
+    private String emissionStandard;
 
     private float volume;
 
@@ -59,11 +59,11 @@ public class GpjCarDetailModel {
         this.gpjId = gpjId;
     }
 
-    public float getEmissionStandard() {
+    public String getEmissionStandard() {
         return emissionStandard;
     }
 
-    public void setEmissionStandard(float emissionStandard) {
+    public void setEmissionStandard(String emissionStandard) {
         this.emissionStandard = emissionStandard;
     }
 

@@ -25,5 +25,9 @@ public interface GpjCarDetailModelMapper {
 
     void batchInsert(List<GpjCarDetailModel> lst);
 
-    List<GpjCarDetailModel> selectByModelSlugList(@Param("slugs") Set slugs);
+    Integer getCountCarDetailModel();
+
+    List<GpjCarDetailModel> selectByModelSlugList(@Param("slugs") Set<String>  slugs);
+
+    void batchDelete(@Param("slugs") Set<String> slugs);
 }

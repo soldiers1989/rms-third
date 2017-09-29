@@ -1,6 +1,6 @@
 package com.jzfq.rms.third.common.httpclient;
 
-import com.jzfq.rms.third.common.dto.ResponseDTO;
+import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -51,7 +51,7 @@ public class HttpConnectionManager {
 	/**
 	 * 连接超时时间
 	 */
-	public static final int CONNECT_TIMEOUT = 20000;
+	public static final int CONNECT_TIMEOUT = 180000;
 	
 	/**
 	 * 字符集编码
@@ -76,22 +76,22 @@ public class HttpConnectionManager {
 	
 	/**
 	 * @param url 请求路径
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static ResponseDTO doGet(String url) {
+	public static ResponseResult doGet(String url) {
 		return doGet(url,CHARSET);
 	}
 	
-	public static ResponseDTO doGet(String url ,String userName ,String password) {
+	public static ResponseResult doGet(String url ,String userName ,String password) {
 		return doGet(url,userName,password,CHARSET);
 	}
 	
 	/**
 	 * @param url 请求路径
 	 * @param charset 字符集
-	 * @return ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static ResponseDTO doGet(String url ,String charset) {
+	public static ResponseResult doGet(String url ,String charset) {
 		return doGet(url, null, null , charset);
 	}
 	
@@ -100,9 +100,9 @@ public class HttpConnectionManager {
 	 * @param userName 用户名
 	 * @param password 密码
 	 * @param charset 字符集
-	 * @return ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static ResponseDTO doGet(String url ,String userName ,String password , String charset) {
+	public static ResponseResult doGet(String url ,String userName ,String password , String charset) {
 		if(StringUtils.isBlank(url))
 			throw new IllegalAccessError("入参url 为空");
 		
@@ -122,9 +122,9 @@ public class HttpConnectionManager {
 	 * @param url 请求路径
 	 * @param authorization jwt串
 	 * @param charset 字符集
-	 * @return ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static ResponseDTO doJwtGet(String url ,String authorization , String charset) {
+	public static ResponseResult doJwtGet(String url , String authorization , String charset) {
 		if(StringUtils.isBlank(url))
 			throw new IllegalAccessError("入参url 为空");
 
@@ -144,9 +144,9 @@ public class HttpConnectionManager {
 	/**
 	 * @param url 请求路径
 	 * @param params 入参
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static <K,V> ResponseDTO doGet(String url ,Map<K,V> params) {
+	public static <K,V> ResponseResult doGet(String url ,Map<K,V> params) {
 		return doGet(url, params, CHARSET);
 	}
 	
@@ -154,10 +154,10 @@ public class HttpConnectionManager {
 	 * @param url 请求路径
 	 * @param params 请求参数
 	 * @param charset 字符集
-	 *  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 *  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 * @return
 	 */
-	public static <K,V> ResponseDTO doGet(String url , Map< K , V > params, String charset) {
+	public static <K,V> ResponseResult doGet(String url , Map< K , V > params, String charset) {
 		return doGet(url,null,null,params,charset);
 	}
 	
@@ -167,10 +167,10 @@ public class HttpConnectionManager {
 	 * @param password 密码
 	 * @param params 请求参数
 	 * @param charset 字符集
-	 *  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 *  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 * @return
 	 */
-	public static <K,V> ResponseDTO doGet(String url ,String userName, String password , Map<K,V> params,String charset) {
+	public static <K,V> ResponseResult doGet(String url ,String userName, String password , Map<K,V> params,String charset) {
 		
 		if(StringUtils.isBlank(url)) {//正则验证url
 			throw new IllegalArgumentException("url 为空");
@@ -204,18 +204,18 @@ public class HttpConnectionManager {
 	
 	/**
 	 * @param url 请求url
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static ResponseDTO doPost(String url) {
+	public static ResponseResult doPost(String url) {
 		return doPost(url, CHARSET);
 	}
 	
 	/**
 	 * @param url 请求url
 	 * @param charset 字符集
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static ResponseDTO doPost(String url ,String charset) {
+	public static ResponseResult doPost(String url ,String charset) {
 		return doPost(url, null, null, charset);
 	}
 	
@@ -224,9 +224,9 @@ public class HttpConnectionManager {
 	 * @param userName 用户名
 	 * @param password 用户密码
 	 * @param charset 字符集
-	 * @return ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static ResponseDTO doPost(String url , String userName , String password ,String charset) {
+	public static ResponseResult doPost(String url , String userName , String password ,String charset) {
 		
 		if(StringUtils.isBlank(url))
 			throw new IllegalArgumentException("入参url为空!!");
@@ -249,9 +249,9 @@ public class HttpConnectionManager {
 	/**
 	 * @param url 请求路径
 	 * @param data 请求参数
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static < T > ResponseDTO post(String url ,T data) {
+	public static < T > ResponseResult post(String url ,T data) {
 		return doPost(url, data, CHARSET,null);
 	}
 	
@@ -259,9 +259,9 @@ public class HttpConnectionManager {
 	 * @param url 请求路径
 	 * @param data 请求参数
 	 * @param data context_type
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static < T > ResponseDTO post(String url ,T data,String context_type) {
+	public static < T > ResponseResult post(String url ,T data,String context_type) {
 		return doPost(url, data, CHARSET,context_type);
 	}
 	
@@ -271,9 +271,9 @@ public class HttpConnectionManager {
 	 * @param password 用户密码
 	 * @param data 请求参数
 	 * @param data context_type
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static < T > ResponseDTO post(String url, String userName ,String password, T data,String context_type) {
+	public static < T > ResponseResult post(String url, String userName ,String password, T data,String context_type) {
 		return doPost(url, userName, password, data, CHARSET,context_type);
 	}
 	
@@ -282,9 +282,9 @@ public class HttpConnectionManager {
 	 * @param data 请求参数
 	 * @param charset  字符集
 	 * @param data context_type
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static < T > ResponseDTO doPost(String url ,T data , String charset,String context_type) {
+	public static < T > ResponseResult doPost(String url ,T data , String charset,String context_type) {
 		return doPost(url,null , null , data ,charset,context_type);
 	}
 	
@@ -296,7 +296,7 @@ public class HttpConnectionManager {
 	 * @param charset 字符集
 	 * @return
 	 */
-	public static < T > ResponseDTO doPost(String url ,String userName ,String password , T data , String charset ,String content_type) {
+	public static < T > ResponseResult doPost(String url ,String userName ,String password , T data , String charset ,String content_type) {
 		
 		if(StringUtils.isBlank(url))
 			throw new IllegalArgumentException("入参url为空!!");
@@ -333,9 +333,9 @@ public class HttpConnectionManager {
 	/**
 	 * @param url 请求路径
 	 * @param params 请求参数
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static <K , V > ResponseDTO doPost(String url ,Map<K,V> params) {
+	public static <K , V > ResponseResult doPost(String url ,Map<K,V> params) {
 		return doPost(url, params, CHARSET);
 	}
 	
@@ -343,9 +343,9 @@ public class HttpConnectionManager {
 	 * @param url 请求路径
 	 * @param params 请求参数
 	 * @param charset  字符集
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static <K , V > ResponseDTO doPost(String url ,Map<K,V> params , String charset) {
+	public static <K , V > ResponseResult doPost(String url ,Map<K,V> params , String charset) {
 		return doPost(url, null, null, params, charset);
 	}
 	
@@ -355,9 +355,9 @@ public class HttpConnectionManager {
 	 * @param password 密码
 	 * @param params 请求参数
 	 * @param charset 字符集
-	 * @return ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static <K , V > ResponseDTO doPost(String url , String userName , String password , Map< K, V > params , String charset) {
+	public static <K , V > ResponseResult doPost(String url , String userName , String password , Map< K, V > params , String charset) {
 		
 		if(StringUtils.isBlank(url))
 			throw new IllegalArgumentException("入参url为空!!");
@@ -393,9 +393,9 @@ public class HttpConnectionManager {
 	 * @param charset 字符集
 	 * @return
 	 */
-	private static <T extends HttpRequestBase> ResponseDTO send(T request , String charset) {
+	private static <T extends HttpRequestBase> ResponseResult send(T request , String charset) {
 
-		ResponseDTO responseDto = new ResponseDTO(ReturnCode.ERROR_RESOURCES);
+		ResponseResult ResponseResult = new ResponseResult("httpManager",ReturnCode.ERROR_RESOURCES);
 		
 		CloseableHttpResponse response = null;
 		try {
@@ -413,14 +413,14 @@ public class HttpConnectionManager {
 			if(entity != null)
 				result = EntityUtils.toString(entity,CHARSET);
 			
-			responseDto.setCode(statusCode);
-			responseDto.setAttach(result);
+			ResponseResult.setCode(statusCode);
+			ResponseResult.setData(result);
 			
-			return responseDto;
+			return ResponseResult;
 			
 		} catch (Exception e) {
 			LOG.error("", e);
-			return responseDto;
+			return ResponseResult;
 		} finally {
 			if(response != null) {
 				try {
@@ -491,9 +491,9 @@ public class HttpConnectionManager {
 	 * @param password 密码
 	 * @param params 请求参数
 	 * @param charset 字符集
-	 * @return ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static <K , V > ResponseDTO doPut(String url , String userName , String password , Map< K, V > params , String charset) {
+	public static <K , V > ResponseResult doPut(String url , String userName , String password , Map< K, V > params , String charset) {
 		
 		if(StringUtils.isBlank(url))
 			throw new IllegalArgumentException("入参url为空!!");
@@ -519,17 +519,17 @@ public class HttpConnectionManager {
 	}
 	/**
 	 * @param url 请求url
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static ResponseDTO doPut(String url) {
+	public static ResponseResult doPut(String url) {
 		return doPut(url, CHARSET);
 	}
 	/**
 	 * @param url 请求url
 	 * @param charset 字符集
-	 * @return  ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 * @return  ResponseResult  返回结果  code :状态码   attach : 返回内容
 	 */
-	public static ResponseDTO doPut(String url ,String charset) {
+	public static ResponseResult doPut(String url ,String charset) {
 		return doPost(url, null, null, charset);
 	}
 	
@@ -537,7 +537,7 @@ public class HttpConnectionManager {
 //		String url = "http://p.missfresh.cn/pop2baidu-webapp/pop2baidu/completeOrder.do";
 //		Map<String,String> params = new HashMap<String, String>();
 //		params.put("order_id", "11111111111");
-//		ResponseDTO response = HttpConnectionManager.doPost(url, params);
+//		ResponseResult response = HttpConnectionManager.doPost(url, params);
 //
 //		int code = response.getCode();
 //		System.out.println(code);

@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
-       <!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
-       <!--xsi:schemaLocation="http://www.springframework.org/schema/beans-->
-	<!--http://www.springframework.org/schema/beans/spring-beans.xsd">-->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	   xmlns:context="http://www.springframework.org/schema/context"
@@ -58,7 +54,11 @@
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="*" propagation="REQUIRED"/>
+			<!--<tx:method name="*" propagation="REQUIRED"/>-->
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="delete*" propagation="REQUIRED"/>
+			<tx:method name="insert*" propagation="REQUIRED"/>
+			<tx:method name="batch*" propagation="REQUIRED"/>
 			<tx:method name="get*" read-only="true"/>
 			<tx:method name="query*" read-only="true"/>
 		</tx:attributes>
@@ -68,14 +68,6 @@
 		<aop:pointcut expression="execution(* com.jzfq.rms.third.service.*.*(..))" id="services"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="services"/>
 	</aop:config>
-
-
-	<!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
-		<!--<property name="dataSource" ref="dataSource" />-->
-		<!--<property name="configLocation">-->
-			<!--<value>classpath:mybatis/mybatisConfig.xml</value>-->
-		<!--</property>-->
-	<!--</bean>-->
 
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory"/>

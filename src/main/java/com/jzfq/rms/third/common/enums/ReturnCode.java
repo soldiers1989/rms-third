@@ -12,6 +12,7 @@ import java.util.Map;
 public enum ReturnCode {
 	
 	ACTIVE_EXCEPTION(-1, "异常"),
+    ERROR_REFUSE_IP(-60,"拒绝IP"),
     ACTIVE_SUCCESS(01, "操作成功"),
     ACTIVE_FAILURE(02, "操作失败"),
     ERROR_PARAMS_NOT_NULL(03, "参数不能为空"),

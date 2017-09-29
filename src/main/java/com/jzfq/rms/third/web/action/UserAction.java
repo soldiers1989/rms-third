@@ -2,7 +2,7 @@ package com.jzfq.rms.third.web.action;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.jzfq.rms.third.common.pojo.ResponseResult;
+import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.constant.ResponseCode;
 import com.jzfq.rms.third.common.exception.BusinessException;
 import com.jzfq.rms.third.common.pojo.User;

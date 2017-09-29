@@ -1,7 +1,6 @@
 package com.jzfq.rms.third.service;
 
-import com.jzfq.rms.third.common.dto.CarDetailModelConditionDTO;
-import com.jzfq.rms.third.common.dto.ResponseDTO;
+import com.jzfq.rms.third.common.domain.SysTask;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 
 import java.util.List;
@@ -23,9 +22,15 @@ public interface IGongPingjiaService {
     List<EvaluationInfoVo> queryGaopingjiaEvalation(String vin, String licensePlatHeader);
 
     /**
-     * 获取车型库数据
-     * @param params
-     * @return
+     * 批量更新车型库-全量
      */
-    ResponseDTO queryCarDetailModels(CarDetailModelConditionDTO params);
+    void insertAllCarDetailModels(SysTask task);
+    /**
+     * 批量更新车型库-局部
+     */
+    void updateCarDetailModels(SysTask task);
+    /**
+     * 批量更新车型库-现存
+     */
+    int getCountCarDetailModels();
 }

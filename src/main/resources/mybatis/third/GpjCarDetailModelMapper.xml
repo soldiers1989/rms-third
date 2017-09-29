@@ -6,7 +6,7 @@
         <result column="n_gpj_id" jdbcType="INTEGER" property="gpjId"/>
         <result column="c_detail_model_name" jdbcType="VARCHAR" property="detailModelName"/>
         <result column="dt_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="n_emission_standard" jdbcType="FLOAT" property="emissionStandard"/>
+        <result column="n_emission_standard" jdbcType="VARCHAR" property="emissionStandard"/>
         <result column="n_volume" jdbcType="FLOAT" property="volume"/>
         <result column="n_listed_year" jdbcType="INTEGER" property="listedYear"/>
         <result column="n_delisted_year" jdbcType="INTEGER" property="delistedYear"/>
@@ -52,7 +52,7 @@
       c_model_name, c_model_slug, c_model_mum, c_status, dt_opt_time, c_opt_user
       )
     values (#{bh,jdbcType=INTEGER}, #{gpjId,jdbcType=INTEGER}, #{detailModelName,jdbcType=VARCHAR},
-      #{updateTime,jdbcType=TIMESTAMP}, #{emissionStandard,jdbcType=FLOAT}, #{volume,jdbcType=FLOAT},
+      #{updateTime,jdbcType=TIMESTAMP}, #{emissionStandard,jdbcType=VARCHAR}, #{volume,jdbcType=FLOAT},
       #{listedYear,jdbcType=INTEGER}, #{delistedYear,jdbcType=INTEGER}, #{detailModelSlug,jdbcType=VARCHAR},
       #{priceBn,jdbcType=FLOAT}, #{brandName,jdbcType=VARCHAR}, #{brandSlug,jdbcType=VARCHAR},
       #{modelName,jdbcType=VARCHAR}, #{modelSlug,jdbcType=VARCHAR}, #{modelMum,jdbcType=VARCHAR},
@@ -131,7 +131,7 @@
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="emissionStandard != null">
-                #{emissionStandard,jdbcType=FLOAT},
+                #{emissionStandard,jdbcType=VARCHAR},
             </if>
             <if test="volume != null">
                 #{volume,jdbcType=FLOAT},
@@ -187,7 +187,7 @@
                 dt_update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="emissionStandard != null">
-                n_emission_standard = #{emissionStandard,jdbcType=FLOAT},
+                n_emission_standard = #{emissionStandard,jdbcType=VARCHAR},
             </if>
             <if test="volume != null">
                 n_volume = #{volume,jdbcType=FLOAT},
@@ -236,7 +236,7 @@
     set n_gpj_id = #{gpjId,jdbcType=INTEGER},
       c_detail_model_name = #{detailModelName,jdbcType=VARCHAR},
       dt_update_time = #{updateTime,jdbcType=TIMESTAMP},
-      n_emission_standard = #{emissionStandard,jdbcType=FLOAT},
+      n_emission_standard = #{emissionStandard,jdbcType=VARCHAR},
       n_volume = #{volume,jdbcType=FLOAT},
       n_listed_year = #{listedYear,jdbcType=INTEGER},
       n_delisted_year = #{delistedYear,jdbcType=INTEGER},
@@ -262,7 +262,7 @@
             c_model_name, c_model_slug, c_model_mum, c_status, dt_opt_time, c_opt_user
             )
             values (#{i.gpjId,jdbcType=INTEGER}, #{i.detailModelName,jdbcType=VARCHAR},
-            #{i.updateTime,jdbcType=TIMESTAMP}, #{i.emissionStandard,jdbcType=FLOAT}, #{i.volume,jdbcType=FLOAT},
+            #{i.updateTime,jdbcType=TIMESTAMP}, #{i.emissionStandard,jdbcType=VARCHAR}, #{i.volume,jdbcType=FLOAT},
             #{i.listedYear,jdbcType=INTEGER}, #{i.delistedYear,jdbcType=INTEGER}, #{i.detailModelSlug,jdbcType=VARCHAR},
             #{i.priceBn,jdbcType=FLOAT}, #{i.brandName,jdbcType=VARCHAR}, #{i.brandSlug,jdbcType=VARCHAR},
             #{i.modelName,jdbcType=VARCHAR}, #{i.modelSlug,jdbcType=VARCHAR}, #{i.modelMum,jdbcType=VARCHAR},
@@ -270,4 +270,14 @@
             )
         </foreach>
     </insert>
+
+    <select id="getCountCarDetailModel" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM t_gpj_car_detail_model
+    </select>
+
+    <delete id="batchDelete" parameterType="java.util.Set">
+        <foreach collection="slugs" item="item" index="index" open="" close=";" separator=";">
+            delete from t_gpj_car_detail_model where c_detail_model_slug = #{item,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
 </mapper>

@@ -1,6 +1,6 @@
 package com.jzfq.rms.third.common.utils;
 
-import com.jzfq.rms.third.common.dto.ResponseDTO;
+import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -48,7 +48,7 @@ public class JWTUtils {
      * @param url
      * @return
      */
-    public static ResponseDTO getData(String key, String secret, long timeOut, String url) {
+    public static ResponseResult getData(String key, String secret, long timeOut, String url) {
         return HttpConnectionManager.doJwtGet(url, createToken(key,
                 secret, timeOut), null);
     }

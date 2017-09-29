@@ -120,7 +120,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
             repositories.put(repository.getDetailModelSlug(),repository);
         }
         for(EvaluationInfoVo evaluation:evaluationInfos){
-            String modelSlug = evaluation.getModelSlug();
+            String modelSlug = evaluation.getDetailModelSlug();
             GpjCarDetailModel repository = repositories.get(modelSlug);
             if(repository ==null){
                 continue;

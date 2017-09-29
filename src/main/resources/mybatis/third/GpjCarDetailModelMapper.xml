@@ -37,7 +37,7 @@
         from t_gpj_car_detail_model
         <where>
             c_detail_model_slug in <foreach collection="slugs" item="item" index="index"
-                           open="(" separator="," close=")">#{item}</foreach>
+                           open="(" separator="," close=")">#{item,jdbcType=VARCHAR}</foreach>
         </where>
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

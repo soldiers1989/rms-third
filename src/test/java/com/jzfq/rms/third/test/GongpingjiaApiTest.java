@@ -33,7 +33,7 @@ public class GongpingjiaApiTest {
     private IGongPingjiaService gongPingjiaService;
     @Test
     public void test(){
-        sysTaskMapper.selectByTaskSlug("www");
+//        sysTaskMapper.selectByTaskSlug("www");
 //        if(StringUtils.isBlank(vin))
 //            throw new IllegalAccessError("入参vin 为空");
 //        if(StringUtils.isBlank(licensePlatHeader))

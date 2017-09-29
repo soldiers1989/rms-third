@@ -12,18 +12,17 @@ import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.enums.TaskCode;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.utils.JWTUtils;
-import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
 import com.jzfq.rms.third.persistence.mapper.SysTaskMapper;
 import com.jzfq.rms.third.service.IGongPingjiaService;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
@@ -199,9 +198,9 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         log.info("公平价车型库接口调用结束");
         return dto;
     }
-
+    @Transactional(propagation= Propagation.SUPPORTS)
     public void insertAllCarDetailModels(SysTask currentTask) {
-        List<GpjCarDetailModel> lst = new ArrayList<>();
+        List<GpjCarDetailModel> modelList = new ArrayList<>();
         Integer totalPages = 0;
         Integer page=1;
         do{
@@ -234,17 +233,20 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
             totalPages--;
             page++;
             JSONArray array = JSONObject.parseArray(models);
-            lst = new ArrayList<>();
-
+            modelList = new ArrayList<>();
+            Set<String> slugs = new HashSet<>();
             for (int i = 0; i < array.size(); i++) {
                 GpjCarDetailModel car = new GpjCarDetailModel();
                 buildCar(array, i, car);
-                lst.add(car);
+                slugs.add(car.getDetailModelSlug());
+                modelList.add(car);
             }
             try {
-                gpjCarDetailModelMapper.batchInsert(lst);
+                gpjCarDetailModelMapper.batchDelete(slugs);
+                gpjCarDetailModelMapper.batchInsert(modelList);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("批量插入车型出错：",e);
+                currentTask.setStatus(TaskCode.EXCUTE_FAILURE.code());
             }
         }while(totalPages>0);
     }
@@ -307,7 +309,8 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
                 gpjCarDetailModelMapper.batchDelete(slugs);
                 gpjCarDetailModelMapper.batchInsert(modelList);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("批量插入车型出错：",e);
+                currentTask.setStatus(TaskCode.EXCUTE_FAILURE.code());
             }
         }while(totalPages>0);
     }

@@ -19,7 +19,7 @@
         </property>
         <property name="cronExpression">
             <!-- 一秒一次-->
-            <value>0 0 */1 * * ?</value>
+            <value>0 0 0 15 * ?"</value>
         </property>
     </bean>
     <!-- simlple信息触发器-->

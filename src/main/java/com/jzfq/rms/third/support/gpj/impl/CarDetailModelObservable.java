@@ -3,12 +3,9 @@ package com.jzfq.rms.third.support.gpj.impl;
 import com.jzfq.rms.third.support.gpj.IGPJSync;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class CarDetailModelObservable extends Observable {
     private static final Logger log = LoggerFactory.getLogger("GongPingjiaSyncTask");
@@ -16,6 +13,9 @@ public class CarDetailModelObservable extends Observable {
      * 监听器
      */
     private List<IGPJSync> observers;
+
+    @Value("${develop.debug}")
+    private boolean debug ;
 
 
     /**
@@ -26,14 +26,14 @@ public class CarDetailModelObservable extends Observable {
     }
 
     //线程池，大小为threadCount，队列大小ObserverConstant.SYNC_PAGE_SIZE
-    private static final ExecutorService executor;
-    static {
-
-        int threadCount = Runtime.getRuntime().availableProcessors() - 1;
-        threadCount = threadCount > 20 ? 20 : threadCount;
-        LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(1000);
-        executor = new ThreadPoolExecutor(threadCount, threadCount, 0L, TimeUnit.MILLISECONDS, workQueue);
-    }
+//    private static final ExecutorService executor;
+//    static {
+//
+//        int threadCount = Runtime.getRuntime().availableProcessors() - 1;
+//        threadCount = threadCount > 20 ? 20 : threadCount;
+//        LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(1000);
+//        executor = new ThreadPoolExecutor(threadCount, threadCount, 0L, TimeUnit.MILLISECONDS, workQueue);
+//    }
     /**
      * 初始化
      */
@@ -47,7 +47,10 @@ public class CarDetailModelObservable extends Observable {
     }
 
     public void sync() {
-
+        if(debug){
+            log.info("开发环境禁止同步");
+            return ;
+        }
         try {
             log.info("开始执行同步任务");
             work();

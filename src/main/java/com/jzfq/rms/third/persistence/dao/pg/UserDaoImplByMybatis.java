@@ -1,6 +1,6 @@
 package com.jzfq.rms.third.persistence.dao.pg;
 
-import com.jzfq.rms.third.bean.User;
+import com.jzfq.rms.third.common.pojo.User;
 import com.jzfq.rms.third.persistence.dao.IUserDao;
 import org.mybatis.spring.SqlSessionTemplate;
 

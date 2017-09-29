@@ -1,8 +1,8 @@
 package com.jzfq.rms.third.service.impl;
 
-import com.jzfq.rms.third.exception.BusinessException;
+import com.jzfq.rms.third.common.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IUserDao;
-import com.jzfq.rms.third.bean.User;
+import com.jzfq.rms.third.common.pojo.User;
 import com.jzfq.rms.third.service.IUserService;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author 大连桔子分期科技有限公司
  * @date 2017年9月05日 20:04:55
  */
-public final class UserServiceImpl implements IUserService {
+public  class UserServiceImpl implements IUserService {
 
     private IUserDao userDao;
 

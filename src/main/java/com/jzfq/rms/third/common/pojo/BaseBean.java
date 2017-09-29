@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.bean;
+package com.jzfq.rms.third.common.pojo;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

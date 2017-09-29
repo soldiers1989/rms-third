@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.bean;
+package com.jzfq.rms.third.common.pojo;
 
 /**
  * @author 大连桔子分期科技有限公司

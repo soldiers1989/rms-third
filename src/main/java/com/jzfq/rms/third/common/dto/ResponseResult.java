@@ -1,16 +1,17 @@
-package com.jzfq.rms.third.bean;
+package com.jzfq.rms.third.common.dto;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jzfq.rms.third.common.constant.ResponseCode;
+import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.pojo.BaseBean;
 
 /**
  * @author 大连桔子分期科技有限公司
  * @date 2017年9月05日 20:04:55
  */
-public class ResponseResult extends BaseBean{
+public class ResponseResult extends BaseBean {
 
     private String traceID; //链路ID
-    private int code = ResponseCode.REQUEST_SUCCESS; //响应状态
+    private int code = ReturnCode.REQUEST_SUCCESS.code(); //响应状态
     private String msg = "正常调用"; //响应状态说明
     private Object data = new JSONObject(); //响应数据
 
@@ -24,10 +25,23 @@ public class ResponseResult extends BaseBean{
         this.msg = msg;
     }
 
+    public ResponseResult(String traceID,ReturnCode returnCode) {
+        this.traceID = traceID;
+        this.code = returnCode.code();
+        this.msg = returnCode.msg();
+    }
+
     public ResponseResult(String traceID, int code, String msg, Object data) {
         this.traceID = traceID;
         this.code = code;
         this.msg = msg;
+        this.data = data;
+    }
+
+    public ResponseResult(String traceID,ReturnCode returnCode, Object data) {
+        this.traceID = traceID;
+        this.code = returnCode.code();
+        this.msg = returnCode.msg();
         this.data = data;
     }
 
@@ -62,4 +76,5 @@ public class ResponseResult extends BaseBean{
     public void setData(Object data) {
         this.data = data;
     }
+
 }

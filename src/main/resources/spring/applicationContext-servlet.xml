@@ -11,7 +11,7 @@
     http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- 自动扫描的包名 -->
-    <context:component-scan base-package="com.mofanghr"/>
+    <context:component-scan base-package="com.jzfq.rms.third"/>
     <!-- 默认的注解映射的支持 -->
     <mvc:annotation-driven>
         <mvc:message-converters>

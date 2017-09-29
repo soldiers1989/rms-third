@@ -1,7 +1,7 @@
 package com.jzfq.rms.third.service;
 
-import com.jzfq.rms.third.bean.User;
-import com.jzfq.rms.third.exception.BusinessException;
+import com.jzfq.rms.third.common.pojo.User;
+import com.jzfq.rms.third.common.exception.BusinessException;
 
 import java.util.List;
 

@@ -4,10 +4,12 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.service.IGongPingjiaService;
+import com.jzfq.rms.third.support.gpj.impl.CarDetailModelObservable;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +18,7 @@ import java.util.List;
 
 /**
  * @author 大连桔子分期科技有限公司
- * @date 2017年9月05日 20:04:55
+ * @date 2017年9月29日 20:04:55
  */
 @RestController
 @RequestMapping(value = "/carDetailModel")
@@ -26,6 +28,11 @@ public class GongPingJiaAction {
     @Autowired
     private IGongPingjiaService gongPingjiaService;
 
+    @Autowired
+    private CarDetailModelObservable syncTask;
+
+    @Value("${syncTask.gongpingjia.token}")
+    private String sycnToken ;
     /**
      * 车辆估价信息
      * @param vin
@@ -44,5 +51,21 @@ public class GongPingJiaAction {
         ResponseResult dto = new ResponseResult("detailModelEvaluationAction",ReturnCode.REQUEST_SUCCESS, list);
         log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】成功");
         return dto;
+    }
+
+    /**
+     *
+     * @param token
+     * @return
+     */
+    @RequestMapping(value="doCarDetailModel.json", method= RequestMethod.GET)
+    public ResponseResult doCarDetailModel(String token){
+        ResponseResult dto;
+        if(!StringUtils.equals(token,sycnToken)){
+            log.info("token校验不通过");
+            return new ResponseResult("doCarDetailModelTask",ReturnCode.ACTIVE_FAILURE);
+        }
+        syncTask.sync();
+        return new ResponseResult("doCarDetailModelTask",ReturnCode.REQUEST_SUCCESS);
     }
 }

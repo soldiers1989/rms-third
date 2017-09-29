@@ -76,4 +76,5 @@ public class ResponseResult extends BaseBean {
     public void setData(Object data) {
         this.data = data;
     }
+
 }

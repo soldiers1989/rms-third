@@ -33,7 +33,9 @@
     </bean>
 
 
-    <bean name="gpjSync" class="com.jzfq.rms.third.support.gpj.impl.CarDetailModelSyncImpl"></bean>
+    <bean name="gpjSync" class="com.jzfq.rms.third.support.gpj.impl.CarDetailModelSyncImpl">
+        <property name="gongPingjiaService" ref="gongPingjiaService"/>
+    </bean>
 
     <bean id="syncTask" class="com.jzfq.rms.third.support.gpj.impl.CarDetailModelObservable" init-method="init">
 

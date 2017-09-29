@@ -20,6 +20,7 @@ public class CarDetailModelSyncImpl implements IGPJSync {
     /**
      *
      */
+
     private IGongPingjiaService gongPingjiaService;
 
     public void setGongPingjiaService(IGongPingjiaService gongPingjiaService) {

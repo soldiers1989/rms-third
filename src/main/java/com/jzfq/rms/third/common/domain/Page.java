@@ -1,7 +1,7 @@
 package com.jzfq.rms.third.common.domain;
 
 
-import com.jzfq.rms.third.common.constant.RmsConstants;
+import com.jzfq.rms.third.constant.RmsConstants;
 
 /**
  * 分页

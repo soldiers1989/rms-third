@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.common.constant;
+package com.jzfq.rms.third.constant;
 
 /**
  * 整个系统中都可以使用的常量

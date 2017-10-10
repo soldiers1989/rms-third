@@ -1,7 +1,7 @@
 package com.jzfq.rms.third.common.utils;
 
 
-import com.jzfq.rms.third.common.constant.Constants;
+import com.jzfq.rms.third.constant.Constants;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.StringUtils;

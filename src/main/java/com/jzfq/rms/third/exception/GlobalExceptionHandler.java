@@ -1,6 +1,6 @@
-package com.jzfq.rms.third.common.exception;
+package com.jzfq.rms.third.exception;
 
-import com.jzfq.rms.third.common.constant.ResponseCode;
+import com.jzfq.rms.third.constant.ResponseCode;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import org.slf4j.Logger;

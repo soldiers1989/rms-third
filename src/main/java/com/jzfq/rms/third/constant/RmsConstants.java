@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.common.constant;
+package com.jzfq.rms.third.constant;
 /**
  * 系统常数
  * @author 大连桔子分期科技有限公司

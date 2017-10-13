@@ -6,7 +6,6 @@ import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.UniformInterfaceUtils;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import com.jzfq.rms.third.web.action.handler.AbstractRequestHandler;
-import com.jzfq.rms.third.web.action.servlet.UniformInterfaceServlet;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -49,7 +48,7 @@ public class UniformInterface {
             } else {
                 logger.warn("请求参数不合法，无法构建完整请求！allParams：{}", params, e);
             }
-            bizResp = new ResponseResult(null,ReturnCode.ERROR_PARAMS);
+            bizResp = new ResponseResult("",ReturnCode.ERROR_PARAMS);
         }
         if (bizReq != null) {
             logger.debug("解析到请求：{}", bizReq);
@@ -89,7 +88,7 @@ public class UniformInterface {
         if (StringUtils.endsWithIgnoreCase(fileName, ".pdf")) {
             response.setContentType("application/pdf");
             response.addHeader("Content-Disposition",
-                    "inline;filename=" + URLEncoder.encode(fileName, "iso8859-1"));
+                    "inline;filename=" + URLEncoder.encode(fileName, "iso8859-1"));//iso8859-1
         } else {
             response.setContentType("application/octet-stream");
             response.addHeader("Content-Disposition", "attachment;filename="

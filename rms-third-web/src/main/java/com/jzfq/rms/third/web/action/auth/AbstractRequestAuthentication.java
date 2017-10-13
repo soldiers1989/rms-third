@@ -180,14 +180,15 @@ public abstract class AbstractRequestAuthentication implements Serializable {
     }
 
     /**
-     * @param apiKey
+     *
+     * @param apiId
      * @return
      */
-    private static String getRequestClassName(String apiKey) {
-        if (StringUtils.startsWith(apiKey, "S")) {
-            return DEFAULT_REQ_BASE_PACKAGE + ".Request" + apiKey;
+    private static String getRequestClassName(String apiId) {
+        if (requsetPackage==null||StringUtils.startsWith(apiId, "S")) {
+            requsetPackage = DEFAULT_REQ_BASE_PACKAGE;
         }
-        return requsetPackage + ".Request" + apiKey;
+        return requsetPackage + ".Request" + apiId;
     }
 
     /**
@@ -211,22 +212,26 @@ public abstract class AbstractRequestAuthentication implements Serializable {
         }
     }
 
+    private static final Long MILLIS_PER_SECOND = 300000L;
+    private static final String STR_APPSECRET = "1111";
+    private static final String STR_APPKEY = "1121";
     /**
      * 验证签名合法性
      * @return 合法返回true，否则返回false
      */
-    public final boolean verifySign() {
-//        String appSecret = ConfigUtils.getSysConfig("app.secret." + appKey);
+    public final boolean verifyToken() {
+//        String appSecret = STR_APPSECRET;
 //        if (appSecret == null) {
 //            return false;
 //        }
 //
-//        long timeout = ConfigUtils.getSysConfigLong("app.expiretime." + appKey);
-//        if (Math.abs(System.currentTimeMillis() - timestamp) > timeout * Consts.MILLIS_PER_SECOND) {//时间戳误差不超过5分钟
+//        long timeout = MILLIS_PER_SECOND;
+//        if (Math.abs(System.currentTimeMillis() - timestamp) > MILLIS_PER_SECOND) {//时间戳误差不超过5分钟
 //            return false;
 //        }
-//        String tempSign = UniformInterfaceUtils.genSign(appKey, appSecret, apiKey,timestamp);
-//        return StringUtils.equalsIgnoreCase(tempSign, sign);
+//
+//        String tempSign = UniformInterfaceUtils.genSign(appId, appSecret, apiId,timestamp);
+//        return StringUtils.equalsIgnoreCase(tempSign, token);
         return true;
     }
 

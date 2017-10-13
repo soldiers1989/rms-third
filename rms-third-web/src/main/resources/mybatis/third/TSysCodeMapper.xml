@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TSysCodeMapper">
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TSysCode">
+    <id column="c_id" jdbcType="VARCHAR" property="cId" />
+    <result column="c_parent_id" jdbcType="VARCHAR" property="cParentId" />
+    <result column="c_key" jdbcType="VARCHAR" property="cKey" />
+    <result column="c_value" jdbcType="VARCHAR" property="cValue" />
+    <result column="c_description" jdbcType="VARCHAR" property="cDescription" />
+    <result column="n_order" jdbcType="INTEGER" property="nOrder" />
+    <result column="c_status" jdbcType="VARCHAR" property="cStatus" />
+    <result column="dt_create_time" jdbcType="TIMESTAMP" property="dtCreateTime" />
+    <result column="c_create_user" jdbcType="VARCHAR" property="cCreateUser" />
+    <result column="dt_update_time" jdbcType="TIMESTAMP" property="dtUpdateTime" />
+    <result column="c_opt_user" jdbcType="VARCHAR" property="cOptUser" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    c_id, c_parent_id, c_key, c_value, c_description, n_order, c_status, dt_create_time, 
+    c_create_user, dt_update_time, c_opt_user
+  </sql>
+  <select id="selectByExample" parameterType="com.jzfq.rms.third.common.domain.example.TSysCodeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sys_code
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_code
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sys_code
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TSysCodeExample">
+    delete from t_sys_code
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TSysCode">
+    insert into t_sys_code (c_id, c_parent_id, c_key, 
+      c_value, c_description, n_order, 
+      c_status, dt_create_time, c_create_user, 
+      dt_update_time, c_opt_user)
+    values (#{cId,jdbcType=VARCHAR}, #{cParentId,jdbcType=VARCHAR}, #{cKey,jdbcType=VARCHAR}, 
+      #{cValue,jdbcType=VARCHAR}, #{cDescription,jdbcType=VARCHAR}, #{nOrder,jdbcType=INTEGER}, 
+      #{cStatus,jdbcType=VARCHAR}, #{dtCreateTime,jdbcType=TIMESTAMP}, #{cCreateUser,jdbcType=VARCHAR}, 
+      #{dtUpdateTime,jdbcType=TIMESTAMP}, #{cOptUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TSysCode">
+    insert into t_sys_code
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        c_id,
+      </if>
+      <if test="cParentId != null">
+        c_parent_id,
+      </if>
+      <if test="cKey != null">
+        c_key,
+      </if>
+      <if test="cValue != null">
+        c_value,
+      </if>
+      <if test="cDescription != null">
+        c_description,
+      </if>
+      <if test="nOrder != null">
+        n_order,
+      </if>
+      <if test="cStatus != null">
+        c_status,
+      </if>
+      <if test="dtCreateTime != null">
+        dt_create_time,
+      </if>
+      <if test="cCreateUser != null">
+        c_create_user,
+      </if>
+      <if test="dtUpdateTime != null">
+        dt_update_time,
+      </if>
+      <if test="cOptUser != null">
+        c_opt_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cParentId != null">
+        #{cParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="cKey != null">
+        #{cKey,jdbcType=VARCHAR},
+      </if>
+      <if test="cValue != null">
+        #{cValue,jdbcType=VARCHAR},
+      </if>
+      <if test="cDescription != null">
+        #{cDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="nOrder != null">
+        #{nOrder,jdbcType=INTEGER},
+      </if>
+      <if test="cStatus != null">
+        #{cStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dtCreateTime != null">
+        #{dtCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cCreateUser != null">
+        #{cCreateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="dtUpdateTime != null">
+        #{dtUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cOptUser != null">
+        #{cOptUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TSysCodeExample" resultType="java.lang.Long">
+    select count(*) from t_sys_code
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_sys_code
+    <set>
+      <if test="record.cId != null">
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cParentId != null">
+        c_parent_id = #{record.cParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cKey != null">
+        c_key = #{record.cKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cValue != null">
+        c_value = #{record.cValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cDescription != null">
+        c_description = #{record.cDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nOrder != null">
+        n_order = #{record.nOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.cStatus != null">
+        c_status = #{record.cStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dtCreateTime != null">
+        dt_create_time = #{record.dtCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cCreateUser != null">
+        c_create_user = #{record.cCreateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dtUpdateTime != null">
+        dt_update_time = #{record.dtUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cOptUser != null">
+        c_opt_user = #{record.cOptUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_sys_code
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_parent_id = #{record.cParentId,jdbcType=VARCHAR},
+      c_key = #{record.cKey,jdbcType=VARCHAR},
+      c_value = #{record.cValue,jdbcType=VARCHAR},
+      c_description = #{record.cDescription,jdbcType=VARCHAR},
+      n_order = #{record.nOrder,jdbcType=INTEGER},
+      c_status = #{record.cStatus,jdbcType=VARCHAR},
+      dt_create_time = #{record.dtCreateTime,jdbcType=TIMESTAMP},
+      c_create_user = #{record.cCreateUser,jdbcType=VARCHAR},
+      dt_update_time = #{record.dtUpdateTime,jdbcType=TIMESTAMP},
+      c_opt_user = #{record.cOptUser,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TSysCode">
+    update t_sys_code
+    <set>
+      <if test="cParentId != null">
+        c_parent_id = #{cParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="cKey != null">
+        c_key = #{cKey,jdbcType=VARCHAR},
+      </if>
+      <if test="cValue != null">
+        c_value = #{cValue,jdbcType=VARCHAR},
+      </if>
+      <if test="cDescription != null">
+        c_description = #{cDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="nOrder != null">
+        n_order = #{nOrder,jdbcType=INTEGER},
+      </if>
+      <if test="cStatus != null">
+        c_status = #{cStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dtCreateTime != null">
+        dt_create_time = #{dtCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cCreateUser != null">
+        c_create_user = #{cCreateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="dtUpdateTime != null">
+        dt_update_time = #{dtUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cOptUser != null">
+        c_opt_user = #{cOptUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TSysCode">
+    update t_sys_code
+    set c_parent_id = #{cParentId,jdbcType=VARCHAR},
+      c_key = #{cKey,jdbcType=VARCHAR},
+      c_value = #{cValue,jdbcType=VARCHAR},
+      c_description = #{cDescription,jdbcType=VARCHAR},
+      n_order = #{nOrder,jdbcType=INTEGER},
+      c_status = #{cStatus,jdbcType=VARCHAR},
+      dt_create_time = #{dtCreateTime,jdbcType=TIMESTAMP},
+      c_create_user = #{cCreateUser,jdbcType=VARCHAR},
+      dt_update_time = #{dtUpdateTime,jdbcType=TIMESTAMP},
+      c_opt_user = #{cOptUser,jdbcType=VARCHAR}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

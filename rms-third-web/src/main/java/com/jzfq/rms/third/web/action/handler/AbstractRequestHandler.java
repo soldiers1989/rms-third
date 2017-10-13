@@ -1,6 +1,7 @@
 package com.jzfq.rms.third.web.action.handler;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.SpringInit;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.slf4j.Logger;
@@ -53,34 +54,34 @@ public abstract class AbstractRequestHandler {
     }
 
     /**
-     * 处理请求
-     * @param request 请求实体
-     * @return 响应
+     *
+     * @param request
+     * @param context
+     * @return
      */
     public static ResponseResult handleRequest(AbstractRequestAuthentication request, ServletContext context) {
         try {
-            // 请求签名验证
-//            if (!request.verifySign()) {
-//                log.warn("请求签名验证不通过！request：{}", request);
-//                return Response.ERROR_INVALID_SIGN();
-//            }
-//
+            // 验证身份
+            if (!request.verifyToken()) {
+                log.warn("请求签名验证不通过！request：{}", request);
+                return new ResponseResult("",ReturnCode.ERROR_INVALID_TOKEN);
+            }
+
             AbstractRequestHandler handler = findRequestHandler(request, context);
-//            if (handler == null) {
-//                log.warn("找不到合适的请求处理器！request：{}", request);
-//                return Response.ERROR_UNKNOWN_API_KEY();
-//            }
-//
-//            if (!handler.checkParams(request.getParams())) {
-//                log.warn("请求参数不合法！request：{}", request);
-//                return Response.ERROR_INVALID_ARGS();
-//            }
+            if (handler == null) {
+                log.warn("找不到合适的请求处理器！request：{}", request);
+                return new ResponseResult("",ReturnCode.ERROR_UNKNOWN_API);
+            }
+
+            if (!handler.checkParams(request.getParams())) {
+                log.warn("请求参数不合法！request：{}", request);
+                return new ResponseResult("",ReturnCode.ERROR_INVALID_ARGS);
+            }
 
             return handler.bizHandle(request);
         } catch (Throwable t) {
             log.error("处理请求出错！请求：{}", request, t);
-//            return Response.ERROR_UNKNOWN();
-            return null;
+            return new ResponseResult("",ReturnCode.ACTIVE_EXCEPTION);
         }
 
     }

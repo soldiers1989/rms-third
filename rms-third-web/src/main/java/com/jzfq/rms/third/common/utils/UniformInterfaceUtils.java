@@ -125,15 +125,15 @@ public class UniformInterfaceUtils {
     public static final String PARAM_NAME_APIVERSION = "v";
 
     /**
-     * 生成请求签名
-     * @param appKey 分配给每个app的唯一标识
-     * @param appSecret 分配给每个app的访问安全码
-     * @param apiKey 请求的api标识
-     * @param timestamp 用户发起请求时的时间戳（System.currentTimeMillis()）
-     * @return 请求签名
+     *
+     * @param appId
+     * @param apiId
+     * @param appSecret
+     * @param timestamp
+     * @return
      */
-    public static String genSign(String appKey, String appSecret, String apiKey, long timestamp) {
-        return MD5Helper.encrypt(appKey + appSecret + apiKey + timestamp);
+    public static String genSign(String appId, String apiId, String appSecret,  long timestamp) {
+        return MD5Helper.encrypt(appId + appSecret + apiId + timestamp);
     }
 }
 

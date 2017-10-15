@@ -198,6 +198,11 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         log.info("公平价车型库接口调用结束");
         return dto;
     }
+
+    /**
+     * 全量更新
+     * @param currentTask
+     */
     @Transactional(propagation= Propagation.SUPPORTS)
     public void insertAllCarDetailModels(SysTask currentTask) {
         List<GpjCarDetailModel> modelList = new ArrayList<>();
@@ -253,6 +258,11 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
     public int getCountCarDetailModels(){
         return gpjCarDetailModelMapper.getCountCarDetailModel();
     }
+
+    /**
+     * 增量更新
+     * @param currentTask
+     */
     public void updateCarDetailModels(SysTask currentTask) {
         SysTask task = sysTaskMapper.selectByTaskSlug("GPJgetCarDetailModel");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

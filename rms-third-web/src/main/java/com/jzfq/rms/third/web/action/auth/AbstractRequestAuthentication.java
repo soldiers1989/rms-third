@@ -193,9 +193,9 @@ public abstract class AbstractRequestAuthentication implements Serializable {
 
     /**
      *
-     * @param httpRequest
+     * @param params
      */
-    protected abstract void getBizParams(JSONObject httpRequest);
+    protected abstract void getBizParams(JSONObject params);
 
     /**
      *

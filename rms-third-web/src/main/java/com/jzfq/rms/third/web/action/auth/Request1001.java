@@ -3,6 +3,7 @@ package com.jzfq.rms.third.web.action.auth;
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,7 +16,13 @@ public class Request1001 extends AbstractRequestAuthentication{
     }
 
     @Override
-    protected void getBizParams(JSONObject httpRequest) {
-        setParams((Map<String, Serializable>)httpRequest.get("params"));
+    protected void getBizParams(JSONObject params) {
+//        addParam("vin", params.getString("vin"));
+        String paramsStr = params.getString("params");
+        if(paramsStr==null){
+            return ;
+        }
+        Map<String,Serializable> map = JSONObject.parseObject(paramsStr, HashMap.class);
+        setParams(map);
     }
 }

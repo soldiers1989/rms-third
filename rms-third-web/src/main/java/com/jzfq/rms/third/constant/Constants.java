@@ -131,5 +131,10 @@ public class Constants
     public final static long PIC_MAX_SIZE =2048;
     
     public final static String LINE ="<br/>";
+    /**
+     * 是否删除
+     */
+    public final static String IS_DELETE_YES ="1";
+    public final static String IS_DELETE_NO ="0";
      
 }

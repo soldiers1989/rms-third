@@ -7,18 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 公平价接口
+ * 鹏元接口
  * @author 大连桔子分期科技有限公司
- * @date 2017/10/13 16:46.
+ * @date 2017/10/15 15:32.
  **/
-public class Request1001 extends AbstractRequestAuthentication{
-    public Request1001(String appId, String apiId, long timestamp, String token, String apiVersion) {
+public class Request1002 extends AbstractRequestAuthentication {
+    public Request1002(String appId, String apiId, long timestamp, String token, String apiVersion) {
         super(appId, apiId, timestamp, token, apiVersion);
     }
-
     @Override
     protected void getBizParams(JSONObject params) {
-//        addParam("vin", params.getString("vin"));
         String paramsStr = params.getString("params");
         if(paramsStr==null){
             return ;

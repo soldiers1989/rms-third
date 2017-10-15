@@ -16,7 +16,7 @@
 
 	<import resource="classpath:spring/applicationContext-servlet.xml"/>
 	<!--<import resource="classpath:spring/applicationContext-redis.xml"/>-->
-	<!--<import resource="classpath:spring/applicationContext-mongdb.xml"/>-->
+	<import resource="classpath:spring/applicationContext-mongdb.xml"/>
 	<import resource="classpath:spring/applicationContext-mysql.xml"/>
 	<import resource="classpath:spring/applicationContext-rms-third.xml"/>
 	<import resource="classpath:spring/spring-timer.xml"/>

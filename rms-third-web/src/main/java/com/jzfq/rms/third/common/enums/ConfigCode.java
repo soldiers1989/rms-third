@@ -5,7 +5,14 @@ package com.jzfq.rms.third.common.enums;
  * @date 2017/10/15 16:55.
  **/
 public enum ConfigCode {
-    THIRD_URL_PENGYUAN_PYCREDIT("com.jzfq.rms.third.url.pengyuan.pycredit", "鹏元接口");
+    THIRD_URL_PENGYUAN_PYCREDIT("com.jzfq.rms.third.url.pengyuan.pycredit", "鹏元接口"),
+    THIRD_URL_JXL_ACCESSTOKEN("com.jzfq.rms.third.url.jxl.accesstoken", "获取Token接口"),
+    THIRD_URL_JXL_ACCESSREPORTSTATUS("com.jzfq.rms.third.url.jxl.accessreportstatus", "用户报告状态接口"),
+    THIRD_URL_JXL_ACCESSREPORTDATA("com.jzfq.rms.third.url.jxl.accessreportdata", "用户报告数据接口"),
+    THIRD_URL_JXL_ACCESSRAWDATA("com.jzfq.rms.third.url.jxl.accessrawdata", "移动运营商数据数据接口"),
+    THIRD_URL_JXL_ACCESSBUSIRAWDATA("com.jzfq.rms.third.url.jxl.accessbusirawdata", "电商数据接口"),
+    THIRD_URL_TD_logintdscore("com.jzfq.rms.third.url.td.logintdscore", "同盾登录决策分接口"),
+    THIRD_URL_TD_ADDTDFRAUDBLACK("com.jzfq.rms.third.url.td.addtdfraudblack", "电商数据接口");
 
     private String code;
     private String msg;

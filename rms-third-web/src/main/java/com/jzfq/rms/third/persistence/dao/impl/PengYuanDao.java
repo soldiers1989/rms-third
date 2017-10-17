@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.persistence.dao.pg;
+package com.jzfq.rms.third.persistence.dao.impl;
 
 import com.jzfq.rms.third.common.domain.TSysConfig;
 import com.jzfq.rms.third.common.domain.example.TSysConfigExample;
@@ -22,11 +22,6 @@ import static com.jzfq.rms.third.constant.Constants.IS_DELETE_NO;
 @Component("pengYuanDao")
 public class PengYuanDao implements IPengYuanDao{
     private static String pyUrl ;
-
-    public void setPyUrl(String pyUrl) {
-        this.pyUrl = pyUrl;
-    }
-
     @Autowired
     TSysConfigMapper tSysConfigMapper;
     @Override

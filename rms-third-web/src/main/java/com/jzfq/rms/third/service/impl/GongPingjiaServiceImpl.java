@@ -13,6 +13,7 @@ import com.jzfq.rms.third.common.enums.TaskCode;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.utils.JWTUtils;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
+import com.jzfq.rms.third.persistence.dao.IThirdTransferLogDao;
 import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
 import com.jzfq.rms.third.persistence.mapper.SysTaskMapper;
 import com.jzfq.rms.third.service.IGongPingjiaService;
@@ -56,6 +57,9 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
     @Autowired
     private SysTaskMapper sysTaskMapper;
 
+    @Autowired
+    private IThirdTransferLogDao thirdTransferLogDao;
+
     public List<EvaluationInfoVo> queryGaopingjiaEvalation(String vin, String licensePlatHeader){
         log.info("公平价接口调用[车架号="+vin+"车牌头两位"+licensePlatHeader+"]-开始");
         JSONObject evaluation = getGongpingjiaData(vin, licensePlatHeader);
@@ -71,7 +75,13 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
      * @return
      */
     private JSONObject getGongpingjiaData(String vin, String licensePlatHeader){
-        ResponseResult response = JWTUtils.getData(key, secret, timeout,getEvaluationUrl(vin, licensePlatHeader));
+        JSONObject result = new JSONObject();
+        ResponseResult response ;
+        try{
+            response = JWTUtils.getData(key, secret, timeout,getEvaluationUrl(vin, licensePlatHeader));
+        }catch (Exception e){
+            return null;
+        }
         if(!(ReturnCode.REQUEST_SUCCESS.code() == response.getCode())||response.getData()==null){
             log.info("公平价估价接口调用[车架号="+vin+"车牌头两位="+licensePlatHeader+"]失败:"+response.getCode()+"响应信息："+response.getData());
             return null;
@@ -86,6 +96,8 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
             log.info("公平价估价接口调用[车架号="+vin+"车牌头两位="+licensePlatHeader+"]返回失败:"+evaluationInfo.get("message").toString());
             return null;
         }
+//        thirdTransferLogDao.insertLog("","","","","","0",
+//                "成功");
         log.info("公平价估价接口调用[车架号="+vin+"车牌头两位="+licensePlatHeader+"]成功");
         return evaluationInfo;
     }

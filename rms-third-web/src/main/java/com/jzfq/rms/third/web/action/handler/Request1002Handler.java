@@ -7,6 +7,8 @@ import com.jzfq.rms.third.service.IPengYuanService;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,11 +17,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * PengYuan
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/15 15:35.
  **/
 @Component("request1002Handler")
 public class Request1002Handler extends AbstractRequestHandler{
+    private static final Logger log = LoggerFactory.getLogger("PengYuan");
     @Autowired
     private IPengYuanService pengYuanService;
     @Override

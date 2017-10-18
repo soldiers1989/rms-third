@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
  * @author 大连桔子分期科技有限公司
  *
  */
-@Component
+@Component("brPostService")
 public class BrPostService {
 
     private static final Logger log = LoggerFactory.getLogger("postLogger");

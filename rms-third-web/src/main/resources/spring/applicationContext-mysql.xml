@@ -24,7 +24,7 @@
 		<property name="maxWait" value="60000" />
 
 		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="timeBetweenEvictionRunsMillis" value="600" />
 
 		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
 		<property name="minEvictableIdleTimeMillis" value="300000" />
@@ -50,24 +50,24 @@
 		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
 		  p:dataSource-ref="dataSource" />
 
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+	<!--<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>-->
 
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<!--<tx:method name="*" propagation="REQUIRED"/>-->
-			<tx:method name="update*" propagation="REQUIRED"/>
-			<tx:method name="delete*" propagation="REQUIRED"/>
-			<tx:method name="insert*" propagation="REQUIRED"/>
-			<tx:method name="batch*" propagation="REQUIRED"/>
-			<tx:method name="get*" read-only="true"/>
-			<tx:method name="query*" read-only="true"/>
-		</tx:attributes>
-	</tx:advice>
+	<!--<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+		<!--<tx:attributes>-->
+			<!--&lt;!&ndash;<tx:method name="*" propagation="REQUIRED"/>&ndash;&gt;-->
+			<!--<tx:method name="update*" propagation="REQUIRED"/>-->
+			<!--<tx:method name="delete*" propagation="REQUIRED"/>-->
+			<!--<tx:method name="insert*" propagation="REQUIRED"/>-->
+			<!--<tx:method name="batch*" propagation="REQUIRED"/>-->
+			<!--<tx:method name="get*" read-only="true"/>-->
+			<!--<tx:method name="query*" read-only="true"/>-->
+		<!--</tx:attributes>-->
+	<!--</tx:advice>-->
 
-	<aop:config>
-		<aop:pointcut expression="execution(* com.jzfq.rms.third.service.*.*(..))" id="services"/>
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="services"/>
-	</aop:config>
+	<!--<aop:config>-->
+		<!--<aop:pointcut expression="execution(* com.jzfq.rms.third.service.*.*(..))" id="services"/>-->
+		<!--<aop:advisor advice-ref="txAdvice" pointcut-ref="services"/>-->
+	<!--</aop:config>-->
 
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory"/>

@@ -26,10 +26,22 @@ public class Request1002Handler extends AbstractRequestHandler{
     private static final Logger log = LoggerFactory.getLogger("PengYuan");
     @Autowired
     private IPengYuanService pengYuanService;
+
+    /**
+     * 是否控制重复调用
+     *
+     * @return 合法返回true，否则返回false
+     */
+    @Override
+    protected boolean isCheckRepeat() {
+        return false;
+    }
+
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-        String taskId = (String)params.get("taskId");
+        String taskId = (String)params.get("traceId");
         String carInfoStr = (String)params.get("carInfo");
+
         if(StringUtils.isBlank(taskId)|| !NumberUtils.isNumber(taskId) ||StringUtils.isBlank(carInfoStr)){
             return false;
         }
@@ -42,14 +54,19 @@ public class Request1002Handler extends AbstractRequestHandler{
 
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
-        Long taskId = Long.parseLong(request.getParam("taskId").toString());
+        String taskIdStr = request.getParam("taskId").toString();
+        String traceId = request.getParam("traceId").toString();
+        String fraudId = request.getParam("fraudId").toString();
+        String id = StringUtils.isBlank(taskIdStr)?fraudId:taskIdStr;
+        Long taskId = Long.parseLong(id);
         Map<String,Object> carInfo = JSONObject.parseObject(request.getParam("carInfo").toString(), HashMap.class);
-        log.info("鹏元车辆信息 params：【" + taskId + ":"+carInfo+"】");
+        log.info("traceId="+traceId+" 鹏元车辆信息 params：【"+carInfo+"】");
         JSONObject data = pengYuanService.queryPengYuanData(taskId,carInfo);
+        log.info("traceId="+traceId+" 鹏元车辆信息 data：【"+data+"】");
         if(StringUtils.isBlank(data.getString("errorCode"))){
-            return new ResponseResult("1002", ReturnCode.REQUEST_SUCCESS,data );
+            return new ResponseResult(taskIdStr, ReturnCode.REQUEST_SUCCESS,data );
         }
-        return new ResponseResult("1002",Integer.parseInt(data.getString("errorCode"))
+        return new ResponseResult(taskIdStr,Integer.parseInt(data.getString("errorCode"))
                 ,data.getString("errorMessage"),data);
     }
 }

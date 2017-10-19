@@ -3,10 +3,12 @@ package com.jzfq.rms.third.web.action.handler;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.SpringInit;
+import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -28,10 +30,11 @@ public abstract class AbstractRequestHandler {
      */
     protected final static Logger log = LoggerFactory.getLogger(AbstractRequestHandler.class);
 
-    /**
-     * 多值分隔符
-     */
-    protected final static String MULTI_VALUE_SEPARATOR = ";";
+    private boolean rpc;
+
+    protected boolean isRpc() {
+        return rpc;
+    }
 
     /**
      * 根据请求查找请求处理器
@@ -78,6 +81,10 @@ public abstract class AbstractRequestHandler {
                 return new ResponseResult("",ReturnCode.ERROR_INVALID_ARGS);
             }
 
+            if (handler.isCheckRepeat()) {
+                handler.isRpc(request.getParams());
+            }
+
             return handler.bizHandle(request);
         } catch (Throwable t) {
             log.error("处理请求出错！请求：{}", request, t);
@@ -85,8 +92,18 @@ public abstract class AbstractRequestHandler {
         }
 
     }
-
-
+    /**
+     * 是否远程调用
+     * @return 合法返回true，否则返回false
+     */
+    protected void isRpc(Map<String, Serializable> params){
+        this.rpc = true;
+    }
+    /**
+     * 是否控制重复调用
+     * @return 合法返回true，否则返回false
+     */
+    protected abstract boolean isCheckRepeat();
     /**
      * 检查业务参数是否合法，交由子类实现。
      * @param params 请求中携带的业务参数

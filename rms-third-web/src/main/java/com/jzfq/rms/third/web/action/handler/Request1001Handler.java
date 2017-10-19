@@ -24,6 +24,17 @@ public class Request1001Handler  extends AbstractRequestHandler{
     private static final Logger log = LoggerFactory.getLogger("GongPingjiaService");
     @Autowired
     private IGongPingjiaService gongPingjiaService;
+
+    /**
+     * 是否控制重复调用
+     *
+     * @return 合法返回true，否则返回false
+     */
+    @Override
+    protected boolean isCheckRepeat() {
+        return false;
+    }
+
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
         String vin = (String)params.get("vin");

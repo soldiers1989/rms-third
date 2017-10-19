@@ -16,6 +16,16 @@ import java.util.Map;
 @Component("requestS000Handler")
 public class RequestS000Handler extends AbstractRequestHandler{
 
+    /**
+     * 是否控制重复调用
+     *
+     * @return 合法返回true，否则返回false
+     */
+    @Override
+    protected boolean isCheckRepeat() {
+        return false;
+    }
+
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
         return true;

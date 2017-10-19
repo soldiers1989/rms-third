@@ -4,17 +4,30 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Map;
 
 /**
- * jxl
+ * jxl 预留
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/16 18:16.
  **/
+@Component("request1006Handler")
 public class Request1006Handler   extends AbstractRequestHandler {
     private static final Logger log = LoggerFactory.getLogger("JXL 1006");
+
+    /**
+     * 是否控制重复调用
+     *
+     * @return 合法返回true，否则返回false
+     */
+    @Override
+    protected boolean isCheckRepeat() {
+        return false;
+    }
+
     /**
      * 检查业务参数是否合法，交由子类实现。
      *

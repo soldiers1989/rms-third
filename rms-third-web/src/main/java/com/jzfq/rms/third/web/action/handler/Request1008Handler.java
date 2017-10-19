@@ -28,6 +28,16 @@ public class Request1008Handler  extends AbstractRequestHandler {
     ITdDataService tdDataService;
 
     /**
+     * 是否控制重复调用
+     *
+     * @return 合法返回true，否则返回false
+     */
+    @Override
+    protected boolean isCheckRepeat() {
+        return false;
+    }
+
+    /**
      * 检查业务参数是否合法，交由子类实现。
      *
      * @param params 请求中携带的业务参数
@@ -55,6 +65,11 @@ public class Request1008Handler  extends AbstractRequestHandler {
         queryParams.put("traceId",traceId);
         queryParams.put("taskId",taskId);
         queryParams.put("fraudId",fraudId);
-        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, tdDataService.getTdData(queryParams));
+        queryParams.put("personalInfo",personInfo);
+        Object data = tdDataService.getTdData(queryParams);
+        if(data == null){
+            new RuntimeException("traceId=" +traceId+ "同盾分获取结果为null");
+        }
+        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, data);
     }
 }

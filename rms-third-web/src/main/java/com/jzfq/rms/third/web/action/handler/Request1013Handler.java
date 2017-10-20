@@ -4,6 +4,7 @@ import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.service.IRiskPostDataService;
+import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.IRong360Service;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import net.sf.json.JSONArray;
@@ -34,6 +35,8 @@ public class Request1013Handler extends AbstractRequestHandler {
     @Autowired
     IRiskPostDataService riskPostDataService;
 
+    @Autowired
+    IRmsService rmsService;
     /**
      * 是否控制重复调用
      *
@@ -65,8 +68,8 @@ public class Request1013Handler extends AbstractRequestHandler {
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
 
         String traceId = request.getParam("traceId").toString();
-        String taskId = request.getParam("taskId").toString();
-        String fraudId = request.getParam("fraudId").toString();
+        String orderNo = request.getParam("orderNo").toString();
+        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
         String name = request.getParam("name").toString();
         String idNumber = request.getParam("idNumber").toString();
         String phone = request.getParam("phone").toString();
@@ -76,12 +79,11 @@ public class Request1013Handler extends AbstractRequestHandler {
         bizData.put("idNumber",idNumber);
         bizData.put("phone",phone);
         String result ="";
-        String id = StringUtils.isBlank(taskId)?fraudId:taskId;
         try {
             //手机在网时长
             JSONObject resultJson2 = rong360Service.getPhoneNetworkLength(taskId, bizData);
             result = changeBairongPhoneNetworkLength(resultJson2);
-            BrPostData data = editAndSavePostData(id, "手机在网时长", result, custumType);
+            BrPostData data = editAndSavePostData(taskId, "手机在网时长", result, custumType);
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
         }catch (Exception e){
             log.error("手机在网时长"+e.getMessage());

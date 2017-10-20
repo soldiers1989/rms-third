@@ -125,11 +125,9 @@ public class JxlDataServiceImpl implements IJxlDataService {
 	@Override
 	public JSONObject queryAccessReportData(String customerName, String idCard, String phone) {
 		JSONObject json = new JSONObject();
-
 		String token=getAccessToken();
 		if(StringUtils.isBlank(token))
 			return null;
-
 		//用户报告
 		JxlData report = mongoTemplate.findOne(new Query(Criteria.where("name").is(customerName)
 				.and("idCard").is(idCard).and("phone").is(phone).and("interfaceType").is(RmsConstants.JXL_REPORT_INTERFACE)), JxlData.class);
@@ -140,7 +138,6 @@ public class JxlDataServiceImpl implements IJxlDataService {
 			String reportData = getAccessReportData(token, customerName, idCard, phone);
 			json.put("report_data", reportData==null ? "":reportData);
 		}
-
 		return json;
 	}
 	

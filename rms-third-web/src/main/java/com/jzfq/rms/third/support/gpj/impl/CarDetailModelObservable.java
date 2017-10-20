@@ -1,15 +1,12 @@
 package com.jzfq.rms.third.support.gpj.impl;
 
+import com.jzfq.rms.third.support.pool.ThreadProvider;
 import com.jzfq.rms.third.support.gpj.IGPJSync;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,14 +31,7 @@ public class CarDetailModelObservable extends Observable {
         this.observers = observers;
     }
 
-    //线程池，大小为threadCount，队列大小ObserverConstant.SYNC_PAGE_SIZE
-    private static final ExecutorService executor;
-    static {
-        int threadCount = Runtime.getRuntime().availableProcessors() - 1;
-        threadCount = threadCount > 20 ? 20 : threadCount;
-        LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(1000);
-        executor = new ThreadPoolExecutor(threadCount, threadCount, 0L, TimeUnit.MILLISECONDS, workQueue);
-    }
+
     /**
      * 初始化
      */
@@ -88,7 +78,7 @@ public class CarDetailModelObservable extends Observable {
     private void work() {
         RUNNING_SYNC_PROCESS.incrementAndGet();
         Map<String,Object> taskInfo = new HashMap<>();
-        executor.execute(new sysDataTask(taskInfo));
+        ThreadProvider.getThreadPool().execute(new sysDataTask(taskInfo));
     }
 
 

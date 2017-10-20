@@ -7,6 +7,7 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.service.IRiskPostDataService;
+import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.impl.BrPostService;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +36,8 @@ public class Request1011Handler extends AbstractRequestHandler{
     @Autowired
     IRiskPostDataService riskPostDataService;
 
+    @Autowired
+    IRmsService rmsService;
     /**
      * 是否控制重复调用
      *
@@ -65,14 +68,13 @@ public class Request1011Handler extends AbstractRequestHandler{
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
         String traceId = request.getParam("traceId").toString();
-        String taskId = request.getParam("taskId").toString();
-        String fraudId = request.getParam("fraudId").toString();
+        String orderNo = request.getParam("orderNo").toString();
+        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
         Integer customerType = Integer.parseInt(request.getParam("customerType").toString());
         MerchantBean bean = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 MerchantBean.class);
-        String id = StringUtils.isBlank(taskId)?fraudId:taskId;
 
-        JSONObject jsonObject = (JSONObject) riskPostDataService.queryData(Long.parseLong(id),customerType);
+        JSONObject jsonObject = (JSONObject) riskPostDataService.queryData(Long.parseLong(taskId),customerType);
         if(!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2){
             return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,jsonObject);
         }

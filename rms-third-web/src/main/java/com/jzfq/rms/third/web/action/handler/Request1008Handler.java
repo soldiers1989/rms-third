@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ITdDataService;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.slf4j.Logger;
@@ -27,6 +28,8 @@ public class Request1008Handler  extends AbstractRequestHandler {
     @Autowired
     ITdDataService tdDataService;
 
+    @Autowired
+    IRmsService rmsService;
     /**
      * 是否控制重复调用
      *
@@ -57,14 +60,13 @@ public class Request1008Handler  extends AbstractRequestHandler {
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
         String traceId = request.getParam("traceId").toString();
-        String taskId = request.getParam("taskId").toString();
-        String fraudId = request.getParam("fraudId").toString();
+        String orderNo = request.getParam("orderNo").toString();
+        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
         RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
         Map<String,Object> queryParams = new HashMap<>();
         queryParams.put("traceId",traceId);
         queryParams.put("taskId",taskId);
-        queryParams.put("fraudId",fraudId);
         queryParams.put("personalInfo",personInfo);
         Object data = tdDataService.getTdData(queryParams);
         if(data == null){

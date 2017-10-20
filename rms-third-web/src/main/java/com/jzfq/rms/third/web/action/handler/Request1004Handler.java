@@ -67,7 +67,7 @@ public class Request1004Handler   extends AbstractRequestHandler {
         String customerName = request.getParam("customerName").toString();
         String idCard = request.getParam("idCard").toString();
         String phone = request.getParam("phone").toString();
-        JSONObject data = jxlDataService.queryAccessReportData(  customerName,   idCard,   phone);
+        JSONObject data = jxlDataService.queryAccessReportData(customerName, idCard, phone);
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
     }
 }

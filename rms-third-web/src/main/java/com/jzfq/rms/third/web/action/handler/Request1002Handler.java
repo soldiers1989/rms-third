@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.service.IPengYuanService;
+import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -26,6 +27,9 @@ public class Request1002Handler extends AbstractRequestHandler{
     private static final Logger log = LoggerFactory.getLogger("PengYuan");
     @Autowired
     private IPengYuanService pengYuanService;
+
+    @Autowired
+    IRmsService rmsService;
 
     /**
      * 是否控制重复调用
@@ -54,11 +58,10 @@ public class Request1002Handler extends AbstractRequestHandler{
 
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
-        String taskIdStr = request.getParam("taskId").toString();
         String traceId = request.getParam("traceId").toString();
-        String fraudId = request.getParam("fraudId").toString();
-        String id = StringUtils.isBlank(taskIdStr)?fraudId:taskIdStr;
-        Long taskId = Long.parseLong(id);
+        String orderNo = request.getParam("orderNo").toString();
+        String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
+        Long taskId = Long.parseLong(taskIdStr);
         Map<String,Object> carInfo = JSONObject.parseObject(request.getParam("carInfo").toString(), HashMap.class);
         log.info("traceId="+traceId+" 鹏元车辆信息 params：【"+carInfo+"】");
         JSONObject data = pengYuanService.queryPengYuanData(taskId,carInfo);

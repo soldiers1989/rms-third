@@ -196,7 +196,6 @@ public class TdDataServiceImpl implements ITdDataService {
         RiskPersonalInfo info = (RiskPersonalInfo)riskPostInfo.get("personalInfo");
         String taskId =  (String)riskPostInfo.get("taskId");
         String traceId = (String)riskPostInfo.get("traceId");
-        String fraudId = (String)riskPostInfo.get("fraudId");
         Map<String,Object> datas = new HashMap<>();
 
         Map<String, Object> params = new HashMap<String, Object>();
@@ -267,8 +266,7 @@ public class TdDataServiceImpl implements ITdDataService {
         //通过seqid 查询 同盾规则，保存到mongo
         String sequenceId = apiResp.getSeq_id();
         log.info("seq = " + apiResp.getSeq_id());
-        String id = StringUtils.isBlank(taskId)?fraudId:taskId;
-        TdData tdRule = getTdRuleData(  id,  sequenceId,  traceId);
+        TdData tdRule = getTdRuleData(  taskId,  sequenceId,  traceId);
         datas.put("tdRule",tdRule);
         return datas;
     }

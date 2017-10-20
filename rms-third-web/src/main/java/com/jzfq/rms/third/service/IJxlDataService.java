@@ -9,7 +9,6 @@ import com.alibaba.fastjson.JSONObject;
  *
  */
 public interface IJxlDataService {
-
 	public JSONObject queryJxlData(String customerName, String idCard, String phone);
 	public String queryStatus(String customerName, String idCard, String phone, String category);
 	public JSONObject queryAccessReportData(String customerName, String idCard, String phone);

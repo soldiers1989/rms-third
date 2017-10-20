@@ -16,9 +16,9 @@ import java.util.Map;
 public interface IRong360Service {
     JSONObject doOpenApiRequest(String method, Map<String, String> params, Map<String, String> bizData) throws Exception;
 
-    JSONObject getPhoneNetworkLength(String user_id, Map<String, String> bizData) throws Exception;
+    JSONObject getPhoneNetworkLength(String taskId, Map<String, String> bizData) throws Exception;
 
-    JSONObject getMobilecheck3item(String user_id, Map<String, String> bizData) throws Exception;
+    JSONObject getMobilecheck3item(String taskId, Map<String, String> bizData) throws Exception;
 
-    JSONObject getPhonestatus(String user_id, Map<String, String> bizData) throws Exception;
+    JSONObject getPhonestatus(String taskId, Map<String, String> bizData) throws Exception;
 }

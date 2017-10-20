@@ -10,7 +10,7 @@ import java.util.Map;
  * @date:   2016年2月23日 下午2:16:35
  */
 public enum ReturnCode {
-	
+	//TODO 整理响应代码
 	ACTIVE_EXCEPTION(-1, "异常"),
     ERROR_REFUSE_IP(-60,"拒绝IP"),
     ACTIVE_SUCCESS(01, "操作成功"),

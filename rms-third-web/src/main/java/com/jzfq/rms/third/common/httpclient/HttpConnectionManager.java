@@ -543,5 +543,65 @@ public class HttpConnectionManager {
 //		System.out.println(code);
 //
 //	}
-	
+
+	/**
+	 * @param url 请求路径
+	 * @param params 请求参数
+	 * @return ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 */
+	public static <K , V > ResponseResult doUncheckPost(String url, Map< K, V > params){
+		return doUncheckPost(url, params , CHARSET);
+	}
+	/**
+	 * @param url 请求路径
+	 * @param params 请求参数
+	 * @param charset 字符集
+	 * @return ResponseDTO  返回结果  code :状态码   attach : 返回内容
+	 */
+	public static <K , V > ResponseResult doUncheckPost(String url, Map< K, V > params , String charset) {
+
+		if(org.apache.commons.lang.StringUtils.isBlank(url))
+			throw new IllegalArgumentException("入参url为空!!");
+
+		if(params == null || params.size() == 0)
+			return doPost(url);
+
+		try {
+
+			List<NameValuePair> pairsList = getAllParamsList(params);
+
+			HttpPost request = new HttpPost(url);
+
+			if(pairsList.size() > 0) {
+				request.setEntity(new UrlEncodedFormEntity(pairsList,charset));
+			}
+
+			return send(request,charset);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	/**
+	 * @param params 参数map
+	 * 构造参数map
+	 */
+	private static <K,V> List<NameValuePair> getAllParamsList(Map<K,V> params) {
+
+		List<NameValuePair> pairsList = new ArrayList<NameValuePair>();
+
+		if(params == null || params.size() == 0)
+			return pairsList;
+
+		for(Map.Entry<K, V> entry : params.entrySet()) {
+			K key = entry.getKey();
+			V value = entry.getValue();
+			if(key == null || value == null || org.apache.commons.lang.StringUtils.isBlank(key.toString()) || org.apache.commons.lang.StringUtils.isBlank(value.toString())) {
+				LOG.info("参数的key 或者value 为空!!!");
+			}
+			pairsList.add(new BasicNameValuePair(key.toString(), value.toString()));
+		}
+
+		return pairsList;
+	}
 }

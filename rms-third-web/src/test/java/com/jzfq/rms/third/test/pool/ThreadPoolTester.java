@@ -13,7 +13,7 @@ import static com.jzfq.rms.third.support.pool.ThreadProvider.getThreadPool;
 public class ThreadPoolTester {
     // 测试构造的线程池
     public static void main(String[] args) {
-        System.out.println(System.currentTimeMillis());
+
 //        ExecutorService pool = getThreadPool();
 //        for(int i=1; i<11; i++) {
 //            System.out.println("提交第" + i + "个任务!");

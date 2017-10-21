@@ -227,7 +227,7 @@ public abstract class AbstractRequestAuthentication implements Serializable {
             return false;
         }
 
-        String tempToken = UniformInterfaceUtils.getToken(appId, appSecret, apiId,timestamp);
+        String tempToken = UniformInterfaceUtils.getToken(appId, apiId, appSecret,timestamp);
         return StringUtils.equalsIgnoreCase(tempToken, token);
     }
 

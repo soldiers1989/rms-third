@@ -132,7 +132,7 @@ public class UniformInterfaceUtils {
      * @param timestamp
      * @return
      */
-    public static String genSign(String appId, String apiId, String appSecret,  long timestamp) {
+    public static String getToken(String appId, String apiId, String appSecret,  long timestamp) {
         return MD5Helper.encrypt(appId + appSecret + apiId + timestamp);
     }
 }

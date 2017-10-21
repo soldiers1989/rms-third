@@ -17,7 +17,7 @@ public enum ReturnCode {
     ACTIVE_FAILURE(02, "操作失败"),
     ERROR_PARAMS_NOT_NULL(03, "参数不能为空"),
     ERROR_HEADER_NOT_NULL(04, "请求头不能为空"),
-    ERROR_INVALID_TOKEN(05, "请求签名验证不通过"),
+    ERROR_INVALID_TOKEN(05, "请求token验证不通过"),
     ERROR_UNKNOWN_API(06, "找不到合适的请求处理器"),
     ERROR_INVALID_ARGS(07, "请求参数不合法"),
     ERROR_SYSTEM_CONFIG_NULL(8,"系统配置出错"),

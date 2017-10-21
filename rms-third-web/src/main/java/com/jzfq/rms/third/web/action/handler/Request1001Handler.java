@@ -47,6 +47,36 @@ public class Request1001Handler  extends AbstractRequestHandler{
 
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
+        if(StringUtils.equals("01","request.getApiVersion()")){
+            return handlerOfVersion01(request);
+        }
+        if(StringUtils.equals("02","request.getApiVersion()")){
+            return handlerOfVersion02(request);
+        }
+        return handlerOfVersion01(request);
+    }
+
+    /**
+     * 版本10
+     * @param request
+     * @return
+     */
+    private ResponseResult handlerOfVersion01(AbstractRequestAuthentication request){
+        String vin = (String)request.getParam("vin");
+        String licensePlatHeader = (String)request.getParam("licensePlatHeader");
+        log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");
+        List<EvaluationInfoVo> list = gongPingjiaService.queryGaopingjiaEvalation(vin, licensePlatHeader);
+        ResponseResult dto = new ResponseResult("1001",ReturnCode.REQUEST_SUCCESS, list);
+        log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】成功");
+        return dto;
+    }
+
+    /**
+     * 版本10
+     * @param request
+     * @return
+     */
+    private ResponseResult handlerOfVersion02(AbstractRequestAuthentication request){
         String vin = (String)request.getParam("vin");
         String licensePlatHeader = (String)request.getParam("licensePlatHeader");
         log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.utils.UniformInterfaceUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
@@ -212,27 +213,22 @@ public abstract class AbstractRequestAuthentication implements Serializable {
         }
     }
 
-    private static final Long MILLIS_PER_SECOND = 300000L;
-    private static final String STR_APPSECRET = "1111";
-    private static final String STR_APPKEY = "1121";
     /**
      * 验证签名合法性
      * @return 合法返回true，否则返回false
      */
     public final boolean verifyToken() {
-//        String appSecret = STR_APPSECRET;
-//        if (appSecret == null) {
-//            return false;
-//        }
-//
-//        long timeout = MILLIS_PER_SECOND;
-//        if (Math.abs(System.currentTimeMillis() - timestamp) > MILLIS_PER_SECOND) {//时间戳误差不超过5分钟
-//            return false;
-//        }
-//
-//        String tempSign = UniformInterfaceUtils.genSign(appId, appSecret, apiId,timestamp);
-//        return StringUtils.equalsIgnoreCase(tempSign, token);
-        return true;
+        String appSecret = KeyManager.STR_APPSECRET;
+        if (appSecret == null) {
+            return false;
+        }
+
+        if (Math.abs(System.currentTimeMillis() - timestamp) > KeyManager.MILLIS_PER_SECOND) {
+            return false;
+        }
+
+        String tempToken = UniformInterfaceUtils.getToken(appId, appSecret, apiId,timestamp);
+        return StringUtils.equalsIgnoreCase(tempToken, token);
     }
 
 }

@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 手机在网时长
+ * 捷安 手机在网时长
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/20 19:31.
  **/

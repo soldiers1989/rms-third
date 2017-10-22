@@ -3,6 +3,8 @@ package com.jzfq.rms.third.web.action.handler;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IGongPingjiaService;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
@@ -46,11 +48,11 @@ public class Request1001Handler  extends AbstractRequestHandler{
     }
 
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
-        if(StringUtils.equals("01","request.getApiVersion()")){
+    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+        if(StringUtils.equals("01",request.getApiVersion())){
             return handlerOfVersion01(request);
         }
-        if(StringUtils.equals("02","request.getApiVersion()")){
+        if(StringUtils.equals("02",request.getApiVersion())){
             return handlerOfVersion02(request);
         }
         return handlerOfVersion01(request);
@@ -62,26 +64,27 @@ public class Request1001Handler  extends AbstractRequestHandler{
      * @return
      */
     private ResponseResult handlerOfVersion01(AbstractRequestAuthentication request){
+        String taskId = (String)request.getParam("taskId");
         String vin = (String)request.getParam("vin");
         String licensePlatHeader = (String)request.getParam("licensePlatHeader");
         log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");
         List<EvaluationInfoVo> list = gongPingjiaService.queryGaopingjiaEvalation(vin, licensePlatHeader);
-        ResponseResult dto = new ResponseResult("1001",ReturnCode.REQUEST_SUCCESS, list);
+        ResponseResult dto = new ResponseResult(taskId,ReturnCode.REQUEST_SUCCESS, list);
         log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】成功");
         return dto;
     }
 
     /**
-     * 版本10
+     * 版本02
      * @param request
      * @return
      */
-    private ResponseResult handlerOfVersion02(AbstractRequestAuthentication request){
+    private ResponseResult handlerOfVersion02(AbstractRequestAuthentication request) throws BusinessException {
         String vin = (String)request.getParam("vin");
         String licensePlatHeader = (String)request.getParam("licensePlatHeader");
         log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");
-        List<EvaluationInfoVo> list = gongPingjiaService.queryGaopingjiaEvalation(vin, licensePlatHeader);
-        ResponseResult dto = new ResponseResult("1001",ReturnCode.REQUEST_SUCCESS, list);
+        List<EvaluationInfoVo> list = gongPingjiaService.queryCarEvaluations(TraceIDThreadLocal.getTraceID(), vin, licensePlatHeader);
+        ResponseResult dto = new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS, list);
         log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】成功");
         return dto;
     }

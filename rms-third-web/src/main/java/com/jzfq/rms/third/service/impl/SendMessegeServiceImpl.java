@@ -2,11 +2,19 @@ package com.jzfq.rms.third.service.impl;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.enums.SendMethodEnum;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IMonitorService;
 import com.jzfq.rms.third.service.ISendMessegeService;
+import com.jzfq.rms.third.support.send.AbstractSendHandler;
+import com.jzfq.rms.third.support.send.ISendHandler;
+import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
@@ -21,28 +29,60 @@ public class SendMessegeServiceImpl implements ISendMessegeService{
     /**
      * 发送的数据
      *
-     * @param traceId
      * @param method    调用的发送协议方法
      * @param params    需要记录的信息
      * @param bizParams 发送的数据
      * @return
      */
     @Override
-    public ResponseResult sendByThreeChance(String traceId, String method, Map<String, Object> params, Map<String, Object> bizParams) {
+    public ResponseResult sendByThreeChance( String method, Map<String, Object> params, Map<String, Object> bizParams) {
         int time = 0;
+        ResponseResult result = null;
         do{
             time++;
             //TODO 发送data
-            // 调用日志存入数据库
-            monitorService.sendLogToDB(traceId,params);
-            // 推送监控平台
-            monitorService.sendLogToMonitor(traceId,params);
-            if(1==1){
-
-                return null;
+            try {
+                result = send(method,params,bizParams);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }finally {
+                params.put("bizParams",params);
+                params.put("response",result);
+                // 调用日志存入数据库
+                monitorService.sendLogToDB(TraceIDThreadLocal.getTraceID(),params);
+                // 推送监控平台
+                monitorService.sendLogToMonitor(TraceIDThreadLocal.getTraceID(),params);
             }
-        }while(time<=3);
-        return new ResponseResult(traceId, ReturnCode.ACTIVE_FAILURE);
+            if(result.getCode()==ReturnCode.REQUEST_SUCCESS.code()){
+                return result;
+            }
+        }while(time<3);
+        return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.ACTIVE_FAILURE);
+    }
+
+    private ResponseResult send(String method, Map<String, Object> params, Map<String, Object> bizParams) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Class<? extends AbstractSendHandler> clazz = (Class<? extends AbstractSendHandler>)
+                Class.forName(getHandlerName(method));
+        Constructor<? extends AbstractSendHandler> c = clazz.getConstructor();
+        ISendHandler handler = c.newInstance();
+        handler.init(params,bizParams);
+        return send(handler);
+    }
+
+    private ResponseResult send(ISendHandler handler){
+        return handler.send();
+    }
+
+    private String getHandlerName(String method){
+        return AbstractSendHandler.getDefaultBasePackage() +"."+ SendMethodEnum.getName(method);
     }
 }
 

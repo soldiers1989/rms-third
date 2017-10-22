@@ -9,14 +9,17 @@ import com.jzfq.rms.third.common.dto.CarModelResponseDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.GpjResponseCode;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.TaskCode;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.utils.JWTUtils;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IThirdTransferLogDao;
 import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
 import com.jzfq.rms.third.persistence.mapper.SysTaskMapper;
 import com.jzfq.rms.third.service.IGongPingjiaService;
+import com.jzfq.rms.third.service.ISendMessegeService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +47,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
     @Value("${gongpingjia.secret}")
     private String secret;
     @Value("${gongpingjia.timeout}")
-    private int timeout ;
+    private Long timeout ;
 
     @Value("${gongpingjia.detail.model.apiUrl}")
     private String apiUrl;
@@ -58,7 +61,8 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
     private SysTaskMapper sysTaskMapper;
 
     @Autowired
-    private IThirdTransferLogDao thirdTransferLogDao;
+    ISendMessegeService sendMessegeService;
+
 
     public List<EvaluationInfoVo> queryGaopingjiaEvalation(String vin, String licensePlatHeader){
         log.info("公平价接口调用[车架号="+vin+"车牌头两位"+licensePlatHeader+"]-开始");
@@ -96,11 +100,10 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
             log.info("公平价估价接口调用[车架号="+vin+"车牌头两位="+licensePlatHeader+"]返回失败:"+evaluationInfo.get("message").toString());
             return null;
         }
-//        thirdTransferLogDao.insertLog("","","","","","0",
-//                "成功");
         log.info("公平价估价接口调用[车架号="+vin+"车牌头两位="+licensePlatHeader+"]成功");
         return evaluationInfo;
     }
+
 
     /**
      * 根据车辆信息和公平价返回数据拼接页面数据
@@ -380,5 +383,76 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         car.setModelMum(mum);
         car.setStatus("0");
         car.setOptTime(new Date());
+    }
+
+    /**
+     * 根据vin和车牌前两位查询车辆估值信息 02
+     * @param vin
+     * @param licensePlatHeader
+     * @return
+     */
+    public List<EvaluationInfoVo> queryCarEvaluations(String traceId,String vin, String licensePlatHeader) throws
+            BusinessException{
+        log.info("traceId={} 公平价接口调用[车架号={} 车牌头两位{}]-开始",
+                traceId,vin,licensePlatHeader);
+        Map<String, Object> params = new HashMap<>();
+        params.put("key",key);
+        params.put("secret",secret);
+        params.put("timeout",timeout);
+        params.put("url",getEvaluationUrl(vin,licensePlatHeader));
+        Map<String, Object> bizParams  = new HashMap<>();
+        bizParams.put("vin",vin);
+        bizParams.put("licensePlatHeader",licensePlatHeader);
+        List<Map<String,String>> list = (List<Map<String,String>>)getGongpingjiaData(traceId, params ,bizParams);
+        if(list == null){
+            return null;
+        }
+        return createCarEvaluations(list);
+    }
+
+    /**
+     * 调用公平价接口 02
+     * @param traceId
+     * @param params
+     * @param bizParams
+     * @return
+     */
+    private Object getGongpingjiaData(String traceId,  Map<String, Object> params,Map<String, Object> bizParams) throws BusinessException{
+        JSONObject result = new JSONObject();
+        ResponseResult response ;
+        // TODO 发送信息
+        response = sendMessegeService.sendByThreeChance(SendMethodEnum.GPJ01.getCode(),params,bizParams);
+        if(response==null){
+            log.info("公平价估价接口调用[车架号={} 车牌头两位={}]失败:{} 响应信息为空" ,
+                    bizParams.get("vin"),bizParams.get("licensePlatHeader"));
+            throw new BusinessException("公平价估价接口失败 响应信息为空",true);
+        }
+        if(!(ReturnCode.REQUEST_SUCCESS.code() == response.getCode())||response.getData()==null){
+            log.info("公平价估价接口调用[车架号={} 车牌头两位={}]失败:{} 响应信息：{}" ,
+                    bizParams.get("vin"),bizParams.get("licensePlatHeader"),
+                    response.getCode(),response.getData());
+            throw new BusinessException("公平价估价接口失败 返回为空",true);
+        }
+        String evaluationStr = response.getData().toString();
+        if(StringUtils.isBlank(evaluationStr)){
+            log.info("公平价估价接口调用[车架号={} 车牌头两位={}]返回信息为空",
+                    bizParams.get("vin"),bizParams.get("licensePlatHeader"));
+            throw new BusinessException("公平价估价接口失败 返回为空",true);
+        }
+        JSONObject evaluationInfo = JSONObject.parseObject(evaluationStr);
+        if(!StringUtils.equals(evaluationInfo.get("status").toString(),"success")){
+            log.info("traceId={} 公平价估价接口调用[车架号={} 车牌头两位={}]返回失败:{}"
+                    ,traceId ,bizParams.get("vin"),bizParams.get("licensePlatHeader"),
+                    evaluationInfo.get("message").toString());
+            throw new BusinessException("公平价估价接口失败 返回:"+evaluationInfo.toJSONString(),true);
+        }
+        if(evaluationInfo.get("data")==null){
+            log.info("公平价估价接口调用[车架号={} 车牌头两位={}]返回信息为空",
+                    bizParams.get("vin"),bizParams.get("licensePlatHeader"));
+            throw new BusinessException("公平价估价接口失败 返回为空",true);
+        }
+        log.info("公平价估价接口调用[车架号={} 车牌头两位={}]成功",
+                bizParams.get("vin"),bizParams.get("licensePlatHeader"));
+        return evaluationInfo.get("data");
     }
 }

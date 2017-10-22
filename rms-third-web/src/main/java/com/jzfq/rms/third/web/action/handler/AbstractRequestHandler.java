@@ -2,18 +2,13 @@ package com.jzfq.rms.third.web.action.handler;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
-import com.jzfq.rms.third.common.utils.SpringInit;
-import com.jzfq.rms.third.support.cache.ICountCache;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.springframework.web.servlet.FrameworkServlet;
 
 import javax.servlet.ServletContext;
 import java.io.Serializable;
@@ -62,7 +57,8 @@ public abstract class AbstractRequestHandler {
      * @param context
      * @return
      */
-    public static ResponseResult handleRequest(AbstractRequestAuthentication request, ServletContext context) {
+    public static ResponseResult handleRequest(AbstractRequestAuthentication request, ServletContext context)
+    throws BusinessException{
         try {
             // 验证身份
             if (!request.verifyToken()) {
@@ -86,8 +82,11 @@ public abstract class AbstractRequestHandler {
             }
 
             return handler.bizHandle(request);
-        } catch (Throwable t) {
+        } catch (BusinessException e){
+            throw e;
+        }catch (Throwable t) {
             log.error("处理请求出错！请求：{}", request, t);
+            ResponseResult result = new ResponseResult("",ReturnCode.ACTIVE_EXCEPTION);
             return new ResponseResult("",ReturnCode.ACTIVE_EXCEPTION);
         }
 
@@ -115,5 +114,5 @@ public abstract class AbstractRequestHandler {
      * @param request 请求实体
      * @return 响应
      */
-    protected abstract ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException;
+    protected abstract ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException, Exception;
 }

@@ -2,6 +2,7 @@ package com.jzfq.rms.third.common.httpclient;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -386,8 +387,6 @@ public class HttpConnectionManager {
 			return null;
 		}
 	}
-	
-
 	/**
 	 * @param request  get or post 请求
 	 * @param charset 字符集
@@ -395,31 +394,26 @@ public class HttpConnectionManager {
 	 */
 	private static <T extends HttpRequestBase> ResponseResult send(T request , String charset) {
 
-		ResponseResult ResponseResult = new ResponseResult("httpManager",ReturnCode.ERROR_RESOURCES);
-		
+		ResponseResult ResponseResult = new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ERROR_RESOURCES);
+		CloseableHttpClient httpClient = buildHttpClient();
+		request.setConfig(buildRequestConfig());
+
 		CloseableHttpResponse response = null;
 		try {
-			
-			CloseableHttpClient httpClient = buildHttpClient();
-			request.setConfig(buildRequestConfig());
 			response = httpClient.execute(request);
-			
-			int statusCode = response.getStatusLine().getStatusCode();
-			
+			Integer statusCode = response.getStatusLine().getStatusCode();
 			HttpEntity entity = response.getEntity();
-			
 			String result = null;
-			
-			if(entity != null)
+			if(entity != null){
 				result = EntityUtils.toString(entity,CHARSET);
-			
-			ResponseResult.setCode(statusCode);
+			}
+			if(statusCode!=null){
+				ResponseResult.setCode(statusCode);
+				ResponseResult.setMsg(ReturnCode.codeToEnum(statusCode).msg());
+			}
 			ResponseResult.setData(result);
-			
-			return ResponseResult;
-			
-		} catch (Exception e) {
-			LOG.error("", e);
+		} catch (IOException e) {
+			LOG.error("traceId={} 请求数据出错", TraceIDThreadLocal.getTraceID(),e);
 			return ResponseResult;
 		} finally {
 			if(response != null) {
@@ -429,8 +423,9 @@ public class HttpConnectionManager {
 					e.printStackTrace();
 				}
 			}
-				
 		}
+		return ResponseResult;
+
 	}
 	
 	/**

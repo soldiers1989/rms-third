@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.UniformInterfaceUtils;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import com.jzfq.rms.third.web.action.handler.AbstractRequestHandler;
 import org.apache.commons.io.FileUtils;
@@ -32,7 +34,7 @@ public class UniformInterface {
     final protected static Logger logger = LoggerFactory.getLogger(UniformInterface.class);
 
     @RequestMapping( method= {RequestMethod.GET,RequestMethod.POST})
-    public void work(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    public void work(HttpServletRequest request, HttpServletResponse response) throws BusinessException,ServletException, IOException{
 
         JSONObject params = UniformInterfaceUtils.getParams(request);
         AbstractRequestAuthentication bizReq = null;
@@ -74,7 +76,7 @@ public class UniformInterface {
             response.setContentType("application/json;charset=utf-8");
             PrintWriter out = response.getWriter();
             if(bizResp==null){
-                bizResp = new ResponseResult(null,ReturnCode.ERROR_UNKOWN_ERROR);
+                bizResp = new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ERROR_UNKOWN_ERROR);
             }
             out.print(bizResp.toJsonString());
             out.flush();

@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.utils.UniformInterfaceUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
@@ -160,7 +159,7 @@ public abstract class AbstractRequestAuthentication implements Serializable {
         String token = params.getString(UniformInterfaceUtils.PARAM_NAME_TOKEN);
         String apiVersion = params.getString(UniformInterfaceUtils.PARAM_NAME_APIVERSION);
 
-        Assert.hasText(apiId, "请求中缺少必要参数：" + UniformInterfaceUtils.PARAM_NAME_APIID);
+//        Assert.hasText(apiId, "请求中缺少必要参数：" + UniformInterfaceUtils.PARAM_NAME_APIID);
         Assert.hasText(appId, "请求中缺少必要参数：" + UniformInterfaceUtils.PARAM_NAME_APPID);
         Assert.hasText(timestampStr, "请求中缺少必要参数：" + UniformInterfaceUtils.PARAM_NAME_TIMESTAMP);
         Assert.hasText(token, "请求中缺少必要参数：" + UniformInterfaceUtils.PARAM_NAME_TOKEN);

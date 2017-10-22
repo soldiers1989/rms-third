@@ -11,11 +11,10 @@ import java.util.Map;
 public interface ISendMessegeService {
     /**
      * 发送的数据
-     * @param traceId
      * @param method 调用的发送协议方法
      * @param params 需要记录的信息
      * @param bizParams 发送的数据
      * @return
      */
-    ResponseResult sendByThreeChance(String traceId, String method, Map<String, Object> params,Map<String, Object> bizParams);
+    ResponseResult sendByThreeChance( String method, Map<String, Object> params,Map<String, Object> bizParams);
 }

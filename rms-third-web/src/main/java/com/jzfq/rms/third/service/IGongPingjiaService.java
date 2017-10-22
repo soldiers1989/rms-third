@@ -2,6 +2,7 @@ package com.jzfq.rms.third.service;
 
 import com.jzfq.rms.third.common.domain.SysTask;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
+import com.jzfq.rms.third.exception.BusinessException;
 
 import java.util.List;
 
@@ -33,4 +34,12 @@ public interface IGongPingjiaService {
      * 批量更新车型库-现存
      */
     int getCountCarDetailModels();
+
+    /**
+     * 根据vin和车牌前两位查询车辆估值信息 02
+     * @param vin
+     * @param licensePlatHeader
+     * @return
+     */
+    List<EvaluationInfoVo> queryCarEvaluations(String traceId,String vin, String licensePlatHeader) throws BusinessException;
 }

@@ -11,6 +11,7 @@ import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/20 19:31.
  **/
+@Component("request1016Handler")
 public class Request1016Handler extends AbstractRequestHandler {
     @Autowired
     IJieAnService jieAnService;

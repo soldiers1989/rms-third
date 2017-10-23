@@ -42,22 +42,28 @@ public class SendMessegeServiceImpl implements ISendMessegeService{
         ResponseResult result = null;
         do{
             time++;
-            //TODO 发送data
+            Exception error = null;
             try {
                 result = send(method,params,bizParams);
             } catch (ClassNotFoundException e) {
+                error=e;
                 e.printStackTrace();
             } catch (NoSuchMethodException e) {
+                error=e;
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
+                error=e;
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
+                error=e;
                 e.printStackTrace();
             } catch (InstantiationException e) {
                 e.printStackTrace();
+                error=e;
             }finally {
                 params.put("bizParams",bizParams);
                 params.put("response",result);
+                params.put("exception",error);
                 Map<String,Object> newParams = new HashMap<>();
                 BeanUtils.copyProperties(params,newParams);
                 // 调用日志存入数据库

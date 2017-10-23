@@ -12,7 +12,9 @@ public enum ConfigCode {
     THIRD_URL_JXL_ACCESSRAWDATA("com.jzfq.rms.third.url.jxl.accessrawdata", "移动运营商数据数据接口"),
     THIRD_URL_JXL_ACCESSBUSIRAWDATA("com.jzfq.rms.third.url.jxl.accessbusirawdata", "电商数据接口"),
     THIRD_URL_TD_logintdscore("com.jzfq.rms.third.url.td.logintdscore", "同盾登录决策分接口"),
-    THIRD_URL_TD_ADDTDFRAUDBLACK("com.jzfq.rms.third.url.td.addtdfraudblack", "电商数据接口");
+    THIRD_URL_TD_ADDTDFRAUDBLACK("com.jzfq.rms.third.url.td.addtdfraudblack", "电商数据接口"),
+    THIRD_URL_GPJ_UPDATE_CAR_MODEL("gongpingjia.detail.model.apiUrl", "公平价更新车型库接口"),
+    THIRD_URL_GPJ_EVALUATION("gongpingjia.evaluation.apiUrl", "公平价车型估值接口");
 
     private String code;
     private String msg;

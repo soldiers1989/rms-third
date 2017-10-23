@@ -1,13 +1,16 @@
 package com.jzfq.rms.third.service.impl;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jzfq.rms.third.common.domain.*;
 import com.jzfq.rms.third.common.dto.MonitorSendDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.pojo.Monitor;
+import com.jzfq.rms.third.common.utils.IPUtils;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.mapper.*;
 import com.jzfq.rms.third.service.IMonitorService;
@@ -68,26 +71,42 @@ public class MonitorServiceImpl implements IMonitorService {
     }
     private  Map<String,Object> creatMonitorMessage(String traceId, Map<String, Object> params){
         Map<String,Object> monitorParams = new HashMap<>();
-        monitorParams.put("traceID",getString(params,"traceId"));
-        monitorParams.put("systemID",getString(params,"systemID"));
+//        monitorParams.put("traceID",getString(params,"traceId"));
+//        monitorParams.put("systemID",getString(params,"systemID"));
+
+        monitorParams.put("traceID",11);
+        monitorParams.put("systemID",22);
         Monitor monitor = createMonitorParams(params);
-        monitorParams.put("params",monitor);
+        String json = JSON.toJSONString(monitor, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteMapNullValue);
+        monitorParams.put("params",json);
         return monitorParams;
     }
 
     private Monitor createMonitorParams(Map<String, Object> params){
 
         Monitor monitor = new Monitor();
-        monitor.setFront_id(getString(params,"frontId"));
-        monitor.setProductConfigID(getString(params,"rms"));
-        monitor.setSendParam(getString(params,"bizParms"));
-        monitor.setSendType(getString(params,"sendType"));
-        monitor.setSendURL(getString(params,"url"));
-        monitor.setTraceID(getString(params,"traceId"));
-        ResponseResult response = (ResponseResult)params.get("response");
-        monitor.setReturnState(JSONUtils.toJSONString(response.getCode()));
-        monitor.setReturnResult(JSONUtils.toJSONString(response.getData()));
-        monitor.setCreator(getString(params,"rms-third"));
+//        monitor.setFront_id(getString(params,"frontId"));
+//        monitor.setProductConfigID(getString(params,"rms"));
+//        monitor.setSendParam(getString(params,"bizParms"));
+//        monitor.setSendType(getString(params,"sendType"));
+//        monitor.setSendURL(getString(params,"url"));
+//        monitor.setTraceID(getString(params,"traceId"));
+//        ResponseResult response = (ResponseResult)params.get("response");
+//        monitor.setReturnState(JSONUtils.toJSONString(response.getCode()));
+//        monitor.setReturnResult(JSONUtils.toJSONString(response.getMsg()));
+//        monitor.setCreator(getString(params,"rms-third"));
+        monitor.setFront_id("11");
+        monitor.setTargetID("1");
+        monitor.setSourceID("11");
+        monitor.setProductConfigID("11");
+        monitor.setSendParam("222");
+        monitor.setSendType("232");
+        monitor.setSendURL("323");
+        monitor.setTraceID("222");
+        monitor.setReturnState("22");
+        monitor.setReturnResult("sw");
+        monitor.setCreator("1111");
+        monitor.setSystemIP(IPUtils.getLocalHostIP());
         return monitor;
     }
 
@@ -95,15 +114,6 @@ public class MonitorServiceImpl implements IMonitorService {
         Object input = params.get(key);
         if(input==null){
             return "";
-        }
-        if(input instanceof String){
-            return input.toString();
-        }
-        if(NumberUtils.isNumber(input.toString())){
-            return input.toString();
-        }
-        if(input instanceof Object){
-            JSONUtils.toJSONString(input);
         }
         return input.toString();
     }
@@ -167,15 +177,26 @@ public class MonitorServiceImpl implements IMonitorService {
     private TGpjTransferLog createNewGpjRecord(Map<String, Object> params){
         TGpjTransferLog record = new TGpjTransferLog();
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"apiId"));
+        record.setcInterfaceKey(getString(params,"interfaceId"));
+        record.setcTraceid(getString(params,"traceId"));
+        record.setcSystemId(getString(params,"systemId"));
         ResponseResult result = (ResponseResult)params.get("response");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
         record.setcChannel(getString(params,"appId"));
-        record.setcParams(getString(params,"bizParams"));
+        Map<String,Object> bizParams = (Map<String,Object>)params.get("bizParams");
+        String bizStr = JSON.toJSONString(bizParams, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteMapNullValue);
+        record.setcParams(bizStr);
         record.setcProLine(getString(params,"systemId"));
+        Exception error = (Exception)params.get("exception");
+        if(error!=null){
+            record.setcMsg(error.getMessage());
+            record.setcMsgDetail(error.toString());
+        }else {
+            record.setcMsg(result.getMsg());
+        }
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcMsg(result.getMsg());
+        record.setcIp(IPUtils.getLocalHostIP());
         return record;
     }
 

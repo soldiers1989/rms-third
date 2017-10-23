@@ -218,55 +218,9 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
      */
     @Transactional(propagation= Propagation.SUPPORTS)
     public void insertAllCarDetailModels(SysTask currentTask) {
-        List<GpjCarDetailModel> modelList = new ArrayList<>();
         Integer totalPages = 0;
         Integer page=1;
-        do{
-            StringBuilder url = new StringBuilder();
-            url.append(apiUrl)
-                    .append("?page_size=")
-                    .append(size)
-                    .append("&page=")
-                    .append(page)
-                    .append("&start_time=")
-                    .append("all");
-            log.info("调用url:" + url);
-            ResponseResult dto = HttpConnectionManager.doGet(url.toString());
-            if(dto == null || dto.getCode()!=ReturnCode.REQUEST_SUCCESS.code()||dto.getData()==null){
-                log.info("调用公平价接口失败");
-                currentTask.setStatus(TaskCode.EXCUTE_FAILURE.code());
-                break;
-            }
-            JSONObject json = JSONObject.parseObject(dto.getData().toString());
-            if(!StringUtils.equals(json.getString("status"), GpjResponseCode.GPJ_MSG_SUCCESS.code())){
-                log.info("调用公平价接口返回信息:"+json.getString("msg"));
-                currentTask.setStatus(TaskCode.EXCUTE_FAILURE.code());
-                break;
-            }
-            String models = json.getString("data");
-            if(totalPages==0){
-                totalPages = json.getInteger("total_pages");
-                currentTask.setTaskParams("total_pages:"+totalPages);
-            }
-            totalPages--;
-            page++;
-            JSONArray array = JSONObject.parseArray(models);
-            modelList = new ArrayList<>();
-            Set<String> slugs = new HashSet<>();
-            for (int i = 0; i < array.size(); i++) {
-                GpjCarDetailModel car = new GpjCarDetailModel();
-                buildCar(array, i, car);
-                slugs.add(car.getDetailModelSlug());
-                modelList.add(car);
-            }
-            try {
-                gpjCarDetailModelMapper.batchDelete(slugs);
-                gpjCarDetailModelMapper.batchInsert(modelList);
-            } catch (Exception e) {
-                log.error("批量插入车型出错：",e);
-                currentTask.setStatus(TaskCode.EXCUTE_FAILURE.code());
-            }
-        }while(totalPages>0);
+        synchronizeData(  totalPages,  currentTask,  page,  "all",  null);
     }
     public int getCountCarDetailModels(){
         return gpjCarDetailModelMapper.getCountCarDetailModel();
@@ -276,6 +230,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
      * 增量更新
      * @param currentTask
      */
+    @Transactional(propagation= Propagation.SUPPORTS)
     public void updateCarDetailModels(SysTask currentTask) {
         SysTask task = sysTaskMapper.selectByTaskSlug("GPJgetCarDetailModel");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -284,23 +239,22 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
             beginTime = sdf.format(task.getExcTime());
         }
         String endTime = sdf.format(currentTask.getExcTime());
-        List<GpjCarDetailModel> modelList = new ArrayList<>();
         Integer totalPages = 0;
         Integer page=1;
-        do{
-            StringBuilder url = new StringBuilder();
-            url.append(apiUrl)
-                    .append("?page_size=")
-                    .append(size)
-                    .append("&page=")
-                    .append(page)
-                    .append("&start_time=")
-                    .append(beginTime)
-                    .append("&end_time=")
-                    .append(endTime);
-            log.info("调用url:" + url);
-            ResponseResult dto = HttpConnectionManager.doGet(url.toString());
+        synchronizeData(  totalPages,  currentTask,  page,  beginTime,  endTime);
+    }
 
+    /**
+     * 根据条件同步数据
+     * @param totalPages
+     * @param currentTask
+     * @param page
+     * @param beginTime
+     * @param endTime
+     */
+    private void synchronizeData(Integer totalPages,SysTask currentTask,Integer page,String beginTime,String endTime){
+        do{
+            ResponseResult dto = synchronizeData(  page,  beginTime,  endTime);
             if(dto == null || dto.getCode()!=ReturnCode.REQUEST_SUCCESS.code()||dto.getData()==null){
                 log.info("调用公平价接口失败");
                 currentTask.setStatus(TaskCode.EXCUTE_FAILURE.code());
@@ -320,7 +274,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
             totalPages--;
             page++;
             JSONArray array = JSONObject.parseArray(models);
-            modelList = new ArrayList<>();
+            List<GpjCarDetailModel> modelList = new ArrayList<>();
             Set<String> slugs = new HashSet<>();
             for (int i = 0; i < array.size(); i++) {
                 GpjCarDetailModel car = new GpjCarDetailModel();
@@ -337,6 +291,41 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
             }
         }while(totalPages>0);
     }
+
+    /**
+     * 调用接口
+     * @param page
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    private ResponseResult synchronizeData(Integer page,String beginTime,String endTime){
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("key",key);
+        params.put("secret",secret);
+        params.put("timeout",timeout);
+        params.put("url",apiUrl);
+        params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
+        params.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());
+        params.put("appId", "");
+        params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
+        params.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+
+        Map<String, Object> bizParams  = new HashMap<>();
+        bizParams.put("size",size);
+        bizParams.put("page",page);
+        bizParams.put("beginTime",beginTime);
+        bizParams.put("endTime",endTime);
+        return sendMessegeService.sendByThreeChance(SendMethodEnum.GPJ02.getCode(),params,bizParams);
+    }
+
+    /**
+     * 构建车型库对象
+     * @param array
+     * @param i
+     * @param car
+     */
     private void buildCar(JSONArray array, int i, GpjCarDetailModel car) {
         JSONObject o = (JSONObject) array.get(i);
         Integer gpj_id = o.getInteger("gpj_id");
@@ -397,10 +386,11 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         params.put("key",key);
         params.put("secret",secret);
         params.put("timeout",timeout);
-        params.put("url",getEvaluationUrl(vin,licensePlatHeader));
+        params.put("url",evaluationUrl);
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
         params.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());
         params.put("appId", "");
+        params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
         params.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
 
         Map<String, Object> bizParams  = new HashMap<>();

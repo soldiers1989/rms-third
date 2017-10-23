@@ -103,12 +103,34 @@ public class SystemCodeTest {
 //        config.setDtCreateTime(new Date());
 //        tTSysConfigMapper.insert(config);
 
+//        TSysConfig config = new TSysConfig();
+//        config.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
+//        config.setcKey("com.jzfq.rms.third.url.td.addtdfraudblack");
+//        config.setcValue("http://dev2.fraud.juzifenqi.com/fraud/addblack.json");
+//        config.setcLevel("1");
+//        config.setcDescription("同盾反欺诈加黑接口");
+//        config.setcDel("0");
+//        config.setcCreateUser("init");
+//        config.setDtCreateTime(new Date());
+//        tTSysConfigMapper.insert(config);
+
+//        TSysConfig config = new TSysConfig();
+//        config.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
+//        config.setcKey("gongpingjia.detail.model.apiUrl");
+//        config.setcValue("http://openapi.gongpingjia.com/api/modeldetail/lastupdated/");
+//        config.setcLevel("1");
+//        config.setcDescription("公平价更新车型库接口");
+//        config.setcDel("0");
+//        config.setcCreateUser("init");
+//        config.setDtCreateTime(new Date());
+//        tTSysConfigMapper.insert(config);
+
         TSysConfig config = new TSysConfig();
         config.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        config.setcKey("com.jzfq.rms.third.url.td.addtdfraudblack");
-        config.setcValue("http://dev2.fraud.juzifenqi.com/fraud/addblack.json");
+        config.setcKey("gongpingjia.evaluation.apiUrl");
+        config.setcValue("https://apigw.gongpingjia.com/api/cars/evaluation/juzi/");
         config.setcLevel("1");
-        config.setcDescription("同盾反欺诈加黑接口");
+        config.setcDescription("公平价更新车型库接口");
         config.setcDel("0");
         config.setcCreateUser("init");
         config.setDtCreateTime(new Date());

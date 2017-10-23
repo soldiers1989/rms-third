@@ -4,17 +4,17 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author 大连桔子分期科技有限公司
- * @date 2017/10/22 14:29.
+ * @date 2017/10/23 13:46.
  **/
-public enum SendMethodEnum {
+public enum InterfaceIdEnum {
 
-    GPJ01("2","GongpingjiaHandler"),//估值信息
-    GPJ02("1","GongpingjiaHandler");//车型库同步
+    THIRD_GPJ_EVALATION("2","车辆估值接口"),
+    THIRD_GPJ_SYNCHRONIZEDATA("1","更新车型库接口");
 
     private String code;
     private String name;
 
-    SendMethodEnum(String code, String name){
+    InterfaceIdEnum(String code, String name){
         this.code = code;
         this.name = name;
     }
@@ -36,7 +36,7 @@ public enum SendMethodEnum {
     }
 
     public static String getName(String code){
-        for(SendMethodEnum c: SendMethodEnum.values()){
+        for(InterfaceIdEnum c: InterfaceIdEnum.values()){
             if(StringUtils.equals(code,c.getCode())){
                 return c.getName();
             }

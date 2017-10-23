@@ -7,6 +7,10 @@ public class TJieanTransferLog {
 
     private String cInterfaceKey;
 
+    private String cTraceid;
+
+    private String cSystemId;
+
     private String cProLine;
 
     private String cChannel;
@@ -15,11 +19,15 @@ public class TJieanTransferLog {
 
     private String cStatus;
 
+    private String cMsg;
+
     private Integer nDel;
+
+    private String cIp;
 
     private Date dtCreateTime;
 
-    private String cMsg;
+    private String cMsgDetail;
 
     public String getcId() {
         return cId;
@@ -35,6 +43,22 @@ public class TJieanTransferLog {
 
     public void setcInterfaceKey(String cInterfaceKey) {
         this.cInterfaceKey = cInterfaceKey == null ? null : cInterfaceKey.trim();
+    }
+
+    public String getcTraceid() {
+        return cTraceid;
+    }
+
+    public void setcTraceid(String cTraceid) {
+        this.cTraceid = cTraceid == null ? null : cTraceid.trim();
+    }
+
+    public String getcSystemId() {
+        return cSystemId;
+    }
+
+    public void setcSystemId(String cSystemId) {
+        this.cSystemId = cSystemId == null ? null : cSystemId.trim();
     }
 
     public String getcProLine() {
@@ -69,12 +93,28 @@ public class TJieanTransferLog {
         this.cStatus = cStatus == null ? null : cStatus.trim();
     }
 
+    public String getcMsg() {
+        return cMsg;
+    }
+
+    public void setcMsg(String cMsg) {
+        this.cMsg = cMsg == null ? null : cMsg.trim();
+    }
+
     public Integer getnDel() {
         return nDel;
     }
 
     public void setnDel(Integer nDel) {
         this.nDel = nDel;
+    }
+
+    public String getcIp() {
+        return cIp;
+    }
+
+    public void setcIp(String cIp) {
+        this.cIp = cIp == null ? null : cIp.trim();
     }
 
     public Date getDtCreateTime() {
@@ -85,11 +125,11 @@ public class TJieanTransferLog {
         this.dtCreateTime = dtCreateTime;
     }
 
-    public String getcMsg() {
-        return cMsg;
+    public String getcMsgDetail() {
+        return cMsgDetail;
     }
 
-    public void setcMsg(String cMsg) {
-        this.cMsg = cMsg == null ? null : cMsg.trim();
+    public void setcMsgDetail(String cMsgDetail) {
+        this.cMsgDetail = cMsgDetail == null ? null : cMsgDetail.trim();
     }
 }

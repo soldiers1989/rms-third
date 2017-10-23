@@ -245,6 +245,146 @@ public class TGpjTransferLogExample {
             return (Criteria) this;
         }
 
+        public Criteria andCTraceidIsNull() {
+            addCriterion("c_traceId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidIsNotNull() {
+            addCriterion("c_traceId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidEqualTo(String value) {
+            addCriterion("c_traceId =", value, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidNotEqualTo(String value) {
+            addCriterion("c_traceId <>", value, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidGreaterThan(String value) {
+            addCriterion("c_traceId >", value, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidGreaterThanOrEqualTo(String value) {
+            addCriterion("c_traceId >=", value, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidLessThan(String value) {
+            addCriterion("c_traceId <", value, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidLessThanOrEqualTo(String value) {
+            addCriterion("c_traceId <=", value, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidLike(String value) {
+            addCriterion("c_traceId like", value, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidNotLike(String value) {
+            addCriterion("c_traceId not like", value, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidIn(List<String> values) {
+            addCriterion("c_traceId in", values, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidNotIn(List<String> values) {
+            addCriterion("c_traceId not in", values, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidBetween(String value1, String value2) {
+            addCriterion("c_traceId between", value1, value2, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCTraceidNotBetween(String value1, String value2) {
+            addCriterion("c_traceId not between", value1, value2, "cTraceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdIsNull() {
+            addCriterion("c_system_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdIsNotNull() {
+            addCriterion("c_system_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdEqualTo(String value) {
+            addCriterion("c_system_id =", value, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdNotEqualTo(String value) {
+            addCriterion("c_system_id <>", value, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdGreaterThan(String value) {
+            addCriterion("c_system_id >", value, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdGreaterThanOrEqualTo(String value) {
+            addCriterion("c_system_id >=", value, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdLessThan(String value) {
+            addCriterion("c_system_id <", value, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdLessThanOrEqualTo(String value) {
+            addCriterion("c_system_id <=", value, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdLike(String value) {
+            addCriterion("c_system_id like", value, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdNotLike(String value) {
+            addCriterion("c_system_id not like", value, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdIn(List<String> values) {
+            addCriterion("c_system_id in", values, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdNotIn(List<String> values) {
+            addCriterion("c_system_id not in", values, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdBetween(String value1, String value2) {
+            addCriterion("c_system_id between", value1, value2, "cSystemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCSystemIdNotBetween(String value1, String value2) {
+            addCriterion("c_system_id not between", value1, value2, "cSystemId");
+            return (Criteria) this;
+        }
+
         public Criteria andCProLineIsNull() {
             addCriterion("c_pro_line is null");
             return (Criteria) this;
@@ -525,6 +665,76 @@ public class TGpjTransferLogExample {
             return (Criteria) this;
         }
 
+        public Criteria andCMsgIsNull() {
+            addCriterion("c_msg is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgIsNotNull() {
+            addCriterion("c_msg is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgEqualTo(String value) {
+            addCriterion("c_msg =", value, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgNotEqualTo(String value) {
+            addCriterion("c_msg <>", value, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgGreaterThan(String value) {
+            addCriterion("c_msg >", value, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgGreaterThanOrEqualTo(String value) {
+            addCriterion("c_msg >=", value, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgLessThan(String value) {
+            addCriterion("c_msg <", value, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgLessThanOrEqualTo(String value) {
+            addCriterion("c_msg <=", value, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgLike(String value) {
+            addCriterion("c_msg like", value, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgNotLike(String value) {
+            addCriterion("c_msg not like", value, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgIn(List<String> values) {
+            addCriterion("c_msg in", values, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgNotIn(List<String> values) {
+            addCriterion("c_msg not in", values, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgBetween(String value1, String value2) {
+            addCriterion("c_msg between", value1, value2, "cMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCMsgNotBetween(String value1, String value2) {
+            addCriterion("c_msg not between", value1, value2, "cMsg");
+            return (Criteria) this;
+        }
+
         public Criteria andNDelIsNull() {
             addCriterion("n_del is null");
             return (Criteria) this;
@@ -582,6 +792,76 @@ public class TGpjTransferLogExample {
 
         public Criteria andNDelNotBetween(Integer value1, Integer value2) {
             addCriterion("n_del not between", value1, value2, "nDel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpIsNull() {
+            addCriterion("c_ip is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpIsNotNull() {
+            addCriterion("c_ip is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpEqualTo(String value) {
+            addCriterion("c_ip =", value, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpNotEqualTo(String value) {
+            addCriterion("c_ip <>", value, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpGreaterThan(String value) {
+            addCriterion("c_ip >", value, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpGreaterThanOrEqualTo(String value) {
+            addCriterion("c_ip >=", value, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpLessThan(String value) {
+            addCriterion("c_ip <", value, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpLessThanOrEqualTo(String value) {
+            addCriterion("c_ip <=", value, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpLike(String value) {
+            addCriterion("c_ip like", value, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpNotLike(String value) {
+            addCriterion("c_ip not like", value, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpIn(List<String> values) {
+            addCriterion("c_ip in", values, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpNotIn(List<String> values) {
+            addCriterion("c_ip not in", values, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpBetween(String value1, String value2) {
+            addCriterion("c_ip between", value1, value2, "cIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andCIpNotBetween(String value1, String value2) {
+            addCriterion("c_ip not between", value1, value2, "cIp");
             return (Criteria) this;
         }
 

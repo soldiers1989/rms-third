@@ -2,6 +2,7 @@ package com.jzfq.rms.third.persistence.mapper;
 
 import com.jzfq.rms.third.common.domain.GpjCarDetailModel;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.Set;
  * 车辆仓库mapper
  * @author 大连桔子分期科技有限公司
  */
+@Repository
 public interface GpjCarDetailModelMapper {
     int deleteByPrimaryKey(Integer id);
 

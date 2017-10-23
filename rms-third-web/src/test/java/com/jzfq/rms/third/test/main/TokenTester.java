@@ -1,5 +1,6 @@
 package com.jzfq.rms.third.test.main;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.jzfq.rms.third.common.utils.UniformInterfaceUtils;
 
 /**
@@ -11,7 +12,8 @@ public class TokenTester {
         Long timestamp = System.currentTimeMillis();
         System.out.println(timestamp);
         // appId + appSecret + apiId + timestamp
-        String token = UniformInterfaceUtils.getToken("1","1001","93dd7a6468807ade",timestamp);
+        String token = UniformInterfaceUtils.getToken(null,"1001","93dd7a6468807ade",timestamp);
         System.out.println(token);
+        System.out.println(null+"1001");
     }
 }

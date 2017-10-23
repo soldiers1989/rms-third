@@ -7,13 +7,11 @@ import com.jzfq.rms.third.common.domain.SysTask;
 import com.jzfq.rms.third.common.dto.CarDetailModelConditionDTO;
 import com.jzfq.rms.third.common.dto.CarModelResponseDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
-import com.jzfq.rms.third.common.enums.GpjResponseCode;
-import com.jzfq.rms.third.common.enums.ReturnCode;
-import com.jzfq.rms.third.common.enums.SendMethodEnum;
-import com.jzfq.rms.third.common.enums.TaskCode;
+import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.utils.JWTUtils;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
+import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IThirdTransferLogDao;
 import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
@@ -400,6 +398,11 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         params.put("secret",secret);
         params.put("timeout",timeout);
         params.put("url",getEvaluationUrl(vin,licensePlatHeader));
+        params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
+        params.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());
+        params.put("appId", "");
+        params.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+
         Map<String, Object> bizParams  = new HashMap<>();
         bizParams.put("vin",vin);
         bizParams.put("licensePlatHeader",licensePlatHeader);
@@ -420,7 +423,6 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
     private Object getGongpingjiaData(String traceId,  Map<String, Object> params,Map<String, Object> bizParams) throws BusinessException{
         JSONObject result = new JSONObject();
         ResponseResult response ;
-        // TODO 发送信息
         response = sendMessegeService.sendByThreeChance(SendMethodEnum.GPJ01.getCode(),params,bizParams);
         if(response==null){
             log.info("公平价估价接口调用[车架号={} 车牌头两位={}]失败:{} 响应信息为空" ,

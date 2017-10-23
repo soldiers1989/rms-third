@@ -4,7 +4,9 @@ import com.jzfq.rms.third.common.domain.TJieanTransferLog;
 import com.jzfq.rms.third.common.domain.example.TJieanTransferLogExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TJieanTransferLogMapper {
     long countByExample(TJieanTransferLogExample example);
 

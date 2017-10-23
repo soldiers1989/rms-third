@@ -4,7 +4,9 @@ import com.jzfq.rms.third.common.domain.TSysConfig;
 import com.jzfq.rms.third.common.domain.example.TSysConfigExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TSysConfigMapper {
     long countByExample(TSysConfigExample example);
 

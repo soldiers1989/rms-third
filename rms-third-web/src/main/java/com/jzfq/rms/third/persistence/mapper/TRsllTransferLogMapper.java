@@ -4,7 +4,9 @@ import com.jzfq.rms.third.common.domain.TRsllTransferLog;
 import com.jzfq.rms.third.common.domain.example.TRsllTransferLogExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TRsllTransferLogMapper {
     long countByExample(TRsllTransferLogExample example);
 

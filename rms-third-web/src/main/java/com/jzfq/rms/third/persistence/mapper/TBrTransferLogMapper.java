@@ -4,7 +4,9 @@ import com.jzfq.rms.third.common.domain.TBrTransferLog;
 import com.jzfq.rms.third.common.domain.example.TBrTransferLogExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TBrTransferLogMapper {
     long countByExample(TBrTransferLogExample example);
 

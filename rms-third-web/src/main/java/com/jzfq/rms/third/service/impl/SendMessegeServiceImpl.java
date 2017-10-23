@@ -10,11 +10,13 @@ import com.jzfq.rms.third.support.send.AbstractSendHandler;
 import com.jzfq.rms.third.support.send.ISendHandler;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -54,8 +56,10 @@ public class SendMessegeServiceImpl implements ISendMessegeService{
             } catch (InstantiationException e) {
                 e.printStackTrace();
             }finally {
-                params.put("bizParams",params);
+                params.put("bizParams",bizParams);
                 params.put("response",result);
+                Map<String,Object> newParams = new HashMap<>();
+                BeanUtils.copyProperties(params,newParams);
                 // 调用日志存入数据库
                 monitorService.sendLogToDB(TraceIDThreadLocal.getTraceID(),params);
                 // 推送监控平台

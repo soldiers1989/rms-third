@@ -4,7 +4,9 @@ import com.jzfq.rms.third.common.domain.TGpjTransferLog;
 import com.jzfq.rms.third.common.domain.example.TGpjTransferLogExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TGpjTransferLogMapper {
     long countByExample(TGpjTransferLogExample example);
 

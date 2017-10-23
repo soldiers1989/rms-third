@@ -4,7 +4,9 @@ import com.jzfq.rms.third.common.domain.TPyTransferLog;
 import com.jzfq.rms.third.common.domain.example.TPyTransferLogExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TPyTransferLogMapper {
     long countByExample(TPyTransferLogExample example);
 

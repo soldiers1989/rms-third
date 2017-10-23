@@ -4,7 +4,9 @@ import com.jzfq.rms.third.common.domain.TSysCode;
 import com.jzfq.rms.third.common.domain.example.TSysCodeExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TSysCodeMapper {
     long countByExample(TSysCodeExample example);
 

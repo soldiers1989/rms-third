@@ -12,7 +12,7 @@ import java.util.Map;
  **/
 @Service
 public interface IMonitorService {
-    ResponseResult sendLogToMonitor(String traceId, Map<String, Object> params);
+    void sendLogToMonitor(String traceId, Map<String, Object> params);
 
-    ResponseResult sendLogToDB(String traceId, Map<String, Object> params);
+    void sendLogToDB(String traceId, Map<String, Object> params);
 }

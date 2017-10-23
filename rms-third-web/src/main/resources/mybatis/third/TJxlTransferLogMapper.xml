@@ -4,15 +4,19 @@
   <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TJxlTransferLog">
     <id column="c_id" jdbcType="VARCHAR" property="cId" />
     <result column="c_interface_key" jdbcType="VARCHAR" property="cInterfaceKey" />
+    <result column="c_traceId" jdbcType="VARCHAR" property="cTraceid" />
+    <result column="c_system_id" jdbcType="VARCHAR" property="cSystemId" />
     <result column="c_pro_line" jdbcType="VARCHAR" property="cProLine" />
     <result column="c_channel" jdbcType="VARCHAR" property="cChannel" />
     <result column="c_params" jdbcType="VARCHAR" property="cParams" />
     <result column="c_status" jdbcType="CHAR" property="cStatus" />
+    <result column="c_msg" jdbcType="VARCHAR" property="cMsg" />
     <result column="n_del" jdbcType="INTEGER" property="nDel" />
+    <result column="c_ip" jdbcType="VARCHAR" property="cIp" />
     <result column="dt_create_time" jdbcType="TIMESTAMP" property="dtCreateTime" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.jzfq.rms.third.common.domain.TJxlTransferLog">
-    <result column="c_msg" jdbcType="LONGVARCHAR" property="cMsg" />
+    <result column="c_msg_detail" jdbcType="LONGVARCHAR" property="cMsgDetail" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,10 +77,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    c_id, c_interface_key, c_pro_line, c_channel, c_params, c_status, n_del, dt_create_time
+    c_id, c_interface_key, c_traceId, c_system_id, c_pro_line, c_channel, c_params, c_status, 
+    c_msg, n_del, c_ip, dt_create_time
   </sql>
   <sql id="Blob_Column_List">
-    c_msg
+    c_msg_detail
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.jzfq.rms.third.common.domain.example.TJxlTransferLogExample" resultMap="ResultMapWithBLOBs">
     select
@@ -127,14 +132,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TJxlTransferLog">
-    insert into t_jxl_transfer_log (c_id, c_interface_key, c_pro_line, 
-      c_channel, c_params, c_status, 
-      n_del, dt_create_time, c_msg
-      )
-    values (#{cId,jdbcType=VARCHAR}, #{cInterfaceKey,jdbcType=VARCHAR}, #{cProLine,jdbcType=VARCHAR}, 
-      #{cChannel,jdbcType=VARCHAR}, #{cParams,jdbcType=VARCHAR}, #{cStatus,jdbcType=CHAR}, 
-      #{nDel,jdbcType=INTEGER}, #{dtCreateTime,jdbcType=TIMESTAMP}, #{cMsg,jdbcType=LONGVARCHAR}
-      )
+    insert into t_jxl_transfer_log (c_id, c_interface_key, c_traceId, 
+      c_system_id, c_pro_line, c_channel, 
+      c_params, c_status, c_msg, 
+      n_del, c_ip, dt_create_time, 
+      c_msg_detail)
+    values (#{cId,jdbcType=VARCHAR}, #{cInterfaceKey,jdbcType=VARCHAR}, #{cTraceid,jdbcType=VARCHAR}, 
+      #{cSystemId,jdbcType=VARCHAR}, #{cProLine,jdbcType=VARCHAR}, #{cChannel,jdbcType=VARCHAR}, 
+      #{cParams,jdbcType=VARCHAR}, #{cStatus,jdbcType=CHAR}, #{cMsg,jdbcType=VARCHAR}, 
+      #{nDel,jdbcType=INTEGER}, #{cIp,jdbcType=VARCHAR}, #{dtCreateTime,jdbcType=TIMESTAMP}, 
+      #{cMsgDetail,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TJxlTransferLog">
     insert into t_jxl_transfer_log
@@ -144,6 +151,12 @@
       </if>
       <if test="cInterfaceKey != null">
         c_interface_key,
+      </if>
+      <if test="cTraceid != null">
+        c_traceId,
+      </if>
+      <if test="cSystemId != null">
+        c_system_id,
       </if>
       <if test="cProLine != null">
         c_pro_line,
@@ -157,14 +170,20 @@
       <if test="cStatus != null">
         c_status,
       </if>
+      <if test="cMsg != null">
+        c_msg,
+      </if>
       <if test="nDel != null">
         n_del,
+      </if>
+      <if test="cIp != null">
+        c_ip,
       </if>
       <if test="dtCreateTime != null">
         dt_create_time,
       </if>
-      <if test="cMsg != null">
-        c_msg,
+      <if test="cMsgDetail != null">
+        c_msg_detail,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -173,6 +192,12 @@
       </if>
       <if test="cInterfaceKey != null">
         #{cInterfaceKey,jdbcType=VARCHAR},
+      </if>
+      <if test="cTraceid != null">
+        #{cTraceid,jdbcType=VARCHAR},
+      </if>
+      <if test="cSystemId != null">
+        #{cSystemId,jdbcType=VARCHAR},
       </if>
       <if test="cProLine != null">
         #{cProLine,jdbcType=VARCHAR},
@@ -186,14 +211,20 @@
       <if test="cStatus != null">
         #{cStatus,jdbcType=CHAR},
       </if>
+      <if test="cMsg != null">
+        #{cMsg,jdbcType=VARCHAR},
+      </if>
       <if test="nDel != null">
         #{nDel,jdbcType=INTEGER},
+      </if>
+      <if test="cIp != null">
+        #{cIp,jdbcType=VARCHAR},
       </if>
       <if test="dtCreateTime != null">
         #{dtCreateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="cMsg != null">
-        #{cMsg,jdbcType=LONGVARCHAR},
+      <if test="cMsgDetail != null">
+        #{cMsgDetail,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -212,6 +243,12 @@
       <if test="record.cInterfaceKey != null">
         c_interface_key = #{record.cInterfaceKey,jdbcType=VARCHAR},
       </if>
+      <if test="record.cTraceid != null">
+        c_traceId = #{record.cTraceid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSystemId != null">
+        c_system_id = #{record.cSystemId,jdbcType=VARCHAR},
+      </if>
       <if test="record.cProLine != null">
         c_pro_line = #{record.cProLine,jdbcType=VARCHAR},
       </if>
@@ -224,14 +261,20 @@
       <if test="record.cStatus != null">
         c_status = #{record.cStatus,jdbcType=CHAR},
       </if>
+      <if test="record.cMsg != null">
+        c_msg = #{record.cMsg,jdbcType=VARCHAR},
+      </if>
       <if test="record.nDel != null">
         n_del = #{record.nDel,jdbcType=INTEGER},
+      </if>
+      <if test="record.cIp != null">
+        c_ip = #{record.cIp,jdbcType=VARCHAR},
       </if>
       <if test="record.dtCreateTime != null">
         dt_create_time = #{record.dtCreateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.cMsg != null">
-        c_msg = #{record.cMsg,jdbcType=LONGVARCHAR},
+      <if test="record.cMsgDetail != null">
+        c_msg_detail = #{record.cMsgDetail,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -242,13 +285,17 @@
     update t_jxl_transfer_log
     set c_id = #{record.cId,jdbcType=VARCHAR},
       c_interface_key = #{record.cInterfaceKey,jdbcType=VARCHAR},
+      c_traceId = #{record.cTraceid,jdbcType=VARCHAR},
+      c_system_id = #{record.cSystemId,jdbcType=VARCHAR},
       c_pro_line = #{record.cProLine,jdbcType=VARCHAR},
       c_channel = #{record.cChannel,jdbcType=VARCHAR},
       c_params = #{record.cParams,jdbcType=VARCHAR},
       c_status = #{record.cStatus,jdbcType=CHAR},
+      c_msg = #{record.cMsg,jdbcType=VARCHAR},
       n_del = #{record.nDel,jdbcType=INTEGER},
+      c_ip = #{record.cIp,jdbcType=VARCHAR},
       dt_create_time = #{record.dtCreateTime,jdbcType=TIMESTAMP},
-      c_msg = #{record.cMsg,jdbcType=LONGVARCHAR}
+      c_msg_detail = #{record.cMsgDetail,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -257,11 +304,15 @@
     update t_jxl_transfer_log
     set c_id = #{record.cId,jdbcType=VARCHAR},
       c_interface_key = #{record.cInterfaceKey,jdbcType=VARCHAR},
+      c_traceId = #{record.cTraceid,jdbcType=VARCHAR},
+      c_system_id = #{record.cSystemId,jdbcType=VARCHAR},
       c_pro_line = #{record.cProLine,jdbcType=VARCHAR},
       c_channel = #{record.cChannel,jdbcType=VARCHAR},
       c_params = #{record.cParams,jdbcType=VARCHAR},
       c_status = #{record.cStatus,jdbcType=CHAR},
+      c_msg = #{record.cMsg,jdbcType=VARCHAR},
       n_del = #{record.nDel,jdbcType=INTEGER},
+      c_ip = #{record.cIp,jdbcType=VARCHAR},
       dt_create_time = #{record.dtCreateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -272,6 +323,12 @@
     <set>
       <if test="cInterfaceKey != null">
         c_interface_key = #{cInterfaceKey,jdbcType=VARCHAR},
+      </if>
+      <if test="cTraceid != null">
+        c_traceId = #{cTraceid,jdbcType=VARCHAR},
+      </if>
+      <if test="cSystemId != null">
+        c_system_id = #{cSystemId,jdbcType=VARCHAR},
       </if>
       <if test="cProLine != null">
         c_pro_line = #{cProLine,jdbcType=VARCHAR},
@@ -285,14 +342,20 @@
       <if test="cStatus != null">
         c_status = #{cStatus,jdbcType=CHAR},
       </if>
+      <if test="cMsg != null">
+        c_msg = #{cMsg,jdbcType=VARCHAR},
+      </if>
       <if test="nDel != null">
         n_del = #{nDel,jdbcType=INTEGER},
+      </if>
+      <if test="cIp != null">
+        c_ip = #{cIp,jdbcType=VARCHAR},
       </if>
       <if test="dtCreateTime != null">
         dt_create_time = #{dtCreateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="cMsg != null">
-        c_msg = #{cMsg,jdbcType=LONGVARCHAR},
+      <if test="cMsgDetail != null">
+        c_msg_detail = #{cMsgDetail,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where c_id = #{cId,jdbcType=VARCHAR}
@@ -300,23 +363,31 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jzfq.rms.third.common.domain.TJxlTransferLog">
     update t_jxl_transfer_log
     set c_interface_key = #{cInterfaceKey,jdbcType=VARCHAR},
+      c_traceId = #{cTraceid,jdbcType=VARCHAR},
+      c_system_id = #{cSystemId,jdbcType=VARCHAR},
       c_pro_line = #{cProLine,jdbcType=VARCHAR},
       c_channel = #{cChannel,jdbcType=VARCHAR},
       c_params = #{cParams,jdbcType=VARCHAR},
       c_status = #{cStatus,jdbcType=CHAR},
+      c_msg = #{cMsg,jdbcType=VARCHAR},
       n_del = #{nDel,jdbcType=INTEGER},
+      c_ip = #{cIp,jdbcType=VARCHAR},
       dt_create_time = #{dtCreateTime,jdbcType=TIMESTAMP},
-      c_msg = #{cMsg,jdbcType=LONGVARCHAR}
+      c_msg_detail = #{cMsgDetail,jdbcType=LONGVARCHAR}
     where c_id = #{cId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TJxlTransferLog">
     update t_jxl_transfer_log
     set c_interface_key = #{cInterfaceKey,jdbcType=VARCHAR},
+      c_traceId = #{cTraceid,jdbcType=VARCHAR},
+      c_system_id = #{cSystemId,jdbcType=VARCHAR},
       c_pro_line = #{cProLine,jdbcType=VARCHAR},
       c_channel = #{cChannel,jdbcType=VARCHAR},
       c_params = #{cParams,jdbcType=VARCHAR},
       c_status = #{cStatus,jdbcType=CHAR},
+      c_msg = #{cMsg,jdbcType=VARCHAR},
       n_del = #{nDel,jdbcType=INTEGER},
+      c_ip = #{cIp,jdbcType=VARCHAR},
       dt_create_time = #{dtCreateTime,jdbcType=TIMESTAMP}
     where c_id = #{cId,jdbcType=VARCHAR}
   </update>

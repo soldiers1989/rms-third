@@ -1,10 +1,12 @@
 package com.jzfq.rms.third.service;
 
 import com.jzfq.rms.third.common.domain.SysTask;
+import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.exception.BusinessException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -41,5 +43,5 @@ public interface IGongPingjiaService {
      * @param licensePlatHeader
      * @return
      */
-    List<EvaluationInfoVo> queryCarEvaluations(String traceId,String vin, String licensePlatHeader) throws BusinessException;
+    ResponseResult queryCarEvaluations(String vin, String licensePlatHeader, Map<String,Object> commonParams) throws BusinessException;
 }

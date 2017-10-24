@@ -2,6 +2,7 @@ package com.jzfq.rms.third.common.httpclient;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -594,7 +595,7 @@ public class HttpConnectionManager {
 			if(key == null || value == null || org.apache.commons.lang.StringUtils.isBlank(key.toString()) || org.apache.commons.lang.StringUtils.isBlank(value.toString())) {
 				LOG.info("参数的key 或者value 为空!!!");
 			}
-			pairsList.add(new BasicNameValuePair(key.toString(), value.toString()));
+			pairsList.add(new BasicNameValuePair(key.toString(), StringUtil.getStringOfObject(value)));
 		}
 
 		return pairsList;

@@ -609,4 +609,17 @@ public static final int DEFAULT_HASH_LENGTH=32;
 		String[] result = new String[emptyNames.size()];
 		return emptyNames.toArray(result);
 	}
+
+	public static String getStringOfObject(Object ob){
+		if(ob == null){
+			return "";
+		}
+		return ob.toString().trim();
+	}
+	public static String getNAStringOfObject(Object ob){
+		if(ob == null){
+			return "N/A";
+		}
+		return ob.toString().trim();
+	}
 }

@@ -6,12 +6,12 @@ package com.jzfq.rms.third.common.pojo;
  **/
 public class Monitor {
 
-    private String front_id;
+    private Long frontID;
     private String traceID;
-    private String productConfigID;
-    private String sourceID;
-    private String targetID;
-    private String sendType;
+    private Integer productConfigID;
+    private Integer sourceID;
+    private Integer targetID;
+    private Integer sendType;
     private String sendURL;
     private String creator;
     private String returnState;
@@ -27,12 +27,21 @@ public class Monitor {
         this.systemIP = systemIP;
     }
 
-    public String getFront_id() {
-        return front_id;
+
+    public Integer getProductConfigID() {
+        return productConfigID;
     }
 
-    public void setFront_id(String front_id) {
-        this.front_id = front_id;
+    public void setProductConfigID(Integer productConfigID) {
+        this.productConfigID = productConfigID;
+    }
+
+    public Long getFrontID() {
+        return frontID;
+    }
+
+    public void setFrontID(Long frontID) {
+        this.frontID = frontID;
     }
 
     public String getTraceID() {
@@ -43,35 +52,27 @@ public class Monitor {
         this.traceID = traceID;
     }
 
-    public String getProductConfigID() {
-        return productConfigID;
-    }
-
-    public void setProductConfigID(String productConfigID) {
-        this.productConfigID = productConfigID;
-    }
-
-    public String getSourceID() {
+    public Integer getSourceID() {
         return sourceID;
     }
 
-    public void setSourceID(String sourceID) {
+    public void setSourceID(Integer sourceID) {
         this.sourceID = sourceID;
     }
 
-    public String getTargetID() {
+    public Integer getTargetID() {
         return targetID;
     }
 
-    public void setTargetID(String targetID) {
+    public void setTargetID(Integer targetID) {
         this.targetID = targetID;
     }
 
-    public String getSendType() {
+    public Integer getSendType() {
         return sendType;
     }
 
-    public void setSendType(String sendType) {
+    public void setSendType(Integer sendType) {
         this.sendType = sendType;
     }
 

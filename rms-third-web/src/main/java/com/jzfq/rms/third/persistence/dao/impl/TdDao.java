@@ -11,7 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
-import static com.jzfq.rms.third.common.enums.ConfigCode.THIRD_URL_JXL_ACCESSREPORTSTATUS;
+import static com.jzfq.rms.third.common.enums.ConfigCode.*;
 import static com.jzfq.rms.third.common.enums.ConfigLevelCode.SYSTEM_CONFIG;
 import static com.jzfq.rms.third.constant.Constants.IS_DELETE_NO;
 
@@ -31,7 +31,7 @@ public class TdDao implements ITdDao {
         if(StringUtils.isBlank(loginTdScoreUrl)){
             TSysConfigExample example = new TSysConfigExample();
             TSysConfigExample.Criteria Criteria=example.createCriteria();
-            Criteria.andCKeyEqualTo(THIRD_URL_JXL_ACCESSREPORTSTATUS.code()).andCLevelEqualTo(SYSTEM_CONFIG.code())
+            Criteria.andCKeyEqualTo(THIRD_URL_TD_LOGINTDSCORE.code()).andCLevelEqualTo(SYSTEM_CONFIG.code())
                     .andCDelEqualTo(IS_DELETE_NO);
             List<TSysConfig> tSysConfig = tSysConfigMapper.selectByExample(example);
             if(CollectionUtils.isEmpty(tSysConfig)){
@@ -48,7 +48,7 @@ public class TdDao implements ITdDao {
         if(StringUtils.isBlank(addTdFraudBlackUrl)){
             TSysConfigExample example = new TSysConfigExample();
             TSysConfigExample.Criteria Criteria=example.createCriteria();
-            Criteria.andCKeyEqualTo(THIRD_URL_JXL_ACCESSREPORTSTATUS.code()).andCLevelEqualTo(SYSTEM_CONFIG.code())
+            Criteria.andCKeyEqualTo(THIRD_URL_TD_ADDTDFRAUDBLACK.code()).andCLevelEqualTo(SYSTEM_CONFIG.code())
                     .andCDelEqualTo(IS_DELETE_NO);
             List<TSysConfig> tSysConfig = tSysConfigMapper.selectByExample(example);
             if(CollectionUtils.isEmpty(tSysConfig)){

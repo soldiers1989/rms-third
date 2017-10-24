@@ -12,6 +12,7 @@ import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.utils.JWTUtils;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IThirdTransferLogDao;
 import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
@@ -47,8 +48,6 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
     @Value("${gongpingjia.timeout}")
     private Long timeout ;
 
-    @Value("${gongpingjia.detail.model.apiUrl}")
-    private String apiUrl;
     @Value("${gongpingjia.detail.model.page.size}")
     private int size ;
 
@@ -305,12 +304,12 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         params.put("key",key);
         params.put("secret",secret);
         params.put("timeout",timeout);
-        params.put("url",apiUrl);
+        params.put("url",detailModelInfoUrl);
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
         params.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());
         params.put("appId", "");
         params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
-        params.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+        params.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
 
         Map<String, Object> bizParams  = new HashMap<>();
         bizParams.put("size",size);
@@ -378,73 +377,47 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
      * @param licensePlatHeader
      * @return
      */
-    public List<EvaluationInfoVo> queryCarEvaluations(String traceId,String vin, String licensePlatHeader) throws
+    public ResponseResult queryCarEvaluations(String vin, String licensePlatHeader,Map<String,Object> commonParams) throws
             BusinessException{
         log.info("traceId={} 公平价接口调用[车架号={} 车牌头两位{}]-开始",
-                traceId,vin,licensePlatHeader);
+                TraceIDThreadLocal.getTraceID(),vin,licensePlatHeader);
         Map<String, Object> params = new HashMap<>();
         params.put("key",key);
         params.put("secret",secret);
         params.put("timeout",timeout);
+
         params.put("url",evaluationUrl);
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
         params.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());
         params.put("appId", "");
         params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
-        params.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+        params.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
 
         Map<String, Object> bizParams  = new HashMap<>();
         bizParams.put("vin",vin);
         bizParams.put("licensePlatHeader",licensePlatHeader);
-        List<Map<String,String>> list = (List<Map<String,String>>)getGongpingjiaData(traceId, params ,bizParams);
-        if(list == null){
-            return null;
+        ResponseResult result = getGongpingjiaData( params ,bizParams);
+        List<Map<String,String>> list = (List<Map<String,String>>)result.getData();
+        if(list == null&&result.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+            return result;
         }
-        return createCarEvaluations(list);
+        result.setData(createCarEvaluations(list));
+        return result;
     }
 
     /**
      * 调用公平价接口 02
-     * @param traceId
      * @param params
      * @param bizParams
      * @return
      */
-    private Object getGongpingjiaData(String traceId,  Map<String, Object> params,Map<String, Object> bizParams) throws BusinessException{
-        JSONObject result = new JSONObject();
-        ResponseResult response ;
-        response = sendMessegeService.sendByThreeChance(SendMethodEnum.GPJ01.getCode(),params,bizParams);
+    private ResponseResult getGongpingjiaData( Map<String, Object> params,Map<String, Object> bizParams) throws BusinessException{
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.GPJ01.getCode(),params,bizParams);
         if(response==null){
-            log.info("公平价估价接口调用[车架号={} 车牌头两位={}]失败:{} 响应信息为空" ,
+            log.info("公平价估价接口调用[车架号={} 车牌头两位={}] 响应信息为空" ,
                     bizParams.get("vin"),bizParams.get("licensePlatHeader"));
-            throw new BusinessException("公平价估价接口失败 响应信息为空",true);
+            throw new BusinessException(ReturnCode.ERROR_RESPONSE_NULL.code(),"公平价估价接口失败 返回为空",true);
         }
-        if(!(ReturnCode.REQUEST_SUCCESS.code() == response.getCode())||response.getData()==null){
-            log.info("公平价估价接口调用[车架号={} 车牌头两位={}]失败:{} 响应信息：{}" ,
-                    bizParams.get("vin"),bizParams.get("licensePlatHeader"),
-                    response.getCode(),response.getData());
-            throw new BusinessException("公平价估价接口失败 返回为空",true);
-        }
-        String evaluationStr = response.getData().toString();
-        if(StringUtils.isBlank(evaluationStr)){
-            log.info("公平价估价接口调用[车架号={} 车牌头两位={}]返回信息为空",
-                    bizParams.get("vin"),bizParams.get("licensePlatHeader"));
-            throw new BusinessException("公平价估价接口失败 返回为空",true);
-        }
-        JSONObject evaluationInfo = JSONObject.parseObject(evaluationStr);
-        if(!StringUtils.equals(evaluationInfo.get("status").toString(),"success")){
-            log.info("traceId={} 公平价估价接口调用[车架号={} 车牌头两位={}]返回失败:{}"
-                    ,traceId ,bizParams.get("vin"),bizParams.get("licensePlatHeader"),
-                    evaluationInfo.get("message").toString());
-            throw new BusinessException("公平价估价接口失败 返回:"+evaluationInfo.toJSONString(),true);
-        }
-        if(evaluationInfo.get("data")==null){
-            log.info("公平价估价接口调用[车架号={} 车牌头两位={}]返回信息为空",
-                    bizParams.get("vin"),bizParams.get("licensePlatHeader"));
-            throw new BusinessException("公平价估价接口失败 返回为空",true);
-        }
-        log.info("公平价估价接口调用[车架号={} 车牌头两位={}]成功",
-                bizParams.get("vin"),bizParams.get("licensePlatHeader"));
-        return evaluationInfo.get("data");
+        return response;
     }
 }

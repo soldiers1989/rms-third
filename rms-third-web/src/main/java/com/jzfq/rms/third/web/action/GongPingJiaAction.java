@@ -2,9 +2,12 @@ package com.jzfq.rms.third.web.action;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IGongPingjiaService;
 import com.jzfq.rms.third.support.gpj.impl.CarDetailModelObservable;
+import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 大连桔子分期科技有限公司
@@ -40,17 +45,17 @@ public class GongPingJiaAction {
      * @return
      */
     @RequestMapping(value="detailModelEvaluation.json", method= RequestMethod.GET)
-    public ResponseResult getDetailModelEvaluation(String vin, String licensePlatHeader){
+    public ResponseResult getDetailModelEvaluation(String vin, String licensePlatHeader) throws BusinessException{
         log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");
         if(StringUtils.isBlank(vin)||StringUtils.isBlank(licensePlatHeader)){
             ResponseResult dto = new ResponseResult("detailModelEvaluationAction",ReturnCode.ERROR_PARAMS_NOT_NULL);
             log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】失败");
             return dto;
         }
-        List<EvaluationInfoVo> list = gongPingjiaService.queryGaopingjiaEvalation(vin, licensePlatHeader);
-        ResponseResult dto = new ResponseResult("detailModelEvaluationAction",ReturnCode.REQUEST_SUCCESS, list);
-        log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】成功");
-        return dto;
+        Map<String,Object> commonParams = new HashMap<>();
+        ResponseResult result = gongPingjiaService.queryCarEvaluations( vin, licensePlatHeader,commonParams);
+        log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束{}",result.getMsg());
+        return result;
     }
 
     /**

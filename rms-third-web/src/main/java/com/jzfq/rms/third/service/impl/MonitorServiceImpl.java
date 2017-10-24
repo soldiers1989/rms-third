@@ -7,14 +7,22 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jzfq.rms.third.common.domain.*;
 import com.jzfq.rms.third.common.dto.MonitorSendDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.ResponseHandlerEnum;
+import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.pojo.Monitor;
 import com.jzfq.rms.third.common.utils.IPUtils;
+import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.mapper.*;
 import com.jzfq.rms.third.service.IMonitorService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
+import com.jzfq.rms.third.support.response.AbstractResponseHandler;
+import com.jzfq.rms.third.support.response.IResponseHandler;
+import com.jzfq.rms.third.support.send.AbstractSendHandler;
+import com.jzfq.rms.third.support.send.ISendHandler;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.dom4j.Document;
@@ -27,6 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -58,54 +68,39 @@ public class MonitorServiceImpl implements IMonitorService {
     @Override
     public void sendLogToMonitor(String traceId, Map<String, Object> params) {
         ThreadProvider.getThreadPool().execute(() ->  {
-            Map<String,Object> monitorParams  = creatMonitorMessage(traceId,params);
+            Map<String,Object> monitorParams  = creatMonitorMessage(params);
             ResponseResult dto = postData(monitorParams);
-            logger.info("traceId={} 发送监控消息 返回结果:{}", traceId,dto.toString());
+            logger.info("traceId={} 发送监控消息 返回结果:{}", TraceIDThreadLocal.getTraceID(), StringUtil.getStringOfObject(dto));
         });
     }
-
-
     public ResponseResult postData(Map<String,Object> params){
         ResponseResult dto = HttpConnectionManager.doUncheckPost(apiUrl,params);
         return dto;
     }
-    private  Map<String,Object> creatMonitorMessage(String traceId, Map<String, Object> params){
+    private  Map<String,Object> creatMonitorMessage(Map<String, Object> params){
         Map<String,Object> monitorParams = new HashMap<>();
-//        monitorParams.put("traceID",getString(params,"traceId"));
-//        monitorParams.put("systemID",getString(params,"systemID"));
-
-        monitorParams.put("traceID",11);
-        monitorParams.put("systemID",22);
+        monitorParams.put("traceID",TraceIDThreadLocal.getTraceID());
+        monitorParams.put("callSystemID", SystemIdEnum.RMS_THIRD.getCode());
         Monitor monitor = createMonitorParams(params);
-        String json = JSON.toJSONString(monitor, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteMapNullValue);
-        monitorParams.put("params",json);
+        monitorParams.put("params",toJSONString(monitor));
         return monitorParams;
     }
 
     private Monitor createMonitorParams(Map<String, Object> params){
-
+        Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         Monitor monitor = new Monitor();
-//        monitor.setFront_id(getString(params,"frontId"));
-//        monitor.setProductConfigID(getString(params,"rms"));
-//        monitor.setSendParam(getString(params,"bizParms"));
-//        monitor.setSendType(getString(params,"sendType"));
-//        monitor.setSendURL(getString(params,"url"));
-//        monitor.setTraceID(getString(params,"traceId"));
-//        ResponseResult response = (ResponseResult)params.get("response");
-//        monitor.setReturnState(JSONUtils.toJSONString(response.getCode()));
-//        monitor.setReturnResult(JSONUtils.toJSONString(response.getMsg()));
-//        monitor.setCreator(getString(params,"rms-third"));
-        monitor.setFront_id("11");
-        monitor.setTargetID("1");
-        monitor.setSourceID("11");
-        monitor.setProductConfigID("11");
-        monitor.setSendParam("222");
-        monitor.setSendType("232");
-        monitor.setSendURL("323");
-        monitor.setTraceID("222");
-        monitor.setReturnState("22");
-        monitor.setReturnResult("sw");
-        monitor.setCreator("1111");
+        monitor.setFrontID(getLong(commonParams,"frontId"));
+        monitor.setProductConfigID(getInteger(SystemIdEnum.RMS_THIRD.getCode()));
+        monitor.setSendParam(getString(params,"bizParms"));
+        monitor.setSendType(getInteger(commonParams,"sendType"));
+        monitor.setSendURL(getString(commonParams,"url"));
+        monitor.setTraceID(StringUtil.getNAStringOfObject((TraceIDThreadLocal.getTraceID())));
+        ResponseResult response = (ResponseResult)params.get("handlerResult");
+        monitor.setReturnState(JSONUtils.toJSONString(response.getCode()));
+        monitor.setReturnResult(JSONUtils.toJSONString(response.getMsg()));
+        monitor.setCreator(SystemIdEnum.RMS_THIRD.getName());
+        monitor.setTargetID(getInteger(commonParams,"targetID"));
+        monitor.setSourceID(getInteger(SystemIdEnum.RMS_THIRD.getCode()));
         monitor.setSystemIP(IPUtils.getLocalHostIP());
         return monitor;
     }
@@ -113,14 +108,49 @@ public class MonitorServiceImpl implements IMonitorService {
     private String getString(Map<String,Object> params,String key){
         Object input = params.get(key);
         if(input==null){
-            return "";
+            return "N/A";
         }
-        return input.toString();
+        return input.toString().trim();
     }
+    private Integer getInteger(Object ob){
+        if(ob==null||NumberUtils.isNumber(ob.toString().trim())){
+            return 0;
+        }
+        return Integer.parseInt(ob.toString().trim());
+    }
+    private Long getLong(Object ob){
+        if(ob==null||NumberUtils.isNumber(ob.toString().trim())){
+            return 0l;
+        }
+        return Long.parseLong(ob.toString().trim());
+    }
+    private Long getLong(Map<String,Object> params,String key){
+        Object input = params.get(key);
+        if(input==null||NumberUtils.isNumber(input.toString().trim())){
+            return 0L;
+        }
+        return Long.parseLong(input.toString().trim());
+    }
+    private Integer getInteger(Map<String,Object> params,String key){
+        Object input = params.get(key);
+        if(input==null||NumberUtils.isNumber(input.toString().trim())){
+            return 0;
+        }
+        return Integer.parseInt(input.toString().trim());
+    }
+    private String toJSONString(Object ob){
+        if(ob==null){
+            return "N/A";
+        }
+        String json = JSON.toJSONString(ob, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteMapNullValue);
+        return json;
+    }
+
     @Override
     public void sendLogToDB(String traceId, Map<String, Object> params) {
         ThreadProvider.getThreadPool().execute(() ->  {
-            String targetId = getString(params,"targetId");
+            Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
+            String targetId = getString(commonParams,"targetId");
             if(StringUtils.equals(targetId, SystemIdEnum.THIRD_GPJ.getCode())){
                 TGpjTransferLog log = createNewGpjRecord(params);
                 gpjTransferLogMapper.insert(log);
@@ -161,32 +191,41 @@ public class MonitorServiceImpl implements IMonitorService {
 
     private TPyTransferLog createNewPyRecord(Map<String, Object> params){
         TPyTransferLog record = new TPyTransferLog();
+        Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"apiId"));
-        ResponseResult result = (ResponseResult)params.get("response");
+        record.setcInterfaceKey(getString(commonParams,"interfaceId"));
+        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcSystemId(getString(commonParams,"systemId"));
+        ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(params,"frontId"));
-        record.setcParams(getString(params,"bizParams"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+        Exception error = (Exception)params.get("exception");
+        if(error!=null){
+            record.setcMsg(error.getMessage());
+            record.setcMsgDetail(error.toString());
+        }else {
+            record.setcMsg(result.getMsg());
+        }
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcMsg(JSONUtils.toJSONString(result.getMsg()));
+        record.setcIp(IPUtils.getLocalHostIP());
         return record;
     }
 
     private TGpjTransferLog createNewGpjRecord(Map<String, Object> params){
         TGpjTransferLog record = new TGpjTransferLog();
+        Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"interfaceId"));
-        record.setcTraceid(getString(params,"traceId"));
-        record.setcSystemId(getString(params,"systemId"));
-        ResponseResult result = (ResponseResult)params.get("response");
+        record.setcInterfaceKey(getString(commonParams,"interfaceId"));
+        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcSystemId(getString(commonParams,"systemId"));
+        ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(params,"appId"));
-        Map<String,Object> bizParams = (Map<String,Object>)params.get("bizParams");
-        String bizStr = JSON.toJSONString(bizParams, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteMapNullValue);
-        record.setcParams(bizStr);
-        record.setcProLine(getString(params,"systemId"));
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
         Exception error = (Exception)params.get("exception");
         if(error!=null){
             record.setcMsg(error.getMessage());
@@ -202,76 +241,126 @@ public class MonitorServiceImpl implements IMonitorService {
 
     private TJxlTransferLog createNewJxlRecord(Map<String, Object> params){
         TJxlTransferLog record = new TJxlTransferLog();
+        Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"apiId"));
-        ResponseResult result = (ResponseResult)params.get("response");
+        record.setcInterfaceKey(getString(commonParams,"interfaceId"));
+        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcSystemId(getString(commonParams,"systemId"));
+        ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(params,"frontId"));
-        record.setcParams(getString(params,"bizParams"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+        Exception error = (Exception)params.get("exception");
+        if(error!=null){
+            record.setcMsg(error.getMessage());
+            record.setcMsgDetail(error.toString());
+        }else {
+            record.setcMsg(result.getMsg());
+        }
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcMsg(JSONUtils.toJSONString(result.getMsg()));
+        record.setcIp(IPUtils.getLocalHostIP());
         return record;
     }
 
     private TTdTransferLog createNewTdRecord(Map<String, Object> params){
         TTdTransferLog record = new TTdTransferLog();
+        Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"apiId"));
-        ResponseResult result = (ResponseResult)params.get("response");
+        record.setcInterfaceKey(getString(commonParams,"interfaceId"));
+        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcSystemId(getString(commonParams,"systemId"));
+        ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(params,"frontId"));
-        record.setcParams(getString(params,"bizParams"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+        Exception error = (Exception)params.get("exception");
+        if(error!=null){
+            record.setcMsg(error.getMessage());
+            record.setcMsgDetail(error.toString());
+        }else {
+            record.setcMsg(result.getMsg());
+        }
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcMsg(JSONUtils.toJSONString(result.getMsg()));
+        record.setcIp(IPUtils.getLocalHostIP());
         return record;
     }
 
     private TBrTransferLog createNewBrRecord(Map<String, Object> params){
         TBrTransferLog record = new TBrTransferLog();
+        Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"apiId"));
-        ResponseResult result = (ResponseResult)params.get("response");
+        record.setcInterfaceKey(getString(commonParams,"interfaceId"));
+        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcSystemId(getString(commonParams,"systemId"));
+        ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(params,"frontId"));
-        record.setcParams(getString(params,"bizParams"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+        Exception error = (Exception)params.get("exception");
+        if(error!=null){
+            record.setcMsg(error.getMessage());
+            record.setcMsgDetail(error.toString());
+        }else {
+            record.setcMsg(result.getMsg());
+        }
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcMsg(JSONUtils.toJSONString(result.getMsg()));
+        record.setcIp(IPUtils.getLocalHostIP());
         return record;
     }
 
     private TRsllTransferLog createNewRsllRecord(Map<String, Object> params){
         TRsllTransferLog record = new TRsllTransferLog();
+        Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"apiId"));
-        ResponseResult result = (ResponseResult)params.get("response");
+        record.setcInterfaceKey(getString(commonParams,"interfaceId"));
+        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcSystemId(getString(commonParams,"systemId"));
+        ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(params,"frontId"));
-        record.setcParams(getString(params,"bizParams"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+        Exception error = (Exception)params.get("exception");
+        if(error!=null){
+            record.setcMsg(error.getMessage());
+            record.setcMsgDetail(error.toString());
+        }else {
+            record.setcMsg(result.getMsg());
+        }
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcMsg(JSONUtils.toJSONString(result.getMsg()));
+        record.setcIp(IPUtils.getLocalHostIP());
         return record;
     }
 
     private TJieanTransferLog createNewJieanRecord(Map<String, Object> params){
         TJieanTransferLog record = new TJieanTransferLog();
+        Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"apiId"));
-        ResponseResult result = (ResponseResult)params.get("response");
+        record.setcInterfaceKey(getString(commonParams,"interfaceId"));
+        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcSystemId(getString(commonParams,"systemId"));
+        ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(params,"frontId"));
-        record.setcParams(getString(params,"bizParams"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+        Exception error = (Exception)params.get("exception");
+        if(error!=null){
+            record.setcMsg(error.getMessage());
+            record.setcMsgDetail(error.toString());
+        }else {
+            record.setcMsg(result.getMsg());
+        }
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcMsg(JSONUtils.toJSONString(result.getMsg()));
+        record.setcIp(IPUtils.getLocalHostIP());
         return record;
     }
 }

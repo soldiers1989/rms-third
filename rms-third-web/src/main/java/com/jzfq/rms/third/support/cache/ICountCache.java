@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface ICountCache {
 
-    boolean isRequestOutInterface(String key);
+    boolean isRequestOutInterface(String key,Long time);
 
     boolean setFailure(String key);
 }

@@ -4,7 +4,6 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.utils.JWTUtils;
-import com.jzfq.rms.third.service.impl.MonitorServiceImpl;
 import com.jzfq.rms.third.support.send.AbstractSendHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -16,8 +15,8 @@ import java.util.Map;
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/22 15:54.
  **/
-public class GongpingjiaHandler extends AbstractSendHandler  {
-    private static final Logger logger = LoggerFactory.getLogger(GongpingjiaHandler.class);
+public class GpjSendHandler extends AbstractSendHandler  {
+    private static final Logger logger = LoggerFactory.getLogger(GpjSendHandler.class);
     /**
      * 发送
      *

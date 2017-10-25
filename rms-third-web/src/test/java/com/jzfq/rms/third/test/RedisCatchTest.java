@@ -20,11 +20,11 @@ public class RedisCatchTest {
     @Test
     public void test(){
 
-        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
-        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
-        Object ob = interfaceCountCache.setFailure("test.data");
-        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
-        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
-        System.out.println("interfaceCountCache"+ob);
+//        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
+//        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
+//        Object ob = interfaceCountCache.setFailure("test.data");
+//        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
+//        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
+//        System.out.println("interfaceCountCache"+ob);
     }
 }

@@ -1,9 +1,12 @@
 package com.jzfq.rms.third.support.gpj.impl;
 
+import com.jzfq.rms.third.persistence.dao.IConfigDao;
+import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import com.jzfq.rms.third.support.gpj.IGPJSync;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.*;
@@ -17,12 +20,22 @@ public class CarDetailModelObservable extends Observable {
      */
     private List<IGPJSync> observers;
 
-    @Value("${develop.debug}")
-    private boolean debug ;
+    @Autowired
+    IConfigDao configCacheDao;
+    @Autowired
+    ICountCache interfaceCountCache;
     /**
      * 正在同步
      */
     private static final AtomicBoolean syncronizing = new AtomicBoolean(false);
+    /**
+     * 超时时间
+     */
+    private static final Long time = 3600l;
+    /**
+     * 超时时间
+     */
+    private static final String key = "rms_third_car_model_detail_sync_task";
 
     /**
      * @param observers 要初始化的监听器
@@ -47,16 +60,20 @@ public class CarDetailModelObservable extends Observable {
 
     private volatile AtomicInteger RUNNING_SYNC_PROCESS = new AtomicInteger(0);
     public void sync() {
-        if(debug){
+        if(configCacheDao.isDebug()){
             log.info("开发环境禁止同步");
             return ;
         }
+        if(!interfaceCountCache.isRequestOutInterface(key,time)){
+            log.info("有车型库同步任务正在执行，取消本次任务");
+            return;
+        }
         if (!syncronizing.compareAndSet(false, true)) {
-            log.debug("有车型库同步任务正在执行，取消本次任务");
+            log.info("有车型库同步任务正在执行，取消本次任务");
             return;
         }
         if (RUNNING_SYNC_PROCESS.get() > 0) {
-            log.debug("上次车型库同步任务没有完成，取消本次任务");
+            log.info("上次车型库同步任务没有完成，取消本次任务");
             syncronizing.set(false);
             return;
         }

@@ -528,17 +528,6 @@ public class HttpConnectionManager {
 	public static ResponseResult doPut(String url ,String charset) {
 		return doPost(url, null, null, charset);
 	}
-	
-//	public static void main(String[] args) {
-//		String url = "http://p.missfresh.cn/pop2baidu-webapp/pop2baidu/completeOrder.do";
-//		Map<String,String> params = new HashMap<String, String>();
-//		params.put("order_id", "11111111111");
-//		ResponseResult response = HttpConnectionManager.doPost(url, params);
-//
-//		int code = response.getCode();
-//		System.out.println(code);
-//
-//	}
 
 	/**
 	 * @param url 请求路径

@@ -16,6 +16,7 @@ import com.jzfq.rms.third.common.utils.IPUtils;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.persistence.mapper.*;
 import com.jzfq.rms.third.service.IMonitorService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
@@ -46,9 +47,9 @@ import java.util.*;
 @Service("monitorService")
 public class MonitorServiceImpl implements IMonitorService {
     private static final Logger logger = LoggerFactory.getLogger(MonitorServiceImpl.class);
-    @Value("${rms.monitor.log.url}")
-    private String apiUrl;
 
+    @Autowired
+    IConfigDao configCacheDao;
     @Autowired
     TPyTransferLogMapper pyTransferLogMapper;
     @Autowired
@@ -74,12 +75,13 @@ public class MonitorServiceImpl implements IMonitorService {
         });
     }
     public ResponseResult postData(Map<String,Object> params){
-        ResponseResult dto = HttpConnectionManager.doUncheckPost(apiUrl,params);
+        ResponseResult dto = HttpConnectionManager.doUncheckPost(configCacheDao.getMonitorUrl(),params);
         return dto;
     }
     private  Map<String,Object> creatMonitorMessage(Map<String, Object> params){
         Map<String,Object> monitorParams = new HashMap<>();
-        monitorParams.put("traceID",TraceIDThreadLocal.getTraceID());
+        Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
+        monitorParams.put("traceID",getString(commonParams,"traceId"));
         monitorParams.put("callSystemID", SystemIdEnum.RMS_THIRD.getCode());
         Monitor monitor = createMonitorParams(params);
         monitorParams.put("params",toJSONString(monitor));
@@ -89,12 +91,12 @@ public class MonitorServiceImpl implements IMonitorService {
     private Monitor createMonitorParams(Map<String, Object> params){
         Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         Monitor monitor = new Monitor();
-        monitor.setFrontID(getLong(commonParams,"frontId"));
+        monitor.setFrontID(getString(commonParams,"frontId"));
         monitor.setProductConfigID(getInteger(SystemIdEnum.RMS_THIRD.getCode()));
         monitor.setSendParam(getString(params,"bizParms"));
         monitor.setSendType(getInteger(commonParams,"sendType"));
         monitor.setSendURL(getString(commonParams,"url"));
-        monitor.setTraceID(StringUtil.getNAStringOfObject((TraceIDThreadLocal.getTraceID())));
+        monitor.setTraceID(getString(commonParams,"traceId"));
         ResponseResult response = (ResponseResult)params.get("handlerResult");
         monitor.setReturnState(JSONUtils.toJSONString(response.getCode()));
         monitor.setReturnResult(JSONUtils.toJSONString(response.getMsg()));
@@ -113,27 +115,27 @@ public class MonitorServiceImpl implements IMonitorService {
         return input.toString().trim();
     }
     private Integer getInteger(Object ob){
-        if(ob==null||NumberUtils.isNumber(ob.toString().trim())){
+        if(ob==null||!NumberUtils.isNumber(ob.toString().trim())){
             return 0;
         }
         return Integer.parseInt(ob.toString().trim());
     }
     private Long getLong(Object ob){
-        if(ob==null||NumberUtils.isNumber(ob.toString().trim())){
-            return 0l;
+        if(ob==null||!NumberUtils.isNumber(ob.toString().trim())){
+            return 0L;
         }
         return Long.parseLong(ob.toString().trim());
     }
     private Long getLong(Map<String,Object> params,String key){
         Object input = params.get(key);
-        if(input==null||NumberUtils.isNumber(input.toString().trim())){
+        if(input==null||!NumberUtils.isNumber(input.toString().trim())){
             return 0L;
         }
         return Long.parseLong(input.toString().trim());
     }
     private Integer getInteger(Map<String,Object> params,String key){
         Object input = params.get(key);
-        if(input==null||NumberUtils.isNumber(input.toString().trim())){
+        if(input==null||!NumberUtils.isNumber(input.toString().trim())){
             return 0;
         }
         return Integer.parseInt(input.toString().trim());
@@ -194,7 +196,7 @@ public class MonitorServiceImpl implements IMonitorService {
         Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         record.setcInterfaceKey(getString(commonParams,"interfaceId"));
-        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
@@ -219,7 +221,7 @@ public class MonitorServiceImpl implements IMonitorService {
         Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         record.setcInterfaceKey(getString(commonParams,"interfaceId"));
-        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
@@ -244,7 +246,7 @@ public class MonitorServiceImpl implements IMonitorService {
         Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         record.setcInterfaceKey(getString(commonParams,"interfaceId"));
-        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
@@ -269,7 +271,7 @@ public class MonitorServiceImpl implements IMonitorService {
         Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         record.setcInterfaceKey(getString(commonParams,"interfaceId"));
-        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
@@ -294,7 +296,7 @@ public class MonitorServiceImpl implements IMonitorService {
         Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         record.setcInterfaceKey(getString(commonParams,"interfaceId"));
-        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
@@ -319,7 +321,7 @@ public class MonitorServiceImpl implements IMonitorService {
         Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         record.setcInterfaceKey(getString(commonParams,"interfaceId"));
-        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));
@@ -344,7 +346,7 @@ public class MonitorServiceImpl implements IMonitorService {
         Map<String, Object> commonParams = (Map<String, Object>)params.get("params");
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         record.setcInterfaceKey(getString(commonParams,"interfaceId"));
-        record.setcTraceid(TraceIDThreadLocal.getTraceID());
+        record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
         record.setcStatus(JSONUtils.toJSONString(result.getCode()));

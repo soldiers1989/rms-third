@@ -183,39 +183,10 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         return evaluationUrl + params;
     }
 
-    public ResponseResult queryCarDetailModels(CarDetailModelConditionDTO params){
-        log.info("公平价车型库接口调用开始");
-        Map<String,Object> condition = new HashMap<>();
-        condition.put("page",params.getPage());
-        condition.put("page_size",params.getPage_size());
-        condition.put("start_time",params.getStart_time());
-        condition.put("end_time",params.getEnd_time());
-        ResponseResult dto = HttpConnectionManager.doGet(detailModelInfoUrl,condition);
-        if(dto==null || dto.getCode()!= ReturnCode.REQUEST_SUCCESS.code() ){
-            log.info("公平价车型库接口调用失败");
-            return new ResponseResult(null,ReturnCode.ACTIVE_FAILURE.code(),ReturnCode.ACTIVE_FAILURE.msg());
-        }
-        CarModelResponseDTO gpjResponse = JSONObject.parseObject(dto.getData().toString(), CarModelResponseDTO.class);
-        if(gpjResponse == null){
-            log.info("公平价车型库接口调用失败");
-            return new ResponseResult(null,ReturnCode.ACTIVE_FAILURE.code(),ReturnCode.ACTIVE_FAILURE.msg());
-        }
-        if(!StringUtils.equals(gpjResponse.getStatus(),"success")){
-            dto = new ResponseResult(null,ReturnCode.ACTIVE_FAILURE.code(),ReturnCode.ACTIVE_FAILURE.msg());
-            dto.setData(gpjResponse.getMessage());
-            log.info("公平价车型库接口调用失败");
-            return dto;
-        }
-        dto.setData(gpjResponse);
-        log.info("公平价车型库接口调用结束");
-        return dto;
-    }
-
     /**
      * 全量更新
      * @param currentTask
      */
-    @Transactional(propagation= Propagation.SUPPORTS)
     public void insertAllCarDetailModels(SysTask currentTask) {
         Integer totalPages = 0;
         Integer page=1;
@@ -229,7 +200,6 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
      * 增量更新
      * @param currentTask
      */
-    @Transactional(propagation= Propagation.SUPPORTS)
     public void updateCarDetailModels(SysTask currentTask) {
         SysTask task = sysTaskMapper.selectByTaskSlug("GPJgetCarDetailModel");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -254,17 +224,12 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
     private void synchronizeData(Integer totalPages,SysTask currentTask,Integer page,String beginTime,String endTime){
         do{
             ResponseResult dto = synchronizeData(  page,  beginTime,  endTime);
-            if(dto == null || dto.getCode()!=ReturnCode.REQUEST_SUCCESS.code()||dto.getData()==null){
-                log.info("调用公平价接口失败");
+            if(dto.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+                log.info("调用公平价接口失败:{} ",dto.getMsg());
                 currentTask.setStatus(TaskCode.EXCUTE_FAILURE.code());
                 break;
             }
             JSONObject json = JSONObject.parseObject(dto.getData().toString());
-            if(!StringUtils.equals(json.getString("status"), GpjResponseCode.GPJ_MSG_SUCCESS.code())){
-                log.info("调用公平价接口返回信息:"+json.getString("msg"));
-                currentTask.setStatus(TaskCode.EXCUTE_FAILURE.code());
-                break;
-            }
             String models = json.getString("data");
             if(totalPages==0){
                 totalPages = json.getInteger("total_pages");
@@ -308,8 +273,9 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
         params.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());
         params.put("appId", "");
-        params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
+        params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_SYNCHRONIZEDATA.getCode());
         params.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        params.put("traceId", TraceIDThreadLocal.getTraceID());
 
         Map<String, Object> bizParams  = new HashMap<>();
         bizParams.put("size",size);
@@ -392,6 +358,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         params.put("appId", "");
         params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
         params.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        params.put("traceId", TraceIDThreadLocal.getTraceID());
 
         Map<String, Object> bizParams  = new HashMap<>();
         bizParams.put("vin",vin);

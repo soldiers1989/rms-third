@@ -68,7 +68,7 @@ public class Request1001Handler  extends AbstractRequestHandler{
         log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");
         Map<String,Object> commonParams = getCommonParams(request);
         ResponseResult result = gongPingjiaService.queryCarEvaluations( vin, licensePlatHeader,commonParams);
-        log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束{}",result.getMsg());
+        log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束 {}",result.getMsg());
         return result;
     }
 

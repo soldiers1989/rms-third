@@ -40,7 +40,7 @@ public class Request1015Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean isCheckRepeat() {
-        return false;
+        return true;
     }
 
     /**
@@ -51,7 +51,17 @@ public class Request1015Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-        return false;
+        String orderNo = (String)params.get("orderNo");
+        String name = (String)params.get("name");
+        String idNumber = (String)params.get("idNumber");
+        String phone = (String)params.get("phone");
+        String custumType = (String)params.get("custumType");
+        if(org.apache.commons.lang3.StringUtils.isBlank(orderNo)|| org.apache.commons.lang3.StringUtils.isBlank(name)
+                || org.apache.commons.lang3.StringUtils.isBlank(idNumber)|| org.apache.commons.lang3.StringUtils.isBlank(phone)
+                || org.apache.commons.lang3.StringUtils.isBlank(custumType)){
+            return false;
+        }
+        return true;
     }
 
     /**

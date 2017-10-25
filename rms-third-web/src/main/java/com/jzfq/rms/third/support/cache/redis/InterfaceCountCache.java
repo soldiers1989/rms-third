@@ -20,24 +20,21 @@ import java.util.concurrent.TimeUnit;
 @Component("interfaceCountCache")
 public class InterfaceCountCache implements ICountCache {
 
-    private final Logger LOG = LoggerFactory.getLogger(CacheWithRedis.class);
+    private final Logger LOG = LoggerFactory.getLogger(InterfaceCountCache.class);
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-	public synchronized boolean isRequestOutInterface(String key) {
+	public synchronized boolean isRequestOutInterface(String key, Long outTime) {
 
         long count = redisTemplate.opsForValue().increment(key, 1);
         if (count == 1) {
-            redisTemplate.expire(key, getTimout(key), TimeUnit.SECONDS);
+            redisTemplate.expire(key, outTime, TimeUnit.SECONDS);
             return true;
         }
         return false;
 	}
-	private Long getTimout(String key){
-        return 60l;
-    }
     @Override
     public boolean setFailure(String key) {
         return redisTemplate.expire(key, 0, TimeUnit.SECONDS);

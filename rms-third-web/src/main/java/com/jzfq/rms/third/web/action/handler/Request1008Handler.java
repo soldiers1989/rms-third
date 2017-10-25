@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ITdDataService;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,13 @@ public class Request1008Handler  extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        String orderNo = (String)params.get("orderNo");
+        String loanType = (String)params.get("loanType");
+        String personInfo = (String)params.get("personInfo");
+        if(StringUtils.isBlank(orderNo)||StringUtils.isBlank(loanType)
+                ||StringUtils.isBlank(personInfo)){
+            return false;
+        }
         return true;
     }
 
@@ -58,9 +67,10 @@ public class Request1008Handler  extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
-        String traceId = request.getParam("traceId").toString();
+    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+        String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
+        Byte loanType = (Byte)request.getParam("loanType");
         String taskId = rmsService.queryByOrderNo(traceId, orderNo);
         RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
@@ -68,6 +78,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
         queryParams.put("traceId",traceId);
         queryParams.put("taskId",taskId);
         queryParams.put("personalInfo",personInfo);
+        queryParams.put("loanType",loanType);
         Object data = tdDataService.getTdData(queryParams);
         if(data == null){
             new RuntimeException("traceId=" +traceId+ "同盾分获取结果为null");

@@ -6,7 +6,7 @@ package com.jzfq.rms.third.common.pojo;
  **/
 public class Monitor {
 
-    private Long frontID;
+    private String frontID;
     private String traceID;
     private Integer productConfigID;
     private Integer sourceID;
@@ -36,11 +36,11 @@ public class Monitor {
         this.productConfigID = productConfigID;
     }
 
-    public Long getFrontID() {
+    public String getFrontID() {
         return frontID;
     }
 
-    public void setFrontID(Long frontID) {
+    public void setFrontID(String frontID) {
         this.frontID = frontID;
     }
 

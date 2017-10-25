@@ -20,7 +20,7 @@ public interface ITdDataService {
      * @param riskPostInfo
      * @throws IOException
      */
-    Object getTdData(Map<String, Object> riskPostInfo);
+    Object getTdData(Map<String, Object> riskPostInfo) throws Exception;
 
     /**
      * 抓取同盾分

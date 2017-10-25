@@ -15,7 +15,7 @@ import java.util.Map;
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/23 21:03.
  **/
-public class GongpingjiaHandler extends AbstractResponseHandler {
+public class GpjResponseHandler extends AbstractResponseHandler {
     /**
      * 发送
      *
@@ -30,7 +30,7 @@ public class GongpingjiaHandler extends AbstractResponseHandler {
             return handleEvaluationResult();
         }
         if(StringUtils.equals(InterfaceIdEnum.THIRD_GPJ_SYNCHRONIZEDATA.getCode(),interfaceId)){
-            return (ResponseResult)params.get("response");
+            return handleSyncResult();
         }
         return (ResponseResult)params.get("response");
     }
@@ -40,12 +40,14 @@ public class GongpingjiaHandler extends AbstractResponseHandler {
         if(response==null){
             result.setCode(ReturnCode.ERROR_RESPONSE_NULL.code());
             result.setMsg(ReturnCode.ERROR_RESPONSE_NULL.msg());
+            return result;
         }
         String evaluation = StringUtil.getStringOfObject(response.getData());
         if(!(ReturnCode.REQUEST_SUCCESS.code() == response.getCode())
                 ||StringUtils.isBlank(evaluation)){
             result.setCode(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.code());
             result.setMsg(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.msg());
+            return result;
         }
         JSONObject evaluationInfo = JSONObject.parseObject(evaluation);
         if(!StringUtils.equals(StringUtil.getStringOfObject(evaluationInfo.get("status")),"success")){
@@ -74,5 +76,35 @@ public class GongpingjiaHandler extends AbstractResponseHandler {
     @Override
     public void init(Map<String, Object> params) {
         this.params = params;
+    }
+
+
+
+
+    private ResponseResult handleSyncResult(){
+        ResponseResult response = (ResponseResult)params.get("response");
+        ResponseResult result = new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,null);
+        if(response==null){
+            result.setCode(ReturnCode.ERROR_RESPONSE_NULL.code());
+            result.setMsg(ReturnCode.ERROR_RESPONSE_NULL.msg());
+            return result;
+        }
+        String responseData = StringUtil.getStringOfObject(response.getData());
+        if(!(ReturnCode.REQUEST_SUCCESS.code() == response.getCode())
+                ||StringUtils.isBlank(responseData)){
+            result.setCode(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.code());
+            result.setMsg(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.msg());
+            return result;
+        }
+        JSONObject data = JSONObject.parseObject(responseData);
+        if(StringUtils.equals(StringUtil.getStringOfObject(data.get("status")),"0")){
+            return response;
+        }else {
+            result.setCode(ReturnCode.ERROR_THIRD_RESPONSE.code());
+            result.setMsg(StringUtil.getStringOfObject(data.get("status"))
+                    + ":"
+                    + StringUtil.getStringOfObject(data.get("msg")));
+        }
+        return result;
     }
 }

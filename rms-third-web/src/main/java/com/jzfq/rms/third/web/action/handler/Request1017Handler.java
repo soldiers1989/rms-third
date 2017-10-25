@@ -3,12 +3,14 @@ package com.jzfq.rms.third.web.action.handler;
 import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IJieAnService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,7 +52,17 @@ public class Request1017Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-        return false;
+        String orderNo = (String)params.get("orderNo");
+        String name = (String)params.get("name");
+        String idNumber = (String)params.get("idNumber");
+        String phone = (String)params.get("phone");
+        String custumType = (String)params.get("custumType");
+        if(StringUtils.isBlank(orderNo)||StringUtils.isBlank(name)
+                ||StringUtils.isBlank(idNumber)||StringUtils.isBlank(phone)
+                ||StringUtils.isBlank(custumType)){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -61,7 +73,7 @@ public class Request1017Handler extends AbstractRequestHandler {
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
-        String traceId = request.getParam("traceId").toString();
+        String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String taskId = rmsService.queryByOrderNo(traceId, orderNo);
         String name = request.getParam("name").toString();

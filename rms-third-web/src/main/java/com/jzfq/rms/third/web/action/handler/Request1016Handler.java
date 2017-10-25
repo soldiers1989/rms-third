@@ -10,6 +10,7 @@ import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,7 +52,17 @@ public class Request1016Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-        return false;
+        String orderNo = (String)params.get("orderNo");
+        String name = (String)params.get("name");
+        String idNumber = (String)params.get("idNumber");
+        String phone = (String)params.get("phone");
+        String custumType = (String)params.get("custumType");
+        if(StringUtils.isBlank(orderNo)||StringUtils.isBlank(name)
+                ||StringUtils.isBlank(idNumber)||StringUtils.isBlank(phone)
+                ||StringUtils.isBlank(custumType)){
+            return false;
+        }
+        return true;
     }
 
     /**

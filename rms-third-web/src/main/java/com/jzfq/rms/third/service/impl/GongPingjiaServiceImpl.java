@@ -269,6 +269,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         params.put("key",key);
         params.put("secret",secret);
         params.put("timeout",timeout);
+
         params.put("url",detailModelInfoUrl);
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
         params.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());

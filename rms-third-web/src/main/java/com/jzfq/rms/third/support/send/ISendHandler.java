@@ -13,12 +13,12 @@ public interface ISendHandler {
      * 发送
      * @return
      */
-    ResponseResult send();
+    ResponseResult send() throws Exception;
 
     /**
      * 初始化
      * @param params
      * @param bizParams
      */
-    void init(Map<String, Object> params, Map<String, Object> bizParams);
+    void init(Map<String, Object> params, Map<String, Object> bizParams) ;
 }

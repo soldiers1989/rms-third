@@ -3,6 +3,8 @@ package com.jzfq.rms.third.web.action.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IPengYuanService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
@@ -38,15 +40,15 @@ public class Request1002Handler extends AbstractRequestHandler{
      */
     @Override
     protected boolean isCheckRepeat() {
-        return false;
+        return true;
     }
 
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
         String taskId = (String)params.get("traceId");
         String carInfoStr = (String)params.get("carInfo");
-
-        if(StringUtils.isBlank(taskId)|| !NumberUtils.isNumber(taskId) ||StringUtils.isBlank(carInfoStr)){
+        String orderNo = (String)params.get("orderNo");
+        if(StringUtils.isBlank(orderNo)||StringUtils.isBlank(carInfoStr)){
             return false;
         }
         Map<String,Object> carInfo = JSONObject.parseObject(carInfoStr, HashMap.class);
@@ -57,7 +59,23 @@ public class Request1002Handler extends AbstractRequestHandler{
     }
 
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
+    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+        if(StringUtils.equals(request.getApiVersion(),"02")){
+            return handler02(request);
+        }
+        return handler01(request);
+    }
+    @Override
+    protected boolean isRpc(Map<String, Serializable> params){
+
+        return true;
+    }
+    /**
+     * 版本01 处理器
+     * @param request
+     * @return
+     */
+    private  ResponseResult handler01(AbstractRequestAuthentication request){
         String traceId = request.getParam("traceId").toString();
         String orderNo = request.getParam("orderNo").toString();
         String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
@@ -71,5 +89,31 @@ public class Request1002Handler extends AbstractRequestHandler{
         }
         return new ResponseResult(taskIdStr,Integer.parseInt(data.getString("errorCode"))
                 ,data.getString("errorMessage"),data);
+    }
+
+    /**
+     * 版本02 处理器
+     * @param request
+     * @return
+     */
+    private  ResponseResult handler02(AbstractRequestAuthentication request) throws Exception{
+        String traceId = TraceIDThreadLocal.getTraceID();
+        Map<String,Object> carInfo = JSONObject.parseObject(request.getParam("carInfo").toString(), HashMap.class);
+        log.info("traceId="+traceId+" 鹏元车辆信息 params：【"+carInfo+"】");
+        Map<String,Object> commonParams = getCommonParams(  request);
+        ResponseResult result = pengYuanService.queryPyCarDatas(carInfo,commonParams);
+        log.info("traceId="+traceId+" 鹏元车辆信息 结束{} ",result.getMsg());
+        return result;
+    }
+
+    private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
+        Map<String,Object> commonParams = new HashMap<>();
+        commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
+        commonParams.put("isRpc",this.isRpc());
+        String orderNo = request.getParam("orderNo").toString();
+        String taskIdStr = rmsService.queryByOrderNo(TraceIDThreadLocal.getTraceID(), orderNo);
+        Long taskId = Long.parseLong(taskIdStr);
+        commonParams.put("taskId",taskId);
+        return commonParams;
     }
 }

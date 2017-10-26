@@ -17,7 +17,7 @@ import java.util.Map;
  * @date 2017/10/24 10:35.
  **/
 public class AbstractHandlerFactory {
-    protected static ResponseResult send(String method, Map<String, Object> params, Map<String, Object> bizParams) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    protected static ResponseResult send(String method, Map<String, Object> params, Map<String, Object> bizParams) throws Exception {
         Class<? extends AbstractSendHandler> clazz = (Class<? extends AbstractSendHandler>)
                 Class.forName(getHandlerName(method));
         Constructor<? extends AbstractSendHandler> c = clazz.getConstructor();
@@ -26,7 +26,7 @@ public class AbstractHandlerFactory {
         return send(handler);
     }
 
-    protected static ResponseResult send(ISendHandler handler){
+    protected static ResponseResult send(ISendHandler handler) throws Exception{
         return handler.send();
     }
 

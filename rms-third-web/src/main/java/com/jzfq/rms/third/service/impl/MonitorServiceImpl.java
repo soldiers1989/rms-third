@@ -71,7 +71,7 @@ public class MonitorServiceImpl implements IMonitorService {
         ThreadProvider.getThreadPool().execute(() ->  {
             Map<String,Object> monitorParams  = creatMonitorMessage(params);
             ResponseResult dto = postData(monitorParams);
-            logger.info("traceId={} 发送监控消息 返回结果:{}", TraceIDThreadLocal.getTraceID(), StringUtil.getStringOfObject(dto));
+            logger.info("traceId={} 发送监控消息 返回结果:{}", traceId, StringUtil.getStringOfObject(dto));
         });
     }
     public ResponseResult postData(Map<String,Object> params){

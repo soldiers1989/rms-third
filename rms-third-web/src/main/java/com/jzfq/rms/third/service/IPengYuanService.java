@@ -1,6 +1,7 @@
 package com.jzfq.rms.third.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jzfq.rms.third.common.dto.ResponseResult;
 
 import java.util.List;
 import java.util.Map;
@@ -14,4 +15,6 @@ import java.util.Map;
 public interface IPengYuanService {
 
     JSONObject queryPengYuanData(Long taskId,  Map<String,Object> carInfo);
+
+    ResponseResult queryPyCarDatas(Map<String,Object> carInfo, Map<String,Object> commonParams)throws Exception;
 }

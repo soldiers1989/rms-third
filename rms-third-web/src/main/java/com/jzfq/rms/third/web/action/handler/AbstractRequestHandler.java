@@ -95,8 +95,16 @@ public abstract class AbstractRequestHandler {
      * 是否远程调用
      * @return 合法返回true，否则返回false
      */
-    protected void isRpc(Map<String, Serializable> params){
-        this.rpc = true;
+    protected void setRpc(Map<String, Serializable> params){
+        this.rpc = isRpc(params);
+    }
+
+    /**
+     * 是否远程调用
+     * @return 合法返回true，否则返回false
+     */
+    protected boolean isRpc(Map<String, Serializable> params){
+        return true;
     }
     /**
      * 是否控制重复调用

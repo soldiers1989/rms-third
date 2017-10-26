@@ -5,10 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseDTO;
 import com.jzfq.rms.constants.RmsConstants;
 import com.jzfq.rms.mongo.PengYuan;
-import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.utils.CompressStringUtil;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IPengYuanDao;
 import com.jzfq.rms.third.service.IPengYuanService;
+import com.jzfq.rms.third.service.ISendMessegeService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +55,8 @@ public class PengYuanServiceImpl implements IPengYuanService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-
+    @Autowired
+    ISendMessegeService sendMessegeService;
     @Override
     public JSONObject queryPengYuanData(Long taskId,  Map<String,Object> carInfo) {
 
@@ -234,6 +239,56 @@ public class PengYuanServiceImpl implements IPengYuanService {
             log.error("入库失败......" , e);
         }
         log.info("鹏元数据入库结束......");
+    }
+
+
+
+
+    @Override
+    public ResponseResult queryPyCarDatas(Map<String,Object> carInfo, Map<String,Object> commonParams) throws Exception{
+        boolean isRpc = (boolean)commonParams.get("isRpc");
+        String taskId = (String)commonParams.get("taskId");
+        String traceId = TraceIDThreadLocal.getTraceID();
+        if(!isRpc){
+            List<PengYuan> pyData = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId).and("idCard").is(carInfo.get("certCardNo"))),PengYuan.class);
+            JSONObject data = pyData==null?null:pyData.get(0).getData();
+            return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,data);
+        }
+
+        return getCarDataByRpc(carInfo,commonParams);
+    }
+    private ResponseResult getCarDataByRpc(Map<String,Object> carInfo, Map<String,Object> commonParams)throws Exception{
+        boolean isRpc = (boolean)commonParams.get("isRpc");
+        Long taskId = (Long)commonParams.get("taskId");
+        String traceId = TraceIDThreadLocal.getTraceID();
+
+        JSONObject data = new JSONObject();
+        String pyUrl = pengYuanDao.getPyUrl();
+        if(StringUtils.isBlank(pyUrl)){
+            return new ResponseResult(traceId,ReturnCode.ERROR_SYSTEM_CONFIG_NULL.code(),
+                    "获取鹏元接口系统配置地址为空",null);
+        }
+
+        commonParams.put("url",pyUrl);
+        commonParams.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
+        commonParams.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());
+        commonParams.put("appId", "");
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
+        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.PY01.getCode(),commonParams,carInfo);
+        if(response==null){
+            log.info("traceId={} 鹏元车辆 响应信息为空",TraceIDThreadLocal.getTraceID());
+            throw new BusinessException(ReturnCode.ERROR_RESPONSE_NULL.code(),"鹏元车辆信息接口失败 返回为空",true);
+        }
+        if(response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+            log.info("traceId={} 鹏元车辆 响应信息为空",TraceIDThreadLocal.getTraceID());
+            return response;
+        }
+        PengYuan py = (PengYuan)response.getData();
+        saveData(py);
+        return response;
     }
 }
 

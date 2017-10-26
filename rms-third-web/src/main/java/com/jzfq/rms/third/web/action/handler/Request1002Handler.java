@@ -36,8 +36,7 @@ public class Request1002Handler extends AbstractRequestHandler{
     @Autowired
     IRmsService rmsService;
 
-    @Autowired
-    ICountCache interfaceCountCache;
+
 
     /**
      * 是否控制重复调用
@@ -71,6 +70,8 @@ public class Request1002Handler extends AbstractRequestHandler{
         }
         return handler01(request);
     }
+    @Autowired
+    ICountCache interfaceCountCache;
     /**
      * 超时时间 三天
      */

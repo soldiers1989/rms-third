@@ -1,14 +1,20 @@
 package com.jzfq.rms.third.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
+import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.enums.SendMethodEnum;
+import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.constants.RmsConstants;
 import com.jzfq.rms.mongo.JxlData;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IJxlDao;
 import com.jzfq.rms.third.service.IJxlDataService;
+import com.jzfq.rms.third.service.ISendMessegeService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -45,7 +51,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
     private MongoTemplate mongoTemplate;
 
 	@Override
-	public JSONObject queryJxlData(String customerName, String idCard, String phone) {
+	public JSONObject queryJxlData(String customerName, String idCard, String phone,Map<String,Object> commonParams) {
 		 JSONObject json = new JSONObject();
 		 
 		 String token=getAccessToken();
@@ -59,7 +65,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		 if(report!=null)
 			 json.put("report_data", report.getData());
 		 else{
-			 String reportData = getAccessReportData(token, customerName, idCard, phone);
+			 String reportData = getAccessReportData(token, customerName, idCard, phone,commonParams);
 			 json.put("report_data", reportData==null ? "":reportData);
 		 }
 		 
@@ -70,7 +76,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		 if(raw!=null)
 			 json.put("raw_data", raw.getData());
 		 else{
-			 String accessData = getAccessRawData(token, customerName, idCard, phone);
+			 String accessData = getAccessRawData(token, customerName, idCard, phone,commonParams);
 			 json.put("raw_data", accessData==null? "":accessData);
 		 }
 		 
@@ -81,63 +87,51 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		 if(rawBusi!=null)
 			 json.put("raw_busi_data", rawBusi.getData());
 		 else{
-			 String accessBusiData = getAccessBusiRawData(token, customerName, idCard, phone);
+			 String accessBusiData = getAccessBusiRawData(token, customerName, idCard, phone,commonParams);
 			 json.put("raw_busi_data", accessBusiData==null ? "":accessBusiData);
 		 }
-		 
 		return json;
 	}
-	
+
+	@Autowired
+	ISendMessegeService sendMessegeService;
 	@Override
-	public String queryStatus(String customerName, String idCard, String phone,  String category) {
+	public ResponseResult queryStatus(String customerName, String idCard, String phone, String category) {
 
 		String url = jxlDao.getAccessReportStatusUrl();
 		String token=getAccessToken();
-		if(StringUtils.isBlank(token))
+		if(StringUtils.isBlank(token)){
 			return null;
-	
-		Map<String, Object> params = buildRequestParam(token, customerName, idCard, phone, category, "false");
-
-		long start=System.currentTimeMillis();
-		
-		jxlLog.info("开始获取用户报告数据执行状态, [ "+ customerName +" ], [ "+ phone +" ], [ "+ idCard +" ]");
-		ResponseResult response=HttpConnectionManager.doGet(url, params);
-		jxlLog.info("执行结束, 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
-		
-		if(null!=response && response.getCode()==HttpStatus.SC_OK){
-			String result = (String)response.getData();
-			JSONObject jsonResult= JSON.parseObject(result);
-			if(null!=jsonResult && jsonResult.getString("success").equalsIgnoreCase("true")){
-				JSONObject data= jsonResult.getJSONObject("data");
-				
-				JSONArray details=data.getJSONArray("details");
-				if (details.size() == 0) return null;
-				JSONObject json = details.getJSONObject(0);
-				
-				return json.getString("websiteStatus");
-			}
 		}
-		
-		return null;
+
+		Map<String, Object> commonParams = new HashMap<>();
+		commonParams.put("url",url);
+		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+		commonParams.put("appId", "");
+		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL01.getCode());
+		commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+		Map<String, Object> params = buildRequestParam(token, customerName, idCard, phone, category, "false");
+		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL01.getCode(),commonParams,params);
+		return response;
 	}
 
 
 	@Override
-	public JSONObject queryAccessReportData(String customerName, String idCard, String phone) {
+	public JSONObject queryAccessReportData(String customerName, String idCard, String phone,Map<String,Object> commonParams ) {
 		JSONObject json = new JSONObject();
 		String token=getAccessToken();
 		if(StringUtils.isBlank(token))
 			return null;
 		//用户报告
-		JxlData report = mongoTemplate.findOne(new Query(Criteria.where("name").is(customerName)
-				.and("idCard").is(idCard).and("phone").is(phone).and("interfaceType").is(RmsConstants.JXL_REPORT_INTERFACE)), JxlData.class);
-
-		if(report!=null)
+		if(!(boolean)commonParams.get("isRpc")){
+			JxlData report = mongoTemplate.findOne(new Query(Criteria.where("name").is(customerName)
+					.and("idCard").is(idCard).and("phone").is(phone).and("interfaceType").is(RmsConstants.JXL_REPORT_INTERFACE)), JxlData.class);
 			json.put("report_data", report.getData());
-		else{
-			String reportData = getAccessReportData(token, customerName, idCard, phone);
-			json.put("report_data", reportData==null ? "":reportData);
+			return json;
 		}
+		String reportData = getAccessReportData(token, customerName, idCard, phone, commonParams);
+		json.put("report_data", reportData==null ? "":reportData);
 		return json;
 	}
 	
@@ -149,91 +143,59 @@ public class JxlDataServiceImpl implements IJxlDataService {
 	 * @param phone
 	 * @return JxlData
 	 */
-	private String getAccessReportData(String token, String name, String idCard, String phone){
+	private String getAccessReportData(String token, String name, String idCard, String phone,Map<String,Object>commonParams){
 		String url=jxlDao.getAccessReportDataUrl();
-	
-		Map<String, Object> params = buildRequestParam(token, name, idCard, phone);
-
-		long start=System.currentTimeMillis();
-		
-		jxlLog.info("开始获取用户报告数据, [ "+ name +" ], [ "+ phone +" ], [ "+ idCard +" ]");
-		ResponseResult response=HttpConnectionManager.doGet(url, params);
-		jxlLog.info("执行结束, 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
-		
-		if(null!=response && response.getCode()==HttpStatus.SC_OK){
-			String result = (String)response.getData();
-			JSONObject jsonResult= JSON.parseObject(result);
-			if(null!=jsonResult && jsonResult.getString("success").equalsIgnoreCase("true")
-					&& StringUtils.isNotBlank(jsonResult.getString("report_data"))){
-				
-				String reportData=jsonResult.getString("report_data");
-				jxlLog.info("成功获取用户报告, 长度[ "+reportData.length()+" ]");
-				
-				saveJxlData(new JxlData(RmsConstants.JXL_REPORT_INTERFACE, name, idCard, phone, "用户报告数据", reportData));
-				
-				return reportData;
-			}
+		Map<String, Object> bizParams = buildRequestParam(token, name, idCard, phone);
+		commonParams.put("url",url);
+		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+		commonParams.put("appId", "");
+		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL01.getCode());
+		commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL02.getCode(),commonParams,bizParams);
+		String reportData = (String)response.getData();
+		if(reportData!=null){
+			saveJxlData(new JxlData(RmsConstants.JXL_REPORT_INTERFACE, name, idCard, phone, "用户报告数据", reportData));
 		}
-		
-		return null;
+		return reportData;
 	}
 
-	private String getAccessRawData(String token, String name, String idCard, String phone){
+	private String getAccessRawData(String token, String name, String idCard, String phone,Map<String,Object>commonParams){
 		String url=jxlDao.getAccessRawDataUrl();
-		
-		Map<String, Object> params = buildRequestParam(token, name, idCard, phone);
-		
-		long start=System.currentTimeMillis();
-		
+
+		Map<String, Object> bizParams = buildRequestParam(token, name, idCard, phone);
+		commonParams.put("url",url);
+		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+		commonParams.put("appId", "");
+		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL01.getCode());
+		commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 		jxlLog.info("开始获取移动运营商数据, [ "+ name +" ], [ "+ phone +" ], [ "+ idCard +" ]");
-		ResponseResult response=HttpConnectionManager.doGet(url, params);
-		jxlLog.info("执行结束, 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
-		
-		if(null!=response && response.getCode()==HttpStatus.SC_OK){
-			String result = (String)response.getData();
-			JSONObject jsonResult= JSON.parseObject(result);
-			if(null!=jsonResult && jsonResult.getString("success").equalsIgnoreCase("true") 
-					&& StringUtils.isNotBlank(jsonResult.getString("raw_data"))){
-				
-				String rawData=jsonResult.getString("raw_data");
-				jxlLog.info("成功获取移动运营商数据, 长度[ "+rawData.length()+" ]");
-				
-				saveJxlData(new JxlData(RmsConstants.JXL_RAW_INTERFACE, name, idCard, phone, "移动运营商数据", rawData));
-				
-				return rawData;
-			}
+		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL03.getCode(),commonParams,bizParams);
+		String rawData = (String)response.getData();
+		if(rawData!=null){
+			saveJxlData(new JxlData(RmsConstants.JXL_RAW_INTERFACE, name, idCard, phone, "移动运营商数据", rawData));
 		}
-		
-		return null;
+		return rawData;
 	}
 	
-	private String getAccessBusiRawData(String token, String name, String idCard, String phone){
+	private String getAccessBusiRawData(String token, String name, String idCard, String phone,Map<String,Object>commonParams){
 		String url=jxlDao.getAccessBusiRawDataUrl();
-		
-		Map<String, Object> params = buildRequestParam(token, name, idCard, phone);
-		
-		long start=System.currentTimeMillis();
-		
+
+		Map<String, Object> bizParams = buildRequestParam(token, name, idCard, phone);
+		commonParams.put("url",url);
+		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+		commonParams.put("appId", "");
+		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL01.getCode());
+		commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 		jxlLog.info("开始获取电商数据, [ "+ name +" ], [ "+ phone +" ], [ "+ idCard +" ]");
-		ResponseResult response=HttpConnectionManager.doGet(url, params);
-		jxlLog.info("执行结束, 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
-		
-		if(null!=response && response.getCode()==HttpStatus.SC_OK){
-			String result = (String)response.getData();
-			JSONObject jsonResult= JSON.parseObject(result);
-			if(null!=jsonResult && jsonResult.getString("success").equalsIgnoreCase("true") 
-					&& StringUtils.isNotBlank(jsonResult.getString("raw_data"))){
-				
-				String rawData=jsonResult.getString("raw_data");
-				jxlLog.info("成功获取电商数据");
-				
-				saveJxlData(new JxlData(RmsConstants.JXL_BUSI_RAW_INTERFACE, name, idCard, phone, "电商数据", rawData));
-				
-				return rawData;
-			}
+		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL04.getCode(),commonParams,bizParams);
+		String rawData = (String)response.getData();
+		if(rawData!=null){
+			saveJxlData(new JxlData(RmsConstants.JXL_BUSI_RAW_INTERFACE, name, idCard, phone, "电商数据", rawData));
 		}
-		
-		return null;
+		return rawData;
 	}
 
 	private String getAccessToken(){
@@ -242,20 +204,18 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		params.put("org_name", orgName);
 		params.put("client_secret", clientSecret);
 		params.put("hours", RmsConstants.JXL_TOKEN_EXPIRED_HOUR);
-		
-		long start=System.currentTimeMillis();
-		
-		jxlLog.info("开始获取Token...");
-		ResponseResult response=HttpConnectionManager.doGet(url, params);
-		jxlLog.info("执行结束, 返回[ "+response+" ], 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
-		
-		if(null!=response && response.getCode()==HttpStatus.SC_OK){
-			String result = (String)response.getData();
-			JSONObject jsonResult= JSON.parseObject(result);
-			if(null!=jsonResult && jsonResult.getString("success").equalsIgnoreCase("true"));
-				return jsonResult.getString("access_token");
+
+		Map<String, Object> commonParams = new HashMap<>();
+		commonParams.put("url",url);
+		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+		commonParams.put("appId", "");
+		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL05.getCode());
+		commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL05.getCode(),commonParams,params);
+		if(response!=null&&response.getCode()== ReturnCode.REQUEST_SUCCESS.code()){
+			return (String)response.getData();
 		}
-		
 		return null;
 	}
 	

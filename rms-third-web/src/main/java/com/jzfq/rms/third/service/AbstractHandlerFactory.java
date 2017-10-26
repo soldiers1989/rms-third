@@ -33,7 +33,7 @@ public class AbstractHandlerFactory {
     protected static String getHandlerName(String method){
         return AbstractSendHandler.getDefaultBasePackage() +"."+ SendMethodEnum.getName(method);
     }
-    protected static ResponseResult getResult(String method, Map<String, Object> params) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    protected static ResponseResult getResult(String method, Map<String, Object> params) throws Exception {
         Class<? extends AbstractResponseHandler> clazz = (Class<? extends AbstractResponseHandler>)
                 Class.forName(getResponseHandlerName(method));
         Constructor<? extends AbstractResponseHandler> c = clazz.getConstructor();
@@ -41,7 +41,7 @@ public class AbstractHandlerFactory {
         handler.init(params);
         return getResult(handler);
     }
-    protected static ResponseResult getResult(IResponseHandler handler){
+    protected static ResponseResult getResult(IResponseHandler handler) throws Exception{
         return handler.getResult();
     }
     protected static String getResponseHandlerName(String method){

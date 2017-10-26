@@ -1,8 +1,11 @@
 package com.jzfq.rms.third.web.action.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.service.IJxlDataService;
+import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,6 +38,8 @@ public class Request1003Handler   extends AbstractRequestHandler {
         return false;
     }
 
+
+
     /**
      * 检查业务参数是否合法，交由子类实现。
      *
@@ -42,12 +48,11 @@ public class Request1003Handler   extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-        String traceId = (String)params.get("traceId");
         String customerName = (String)params.get("customerName");
         String idCard = (String)params.get("idCard");
         String phone = (String)params.get("phone");
         String category = (String)params.get("category");
-        boolean check = StringUtils.isBlank(traceId)||StringUtils.isBlank(customerName)||
+        boolean check = StringUtils.isBlank(customerName)||
                 StringUtils.isBlank(idCard)||StringUtils.isBlank(phone)
                 ||StringUtils.isBlank(category);
         if(check){
@@ -64,12 +69,11 @@ public class Request1003Handler   extends AbstractRequestHandler {
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
-        String traceId = request.getParam("traceId").toString();
         String customerName = request.getParam("customerName").toString();
         String idCard = request.getParam("idCard").toString();
         String phone = request.getParam("phone").toString();
         String category = request.getParam("category").toString();
-        String data = jxlDataService.queryStatus(customerName,idCard,phone,category);
-        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
+        log.info("开始获取用户报告数据执行状态, [ "+ customerName +" ], [ "+ phone +" ], [ "+ idCard +" ]");
+        return jxlDataService.queryStatus(customerName,idCard,phone,category);
     }
 }

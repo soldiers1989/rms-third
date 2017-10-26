@@ -7,6 +7,7 @@ import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IPengYuanService;
 import com.jzfq.rms.third.service.IRmsService;
+import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -27,11 +28,19 @@ import java.util.Map;
 @Component("request1002Handler")
 public class Request1002Handler extends AbstractRequestHandler{
     private static final Logger log = LoggerFactory.getLogger("PengYuan");
+
+    /**
+     * 超时时间 三天
+     */
+    private static final Long time = 3*24*60*60L;
     @Autowired
     private IPengYuanService pengYuanService;
 
     @Autowired
     IRmsService rmsService;
+
+    @Autowired
+    ICountCache interfaceCountCache;
 
     /**
      * 是否控制重复调用
@@ -67,8 +76,17 @@ public class Request1002Handler extends AbstractRequestHandler{
     }
     @Override
     protected boolean isRpc(Map<String, Serializable> params){
-
-        return true;
+        Map<String,Object> carInfo = JSONObject.parseObject(params.get("carInfo").toString(), HashMap.class);
+        String type = carInfo.get("type").toString();
+        if (Integer.parseInt(type) <= 9) {
+            type = String.format("%02d", Integer.parseInt(type));
+        }
+        StringBuilder key = new StringBuilder();
+        key.append("rms_third_1002_").append(StringUtil.getStringOfObject(type))
+                .append(StringUtil.getStringOfObject(carInfo.get("certCardNo")))
+                .append(StringUtil.getStringOfObject(carInfo.get("phone")))
+                .append(StringUtil.getStringOfObject(carInfo.get("plateNo")));
+        return interfaceCountCache.isRequestOutInterface(key.toString(),time);
     }
     /**
      * 版本01 处理器

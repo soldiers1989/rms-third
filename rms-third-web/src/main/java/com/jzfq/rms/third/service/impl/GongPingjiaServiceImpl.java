@@ -272,7 +272,6 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
 
         params.put("url",detailModelInfoUrl);
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
-        params.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());
         params.put("appId", "");
         params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_SYNCHRONIZEDATA.getCode());
         params.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
@@ -355,7 +354,6 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
 
         params.put("url",evaluationUrl);
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
-        params.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());
         params.put("appId", "");
         params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
         params.put("systemId", SystemIdEnum.RMS_THIRD.getCode());

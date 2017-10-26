@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ITdDataService;
+import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -39,7 +41,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
      */
     @Override
     protected boolean isCheckRepeat() {
-        return false;
+        return true;
     }
 
     /**
@@ -59,6 +61,26 @@ public class Request1008Handler  extends AbstractRequestHandler {
         }
         return true;
     }
+    @Autowired
+    ICountCache interfaceCountCache;
+    /**
+     * 超时时间 三天
+     */
+    private static final Long time = 3*24*60*60L;
+    @Override
+    protected boolean isRpc(Map<String, Serializable> params){
+        Map<String,Object> carInfo = JSONObject.parseObject(params.get("carInfo").toString(), HashMap.class);
+        String type = carInfo.get("type").toString();
+        if (Integer.parseInt(type) <= 9) {
+            type = String.format("%02d", Integer.parseInt(type));
+        }
+        StringBuilder key = new StringBuilder();
+        key.append("rms_third_1002_").append(StringUtil.getStringOfObject(type))
+                .append(StringUtil.getStringOfObject(carInfo.get("certCardNo")))
+                .append(StringUtil.getStringOfObject(carInfo.get("phone")))
+                .append(StringUtil.getStringOfObject(carInfo.get("plateNo")));
+        return interfaceCountCache.isRequestOutInterface(key.toString(),time);
+    }
 
     /**
      * 业务处理，交由子类实现。
@@ -68,6 +90,41 @@ public class Request1008Handler  extends AbstractRequestHandler {
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+        if(StringUtils.equals(request.getApiVersion(),"02")){
+            return handler02(request);
+        }
+        return handler01(request);
+    }
+    /**
+     * 版本01 处理器
+     * @param request
+     * @return
+     */
+    private  ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
+        String traceId = TraceIDThreadLocal.getTraceID();
+        String orderNo = request.getParam("orderNo").toString();
+        Byte loanType = (Byte)request.getParam("loanType");
+        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+        RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
+                RiskPersonalInfo.class);
+        Map<String,Object> queryParams = new HashMap<>();
+        queryParams.put("traceId",traceId);
+        queryParams.put("taskId",taskId);
+        queryParams.put("personalInfo",personInfo);
+        queryParams.put("loanType",loanType);
+        Object data = tdDataService.getTdData(queryParams);
+        if(data == null){
+            new RuntimeException("traceId=" +traceId+ "同盾分获取结果为null");
+        }
+        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, data);
+    }
+
+    /**
+     * 版本02 处理器
+     * @param request
+     * @return
+     */
+    private  ResponseResult handler02(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         Byte loanType = (Byte)request.getParam("loanType");

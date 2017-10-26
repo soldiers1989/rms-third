@@ -12,7 +12,12 @@ import com.jzfq.rms.mongo.FraudApiInvoker;
 import com.jzfq.rms.mongo.FraudApiResponse;
 import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.mongo.TdHitRuleData;
+import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.*;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.ITdDao;
+import com.jzfq.rms.third.service.ISendMessegeService;
 import com.jzfq.rms.third.service.ITdDataService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -167,6 +172,7 @@ public class TdDataServiceImpl implements ITdDataService {
         }else {
             env = Environment.SANDBOX;
         }
+
         // 调用接口
         RuleDetailClient client = RuleDetailClient.getInstance(partner_code, env);
         RuleDetailResult result = client.execute(partner_key, sequenceId);
@@ -343,5 +349,123 @@ public class TdDataServiceImpl implements ITdDataService {
             }
         }
         return "";
+    }
+
+    @Autowired
+    ISendMessegeService sendMessegeService;
+    /**
+     *
+     * @param commonParams
+     * @param info
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ResponseResult queryTdDatas(Map<String,Object> commonParams, RiskPersonalInfo info)  throws Exception  {
+        String traceId = (String)commonParams.get("traceId");
+        String taskId = (String)commonParams.get("taskId");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("partner_code", partner_code);       // 合作方标识
+        params.put("secret_key", getSecret2((Byte)commonParams.get("loanType"),
+                (String)commonParams.get("channel"),(String)commonParams.get("traceId"))); // app密钥
+        params.put("event_id", eventId); // 策略集上的事件标识
+        //写个人信息的查询
+        StringBuilder builder = new StringBuilder();
+        builder.append("param [");
+        if (info.getName() != null){
+            params.put("account_name", info.getName());                     //  姓名
+            builder.append(" account_name = " + info.getName() + " ");
+        }
+        if (info.getCertCardNo() != null){
+            params.put("id_number", info.getCertCardNo());                  //  身份证号
+            builder.append(" id_number = " + info.getCertCardNo() + " ");
+        }
+        if (info.getMobile() != null){
+            params.put("account_mobile", info.getMobile());                  //  手机号
+            builder.append(" account_mobile = " + info.getMobile() + " ");
+        }
+        if (info.getBankNo() != null){
+            params.put("card_number", info.getBankNo());                    //  银行卡号
+            builder.append(" card_number = " + info.getBankNo() + " ");
+        }
+        if (info.getEmail() != null){
+            params.put("account_email", info.getEmail());                   //  邮箱
+            builder.append(" account_email = " + info.getEmail() + " ");
+        }
+        if (info.getQq() != null){
+            params.put("qq_number", info.getQq());                          //  qq
+            builder.append(" qq_number = " + info.getQq() + " ");
+        }
+        builder.append(" ]");
+        log.info("apiUrl = {} 执行参数列表：{} " ,apiUrl,builder.toString());
+        //公共参数
+        commonParams.put("url",apiUrl);
+        commonParams.put("targetId", SystemIdEnum.THIRD_TD.getCode());
+        commonParams.put("appId", "");
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_TD01.getCode());
+        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+
+        commonParams.put("taskId", taskId);
+
+        log.info("traceId={} 参数列表：{} " ,commonParams.get("traceId"),  builder.toString());
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.TD01.getCode(),commonParams,params);
+        if (response == null){
+            log.info("traceId={} 同盾拉取无效：false ",commonParams.get("traceId"));     //失败
+            new BusinessException("traceId={} 同盾拉取无效：false",true);
+        }
+        if(response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+            return response;
+        }
+        TdHitRuleData tdHitRuleData = (TdHitRuleData)response.getData();
+        mongoTemplate.insert(tdHitRuleData);
+
+        Map<String,Object> datas = new HashMap<>();
+        datas.put("tdHitRuleData",tdHitRuleData);
+        if (tdHitRuleData.getSeq_id()==null){
+            ResponseResult result = new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,datas);
+            return result;
+        }
+        //通过seqid 查询 同盾规则，保存到mongo
+        String sequenceId = tdHitRuleData.getSeq_id();
+        log.info("seq = " + tdHitRuleData.getSeq_id());
+        TdData tdRule = getTdRuleData(  taskId,  sequenceId,  traceId);
+        datas.put("tdRule",tdRule);
+        ResponseResult result = new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,datas);
+        return result;
+    }
+
+
+    public TdData getTdRuleData(Map<String,Object> commonParams,Long taskId,String sequenceId,String traceId){
+        Environment env = null;
+        // Environment.PRODUCT表示调用生产环境, 测试环境请修改为Environment.SANDBOX
+        if (Objects.equals(urlEnv, "prd")){
+            env = Environment.PRODUCT;
+        }else {
+            env = Environment.SANDBOX;
+        }
+        commonParams.put("url",env.getRuleDetailUrl());
+        commonParams.put("targetId", SystemIdEnum.THIRD_TD.getCode());
+        commonParams.put("appId", "");
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_TD02.getCode());
+        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+
+        commonParams.put("taskId", taskId);
+
+        commonParams.put("partner_code", partner_code);
+        commonParams.put("partner_key", partner_key);
+        commonParams.put("env", env);
+
+        Map<String,Object> bizParams = new HashMap<>();
+        bizParams.put("sequenceId",sequenceId);
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.TD02.getCode(),commonParams,bizParams);
+        log.info("traceId={} 拉取同盾规则",traceId );         //是否成功
+        if (response == null||response.getData()==null||response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()) {
+            return null;
+        }
+        TdData data = (TdData)response.getData();
+        saveTdData(data);
+        return data;
     }
 }

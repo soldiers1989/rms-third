@@ -1,8 +1,10 @@
 package com.jzfq.rms.third.service;
 
+import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.domain.RiskPostTask;
 import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.mongo.TdHitRuleData;
+import com.jzfq.rms.third.common.dto.ResponseResult;
 
 import java.io.IOException;
 import java.util.Map;
@@ -21,6 +23,15 @@ public interface ITdDataService {
      * @throws IOException
      */
     Object getTdData(Map<String, Object> riskPostInfo) throws Exception;
+
+    /**
+     * 抓取同盾数据
+     * @param params
+     * @param person
+     * @return
+     * @throws Exception
+     */
+    ResponseResult queryTdDatas(Map<String,Object> params,RiskPersonalInfo info) throws Exception;
 
     /**
      * 抓取同盾分

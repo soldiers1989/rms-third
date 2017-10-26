@@ -29,10 +29,7 @@ import java.util.Map;
 public class Request1002Handler extends AbstractRequestHandler{
     private static final Logger log = LoggerFactory.getLogger("PengYuan");
 
-    /**
-     * 超时时间 三天
-     */
-    private static final Long time = 3*24*60*60L;
+
     @Autowired
     private IPengYuanService pengYuanService;
 
@@ -74,6 +71,10 @@ public class Request1002Handler extends AbstractRequestHandler{
         }
         return handler01(request);
     }
+    /**
+     * 超时时间 三天
+     */
+    private static final Long time = 3*24*60*60L;
     @Override
     protected boolean isRpc(Map<String, Serializable> params){
         Map<String,Object> carInfo = JSONObject.parseObject(params.get("carInfo").toString(), HashMap.class);

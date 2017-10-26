@@ -270,10 +270,9 @@ public class PengYuanServiceImpl implements IPengYuanService {
         }
 
         commonParams.put("url",pyUrl);
-        commonParams.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
-        commonParams.put("apiId", ApiIdEnum.ThIRD_GPJ_EVALUCTION.getCode());
+        commonParams.put("targetId", SystemIdEnum.THIRD_PY.getCode());
         commonParams.put("appId", "");
-        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_PY01.getCode());
         commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 

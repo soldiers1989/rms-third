@@ -13,7 +13,7 @@ public interface IResponseHandler {
      * 发送
      * @return
      */
-    ResponseResult getResult();
+    ResponseResult getResult() throws Exception;
 
     /**
      * 初始化

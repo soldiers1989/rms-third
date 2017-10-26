@@ -4,7 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bfd.facade.MerchantServer;
 import com.br.bean.MerchantBean;
+import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
+import com.jzfq.rms.third.common.enums.SendMethodEnum;
+import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.constant.Constants;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.service.ISendMessegeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +19,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -67,25 +76,36 @@ public class BrPostService {
     private static final MerchantServer ms = new MerchantServer();
     @Autowired
     MongoTemplate mongoTemplate;
-
+    @Autowired
+    ISendMessegeService sendMessegeService;
     /**
      * 登录百融系统 传入类型
      *
      * @param type
      * @return
      */
-    private String login(int type) {
+    private String login(int type, Map<String,Object> params) {
         String loginResult = Constants.EMPTY_STR;
-        try {
-            if (OFFICE_TYPE == type) {
-                loginResult = ms.login(officeUser, officePwd, officeApiCode);
-            } else if (STU_TYPE == type) {
-                loginResult = ms.login(stuUser, stuPwd, stuApiCode);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("登录失败{}", e);
+        Map<String,Object> commonParams = new HashMap<>();
+        commonParams.put("url","百融客户端调用方法login");
+        commonParams.put("targetId", SystemIdEnum.THIRD_BR.getCode());
+        commonParams.put("appId", "");
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR03.getCode());
+        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+
+        Map<String,Object> bizParams = new HashMap<>();
+        if (OFFICE_TYPE == type) {
+            bizParams.put("userName",officeUser);
+            bizParams.put("pwd",officePwd);
+            bizParams.put("apicode",officeApiCode);
+        } else if (STU_TYPE == type) {
+            bizParams.put("userName",stuUser);
+            bizParams.put("pwd",stuPwd);
+            bizParams.put("apicode",stuApiCode);
         }
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.BR03.getCode(),commonParams,bizParams);
+        loginResult = (String) response.getData();
         return loginResult;
 
     }
@@ -96,10 +116,10 @@ public class BrPostService {
      * @param type
      * @return token
      */
-    private String getToken(int type) {
+    private String getToken(int type,Map<String,Object> commonParams) {
         if (OFFICE_TYPE == type) {
             if (StringUtils.isEmpty(office_token)) {
-                String result = login(type);
+                String result = login(type,commonParams);
                 if (StringUtils.isEmpty(result)) {
                     //登录失败
                     return Constants.EMPTY_STR;
@@ -109,7 +129,7 @@ public class BrPostService {
             }
         } else if (STU_TYPE == type) {
             if (StringUtils.isEmpty(stu_token)) {
-                String result = login(type);
+                String result = login(type,commonParams);
                 if (StringUtils.isEmpty(result)) {
                     //登录失败
                     return Constants.EMPTY_STR;
@@ -134,8 +154,8 @@ public class BrPostService {
      * @param type
      * @return
      */
-    public String getApiData(MerchantBean bean, int type) {
-        getToken(type);
+    public String getApiData(MerchantBean bean, int type,Map<String,Object> commonParams) {
+        getToken(type,commonParams);
         if (OFFICE_TYPE == type) {
             bean.setTokenid(office_token);
         } else if (STU_TYPE == type) {
@@ -143,33 +163,41 @@ public class BrPostService {
         }
         String data = Constants.EMPTY_STR;
         log.info("请求百融接口参数：{}", JSONObject.toJSON(bean));
-        try {
-            data = ms.getApiData(bean);
-            log.info("百融返回结果：[ "+data+" ]");
-            String code = jsonGetKey(data, CODE_KEY);
-            if (Constants.EMPTY_STR.equals(data)) {
-                //登录失败如何处理
-            } else if (RETRY_CODE.equals(code)) {
-                //只重新登录一次，如果还失败，不做处理
-                if (OFFICE_TYPE == type) {
-                    office_token = Constants.EMPTY_STR;
-                    getToken(type);
-                    bean.setTokenid(office_token);
-                } else if (STU_TYPE == type) {
-                    stu_token = Constants.EMPTY_STR;
-                    getToken(type);
-                    bean.setTokenid(stu_token);
-                }
-                log.info("token失效后再次请求百融接口参数：{}", JSONObject.toJSON(bean));
-                log.info("请求百融接口参数：{}",data);
-                data = ms.getApiData(bean);
+
+
+        commonParams.put("url","百融客户端调用方法getApiData");
+        commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+        commonParams.put("appId", "");
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL05.getCode());
+        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+
+        commonParams.put("ms",ms);
+
+        Map<String ,Object> bizParams = new HashMap<>();
+        bizParams.put("bean",bean);
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.BR01.getCode(),commonParams,bizParams);
+        data = (String) response.getData();
+        log.info("百融返回结果：[ "+data+" ]");
+        String code = jsonGetKey(data, CODE_KEY);
+        if (Constants.EMPTY_STR.equals(data)) {
+            //登录失败如何处理
+        } else if (RETRY_CODE.equals(code)) {
+            //只重新登录一次，如果还失败，不做处理
+            if (OFFICE_TYPE == type) {
+                office_token = Constants.EMPTY_STR;
+                getToken(type,commonParams);
+                bean.setTokenid(office_token);
+            } else if (STU_TYPE == type) {
+                stu_token = Constants.EMPTY_STR;
+                getToken(type,commonParams);
+                bean.setTokenid(stu_token);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("调用API时失败{}", e);
+            log.info("token失效后再次请求百融接口参数：{}", JSONObject.toJSON(bean));
+            log.info("请求百融接口参数：{}",data);
+            response = sendMessegeService.sendByThreeChance(SendMethodEnum.BR01.getCode(),commonParams,bizParams);
+            data = (String) response.getData();
         }
-
         return data;
     }
 

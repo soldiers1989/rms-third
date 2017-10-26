@@ -28,6 +28,7 @@ public class JieanSendHandler extends AbstractSendHandler {
      */
     @Override
     public void init(Map<String, Object> params, Map<String, Object> bizParams) {
-
+        this.setParams(params);
+        this.setBizParams(bizParams);
     }
 }

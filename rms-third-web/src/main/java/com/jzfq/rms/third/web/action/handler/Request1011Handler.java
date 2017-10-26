@@ -9,6 +9,7 @@ import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.impl.BrPostService;
+import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,9 +47,30 @@ public class Request1011Handler extends AbstractRequestHandler{
      */
     @Override
     protected boolean isCheckRepeat() {
-        return false;
+        return true;
     }
+    @Autowired
+    ICountCache interfaceCountCache;
+    /**
+     * 超时时间 三天
+     */
+    private static final Long time = 3*24*60*60L;
 
+    private static final String SPLIT_STR = "_";
+    @Override
+    protected boolean isRpc(Map<String, Serializable> params){
+        String traceId = (String)params.get("traceId");
+        String customerName = (String)params.get("customerName");
+        String idCard = (String)params.get("idCard");
+        String phone = (String)params.get("phone");
+        StringBuilder key = new StringBuilder();
+        key.append("rms_third_1004_").append(StringUtil.getStringOfObject(customerName))
+                .append(SPLIT_STR)
+                .append(StringUtil.getStringOfObject(idCard))
+                .append(SPLIT_STR)
+                .append(StringUtil.getStringOfObject(phone));
+        return interfaceCountCache.isRequestOutInterface(key.toString(),time);
+    }
     /**
      * 检查业务参数是否合法，交由子类实现。
      *
@@ -78,7 +101,8 @@ public class Request1011Handler extends AbstractRequestHandler{
         if(!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2){
             return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,jsonObject);
         }
-        String result = brPostService.getApiData(bean, customerType);
+        Map<String,Object> commonParams = getCommonParams( request);
+        String result = brPostService.getApiData(bean, customerType,commonParams);
         if (StringUtil.checkNotEmpty(result)) {
             BrPostData data = buildPostData(taskId, "", result, customerType.toString());
             //保存信息，并且更新任务
@@ -92,5 +116,12 @@ public class Request1011Handler extends AbstractRequestHandler{
         BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
                 .desc(desc).data(data).interfaceType(type).build();
         return dataBean;
+    }
+
+    private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
+        Map<String,Object> commonParams = new HashMap<>();
+        commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
+        commonParams.put("isRpc",this.isRpc());
+        return commonParams;
     }
 }

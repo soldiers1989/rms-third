@@ -23,6 +23,7 @@ public enum ReturnCode {
     ERROR_RESPONSE_NULL(9,"响应为空"),
     ERROR_THIRD_RESPONSE(10,"第三方接口错误"),
     ERROR_THIRD_RRSPONSE_NULL(11,"第三方返回为空"),
+    REQUEST_SAME_EXCUTING(199,"有相同的请求正在执行"),
     REQUEST_SUCCESS(200,"请求成功"),
     ERROR_PARAMS(400, "参数不完整"),
     ERROR_DUPLICATE(401, "重复操作"),

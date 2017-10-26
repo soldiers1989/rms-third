@@ -30,8 +30,9 @@ public enum InterfaceIdEnum {
 
     THIRD_JIEAN01("16","捷安-手机在网时长"),
     THIRD_JIEAN02("17","捷安-手机在网状态"),
-    THIRD_JIEAN03("18","捷安-运营商实名");
-    ;
+    THIRD_JIEAN03("18","捷安-运营商实名"),
+
+    THIRD_BR03("21","百融-登陆事件");
 
     private String code;
     private String name;

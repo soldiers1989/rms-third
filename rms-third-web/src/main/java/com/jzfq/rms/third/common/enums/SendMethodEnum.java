@@ -30,7 +30,9 @@ public enum SendMethodEnum {
 
     JIEAN01("16","JieanSendHandler"),//捷安-手机在网时长
     JIEAN02("17","JieanSendHandler"),//捷安-手机在网状态
-    JIEAN03("18","JieanSendHandler");//捷安-运营商实名
+    JIEAN03("18","JieanSendHandler"),//捷安-运营商实名
+
+    BR03("21","BrSendHandler");//百融登陆事件
 
     private String code;
     private String name;

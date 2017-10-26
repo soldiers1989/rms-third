@@ -17,7 +17,7 @@ public class BrResponseHandler extends AbstractResponseHandler {
      */
     @Override
     public ResponseResult getResult() {
-        return null;
+        return (ResponseResult)params.get("response");
     }
 
     /**
@@ -27,6 +27,6 @@ public class BrResponseHandler extends AbstractResponseHandler {
      */
     @Override
     public void init(Map<String, Object> params) {
-
+        this.params = params;
     }
 }

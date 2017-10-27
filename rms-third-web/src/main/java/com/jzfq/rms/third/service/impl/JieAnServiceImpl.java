@@ -1,8 +1,10 @@
 package com.jzfq.rms.third.service.impl;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.service.IJieAnService;
+import com.jzfq.rms.third.service.ISendMessegeService;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
@@ -11,6 +13,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +38,9 @@ public class JieAnServiceImpl implements IJieAnService {
     private String apiUrl;
     @Value("${jiean.request.custId}")
     private String custId;
+
+    @Autowired
+    ISendMessegeService sendMessegeService;
 
     /**
      * 获取加密字符串
@@ -165,10 +171,15 @@ public class JieAnServiceImpl implements IJieAnService {
         params.put("merPriv","");
         String input = getInputStr(params);
         params.put("macStr", getMacStr(input));
+
+//        sendMessegeService.sendByThreeChance(SendMethodEnum.GPJ02.getCode(),params,params);
         JSONObject respone = postData(params);
         String respCode = respone.getString("respCode");
         if (respone == null ||(!StringUtils.equals(respCode,"000")&&
-                !StringUtils.equals(respCode,"042"))) {
+                !StringUtils.equals(respCode,"042")&&
+                !StringUtils.equals(respCode,"308")&&
+                !StringUtils.equals(respCode,"310")&&
+                !StringUtils.equals(respCode,"313"))) {
             throw new Exception("taskId【"+user_id+"】Request JieAn api MP3 returns fail code:" + respCode);
         }
         return respone;

@@ -2,6 +2,10 @@ package com.jzfq.rms.third.web.action.auth;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 手机在网时长
  * @author 大连桔子分期科技有限公司
@@ -18,7 +22,12 @@ public class Request1017 extends AbstractRequestAuthentication {
      */
     @Override
     protected void getBizParams(JSONObject params) {
-
+        String paramsStr = params.getString("params");
+        if(paramsStr==null){
+            return ;
+        }
+        Map<String,Serializable> map = JSONObject.parseObject(paramsStr, HashMap.class);
+        setParams(map);
     }
 }
 

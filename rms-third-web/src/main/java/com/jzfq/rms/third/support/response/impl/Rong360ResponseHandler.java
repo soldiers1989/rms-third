@@ -27,6 +27,6 @@ public class Rong360ResponseHandler extends AbstractResponseHandler {
      */
     @Override
     public void init(Map<String, Object> params) {
-
+        this.params = params;
     }
 }

@@ -7,6 +7,7 @@ import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.mongo.PengYuan;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.service.IGongPingjiaService;
+import com.jzfq.rms.third.service.IJieAnService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.*;
@@ -15,9 +16,10 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -42,10 +44,13 @@ import java.util.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
 public class ExportBrDataTest {
+    private static final Logger log = LoggerFactory.getLogger("ExportBrDataTest");
     @Autowired
     IGongPingjiaService gongPingjiaService;
     @Autowired
     private MongoTemplate mongoTemplate;
+//    @Autowired
+//    JieanxxMapper jieanxxMapper;
     @Test
     public void test() throws Exception{
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -529,6 +534,8 @@ public class ExportBrDataTest {
             e.printStackTrace();
         }
     }
+    @Autowired
+    IJieAnService jieAnService;
 
     private String getTimeStr(String value){
         if(StringUtils.equals("1",value)){
@@ -543,4 +550,161 @@ public class ExportBrDataTest {
             return "";
         }
     }
+
+
+//    @Test
+//    public void test3(){
+//        JieanxxExample example = new JieanxxExample();
+//        JieanxxExample.Criteria c =example.createCriteria().andTaskidIsNotNull().andTaskidEqualTo("10532062");
+//        List<Jieanxx> list = jieanxxMapper.selectByExample(example);
+//        int i = 0;
+//
+//        for(Jieanxx jieanxx:list){
+//            System.out.println(++i+"條");
+//            if(!StringUtils.isBlank(jieanxx.getSanyaosu())&&!StringUtils.isBlank(jieanxx.getZhuangtai())
+//                    &&!StringUtils.isBlank(jieanxx.getShichang())){
+//                continue;
+//            }
+//            String idNumber = jieanxx.getIdnumber();
+//            String name = jieanxx.getName();
+//            String phone = jieanxx.getPhone();
+//            Map<String, String> bizData = new HashMap<>();
+//            bizData.put("name",name);
+//            bizData.put("idNumber",idNumber);
+//            bizData.put("phone",phone);
+//            example = new JieanxxExample();
+//            c =example.createCriteria().andTaskidEqualTo(jieanxx.getTaskid());
+//            try {
+//                net.sf.json.JSONObject resultJson = null;
+//
+//                if(StringUtils.isBlank(jieanxx.getSanyaosu())){
+//                    try{
+//                        resultJson = jieAnService.getMobilecheck3item(jieanxx.getTaskid(), bizData);
+//                        String info = changeBairongPhone3rdinfo(resultJson);
+//                        jieanxx.setSanyaosu(info);
+//                    }catch (Exception e){
+//                        log.info("taskId={} : {}",jieanxx.getTaskid(),e.getMessage());
+//                    }
+//                }
+//                if(StringUtils.isBlank(jieanxx.getZhuangtai())){
+//                    try{
+//                        resultJson = jieAnService.getPhonestatus(jieanxx.getTaskid(), bizData);
+//                        String status = changeBairongPhonestatus(resultJson);
+//                        jieanxx.setZhuangtai(status);
+//                    }catch (Exception e){
+//                        log.info("taskId={} : {}",jieanxx.getTaskid(),e.getMessage());
+//                    }
+//
+//                }
+//                if(StringUtils.isBlank(jieanxx.getShichang())){
+//                    try{
+//                        resultJson = jieAnService.getPhoneNetworkLength(jieanxx.getTaskid(), bizData);
+//                        String length = changeBairongPhoneNetworkLength(resultJson);
+//                        jieanxx.setShichang(length);
+//                    }catch (Exception e){
+//                        log.info("taskId={} : {}",jieanxx.getTaskid(),e.getMessage());
+//                    }
+//                }
+//                jieanxxMapper.updateByExample(jieanxx,example);
+//            } catch (Exception e) {
+//                log.info("taskId={} : {}",jieanxx.getTaskid(),e.getMessage());
+//            }
+//        }
+//    }
+//
+//
+//    /**
+//     * 三要素转换
+//     * @param paramJson
+//     * @return
+//     */
+//    /**
+//     * 三要素转换
+//     * @param paramJson
+//     * @return
+//     */
+//    private static String changeBairongPhone3rdinfo(net.sf.json.JSONObject paramJson){
+//        return paramJson.getString("respCode");
+//    }
+//
+//    /**
+//     * 在网状态转换
+//     * @param paramJson
+//     * @return
+//     */
+//    private static String changeBairongPhonestatus(net.sf.json.JSONObject paramJson){
+//        String key=paramJson.getString("jsonStr");
+//        com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(key);
+//        return json.getString("OUTPUT1");
+//    }
+//
+//    /**
+//     * 在网时间转换
+//     * @param paramJson
+//     * @return
+//     */
+//    private static String changeBairongPhoneNetworkLength(net.sf.json.JSONObject paramJson){
+//        String key=paramJson.getString("jsonStr");
+//        com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(key);
+//        return json.getString("OUTPUT1");
+//    }
+//
+//
+//
+//    @Test
+//    public void test4(){
+//        JieanxxExample example = new JieanxxExample();
+//        JieanxxExample.Criteria c =example.createCriteria().andTaskidIsNotNull();
+//        List<Jieanxx> list = jieanxxMapper.selectByExample(example);
+//        int i = 0;
+//
+//        for(Jieanxx jieanxx:list){
+//            System.out.println(++i+"條");
+//            example = new JieanxxExample();
+//            c =example.createCriteria().andTaskidEqualTo(jieanxx.getTaskid());
+//            try {
+//                if(StringUtils.isNotBlank(jieanxx.getShichang())&&StringUtils.isBlank(jieanxx.getShichangstr())){
+//                    String length = changeLengthByValue(jieanxx.getShichang());
+//                    jieanxx.setShichangstr(length);
+//                    jieanxxMapper.updateByExample(jieanxx,example);
+//                }
+//            } catch (Exception e) {
+//                log.info("taskId={} : {}",jieanxx.getTaskid(),e.getMessage());
+//            }
+//        }
+//    }
+//
+//    private static String changeLengthByValue(String length){
+//        if(!length.contains(",")){
+//            return "";
+//        }
+//        String[] month = length.split(",");
+//        String start = "";
+//        if(month[0].length()>1){
+//            start = month[0].substring(1,month[0].length()).trim();
+//        }
+//        String end = "";
+//        if(month[1].length()>1){
+//            end = month[1].substring(0,month[1].length()-1).trim();
+//        }
+//        if(org.apache.commons.lang.math.NumberUtils.isNumber(end)){
+//            Integer endMonth = Integer.parseInt(end);
+//            if(endMonth<=6){
+//                return "1";
+//            }
+//            if(endMonth<=12){
+//                return "2";
+//            }
+//            if(endMonth<=24){
+//                return "3";
+//            }
+//        }
+//        if(org.apache.commons.lang.math.NumberUtils.isNumber(start)){
+//            Integer startMonth = Integer.parseInt(start);
+//            if(startMonth>=24){
+//                return "4";
+//            }
+//        }
+//        return "";
+//    }
 }

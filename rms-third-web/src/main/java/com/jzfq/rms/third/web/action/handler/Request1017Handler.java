@@ -72,7 +72,7 @@ public class Request1017Handler extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
+    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String taskId = rmsService.queryByOrderNo(traceId, orderNo);
@@ -80,21 +80,12 @@ public class Request1017Handler extends AbstractRequestHandler {
         String idNumber = request.getParam("idNumber").toString();
         String phone = request.getParam("phone").toString();
         String custumType = request.getParam("custumType").toString();
-        Map<String, String> bizData = new HashMap<>();
+        Map<String, Object> bizData = new HashMap<>();
         bizData.put("name",name);
         bizData.put("idNumber",idNumber);
         bizData.put("phone",phone);
-        String result ="";
-        try {
-            //手机在网时长
-            JSONObject resultJson2 = jieAnService.getPhoneNetworkLength(taskId, bizData);
-            result = changeBairongPhoneNetworkLength(resultJson2);
-            BrPostData data = editAndSavePostData(taskId, "手机在网时长", result, custumType);
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
-        }catch (Exception e){
-            log.error("手机在网时长"+e.getMessage());
-        }
-        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,null);
+        bizData.put("custumType",custumType);
+        return jieAnService.getPhoneNetworkLength(taskId, bizData);
     }
 
     /**

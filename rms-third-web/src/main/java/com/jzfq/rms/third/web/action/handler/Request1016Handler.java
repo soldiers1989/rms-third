@@ -72,7 +72,7 @@ public class Request1016Handler extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
+    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
         String traceId = request.getParam("traceId").toString();
         String orderNo = request.getParam("orderNo").toString();
         String taskId = rmsService.queryByOrderNo(traceId, orderNo);
@@ -80,21 +80,13 @@ public class Request1016Handler extends AbstractRequestHandler {
         String idNumber = request.getParam("idNumber").toString();
         String phone = request.getParam("phone").toString();
         String custumType = request.getParam("custumType").toString();
-        Map<String, String> bizData = new HashMap<>();
+        Map<String, Object> bizData = new HashMap<>();
         bizData.put("name",name);
         bizData.put("idNumber",idNumber);
         bizData.put("phone",phone);
+        bizData.put("custumType",custumType);
         String result ="";
-        try {
-            //手机在网状态
-            JSONObject resultJson3 = jieAnService.getPhonestatus(taskId, bizData);
-            result = changeBairongPhonestatus(resultJson3);
-            BrPostData data = editAndSavePostData(taskId, "手机在网状态", result, custumType);
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
-        }catch (Exception e){
-            log.error("手机在网状态"+e.getMessage());
-        }
-        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,null);
+        return jieAnService.getPhonestatus(taskId, bizData);
     }
 
     /**

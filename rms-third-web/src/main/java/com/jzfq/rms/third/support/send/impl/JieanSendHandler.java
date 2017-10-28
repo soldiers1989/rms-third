@@ -13,6 +13,10 @@ import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,15 +32,15 @@ public class JieanSendHandler extends AbstractSendHandler {
      * @return
      */
     @Override
-    public ResponseResult send() {
+    public ResponseResult send() throws Exception{
         if(StringUtils.equals(InterfaceIdEnum.THIRD_JIEAN01.getCode(),(String)this.getParams().get("interfaceId"))){
             return getJieanData01();
         }
         if(StringUtils.equals(InterfaceIdEnum.THIRD_JIEAN02.getCode(),(String)this.getParams().get("interfaceId"))){
-            return getJieanData02();
+            return getJieanData01();
         }
         if(StringUtils.equals(InterfaceIdEnum.THIRD_JIEAN03.getCode(),(String)this.getParams().get("interfaceId"))){
-            return getJieanData03();
+            return getJieanData01();
         }
         return null;
     }
@@ -53,43 +57,89 @@ public class JieanSendHandler extends AbstractSendHandler {
         this.setBizParams(bizParams);
     }
 
-    ResponseResult getJieanData01(){
-        return null;
-    }
-    ResponseResult getJieanData02(){
-        return null;
-    }
-    ResponseResult getJieanData03(){
-        return null;
+    ResponseResult getJieanData01() throws Exception{
+        Map<String ,String> params = (Map<String ,String>)this.getParams().get("params");
+        String input = getInputStr(params);
+        String url = (String)this.getParams().get("url");
+        String MAC_KEY = (String)this.getParams().get("MAC_KEY");
+        params.put("macStr", getMacStr(input,MAC_KEY));
+        return postData(url,params);
     }
 
-    public JSONObject postData(String apiUrl,Map<String,String> params) throws Exception {
+    public ResponseResult postData(String apiUrl,Map<String,String> params) throws Exception {
         logger.info("捷安请求参数："+params);
-        ResponseResult dto = HttpConnectionManager.doUncheckPost(apiUrl,params);
-        String respose = dto.getData().toString();
-        logger.info("捷安返回报文："+respose);
-        Document doc = null;
+        return HttpConnectionManager.doUncheckPost(apiUrl,params);
+    }
+
+    /**
+     * 参数拼串
+     * @param params
+     * @return
+     */
+    private  String getInputStr(Map<String,String> params){
+        StringBuilder input = new StringBuilder("");
+        input.append(getInuptString(params,"versionId"));
+        input.append(getInuptString(params,"chrSet"));
+        input.append(getInuptString(params,"custId"));
+        input.append(getInuptString(params,"ordId"));
+        input.append(getInuptString(params,"transType"));
+        input.append(getInuptString(params,"busiType"));
+        input.append(getInuptString(params,"merPriv"));
+        input.append(getInuptString(params,"retUrl"));
+        input.append(getInuptString(params,"jsonStr"));
+        input.append(getInuptString(params,"merPriv"));
+        return input.toString();
+    }
+
+    private String getInuptString(Map<String,String> params,String key){
+        String input = params.get(key);
+        if(org.apache.commons.lang.StringUtils.isBlank(input)){
+            return "";
+        }
+        return input;
+    }
+
+    /**
+     * 获取加密字符串
+     * @param input
+     * @return
+     */
+    private String getMacStr(String input,String MAC_KEY ){
+        logger.info("MD5摘要前字符串:"+input+MAC_KEY);
+        return MD5Helper.encrypt(input+MAC_KEY);
+    }
+}
+class MD5Helper {
+    private static final int MD5_LENGTH = 32;
+
+    public static String encrypt(String str) {
+        String sRes;
         try {
-            doc = DocumentHelper.parseText(respose);
-        } catch (DocumentException e) {
-            logger.error("taskId:"+params.get("busiType")+"-捷安 接口调用解析报文出错",e);
-            throw new Exception("Request JieAn api "+params.get("transType")+"exception");
+            MessageDigest alg = MessageDigest.getInstance("MD5");
+            alg.update(str.getBytes("UTF-8"));
+            byte[] digesta = alg.digest();
+            sRes = byteToHex(digesta).toUpperCase();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("MD5散列出错，不支持MD5算法！", e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("MD5散列出错，不支持UTF-8字符集！", e);
         }
-        if(doc==null){
-            logger.info("taskId:"+params.get("busiType")+"-捷安 接口返回为空");
-            throw new Exception("Request JieAn api "+params.get("transType")+"return null");
+        return sRes;
+    }
+
+    public static String byteToHex(byte[] bytes) {
+        if (bytes == null) {
+            return null;
         }
-        JSONObject result = new JSONObject();
-        Element root = doc.getRootElement();
-        List<Element> list = root.content();
-        for(Element ele:list){
-            String text = ele.getText();
-            if(org.apache.commons.lang.StringUtils.isBlank(text)|| org.apache.commons.lang.StringUtils.equals(text,"null")){
-                result.put(ele.getName(), "");
-                continue;
+        StringBuilder hex = new StringBuilder(MD5_LENGTH);
+        String temp;
+        for (int i = 0; i < bytes.length; i++) {
+            temp = Integer.toHexString(bytes[i] & 0XFF);
+            if (1 == temp.length()) {
+                hex.append('0');
             }
-            result.put(ele.getName(),text);
+            hex.append(temp);
         }
-        return result;
+        return hex.toString();
     }
 }

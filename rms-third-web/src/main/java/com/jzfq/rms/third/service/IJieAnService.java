@@ -1,5 +1,6 @@
 package com.jzfq.rms.third.service;
 
+import com.jzfq.rms.third.common.dto.ResponseResult;
 import net.sf.json.JSONObject;
 
 import java.util.Map;
@@ -9,36 +10,31 @@ import java.util.Map;
  * @date 2017/10/18 16:48.
  **/
 public interface IJieAnService {
-    /**
-     * 接口调用
-     * @param params
-     * @return
-     */
-    JSONObject postData(Map<String, String> params) throws Exception;
-    /**
-     * 在网时长
-     * @param user_id
-     * @param bizData
-     * @return
-     * @throws Exception
-     */
-    JSONObject getPhoneNetworkLength(String user_id, Map<String, String> bizData) throws Exception;
 
     /**
-     *
-     * @param user_id
+     * 在网时长
+     * @param taskId
      * @param bizData
      * @return
      * @throws Exception
      */
-    JSONObject getMobilecheck3item(String user_id, Map<String, String> bizData) throws Exception;
+    ResponseResult getPhoneNetworkLength(String taskId, Map<String, Object> bizData) throws Exception;
+
+    /**
+     * 三要素 运营商实名
+     * @param taskId
+     * @param bizData
+     * @return
+     * @throws Exception
+     */
+    ResponseResult getMobilecheck3item(String taskId, Map<String, Object> bizData) throws Exception;
 
     /**
      * 在网状态
-     * @param user_id
-     * @param bizData
+     * @param taskId
+     * @param Object
      * @return
      * @throws Exception
      */
-    JSONObject getPhonestatus(String user_id, Map<String, String> bizData) throws Exception;
+    ResponseResult getPhonestatus(String taskId, Map<String, Object> Object) throws Exception;
 }

@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk-source.version>1.8</jdk-source.version>
         <jdk-target.version>1.8</jdk-target.version>
         <spring.version>4.3.2.RELEASE</spring.version>

@@ -1,9 +1,11 @@
 package com.jzfq.rms.third.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.jzfq.rms.third.common.dto.ResponseDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.service.IRmsService;
-import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +40,12 @@ public class RmsServiceImpl implements IRmsService {
         if(respose==null||StringUtils.isBlank(respose.toString())){
             throw new RuntimeException("traceId:"+traceId+" 根据订单号查询taskId 返回结果为null");
         }
-        JSONObject json = JSONObject.fromObject(respose);
-        if(StringUtils.isBlank(json.getString("attach"))){
+        ResponseDTO responseDTO = JSONObject.parseObject((String) respose, ResponseDTO.class);
+        String taskId = (String)responseDTO.getAttach();
+        if(StringUtils.isBlank( taskId)){
             throw new RuntimeException("traceId:"+traceId+" 根据订单号查询taskId 返回结果为null");
         }
         log.info("traceId:"+traceId+" rms返回结果："+dto);
-        return json.getString("attach");
+        return taskId;
     }
 }

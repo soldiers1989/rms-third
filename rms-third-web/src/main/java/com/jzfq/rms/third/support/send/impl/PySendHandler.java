@@ -6,7 +6,9 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.Base64;
 import com.jzfq.rms.third.common.utils.CompressStringUtil;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.support.send.AbstractSendHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.xfire.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +36,10 @@ public class PySendHandler extends AbstractSendHandler {
         String traceId = (String)this.getParams().get("traceId");
         logger.info("TraceId=["+traceId+"]开始获取鹏元数据......");
         //调用webservice
-        String pyUrl =(String) this.getBizParams().get("url");
+        String pyUrl =(String) this.getParams().get("url");
+        if(StringUtils.isBlank(pyUrl)){
+            new BusinessException("鹏元获取车辆信息 接口URL为null",true);
+        }
         Client client = new Client(new URL(pyUrl));
         String userName =(String) this.getBizParams().get("userName");
         String passWord =(String) this.getBizParams().get("passWord");

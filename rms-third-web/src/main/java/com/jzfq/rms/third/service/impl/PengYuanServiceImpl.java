@@ -1,9 +1,6 @@
 package com.jzfq.rms.third.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.jzfq.rms.third.common.dto.ResponseDTO;
-import com.jzfq.rms.constants.RmsConstants;
 import com.jzfq.rms.mongo.PengYuan;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
@@ -12,7 +9,7 @@ import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IPengYuanDao;
 import com.jzfq.rms.third.service.IPengYuanService;
-import com.jzfq.rms.third.service.ISendMessegeService;
+import com.jzfq.rms.third.service.ISendMessageService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +20,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import com.jzfq.rms.third.common.utils.Base64;
-import org.springframework.util.CollectionUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -56,7 +52,7 @@ public class PengYuanServiceImpl implements IPengYuanService {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    ISendMessegeService sendMessegeService;
+    ISendMessageService sendMessegeService;
     @Override
     public JSONObject queryPengYuanData(Long taskId,  Map<String,Object> carInfo) {
 
@@ -247,15 +243,14 @@ public class PengYuanServiceImpl implements IPengYuanService {
     @Override
     public ResponseResult queryPyCarDatas(Map<String,Object> carInfo, Map<String,Object> commonParams) throws Exception{
         boolean isRpc = (boolean)commonParams.get("isRpc");
-        String taskId = (String)commonParams.get("taskId");
+        Long taskId = (Long)commonParams.get("taskId");
         String traceId = TraceIDThreadLocal.getTraceID();
-        if(!isRpc){
-            List<PengYuan> pyData = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId).and("idCard").is(carInfo.get("certCardNo"))),PengYuan.class);
-            JSONObject data = pyData==null?null:pyData.get(0).getData();
-            return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,data);
+        if(isRpc){
+            return getCarDataByRpc(carInfo,commonParams);
         }
-
-        return getCarDataByRpc(carInfo,commonParams);
+        List<PengYuan> pyData = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId).and("idCard").is(carInfo.get("certCardNo"))),PengYuan.class);
+        Object data = (pyData==null||pyData.size()==0)?null:pyData.get(0).getData();
+        return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,data);
     }
     private ResponseResult getCarDataByRpc(Map<String,Object> carInfo, Map<String,Object> commonParams)throws Exception{
         boolean isRpc = (boolean)commonParams.get("isRpc");
@@ -285,7 +280,7 @@ public class PengYuanServiceImpl implements IPengYuanService {
             log.info("traceId={} 鹏元车辆 响应信息为空",TraceIDThreadLocal.getTraceID());
             return response;
         }
-        PengYuan py = (PengYuan)response.getData();
+        PengYuan py = new PengYuan(taskId,(String) carInfo.get("certCardNo"), "", (JSONObject)response.getData());
         saveData(py);
         return response;
     }

@@ -4,25 +4,15 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
-import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IJieAnService;
-import com.jzfq.rms.third.service.ISendMessegeService;
-import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
+import com.jzfq.rms.third.service.ISendMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -43,7 +33,7 @@ public class JieAnServiceImpl implements IJieAnService {
     private String custId;
 
     @Autowired
-    ISendMessegeService sendMessegeService;
+    ISendMessageService sendMessegeService;
 
     private String getOrderId(){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
@@ -64,6 +54,7 @@ public class JieAnServiceImpl implements IJieAnService {
         params.put("versionId","01");
         params.put("chrSet","UTF-8");
         params.put("custId",custId);
+
         String orderId = getOrderId();
         log.info("taskId="+user_id+" orderId="+orderId);
         params.put("ordId",orderId);
@@ -76,7 +67,7 @@ public class JieAnServiceImpl implements IJieAnService {
 
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("params",params);
-
+        commonParams.put("MAC_KEY",MAC_KEY);
         commonParams.put("url",apiUrl);
         commonParams.put("targetId", SystemIdEnum.THIRD_JIEAN.getCode());
         commonParams.put("appId", "");
@@ -99,6 +90,7 @@ public class JieAnServiceImpl implements IJieAnService {
         params.put("versionId","01");
         params.put("chrSet","UTF-8");
         params.put("custId",custId);
+
         String orderId = getOrderId();
         log.info("taskId="+user_id+" orderId="+orderId);
         params.put("ordId",orderId);
@@ -113,7 +105,7 @@ public class JieAnServiceImpl implements IJieAnService {
 
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("params",params);
-
+        commonParams.put("MAC_KEY",MAC_KEY);
         commonParams.put("url",apiUrl);
         commonParams.put("targetId", SystemIdEnum.THIRD_JIEAN.getCode());
         commonParams.put("appId", "");
@@ -137,6 +129,7 @@ public class JieAnServiceImpl implements IJieAnService {
         params.put("versionId","01");
         params.put("chrSet","UTF-8");
         params.put("custId",custId);
+
         String orderId = getOrderId();
         log.info("taskId="+taskId+" orderId="+orderId);
         params.put("ordId",orderId);
@@ -149,7 +142,7 @@ public class JieAnServiceImpl implements IJieAnService {
 
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("params",params);
-
+        commonParams.put("MAC_KEY",MAC_KEY);
         commonParams.put("url",apiUrl);
         commonParams.put("targetId", SystemIdEnum.THIRD_JIEAN.getCode());
         commonParams.put("appId", "");
@@ -158,5 +151,7 @@ public class JieAnServiceImpl implements IJieAnService {
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
         return sendMessegeService.sendByThreeChance(SendMethodEnum.JIEAN02.getCode(),commonParams,bizData);
     }
+
+
 }
 

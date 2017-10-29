@@ -39,29 +39,38 @@ public class PyResponseHandler extends AbstractResponseHandler {
         Long taskId = (Long)commonParams.get("taskId");
 
         ResponseResult response = (ResponseResult)params.get("response");
+        if(response == null){
+            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,null);
+        }
         Object[] results = (Object[])response.getData();
+        if(results == null||results.length==0){
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RRSPONSE_NULL,null);
+        }
         JSONObject data = parseXml2Json(results[0].toString());
         logger.info("traceId=["+traceId+"]请求结果【" + Arrays.toString(results) + "】");
         logger.info("traceId=["+traceId+"]解析后的数据：" + data);
-        if (data.getIntValue("status") == 1) { //返回状态为1是正常报文，2为发生异常
-            String returnValue1 = data.getString("returnValue");
-            Base64 base64 = new Base64();
-            byte [] re = base64.decode(returnValue1);
-            String xml = new CompressStringUtil().decompress(re);
-            logger.info("traceId=["+traceId+"]响应报文 result ==>" + xml);
-            data = parseXml2Json(xml);
-        }else {
-            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,data);
+        //返回状态为1是正常报文，2为发生异常
+        ResponseResult result =  null;
+        if (data.getIntValue("status")!= 1) {
+            result = new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE,data);
+            result.setMsg(data.getString("errorCode")+data.getString("errorMessage"));
+            return result;
         }
+        String returnValueStr = data.getString("returnValue");
+        Base64 base64 = new Base64();
+        byte [] returnValue = base64.decode(returnValueStr);
+        String xml = new CompressStringUtil().decompress(returnValue);
+        logger.info("traceId=["+traceId+"]响应报文 result ==>" + xml);
+        data = parseXml2Json(xml);
         logger.info("鹏元数据 traceId=[" + traceId + "]\r\n" + data);
-
         JSONObject checkInfo = data.getJSONObject("carCheckInfo");
-        if (!checkInfo.containsKey("errorCode")) {
-            PengYuan py = new PengYuan(taskId, bizParams.get("certCardNo").toString(), "", data);
-//            saveData(py);
-            return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,py);
+        if (checkInfo.containsKey("errorCode")) {
+            result.setMsg(checkInfo.getString("errorCode")+checkInfo.getString("errorMessage"));
+            new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE,data);
+            return result;
         }
-        return new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE,data);
+        return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,data);
+
     }
 
     /**

@@ -85,7 +85,7 @@ public class JieanResponseHandler extends AbstractResponseHandler {
         if (respCode == null ||!org.apache.commons.lang.StringUtils.equals(respCode,"071")) {
             throw new Exception("traceId【"+traceId+"】Request JieAn api MPTIME returns fail" + respCode);
         }
-        result.setData(respCode);
+        result.setData(resultJson);
         return result;
     }
     private ResponseResult handle02() throws Exception{
@@ -122,7 +122,7 @@ public class JieanResponseHandler extends AbstractResponseHandler {
         if (resultJson == null ||!org.apache.commons.lang.StringUtils.equals(respCode,"071")) {
             throw new Exception("traceId【"+traceId+"】Request JieAn api MPSTAT returns fail" + respCode);
         }
-        result.setData(respCode);
+        result.setData(resultJson);
         return result;
     }
     private ResponseResult handle03() throws Exception{
@@ -156,13 +156,15 @@ public class JieanResponseHandler extends AbstractResponseHandler {
         }
         String respCode = resultJson.getString("respCode");
         if (respCode == null ||(!org.apache.commons.lang.StringUtils.equals(respCode,"000")&&
-                !org.apache.commons.lang.StringUtils.equals(respCode,"042")&&
-                !org.apache.commons.lang.StringUtils.equals(respCode,"308")&&
-                !org.apache.commons.lang.StringUtils.equals(respCode,"310")&&
-                !org.apache.commons.lang.StringUtils.equals(respCode,"313"))) {
+                !org.apache.commons.lang.StringUtils.equals(respCode,"042")
+//                &&
+//                !org.apache.commons.lang.StringUtils.equals(respCode,"308")&&
+//                !org.apache.commons.lang.StringUtils.equals(respCode,"310")&&
+//                !org.apache.commons.lang.StringUtils.equals(respCode,"313")
+        )) {
             throw new Exception("traceId【"+traceId+"】Request JieAn api MP3 returns fail code:" + respCode);
         }
-        result.setData(respCode);
+        result.setData(resultJson);
         return result;
     }
 

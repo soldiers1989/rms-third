@@ -17,10 +17,9 @@ import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.ITdDao;
-import com.jzfq.rms.third.service.ISendMessegeService;
+import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.service.ITdDataService;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -352,7 +351,7 @@ public class TdDataServiceImpl implements ITdDataService {
     }
 
     @Autowired
-    ISendMessegeService sendMessegeService;
+    ISendMessageService sendMessegeService;
     /**
      *
      * @param commonParams

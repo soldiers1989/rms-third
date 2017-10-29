@@ -5,7 +5,7 @@ import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.AbstractHandlerFactory;
 import com.jzfq.rms.third.service.IMonitorService;
-import com.jzfq.rms.third.service.ISendMessegeService;
+import com.jzfq.rms.third.service.ISendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import java.util.Map;
  * @date 2017/10/19 21:49.
  **/
 @Service
-public class SendMessegeServiceImpl extends AbstractHandlerFactory implements ISendMessegeService  {
+public class SendMessageServiceImpl extends AbstractHandlerFactory implements ISendMessageService {
     @Autowired
     IMonitorService monitorService;
     /**
@@ -46,13 +46,16 @@ public class SendMessegeServiceImpl extends AbstractHandlerFactory implements IS
                 Map<String,Object> newParams = new HashMap<>();
                 newParams.put("bizParams",bizParams);
                 newParams.put("response",result);
-                newParams.put("exception",error);
                 newParams.put("params",params);
                 try {
                     handlerResult = getResult(method,newParams);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    if(error==null){
+                        error=e;
+                    }
                 }
+                newParams.put("exception",error);
                 newParams.put("handlerResult",handlerResult);
                 // 调用日志存入数据库
                 monitorService.sendLogToDB(TraceIDThreadLocal.getTraceID(),newParams);

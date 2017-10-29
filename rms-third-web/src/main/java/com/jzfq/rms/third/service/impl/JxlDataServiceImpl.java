@@ -1,22 +1,18 @@
 package com.jzfq.rms.third.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
-import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.constants.RmsConstants;
 import com.jzfq.rms.mongo.JxlData;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
-import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IJxlDao;
 import com.jzfq.rms.third.service.IJxlDataService;
-import com.jzfq.rms.third.service.ISendMessegeService;
+import com.jzfq.rms.third.service.ISendMessageService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +90,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 	}
 
 	@Autowired
-	ISendMessegeService sendMessegeService;
+    ISendMessageService sendMessegeService;
 	@Override
 	public ResponseResult queryStatus(String customerName, String idCard, String phone, String category) {
 

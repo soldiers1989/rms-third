@@ -85,7 +85,13 @@ public class Request1017Handler extends AbstractRequestHandler {
         bizData.put("idNumber",idNumber);
         bizData.put("phone",phone);
         bizData.put("custumType",custumType);
-        return jieAnService.getPhoneNetworkLength(taskId, bizData);
+        ResponseResult result = jieAnService.getPhoneNetworkLength(taskId, bizData);
+        if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
+            JSONObject json = (JSONObject) result.getData();
+            String status = changeBairongPhoneNetworkLength(json);
+            editAndSavePostData(taskId, "手机在网时长", status, custumType);
+        }
+        return result;
     }
 
     /**

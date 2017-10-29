@@ -78,7 +78,8 @@ public abstract class AbstractRequestHandler {
             }
 
             if (handler.isCheckRepeat()) {
-                handler.isRpc(request.getParams());
+                boolean rpc = handler.isRpc(request.getParams());
+                handler.setRpc(rpc);
             }
 
             return handler.bizHandle(request);
@@ -95,8 +96,8 @@ public abstract class AbstractRequestHandler {
      * 是否远程调用
      * @return 合法返回true，否则返回false
      */
-    protected void setRpc(Map<String, Serializable> params){
-        this.rpc = isRpc(params);
+    protected void setRpc(boolean rpc){
+        this.rpc = rpc;
     }
 
     /**

@@ -51,12 +51,12 @@ public class Request1002Handler extends AbstractRequestHandler{
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
         String taskId = (String)params.get("traceId");
-        String carInfoStr = (String)params.get("carInfo");
+
         String orderNo = (String)params.get("orderNo");
-        if(StringUtils.isBlank(orderNo)||StringUtils.isBlank(carInfoStr)){
+        if(StringUtils.isBlank(orderNo)||params.get("carInfo")==null){
             return false;
         }
-        Map<String,Object> carInfo = JSONObject.parseObject(carInfoStr, HashMap.class);
+        Map<String,Object> carInfo = JSONObject.parseObject(params.get("carInfo").toString(), HashMap.class);
         if(carInfo==null){
             return false;
         }
@@ -96,7 +96,7 @@ public class Request1002Handler extends AbstractRequestHandler{
      * @return
      */
     private  ResponseResult handler01(AbstractRequestAuthentication request){
-        String traceId = request.getParam("traceId").toString();
+        String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
         Long taskId = Long.parseLong(taskIdStr);
@@ -104,13 +104,26 @@ public class Request1002Handler extends AbstractRequestHandler{
         log.info("traceId="+traceId+" 鹏元车辆信息 params：【"+carInfo+"】");
         JSONObject data = pengYuanService.queryPengYuanData(taskId,carInfo);
         log.info("traceId="+traceId+" 鹏元车辆信息 data：【"+data+"】");
+
         if(StringUtils.isBlank(data.getString("errorCode"))){
             return new ResponseResult(taskIdStr, ReturnCode.REQUEST_SUCCESS,data );
         }
         return new ResponseResult(taskIdStr,Integer.parseInt(data.getString("errorCode"))
                 ,data.getString("errorMessage"),data);
     }
-
+    private String getKey(AbstractRequestAuthentication request){
+        Map<String,Object> carInfo = JSONObject.parseObject(request.getParam("carInfo").toString(), HashMap.class);
+        String type = carInfo.get("type").toString();
+        if (Integer.parseInt(type) <= 9) {
+            type = String.format("%02d", Integer.parseInt(type));
+        }
+        StringBuilder key = new StringBuilder();
+        key.append("rms_third_1002_").append(StringUtil.getStringOfObject(type))
+                .append(StringUtil.getStringOfObject(carInfo.get("certCardNo")))
+                .append(StringUtil.getStringOfObject(carInfo.get("phone")))
+                .append(StringUtil.getStringOfObject(carInfo.get("plateNo")));
+        return key.toString();
+    }
     /**
      * 版本02 处理器
      * @param request
@@ -123,6 +136,11 @@ public class Request1002Handler extends AbstractRequestHandler{
         Map<String,Object> commonParams = getCommonParams(  request);
         ResponseResult result = pengYuanService.queryPyCarDatas(carInfo,commonParams);
         log.info("traceId="+traceId+" 鹏元车辆信息 结束{} ",result.getMsg());
+        if(result.getCode()!=ReturnCode.REQUEST_SUCCESS.code()&&isRpc()){
+            //TODO 缓存过期
+
+        }
+        interfaceCountCache.setFailure(getKey(request));
         return result;
     }
 

@@ -8,7 +8,7 @@ import java.util.Map;
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/19 21:49.
  **/
-public interface ISendMessegeService {
+public interface ISendMessageService {
     /**
      * 发送的数据
      * @param method 调用的发送协议方法

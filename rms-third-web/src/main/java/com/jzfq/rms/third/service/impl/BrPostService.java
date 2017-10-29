@@ -10,14 +10,13 @@ import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.constant.Constants;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
-import com.jzfq.rms.third.service.ISendMessegeService;
+import com.jzfq.rms.third.service.ISendMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
@@ -77,7 +76,7 @@ public class BrPostService {
     @Autowired
     MongoTemplate mongoTemplate;
     @Autowired
-    ISendMessegeService sendMessegeService;
+    ISendMessageService sendMessegeService;
     /**
      * 登录百融系统 传入类型
      *

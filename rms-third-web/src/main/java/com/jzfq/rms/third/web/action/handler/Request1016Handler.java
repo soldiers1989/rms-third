@@ -4,6 +4,7 @@ import com.jzfq.rms.enums.JieAnPhoneStatusEnum;
 import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IJieAnService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
@@ -73,9 +74,8 @@ public class Request1016Handler extends AbstractRequestHandler {
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
-        String traceId = request.getParam("traceId").toString();
         String orderNo = request.getParam("orderNo").toString();
-        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+        String taskId = rmsService.queryByOrderNo(TraceIDThreadLocal.getTraceID(), orderNo);
         String name = request.getParam("name").toString();
         String idNumber = request.getParam("idNumber").toString();
         String phone = request.getParam("phone").toString();
@@ -85,8 +85,13 @@ public class Request1016Handler extends AbstractRequestHandler {
         bizData.put("idNumber",idNumber);
         bizData.put("phone",phone);
         bizData.put("custumType",custumType);
-        String result ="";
-        return jieAnService.getPhonestatus(taskId, bizData);
+        ResponseResult result = jieAnService.getPhonestatus(taskId, bizData);
+        if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
+            JSONObject json = (JSONObject) result.getData();
+            String status = changeBairongPhonestatus(json);
+            editAndSavePostData(taskId, "手机在网状态", status, custumType);
+        }
+        return result;
     }
 
     /**

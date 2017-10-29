@@ -4,29 +4,22 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.domain.GpjCarDetailModel;
 import com.jzfq.rms.third.common.domain.SysTask;
-import com.jzfq.rms.third.common.dto.CarDetailModelConditionDTO;
-import com.jzfq.rms.third.common.dto.CarModelResponseDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
-import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.utils.JWTUtils;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
-import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
-import com.jzfq.rms.third.persistence.dao.IThirdTransferLogDao;
 import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
 import com.jzfq.rms.third.persistence.mapper.SysTaskMapper;
 import com.jzfq.rms.third.service.IGongPingjiaService;
-import com.jzfq.rms.third.service.ISendMessegeService;
+import com.jzfq.rms.third.service.ISendMessageService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
@@ -58,7 +51,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
     private SysTaskMapper sysTaskMapper;
 
     @Autowired
-    ISendMessegeService sendMessegeService;
+    ISendMessageService sendMessegeService;
 
 
     public List<EvaluationInfoVo> queryGaopingjiaEvalation(String vin, String licensePlatHeader){

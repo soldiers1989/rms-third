@@ -8,6 +8,7 @@ import com.jzfq.rms.third.common.domain.*;
 import com.jzfq.rms.third.common.dto.MonitorSendDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ResponseHandlerEnum;
+import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
@@ -98,8 +99,17 @@ public class MonitorServiceImpl implements IMonitorService {
         monitor.setSendURL(getString(commonParams,"url"));
         monitor.setTraceID(getString(commonParams,"traceId"));
         ResponseResult response = (ResponseResult)params.get("handlerResult");
-        monitor.setReturnState(JSONUtils.toJSONString(response.getCode()));
-        monitor.setReturnResult(JSONUtils.toJSONString(response.getMsg()));
+        if(response!=null){
+            monitor.setReturnState(JSONUtils.toJSONString(response.getCode()));
+            monitor.setReturnResult(JSONUtils.toJSONString(response.getMsg()));
+        }else{
+            monitor.setReturnState(StringUtil.getNAStringOfObject(""));
+            monitor.setReturnState(StringUtil.getNAStringOfObject(""));
+        }
+        Exception error = (Exception)params.get("exception");
+        if(error!=null){
+            monitor.setReturnResult(error.getMessage());
+        }
         monitor.setCreator(SystemIdEnum.RMS_THIRD.getName());
         monitor.setTargetID(getInteger(commonParams,"targetID"));
         monitor.setSourceID(getInteger(SystemIdEnum.RMS_THIRD.getCode()));
@@ -199,7 +209,9 @@ public class MonitorServiceImpl implements IMonitorService {
         record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
-        record.setcStatus(JSONUtils.toJSONString(result.getCode()));
+        if(result !=null){
+            record.setcStatus(JSONUtils.toJSONString(result.getCode()));
+        }
         record.setcChannel(getString(commonParams,"appId"));
         record.setcParams(toJSONString(params.get("bizParams")));
         record.setcProLine(getString(commonParams,"systemId"));
@@ -349,17 +361,21 @@ public class MonitorServiceImpl implements IMonitorService {
         record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
-        record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(commonParams,"appId"));
-        record.setcParams(toJSONString(params.get("bizParams")));
-        record.setcProLine(getString(commonParams,"systemId"));
         Exception error = (Exception)params.get("exception");
         if(error!=null){
             record.setcMsg(error.getMessage());
             record.setcMsgDetail(error.toString());
-        }else {
-            record.setcMsg(result.getMsg());
         }
+        if(result!=null){
+            record.setcStatus(JSONUtils.toJSONString(result.getCode()));
+            record.setcMsg(result.getMsg());
+        }else{
+            record.setcStatus(""+ReturnCode.ACTIVE_FAILURE.code());
+        }
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+
         record.setDtCreateTime(new Date());
         record.setnDel(0);
         record.setcIp(IPUtils.getLocalHostIP());

@@ -89,6 +89,7 @@ public class Request1016Handler extends AbstractRequestHandler {
         if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
             JSONObject json = (JSONObject) result.getData();
             String status = changeBairongPhonestatus(json);
+            result.setData(status);
             editAndSavePostData(taskId, "手机在网状态", status, custumType);
         }
         return result;

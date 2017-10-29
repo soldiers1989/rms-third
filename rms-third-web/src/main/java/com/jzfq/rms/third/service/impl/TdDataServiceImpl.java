@@ -101,7 +101,7 @@ public class TdDataServiceImpl implements ITdDataService {
         try {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("partner_code", partner_code);       // 合作方标识
-            params.put("secret_key", getSecret2((Byte)riskPostInfo.get("loanType"),
+            params.put("secret_key", getSecret2((Integer)riskPostInfo.get("loanType"),
                     (String)riskPostInfo.get("channel"),(String)riskPostInfo.get("traceId")));           // app密钥
             params.put("event_id", eventId);               // 策略集上的事件标识
             //写个人信息的查询
@@ -198,11 +198,11 @@ public class TdDataServiceImpl implements ITdDataService {
      */
     @Override
     public Object getTdData(Map<String, Object> riskPostInfo)  throws Exception  {
-        String traceId = (String)riskPostInfo.get("traceId");
+        String traceId = TraceIDThreadLocal.getTraceID();
         String taskId = (String)riskPostInfo.get("taskId");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("partner_code", partner_code);       // 合作方标识
-        params.put("secret_key", getSecret2((Byte)riskPostInfo.get("loanType"),
+        params.put("secret_key", getSecret2((Integer)riskPostInfo.get("loanType"),
                 (String)riskPostInfo.get("channel"),(String)riskPostInfo.get("traceId"))); // app密钥
         params.put("event_id", eventId); // 策略集上的事件标识
         //写个人信息的查询
@@ -293,7 +293,7 @@ public class TdDataServiceImpl implements ITdDataService {
      * @param traceId
      * @return
      */
-    private String getSecret2(Byte loanType, String channel, String traceId){
+    private String getSecret2(Integer loanType, String channel, String traceId){
         if (Objects.equals(loanType, ProductTypeEnum.CAR_ORDER.getCode().byteValue())
                 || Objects.equals(loanType, ProductTypeEnum.CAR_QUOTA.getCode().byteValue())){
             if (ApplyChannelEnum.APP.getCode().equals(channel) || ApplyChannelEnum.ANDROID.getCode().equals(channel) || ApplyChannelEnum.ANDROID_ENGLISH.getCode().equalsIgnoreCase(channel)){
@@ -361,11 +361,11 @@ public class TdDataServiceImpl implements ITdDataService {
      */
     @Override
     public ResponseResult queryTdDatas(Map<String,Object> commonParams, RiskPersonalInfo info)  throws Exception  {
-        String traceId = (String)commonParams.get("traceId");
+        String traceId = TraceIDThreadLocal.getTraceID();
         String taskId = (String)commonParams.get("taskId");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("partner_code", partner_code);       // 合作方标识
-        params.put("secret_key", getSecret2((Byte)commonParams.get("loanType"),
+        params.put("secret_key", getSecret2((Integer)commonParams.get("loanType"),
                 (String)commonParams.get("channel"),(String)commonParams.get("traceId"))); // app密钥
         params.put("event_id", eventId); // 策略集上的事件标识
         //写个人信息的查询

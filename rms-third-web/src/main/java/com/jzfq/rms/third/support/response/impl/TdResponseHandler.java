@@ -49,7 +49,7 @@ public class TdResponseHandler extends AbstractResponseHandler {
     private ResponseResult handle01() throws Exception{
         Map<String ,Object> commonParams = (Map<String ,Object> )this.params.get("params");
         String traceId = (String)commonParams.get("traceId");
-        Long taskId = (Long)commonParams.get("taskId");
+        String taskId = (String)commonParams.get("taskId");
         ResponseResult response = (ResponseResult)params.get("response");
         FraudApiResponse apiResp = (FraudApiResponse)response.getData();
         if(apiResp == null){

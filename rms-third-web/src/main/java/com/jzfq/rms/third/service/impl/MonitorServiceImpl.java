@@ -209,19 +209,21 @@ public class MonitorServiceImpl implements IMonitorService {
         record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
-        if(result !=null){
-            record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        }
-        record.setcChannel(getString(commonParams,"appId"));
-        record.setcParams(toJSONString(params.get("bizParams")));
-        record.setcProLine(getString(commonParams,"systemId"));
         Exception error = (Exception)params.get("exception");
         if(error!=null){
             record.setcMsg(error.getMessage());
             record.setcMsgDetail(error.toString());
-        }else {
-            record.setcMsg(result.getMsg());
         }
+        if(result!=null){
+            record.setcStatus(JSONUtils.toJSONString(result.getCode()));
+            record.setcMsg(result.getMsg());
+        }else{
+            record.setcStatus(""+ReturnCode.ACTIVE_FAILURE.code());
+        }
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+
         record.setDtCreateTime(new Date());
         record.setnDel(0);
         record.setcIp(IPUtils.getLocalHostIP());
@@ -236,17 +238,21 @@ public class MonitorServiceImpl implements IMonitorService {
         record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
-        record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(commonParams,"appId"));
-        record.setcParams(toJSONString(params.get("bizParams")));
-        record.setcProLine(getString(commonParams,"systemId"));
         Exception error = (Exception)params.get("exception");
         if(error!=null){
             record.setcMsg(error.getMessage());
             record.setcMsgDetail(error.toString());
-        }else {
-            record.setcMsg(result.getMsg());
         }
+        if(result!=null){
+            record.setcStatus(JSONUtils.toJSONString(result.getCode()));
+            record.setcMsg(result.getMsg());
+        }else{
+            record.setcStatus(""+ReturnCode.ACTIVE_FAILURE.code());
+        }
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+
         record.setDtCreateTime(new Date());
         record.setnDel(0);
         record.setcIp(IPUtils.getLocalHostIP());
@@ -261,17 +267,21 @@ public class MonitorServiceImpl implements IMonitorService {
         record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
-        record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(commonParams,"appId"));
-        record.setcParams(toJSONString(params.get("bizParams")));
-        record.setcProLine(getString(commonParams,"systemId"));
         Exception error = (Exception)params.get("exception");
         if(error!=null){
             record.setcMsg(error.getMessage());
             record.setcMsgDetail(error.toString());
-        }else {
-            record.setcMsg(result.getMsg());
         }
+        if(result!=null){
+            record.setcStatus(JSONUtils.toJSONString(result.getCode()));
+            record.setcMsg(result.getMsg());
+        }else{
+            record.setcStatus(""+ReturnCode.ACTIVE_FAILURE.code());
+        }
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+
         record.setDtCreateTime(new Date());
         record.setnDel(0);
         record.setcIp(IPUtils.getLocalHostIP());
@@ -286,17 +296,21 @@ public class MonitorServiceImpl implements IMonitorService {
         record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
-        record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(commonParams,"appId"));
-        record.setcParams(toJSONString(params.get("bizParams")));
-        record.setcProLine(getString(commonParams,"systemId"));
         Exception error = (Exception)params.get("exception");
         if(error!=null){
             record.setcMsg(error.getMessage());
             record.setcMsgDetail(error.toString());
-        }else {
-            record.setcMsg(result.getMsg());
         }
+        if(result!=null){
+            record.setcStatus(JSONUtils.toJSONString(result.getCode()));
+            record.setcMsg(result.getMsg());
+        }else{
+            record.setcStatus(""+ReturnCode.ACTIVE_FAILURE.code());
+        }
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+
         record.setDtCreateTime(new Date());
         record.setnDel(0);
         record.setcIp(IPUtils.getLocalHostIP());
@@ -311,17 +325,21 @@ public class MonitorServiceImpl implements IMonitorService {
         record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
-        record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(commonParams,"appId"));
-        record.setcParams(toJSONString(params.get("bizParams")));
-        record.setcProLine(getString(commonParams,"systemId"));
         Exception error = (Exception)params.get("exception");
         if(error!=null){
             record.setcMsg(error.getMessage());
             record.setcMsgDetail(error.toString());
-        }else {
-            record.setcMsg(result.getMsg());
         }
+        if(result!=null){
+            record.setcStatus(JSONUtils.toJSONString(result.getCode()));
+            record.setcMsg(result.getMsg());
+        }else{
+            record.setcStatus(""+ReturnCode.ACTIVE_FAILURE.code());
+        }
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+
         record.setDtCreateTime(new Date());
         record.setnDel(0);
         record.setcIp(IPUtils.getLocalHostIP());
@@ -336,17 +354,21 @@ public class MonitorServiceImpl implements IMonitorService {
         record.setcTraceid(getString(commonParams,"traceId"));
         record.setcSystemId(getString(commonParams,"systemId"));
         ResponseResult result = (ResponseResult)params.get("handlerResult");
-        record.setcStatus(JSONUtils.toJSONString(result.getCode()));
-        record.setcChannel(getString(commonParams,"appId"));
-        record.setcParams(toJSONString(params.get("bizParams")));
-        record.setcProLine(getString(commonParams,"systemId"));
         Exception error = (Exception)params.get("exception");
         if(error!=null){
             record.setcMsg(error.getMessage());
             record.setcMsgDetail(error.toString());
-        }else {
-            record.setcMsg(result.getMsg());
         }
+        if(result!=null){
+            record.setcStatus(JSONUtils.toJSONString(result.getCode()));
+            record.setcMsg(result.getMsg());
+        }else{
+            record.setcStatus(""+ReturnCode.ACTIVE_FAILURE.code());
+        }
+        record.setcChannel(getString(commonParams,"appId"));
+        record.setcParams(toJSONString(params.get("bizParams")));
+        record.setcProLine(getString(commonParams,"systemId"));
+
         record.setDtCreateTime(new Date());
         record.setnDel(0);
         record.setcIp(IPUtils.getLocalHostIP());

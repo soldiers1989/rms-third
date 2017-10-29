@@ -70,11 +70,10 @@ public class Request1004Handler   extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-        String traceId = (String)params.get("traceId");
         String customerName = (String)params.get("customerName");
         String idCard = (String)params.get("idCard");
         String phone = (String)params.get("phone");
-        boolean check = StringUtils.isBlank(traceId)||StringUtils.isBlank(customerName)||
+        boolean check = StringUtils.isBlank(customerName)||
                 StringUtils.isBlank(idCard)||StringUtils.isBlank(phone);
         if(check){
             return false;
@@ -90,7 +89,7 @@ public class Request1004Handler   extends AbstractRequestHandler {
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
-        String traceId = request.getParam("traceId").toString();
+        String traceId = TraceIDThreadLocal.getTraceID();
         String customerName = request.getParam("customerName").toString();
         String idCard = request.getParam("idCard").toString();
         String phone = request.getParam("phone").toString();

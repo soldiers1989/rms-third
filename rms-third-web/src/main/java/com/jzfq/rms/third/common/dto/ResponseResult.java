@@ -6,11 +6,13 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.pojo.BaseBean;
 
+import java.io.Serializable;
+
 /**
  * @author 大连桔子分期科技有限公司
  * @date 2017年9月05日 20:04:55
  */
-public class ResponseResult extends BaseBean {
+public class ResponseResult extends BaseBean implements Serializable{
 
     private String traceID; //链路ID
     private int code = ReturnCode.REQUEST_SUCCESS.code(); //响应状态

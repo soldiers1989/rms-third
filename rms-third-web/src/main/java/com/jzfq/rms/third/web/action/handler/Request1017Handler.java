@@ -89,6 +89,7 @@ public class Request1017Handler extends AbstractRequestHandler {
         if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
             JSONObject json = (JSONObject) result.getData();
             String status = changeBairongPhoneNetworkLength(json);
+            result.setData(status);
             editAndSavePostData(taskId, "手机在网时长", status, custumType);
         }
         return result;

@@ -2,10 +2,15 @@ package com.jzfq.rms.third.web.action.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.br.bean.MerchantBean;
+import com.br.bean.TerBean;
+import com.jzfq.rms.domain.RiskPersonalInfo;
+import com.jzfq.rms.enums.BrPostUrl;
+import com.jzfq.rms.enums.ProductTypeEnum;
 import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.impl.BrPostService;
@@ -19,9 +24,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 百融分
@@ -40,6 +45,15 @@ public class Request1011Handler extends AbstractRequestHandler{
 
     @Autowired
     IRmsService rmsService;
+
+    private Map<Integer, String> urls = new HashMap<Integer, String>(10);
+
+    {
+        urls.put(BrPostService.OFFICE_TYPE, BrPostUrl.OFFICE_LIST);
+        urls.put(BrPostService.STU_TYPE, BrPostUrl.STU_LIST);
+        urls.put(BrPostService.OFFICE_TYPE_XJD, BrPostUrl.OFFICE_LIST_XJD);
+        urls.put(BrPostService.STU_TYPE_XJD, BrPostUrl.STU_LIST_XJD);
+    }
     /**
      * 是否控制重复调用
      *
@@ -51,6 +65,7 @@ public class Request1011Handler extends AbstractRequestHandler{
     }
     @Autowired
     ICountCache interfaceCountCache;
+
     /**
      * 超时时间 三天
      */
@@ -59,17 +74,7 @@ public class Request1011Handler extends AbstractRequestHandler{
     private static final String SPLIT_STR = "_";
     @Override
     protected boolean isRpc(Map<String, Serializable> params){
-        String traceId = (String)params.get("traceId");
-        String customerName = (String)params.get("customerName");
-        String idCard = (String)params.get("idCard");
-        String phone = (String)params.get("phone");
-        StringBuilder key = new StringBuilder();
-        key.append("rms_third_1004_").append(StringUtil.getStringOfObject(customerName))
-                .append(SPLIT_STR)
-                .append(StringUtil.getStringOfObject(idCard))
-                .append(SPLIT_STR)
-                .append(StringUtil.getStringOfObject(phone));
-        return interfaceCountCache.isRequestOutInterface(key.toString(),time);
+        return true;
     }
     /**
      * 检查业务参数是否合法，交由子类实现。
@@ -79,6 +84,16 @@ public class Request1011Handler extends AbstractRequestHandler{
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+//        String orderNo = (String)params.get("orderNo");
+//        String customerType = (String)params.get("customerType");
+//        String personInfo = (String)params.get("personInfo");
+//        String phone = (String)params.get("phone");
+//        String custumType = (String)params.get("custumType");
+//        if(StringUtils.isBlank(orderNo)||StringUtils.isBlank(name)
+//                || StringUtils.isBlank(idNumber)||StringUtils.isBlank(phone)
+//                || StringUtils.isBlank(custumType)){
+//            return false;
+//        }
         return true;
     }
 
@@ -90,19 +105,28 @@ public class Request1011Handler extends AbstractRequestHandler{
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
-        String traceId = request.getParam("traceId").toString();
+        String traceId = TraceIDThreadLocal.getTraceID();
+        String customerType =(String) request.getParam("customerType");
         String orderNo = request.getParam("orderNo").toString();
         String taskId = rmsService.queryByOrderNo(traceId, orderNo);
-        Integer customerType = Integer.parseInt(request.getParam("customerType").toString());
-        MerchantBean bean = JSONObject.parseObject(request.getParam("personInfo").toString(),
-                MerchantBean.class);
-
-        JSONObject jsonObject = (JSONObject) riskPostDataService.queryData(Long.parseLong(taskId),customerType);
+        Integer loanType = (Integer)request.getParam("loanType");
+        RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
+                RiskPersonalInfo.class);
+        Integer type = Integer.parseInt(customerType);
+        String url = "";
+        if (loanType == ProductTypeEnum.CASH_LOAN.getCode().byteValue()){
+            int customerTypeNum = type + 2;
+            url = urls.get(customerTypeNum);                //现金贷，需要换取百融分的接口
+        }else {
+            url = urls.get(type);
+        }
+        TerBean terBean = createBean(url, info, type);
+        JSONObject jsonObject = (JSONObject) riskPostDataService.queryData(Long.parseLong(taskId),type);
         if(!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2){
             return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,jsonObject);
         }
         Map<String,Object> commonParams = getCommonParams( request);
-        String result = brPostService.getApiData(bean, customerType,commonParams);
+        String result = brPostService.getApiData(terBean, type,commonParams);
         if (StringUtil.checkNotEmpty(result)) {
             BrPostData data = buildPostData(taskId, "", result, customerType.toString());
             //保存信息，并且更新任务
@@ -123,5 +147,24 @@ public class Request1011Handler extends AbstractRequestHandler{
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         commonParams.put("isRpc",this.isRpc());
         return commonParams;
+    }
+
+    /**
+     * 创建批量查询的bean
+     *
+     * @param url
+     * @param info
+     * @param type
+     * @return
+     */
+    private TerBean createBean(String url, RiskPersonalInfo info, int type) {
+        TerBean bean = new TerBean();
+        bean.setMeal(url);
+        bean.setApicode(brPostService.getApiCode(type));
+        bean.setId(info.getCertCardNo());
+        bean.setName(info.getName());
+        bean.setCell(info.getMobile());
+        bean.setApiType("ter");
+        return bean;
     }
 }

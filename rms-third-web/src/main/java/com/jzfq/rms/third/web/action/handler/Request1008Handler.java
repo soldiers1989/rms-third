@@ -53,10 +53,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
         String orderNo = (String)params.get("orderNo");
-        String loanType = (String)params.get("loanType");
-        String personInfo = (String)params.get("personInfo");
-        if(StringUtils.isBlank(orderNo)||StringUtils.isBlank(loanType)
-                ||StringUtils.isBlank(personInfo)){
+        if(StringUtils.isBlank(orderNo)||params.get("loanType")==null||params.get("personInfo")==null){
             return false;
         }
         return true;
@@ -69,17 +66,8 @@ public class Request1008Handler  extends AbstractRequestHandler {
     private static final Long time = 3*24*60*60L;
     @Override
     protected boolean isRpc(Map<String, Serializable> params){
-        Map<String,Object> carInfo = JSONObject.parseObject(params.get("carInfo").toString(), HashMap.class);
-        String type = carInfo.get("type").toString();
-        if (Integer.parseInt(type) <= 9) {
-            type = String.format("%02d", Integer.parseInt(type));
-        }
-        StringBuilder key = new StringBuilder();
-        key.append("rms_third_1002_").append(StringUtil.getStringOfObject(type))
-                .append(StringUtil.getStringOfObject(carInfo.get("certCardNo")))
-                .append(StringUtil.getStringOfObject(carInfo.get("phone")))
-                .append(StringUtil.getStringOfObject(carInfo.get("plateNo")));
-        return interfaceCountCache.isRequestOutInterface(key.toString(),time);
+
+        return true;
     }
 
     /**
@@ -103,7 +91,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
     private  ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
-        Byte loanType = (Byte)request.getParam("loanType");
+        Integer loanType = (Integer)request.getParam("loanType");
         String taskId = rmsService.queryByOrderNo(traceId, orderNo);
         RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
@@ -127,19 +115,19 @@ public class Request1008Handler  extends AbstractRequestHandler {
     private  ResponseResult handler02(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
-        Byte loanType = (Byte)request.getParam("loanType");
+        Integer loanType = (Integer)request.getParam("loanType");
         String taskId = rmsService.queryByOrderNo(traceId, orderNo);
         RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
         Map<String,Object> queryParams = new HashMap<>();
         queryParams.put("traceId",traceId);
         queryParams.put("taskId",taskId);
-        queryParams.put("personalInfo",personInfo);
         queryParams.put("loanType",loanType);
-        Object data = tdDataService.getTdData(queryParams);
-        if(data == null){
+        ResponseResult result = tdDataService.queryTdDatas( queryParams,   personInfo);
+        if(result == null||result.getData()==null){
             new RuntimeException("traceId=" +traceId+ "同盾分获取结果为null");
         }
-        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, data);
+        return result;
     }
+
 }

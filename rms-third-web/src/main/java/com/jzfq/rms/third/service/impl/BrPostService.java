@@ -6,6 +6,7 @@ import com.bfd.facade.MerchantServer;
 import com.br.bean.MerchantBean;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
+import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.constant.Constants;
@@ -93,6 +94,7 @@ public class BrPostService {
         commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 
+        commonParams.put("ms",ms);
         Map<String,Object> bizParams = new HashMap<>();
         if (OFFICE_TYPE == type) {
             bizParams.put("userName",officeUser);
@@ -104,7 +106,9 @@ public class BrPostService {
             bizParams.put("apicode",stuApiCode);
         }
         ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.BR03.getCode(),commonParams,bizParams);
-        loginResult = (String) response.getData();
+        if(response.getCode()== ReturnCode.REQUEST_SUCCESS.code()&&response.getData()!=null){
+            loginResult = response.getData().toString();
+        }
         return loginResult;
 
     }
@@ -165,9 +169,9 @@ public class BrPostService {
 
 
         commonParams.put("url","百融客户端调用方法getApiData");
-        commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+        commonParams.put("targetId", SystemIdEnum.THIRD_BR.getCode());
         commonParams.put("appId", "");
-        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL05.getCode());
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR01.getCode());
         commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 

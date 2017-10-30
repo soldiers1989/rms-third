@@ -19,7 +19,7 @@ public class RedisCatchTest {
 
     @Test
     public void test(){
-        interfaceCountCache.setValue("debug","true");
+        interfaceCountCache.setValue("debug","false");
         System.out.println(interfaceCountCache.getValue("debug"));
 //        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
 //        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));

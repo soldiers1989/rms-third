@@ -1,6 +1,7 @@
 package com.jzfq.rms.third.persistence.dao.impl;
 
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
+import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.mchange.v1.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,15 +18,15 @@ public class ConfigCacheDao implements IConfigDao {
     @Autowired
     ICountCache interfaceCountCache;
 
+    @Autowired
+    ICache prefixCache;
+
     @Value("${rms.monitor.log.url}")
     private String apiUrl;
     @Override
     public String getMonitorUrl() {
-        return apiUrl;
+        return (String)prefixCache.readConfigByGroup("rms-third-interface-url","monitor");
     }
-
-//    @Value("${develop.debug}")
-//    private boolean debug ;
 
     public boolean isDebug() {
         String debug = interfaceCountCache.getValue("debug") ;

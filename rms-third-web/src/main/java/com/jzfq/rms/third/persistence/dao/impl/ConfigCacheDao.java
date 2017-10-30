@@ -1,6 +1,10 @@
 package com.jzfq.rms.third.persistence.dao.impl;
 
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
+import com.jzfq.rms.third.support.cache.ICountCache;
+import com.mchange.v1.lang.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +14,8 @@ import org.springframework.stereotype.Component;
  **/
 @Component("configCacheDao")
 public class ConfigCacheDao implements IConfigDao {
+    @Autowired
+    ICountCache interfaceCountCache;
 
     @Value("${rms.monitor.log.url}")
     private String apiUrl;
@@ -18,10 +24,14 @@ public class ConfigCacheDao implements IConfigDao {
         return apiUrl;
     }
 
-    @Value("${develop.debug}")
-    private boolean debug ;
+//    @Value("${develop.debug}")
+//    private boolean debug ;
 
     public boolean isDebug() {
-        return debug;
+        String debug = interfaceCountCache.getValue("debug") ;
+        if(StringUtils.isBlank(debug)){
+            return false;
+        }
+        return BooleanUtils.parseBoolean(debug);
     }
 }

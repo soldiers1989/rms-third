@@ -217,18 +217,17 @@ public abstract class AbstractRequestAuthentication implements Serializable {
      * @return 合法返回true，否则返回false
      */
     public final boolean verifyToken() {
-//        String appSecret = KeyManager.STR_APPSECRET;
-//        if (appSecret == null) {
-//            return false;
-//        }
-//
-//        if (Math.abs(System.currentTimeMillis() - timestamp) > KeyManager.MILLIS_PER_SECOND) {
-//            return false;
-//        }
-//
-//        String tempToken = UniformInterfaceUtils.getToken(appId, apiId, appSecret,timestamp);
-//        return StringUtils.equalsIgnoreCase(tempToken, token);
-        return true;
+        String appSecret = KeyManager.STR_APPSECRET;
+        if (appSecret == null) {
+            return false;
+        }
+
+        if (Math.abs(System.currentTimeMillis() - timestamp) > KeyManager.MILLIS_PER_SECOND) {
+            return false;
+        }
+
+        String tempToken = UniformInterfaceUtils.getToken(appId, apiId, appSecret,timestamp);
+        return StringUtils.equalsIgnoreCase(tempToken, token);
     }
 
 }

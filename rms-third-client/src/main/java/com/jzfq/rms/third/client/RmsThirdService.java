@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.utils.UniformInterfaceUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,9 @@ public class RmsThirdService {
         params.put("apiId",apiId);
         params.put("v",version);
         Long timestamp=System.currentTimeMillis();
+        if(StringUtils.isBlank(appId)){
+            appId=null;
+        }
         params.put("token", UniformInterfaceUtils.getToken(appId,apiId,STR_APPSECRET,timestamp));
         params.put("timestamp",timestamp);
         String json = JSONObject.toJSONString(map);

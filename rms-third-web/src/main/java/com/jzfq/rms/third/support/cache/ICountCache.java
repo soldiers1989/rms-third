@@ -14,4 +14,8 @@ public interface ICountCache {
     boolean isRequestOutInterface(String key,Long time);
 
     boolean setFailure(String key);
+
+    String getValue(String key);
+
+    void setValue(Object key,Object value);
 }

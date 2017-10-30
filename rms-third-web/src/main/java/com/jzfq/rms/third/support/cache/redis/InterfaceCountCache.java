@@ -40,5 +40,20 @@ public class InterfaceCountCache implements ICountCache {
         return redisTemplate.expire(key, 0, TimeUnit.SECONDS);
     }
 
+    @Override
+    public String getValue(String key) {
+        HashOperations<String,Object,Object> operateions = redisTemplate.opsForHash();
+        if(operateions.get("rms-third",key)==null){
+            return "false";
+        }
+        return operateions.get("rms-third",key).toString();
+    }
+
+    @Override
+    public void setValue(Object key,Object value) {
+        HashOperations<String,Object,Object> operateions = redisTemplate.opsForHash();
+        operateions.put("rms-third",key,value);
+    }
+
 
 }

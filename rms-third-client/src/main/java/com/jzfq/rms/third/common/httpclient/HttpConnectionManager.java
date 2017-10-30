@@ -41,7 +41,7 @@ public class HttpConnectionManager {
 	/**
 	 * 获取连接最大等待时间
 	 */
-	private static final int MAX_WAIT_TIMEOUT = 20000;
+	private static final int MAX_WAIT_TIMEOUT = 180000;
 	
 	/**
 	 * 每个路由最大连接数
@@ -62,7 +62,7 @@ public class HttpConnectionManager {
 	/**
 	 * 读取超时时间
 	 */
-	public static final int READ_TIMEOUT = 3000;
+	public static final int READ_TIMEOUT = 180000;
 	
 	/*private static CloseableHttpClient httpClient = null;
 	

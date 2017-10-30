@@ -12,12 +12,12 @@ import java.util.Map;
  **/
 public class RmsThirdInterface {
     public static void main(String[] argc){
-//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.1.166:8080/inter");
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("licensePlatHeader","京A");
-//        map.put("vin","LE4GF4HB8DL254936");
-//        ResponseResult dto = rmsThirdService.send("123","1","","1001","01",map);
-//        System.out.println(""+dto);
+        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
+        Map<String,Object> map = new HashMap<>();
+        map.put("licensePlatHeader","京A");
+        map.put("vin","LE4GF4HB8DL254936");
+        ResponseResult dto = rmsThirdService.send("","1","","1001","01",map);
+        System.out.println(""+dto);
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
 //        Map<String,Object> map = new HashMap<>();
@@ -99,14 +99,14 @@ public class RmsThirdInterface {
 //        ResponseResult dto = rmsThirdService.send("123","1","","1005","01",map);
 //        System.out.println(dto);
 //    }
-        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
-        Map<String,Object> map = new HashMap<>();
-        map.put("frontId","111111");
-        map.put("idCard","210282198909062117");
-        map.put("customerName","高仁鹏");
-        map.put("phone","13130485366");
-        map.put("category","1");
-        ResponseResult dto = rmsThirdService.send("123","1","","1003","01",map);
-        System.out.println(dto);
+//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("frontId","111111");
+//        map.put("idCard","210282198909062117");
+//        map.put("customerName","高仁鹏");
+//        map.put("phone","13130485366");
+//        map.put("category","1");
+//        ResponseResult dto = rmsThirdService.send("123","1","","1003","01",map);
+//        System.out.println(dto);
     }
 }

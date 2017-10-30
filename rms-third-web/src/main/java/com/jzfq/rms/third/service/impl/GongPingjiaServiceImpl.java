@@ -8,6 +8,7 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.utils.JWTUtils;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
+import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
@@ -267,7 +268,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
         params.put("appId", "");
         params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_SYNCHRONIZEDATA.getCode());
-        params.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        params.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         params.put("traceId", TraceIDThreadLocal.getTraceID());
 
         Map<String, Object> bizParams  = new HashMap<>();
@@ -349,7 +350,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
         params.put("appId", "");
         params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
-        params.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        params.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         params.put("traceId", TraceIDThreadLocal.getTraceID());
 
         Map<String, Object> bizParams  = new HashMap<>();

@@ -95,7 +95,7 @@ public class MonitorServiceImpl implements IMonitorService {
         monitor.setFrontID(getString(commonParams,"frontId"));
         monitor.setProductConfigID(getInteger(SystemIdEnum.RMS_THIRD.getCode()));
         monitor.setSendParam(getString(params,"bizParms"));
-        monitor.setSendType(getInteger(commonParams,"sendType"));
+        monitor.setSendType(getInteger(commonParams,"interfaceId"));
         monitor.setSendURL(getString(commonParams,"url"));
         monitor.setTraceID(getString(commonParams,"traceId"));
         ResponseResult response = (ResponseResult)params.get("handlerResult");
@@ -111,7 +111,7 @@ public class MonitorServiceImpl implements IMonitorService {
             monitor.setReturnResult(error.getMessage());
         }
         monitor.setCreator(SystemIdEnum.RMS_THIRD.getName());
-        monitor.setTargetID(getInteger(commonParams,"targetID"));
+        monitor.setTargetID(getInteger(commonParams,"targetId"));
         monitor.setSourceID(getInteger(SystemIdEnum.RMS_THIRD.getCode()));
         monitor.setSystemIP(IPUtils.getLocalHostIP());
         return monitor;

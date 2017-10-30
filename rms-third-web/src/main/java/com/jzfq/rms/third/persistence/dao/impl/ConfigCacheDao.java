@@ -21,8 +21,8 @@ public class ConfigCacheDao implements IConfigDao {
     @Autowired
     ICache prefixCache;
 
-    @Value("${rms.monitor.log.url}")
-    private String apiUrl;
+//    @Value("${rms.monitor.log.url}")
+//    private String apiUrl;
     @Override
     public String getMonitorUrl() {
         return (String)prefixCache.readConfigByGroup("rms-third-interface-url","monitor");

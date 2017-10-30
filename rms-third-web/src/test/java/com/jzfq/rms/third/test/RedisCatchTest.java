@@ -38,7 +38,9 @@ public class RedisCatchTest {
 //        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
 //        System.out.println("interfaceCountCache"+ob);
 
-
-        prefixCache.setConfigByGroup("rms-third-interface-url","monitor","http://dev.rms-monitor.juzifenqi.com/inner/record/save.json");
+// hehehehehehehehehehehehehe
+//        prefixCache.setConfigByGroup("rms-third-interface-url","monitor","http://dev.rms-monitor.juzifenqi.com/inner/record/save.json");
+        prefixCache.setConfigByGroup("rms-third-interface-url","gpj-evaluation","https://apigw.gongpingjia.com/api/cars/evaluation/juzi/");
+        prefixCache.setConfigByGroup("rms-third-interface-url","gpj-detail-model","http://openapi.gongpingjia.com/api/modeldetail/lastupdated/");
     }
 }

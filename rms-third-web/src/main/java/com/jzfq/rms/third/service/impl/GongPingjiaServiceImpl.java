@@ -15,6 +15,7 @@ import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
 import com.jzfq.rms.third.persistence.mapper.SysTaskMapper;
 import com.jzfq.rms.third.service.IGongPingjiaService;
 import com.jzfq.rms.third.service.ISendMessageService;
+import com.jzfq.rms.third.support.cache.ICache;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,16 +32,19 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
 
     private static final Logger log = LoggerFactory.getLogger("GongPingjiaService");
 
-    @Value("${gongpingjia.evaluation.apiUrl}")
-    private String evaluationUrl;
-    @Value("${gongpingjia.detail.model.apiUrl}")
-    private String detailModelInfoUrl;
+//    @Value("${gongpingjia.evaluation.apiUrl}")
+//    private String evaluationUrl;
+//    @Value("${gongpingjia.detail.model.apiUrl}")
+//    private String detailModelInfoUrl;
     @Value("${gongpingjia.key}")
     private String key;
     @Value("${gongpingjia.secret}")
     private String secret;
     @Value("${gongpingjia.timeout}")
     private Long timeout ;
+
+    @Autowired
+    ICache prefixCache;
 
     @Value("${gongpingjia.detail.model.page.size}")
     private int size ;
@@ -174,7 +178,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
      */
     private String getEvaluationUrl(String vin, String licensePlatHeader){
         String params = "?vin="+vin+"&license_plat_header="+licensePlatHeader;
-        return evaluationUrl + params;
+        return prefixCache.readConfigByGroup("rms-third-interface-url","gpj-evaluation") + params;
     }
 
     /**
@@ -263,8 +267,8 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         params.put("key",key);
         params.put("secret",secret);
         params.put("timeout",timeout);
-
-        params.put("url",detailModelInfoUrl);
+        String url = (String)prefixCache.readConfigByGroup("rms-third-interface-url","gpj-detail-model");
+        params.put("url",url);
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
         params.put("appId", "");
         params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_SYNCHRONIZEDATA.getCode());
@@ -345,8 +349,8 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         params.put("key",key);
         params.put("secret",secret);
         params.put("timeout",timeout);
-
-        params.put("url",evaluationUrl);
+        String url = (String)prefixCache.readConfigByGroup("rms-third-interface-url","gpj-evaluation");
+        params.put("url",url);
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
         params.put("appId", "");
         params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.SysTaskMapper">
+    <resultMap id="TaskResultMap" type="com.jzfq.rms.third.common.domain.SysTask">
+        <id column="c_id" jdbcType="VARCHAR" property="id"/>
+        <result column="c_task_slug" jdbcType="VARCHAR" property="taskSlug"/>
+        <result column="c_task_dec" jdbcType="VARCHAR" property="taskDec"/>
+        <result column="c_task_params" jdbcType="VARCHAR" property="taskParams"/>
+        <result column="c_status" jdbcType="VARCHAR" property="status"/>
+        <result column="dt_exc_time" jdbcType="TIMESTAMP" property="excTime"/>
+    </resultMap>
+    <sql id="TaskColumns">
+        c_id, c_task_slug, c_task_dec, c_task_params, c_status, dt_exc_time
+    </sql>
+
+    <select id="selectByTaskSlug" parameterType="java.lang.String" resultMap="TaskResultMap">
+        select
+        <include refid="TaskColumns"/>
+        from t_sys_task
+        where c_task_slug = #{taskSlug,jdbcType=VARCHAR} and c_status = '1' order by dt_exc_time desc LIMIT 1
+    </select>
+
+    <insert id="insertTask" parameterType="com.jzfq.rms.third.common.domain.SysTask">
+        insert into t_sys_task (c_id, c_task_slug, c_task_dec,
+        c_task_params, c_status, dt_exc_time
+        )
+        values (#{id,jdbcType=VARCHAR}, #{taskSlug,jdbcType=VARCHAR}, #{taskDec,jdbcType=VARCHAR},
+        #{taskParams,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{excTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <update id="updateTask" parameterType="com.jzfq.rms.third.common.domain.SysTask">
+        update t_sys_task
+        <set>
+            <if test="taskSlug != null">
+                c_task_slug = #{taskSlug,jdbcType=INTEGER},
+            </if>
+            <if test="taskDec != null">
+                c_task_dec = #{taskDec,jdbcType=VARCHAR},
+            </if>
+            <if test="taskParams != null">
+                c_task_params = #{taskParams,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                c_status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="excTime != null">
+                dt_exc_time = #{excTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where c_id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

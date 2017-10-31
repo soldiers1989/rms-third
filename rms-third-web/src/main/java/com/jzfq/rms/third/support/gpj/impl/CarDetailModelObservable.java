@@ -1,0 +1,130 @@
+package com.jzfq.rms.third.support.gpj.impl;
+
+import com.jzfq.rms.third.persistence.dao.IConfigDao;
+import com.jzfq.rms.third.support.cache.ICountCache;
+import com.jzfq.rms.third.support.pool.ThreadProvider;
+import com.jzfq.rms.third.support.gpj.IGPJSync;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class CarDetailModelObservable extends Observable {
+    private static final Logger log = LoggerFactory.getLogger("GongPingjiaSyncTask");
+    /**
+     * 监听器
+     */
+    private List<IGPJSync> observers;
+
+    @Autowired
+    IConfigDao configCacheDao;
+    @Autowired
+    ICountCache interfaceCountCache;
+    /**
+     * 正在同步
+     */
+    private static final AtomicBoolean syncronizing = new AtomicBoolean(false);
+    /**
+     * 超时时间
+     */
+    private static final Long time = 3600l;
+    /**
+     * 超时时间
+     */
+    private static final String key = "rms_third_car_model_detail_sync_task";
+
+    /**
+     * @param observers 要初始化的监听器
+     */
+    public void setObservers(List<IGPJSync> observers) {
+        this.observers = observers;
+    }
+
+
+    /**
+     * 初始化
+     */
+    public void init() {
+        if (this.observers == null) {
+            return;
+        }
+        for (Observer o : observers) {
+            addObserver(o);
+        }
+    }
+
+
+    private volatile AtomicInteger RUNNING_SYNC_PROCESS = new AtomicInteger(0);
+    public void sync() {
+        if(configCacheDao.isDebug()){
+            log.info("开发环境禁止同步");
+            return ;
+        }
+        if(!interfaceCountCache.isRequestOutInterface(key,time)){
+            log.info("有车型库同步任务正在执行，取消本次任务");
+            return;
+        }
+        if (!syncronizing.compareAndSet(false, true)) {
+            log.info("有车型库同步任务正在执行，取消本次任务");
+            return;
+        }
+        if (RUNNING_SYNC_PROCESS.get() > 0) {
+            log.info("上次车型库同步任务没有完成，取消本次任务");
+            syncronizing.set(false);
+            return;
+        }
+        try {
+            log.info("开始执行同步任务");
+            work();
+        } catch (Exception e){
+            log.error("同步任务出错：",e);
+        }finally {
+            syncronizing.set(false);
+            log.info("同步任务执行结束");
+        }
+    }
+
+
+    /**
+     *
+     */
+    private void work() {
+        RUNNING_SYNC_PROCESS.incrementAndGet();
+        Map<String,Object> taskInfo = new HashMap<>();
+        ThreadProvider.getThreadPool().execute(new sysDataTask(taskInfo));
+    }
+
+
+    /**
+     *
+     */
+    private class sysDataTask implements Runnable {
+        private Map<String,Object> taskInfo;
+
+        public sysDataTask(Map<String,Object> taskInfo) {
+            super();
+            this.taskInfo = taskInfo;
+        }
+
+        @Override
+        public void run() {
+            try {
+                setChanged();
+                notifyObservers(taskInfo);
+            } catch (Exception e) {
+                if (taskInfo != null) {
+                    log.error(String.format("车型库信息同步出现错误"), e);
+                }
+            } finally {
+                RUNNING_SYNC_PROCESS.decrementAndGet();
+            }
+        }
+
+    }
+
+
+}

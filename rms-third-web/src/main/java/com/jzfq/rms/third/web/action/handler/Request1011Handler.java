@@ -155,7 +155,7 @@ public class Request1011Handler extends AbstractRequestHandler {
             BrPostData data = buildPostData(taskId.toString(), "", result, customerType.toString());
             //保存信息，并且更新任务
             riskPostDataService.saveData(data);
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,result);
         }
         interfaceCountCache.setFailure(isRepeatKey);
         return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);
@@ -174,7 +174,7 @@ public class Request1011Handler extends AbstractRequestHandler {
      * @param request
      * @return
      */
-    private ResponseResult handler02(AbstractRequestAuthentication request){
+    private ResponseResult handler02(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String customerType =(String) request.getParam("customerType");
         String orderNo = request.getParam("orderNo").toString();
@@ -196,6 +196,9 @@ public class Request1011Handler extends AbstractRequestHandler {
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
         }
         Map<String,Object> commonParams = getCommonParams( request);
+        commonParams.put("customerType",customerType);
+        commonParams.put("loanType",loanType);
+        commonParams.put("personInfo",info);
         String result = brPostService.getApiData(terBean, type,commonParams);
         if (StringUtil.checkNotEmpty(result)) {
             BrPostData data = buildPostData(taskId, "", result, customerType.toString());

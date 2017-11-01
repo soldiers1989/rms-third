@@ -11,6 +11,7 @@ import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.constant.Constants;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.ISendMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,7 +158,7 @@ public class BrPostService {
      * @param type
      * @return
      */
-    public String getApiData(MerchantBean bean, int type,Map<String,Object> commonParams) {
+    public String getApiData(MerchantBean bean, int type,Map<String,Object> commonParams) throws Exception{
         getToken(type,commonParams);
         if (OFFICE_TYPE == type) {
             bean.setTokenid(office_token);
@@ -176,15 +177,18 @@ public class BrPostService {
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 
         commonParams.put("ms",ms);
+        commonParams.put("bean",bean);
 
         Map<String ,Object> bizParams = new HashMap<>();
-        bizParams.put("bean",bean);
+        bizParams.put("customerType",commonParams.get("customerType"));
+        bizParams.put("loanType",commonParams.get("loanType"));
+        bizParams.put("personInfo",commonParams.get("personInfo"));
         ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.BR01.getCode(),commonParams,bizParams);
         data = (String) response.getData();
         log.info("百融返回结果：[ "+data+" ]");
         String code = jsonGetKey(data, CODE_KEY);
         if (Constants.EMPTY_STR.equals(data)) {
-            //登录失败如何处理
+            throw new BusinessException(10,"登录失败如何处理",true);
         } else if (RETRY_CODE.equals(code)) {
             //只重新登录一次，如果还失败，不做处理
             if (OFFICE_TYPE == type) {

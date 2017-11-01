@@ -102,7 +102,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         commonParams.put("isRpc",isRpc);
         commonParams.put("traceId",traceId);
-        commonParams.put("taskId",taskId);
+        commonParams.put("taskId",taskId.toString());
         Object data = tdDataService.getTdData(commonParams);
         if(data == null||isRpc){
             interfaceCountCache.setFailure(isRepeatKey);

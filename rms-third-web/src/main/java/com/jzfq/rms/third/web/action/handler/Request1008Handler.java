@@ -109,7 +109,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
             throw new BusinessException("traceId=" +traceId+ "同盾分获取结果为null",true);
         }
         if(data == null){
-            throw new BusinessException("traceId=" +traceId+ "远程调用接口中，或数据库中数据为过期，同盾分获取结果为null",true);
+            throw new BusinessException("traceId=" +traceId+ "远程调用接口中，或数据库中数据未过期，同盾分获取结果为null",true);
         }
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, data);
     }

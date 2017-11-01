@@ -131,7 +131,7 @@ public class Request1015Handler extends AbstractRequestHandler {
         if(!CollectionUtils.isEmpty(jsonObject)){
             return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,jsonObject);
         }else{
-            throw new BusinessException("traceId=" + TraceIDThreadLocal.getTraceID()+ "远程调用接口中，或数据库中数据为过期，同盾分获取结果为null",true);
+            throw new BusinessException("traceId=" + TraceIDThreadLocal.getTraceID()+ "远程调用接口中，或数据库中数据未过期，同盾分获取结果为null",true);
         }
     }
     private String getKeyByTaskID(Long taskId){

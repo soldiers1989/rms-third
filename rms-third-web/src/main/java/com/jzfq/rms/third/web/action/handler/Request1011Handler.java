@@ -86,10 +86,9 @@ public class Request1011Handler extends AbstractRequestHandler {
     protected boolean checkParams(Map<String, Serializable> params) {
         String orderNo = (String)params.get("orderNo");
         String customerType = (String)params.get("customerType");
-        String personInfo = (String)params.get("personInfo");
-        String loanType = (String)params.get("loanType");
-        if(StringUtils.isBlank(orderNo)||StringUtils.isBlank(personInfo)
-                || StringUtils.isBlank(loanType)||StringUtils.isBlank(orderNo)
+        Integer loanType = (Integer)params.get("loanType");
+        if(StringUtils.isBlank(orderNo)||params.get("personInfo")==null
+                || loanType==null||StringUtils.isBlank(orderNo)
                 || StringUtils.isBlank(customerType)){
             return false;
         }
@@ -138,7 +137,7 @@ public class Request1011Handler extends AbstractRequestHandler {
             if(!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2){
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
             }else{
-                throw new BusinessException("traceId=" +traceId+ "远程调用接口中，或数据库中数据为过期，同盾分获取结果为null",true);
+                throw new BusinessException("traceId=" +traceId+ "远程调用接口中，或数据库中数据未过期，同盾分获取结果为null",true);
             }
         }
         // 远程查询
@@ -158,6 +157,7 @@ public class Request1011Handler extends AbstractRequestHandler {
             riskPostDataService.saveData(data);
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
         }
+        interfaceCountCache.setFailure(isRepeatKey);
         return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);
     }
     private BrPostData buildPostData(String taskId, String desc, String data, String type) {

@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * 捷安
@@ -79,23 +82,23 @@ public class JieAnServiceImpl implements IJieAnService {
 
     /**
      * 运营商实名
-     * @param user_id
+     * @param taskId
      * @param bizData
      * @return
      * @throws Exception
      */
     @Override
-    public ResponseResult getMobilecheck3item(String user_id, Map<String, Object> bizData) throws Exception {
+    public ResponseResult getMobilecheck3item(String taskId, Map<String, Object> bizData) throws Exception {
         Map<String,String> params = new HashMap<>();
         params.put("versionId","01");
         params.put("chrSet","UTF-8");
         params.put("custId",custId);
 
         String orderId = getOrderId();
-        log.info("taskId="+user_id+" orderId="+orderId);
+        log.info("taskId="+taskId+" orderId="+orderId);
         params.put("ordId",orderId);
         params.put("transType","STD_VERI");
-        params.put("busiType",user_id);
+        params.put("busiType",taskId);
         params.put("merPriv","");
         params.put("retUrl","");
         params.put("jsonStr","{\"CERT_ID\":\""+bizData.get("idNumber")+"\"," +

@@ -1,7 +1,6 @@
 package com.jzfq.rms.third.web.action.handler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.br.bean.MerchantBean;
 import com.br.bean.TerBean;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.enums.BrPostUrl;
@@ -11,6 +10,7 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.impl.BrPostService;
@@ -24,9 +24,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 百融分
@@ -34,7 +34,7 @@ import java.util.concurrent.Executors;
  * @date 2017/10/17 15:03.
  **/
 @Component("request1011Handler")
-public class Request1011Handler extends AbstractRequestHandler{
+public class Request1011Handler extends AbstractRequestHandler {
     private static final Logger log = LoggerFactory.getLogger("Bairong 1011");
 
     @Autowired
@@ -63,9 +63,9 @@ public class Request1011Handler extends AbstractRequestHandler{
     protected boolean isCheckRepeat() {
         return true;
     }
+
     @Autowired
     ICountCache interfaceCountCache;
-
     /**
      * 超时时间 三天
      */
@@ -84,16 +84,15 @@ public class Request1011Handler extends AbstractRequestHandler{
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-//        String orderNo = (String)params.get("orderNo");
-//        String customerType = (String)params.get("customerType");
-//        String personInfo = (String)params.get("personInfo");
-//        String phone = (String)params.get("phone");
-//        String custumType = (String)params.get("custumType");
-//        if(StringUtils.isBlank(orderNo)||StringUtils.isBlank(name)
-//                || StringUtils.isBlank(idNumber)||StringUtils.isBlank(phone)
-//                || StringUtils.isBlank(custumType)){
-//            return false;
-//        }
+        String orderNo = (String)params.get("orderNo");
+        String customerType = (String)params.get("customerType");
+        String personInfo = (String)params.get("personInfo");
+        String loanType = (String)params.get("loanType");
+        if(StringUtils.isBlank(orderNo)||StringUtils.isBlank(personInfo)
+                || StringUtils.isBlank(loanType)||StringUtils.isBlank(orderNo)
+                || StringUtils.isBlank(customerType)){
+            return false;
+        }
         return true;
     }
 
@@ -104,7 +103,78 @@ public class Request1011Handler extends AbstractRequestHandler{
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
+    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+        if(StringUtils.equals(request.getApiVersion(),"02")){
+            return handler02(request);
+        }
+        return handler01(request);
+    }
+
+    /**
+     * 版本01
+     * @param request
+     * @return
+     */
+    private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
+        String traceId = TraceIDThreadLocal.getTraceID();
+
+        String orderNo = request.getParam("orderNo").toString();
+        String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
+        Long taskId = Long.parseLong(taskIdStr);
+        if(taskId==null){
+            return new ResponseResult(traceId, ReturnCode.ERROR_TASK_ID_NULL,null);
+        }
+
+        String customerType =(String) request.getParam("customerType");
+        Integer loanType = (Integer)request.getParam("loanType");
+        RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
+                RiskPersonalInfo.class);
+        Integer type = Integer.parseInt(customerType);
+        // 数据库查询
+        String isRepeatKey = getKeyByTaskID(taskId);
+        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
+        if(!isRpc){
+            JSONObject jsonObject = (JSONObject) riskPostDataService.queryData(taskId,type);
+            if(!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2){
+                return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
+            }else{
+                throw new BusinessException("traceId=" +traceId+ "远程调用接口中，或数据库中数据为过期，同盾分获取结果为null",true);
+            }
+        }
+        // 远程查询
+        String url = "";
+        if (loanType == ProductTypeEnum.CASH_LOAN.getCode().byteValue()){
+            int customerTypeNum = type + 2;
+            url = urls.get(customerTypeNum);                //现金贷，需要换取百融分的接口
+        }else {
+            url = urls.get(type);
+        }
+        Map<String,Object> commonParams = getCommonParams( request);
+        TerBean terBean = createBean(url, info, type);
+        String result = brPostService.getApiData(terBean, type,commonParams);
+        if (StringUtil.checkNotEmpty(result)) {
+            BrPostData data = buildPostData(taskId.toString(), "", result, customerType.toString());
+            //保存信息，并且更新任务
+            riskPostDataService.saveData(data);
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
+        }
+        return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);
+    }
+    private BrPostData buildPostData(String taskId, String desc, String data, String type) {
+        BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
+                .desc(desc).data(data).interfaceType(type).build();
+        return dataBean;
+    }
+
+    private String getKeyByTaskID(Long taskId){
+        return "rms_third_1011_"+taskId;
+    }
+    /**
+     * 版本02
+     * @param request
+     * @return
+     */
+    private ResponseResult handler02(AbstractRequestAuthentication request){
         String traceId = TraceIDThreadLocal.getTraceID();
         String customerType =(String) request.getParam("customerType");
         String orderNo = request.getParam("orderNo").toString();
@@ -123,7 +193,7 @@ public class Request1011Handler extends AbstractRequestHandler{
         TerBean terBean = createBean(url, info, type);
         JSONObject jsonObject = (JSONObject) riskPostDataService.queryData(Long.parseLong(taskId),type);
         if(!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2){
-            return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,jsonObject);
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
         }
         Map<String,Object> commonParams = getCommonParams( request);
         String result = brPostService.getApiData(terBean, type,commonParams);
@@ -131,16 +201,11 @@ public class Request1011Handler extends AbstractRequestHandler{
             BrPostData data = buildPostData(taskId, "", result, customerType.toString());
             //保存信息，并且更新任务
             riskPostDataService.saveData(data);
-            return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,data);
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
         }
-        return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,jsonObject);
+        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
     }
 
-    private BrPostData buildPostData(String taskId, String desc, String data, String type) {
-        BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
-                .desc(desc).data(data).interfaceType(type).build();
-        return dataBean;
-    }
 
     private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
         Map<String,Object> commonParams = new HashMap<>();

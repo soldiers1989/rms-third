@@ -4,15 +4,18 @@ import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IJieAnService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
+import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -64,7 +67,6 @@ public class Request1017Handler extends AbstractRequestHandler {
         }
         return true;
     }
-
     /**
      * 业务处理，交由子类实现。
      *
@@ -73,26 +75,72 @@ public class Request1017Handler extends AbstractRequestHandler {
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+        if(StringUtils.equals(request.getApiVersion(),"02")){
+            return handler02(request);
+        }
+        return handler01(request);
+    }
+    @Autowired
+    ICountCache interfaceCountCache;
+    /**
+     * 超时时间 三天
+     */
+    private static final Long time = 3*24*60*60L;
+    /**
+     * 版本01
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
-        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+        String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
+        Long taskId = Long.parseLong(taskIdStr);
+        if(taskId==null){
+            return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.ERROR_TASK_ID_NULL,null);
+        }
+        // 数据库查询
+        String isRepeatKey = getKeyByTaskID(taskId);
+        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
+
         String name = request.getParam("name").toString();
         String idNumber = request.getParam("idNumber").toString();
         String phone = request.getParam("phone").toString();
         String custumType = request.getParam("custumType").toString();
-        Map<String, Object> bizData = new HashMap<>();
-        bizData.put("name",name);
-        bizData.put("idNumber",idNumber);
-        bizData.put("phone",phone);
-        bizData.put("custumType",custumType);
-        ResponseResult result = jieAnService.getPhoneNetworkLength(taskId, bizData);
-        if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
-            JSONObject json = (JSONObject) result.getData();
-            String status = changeBairongPhoneNetworkLength(json);
-            result.setData(status);
-            editAndSavePostData(taskId, "手机在网时长", status, custumType);
+        if(isRpc){
+            Map<String, Object> bizData = new HashMap<>();
+            bizData.put("name",name);
+            bizData.put("idNumber",idNumber);
+            bizData.put("phone",phone);
+            bizData.put("custumType",custumType);
+            ResponseResult result = jieAnService.getPhoneNetworkLength(taskIdStr, bizData);
+            if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
+                JSONObject json = (JSONObject) result.getData();
+                String status = changeBairongPhoneNetworkLength(json);
+                result.setData(status);
+                editAndSavePostData(taskIdStr, "手机在网时长", status, custumType);
+            }
+            return result;
         }
-        return result;
+        JSONObject jsonObject = (JSONObject) riskPostDataService.queryPhonePeriodData(taskId,Integer.parseInt(custumType));
+        if(!CollectionUtils.isEmpty(jsonObject)){
+            return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,jsonObject);
+        }else{
+            throw new BusinessException("traceId=" + TraceIDThreadLocal.getTraceID()+ "远程调用接口中，或数据库中数据为过期，同盾分获取结果为null",true);
+        }
+
+    }
+    private String getKeyByTaskID(Long taskId){
+        return "rms_third_1017_"+taskId;
+    }
+    /**
+     * 版本02
+     * @param request
+     * @return
+     */
+    private ResponseResult handler02(AbstractRequestAuthentication request){
+        return null;
     }
 
     /**

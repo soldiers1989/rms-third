@@ -3,7 +3,11 @@ package com.jzfq.rms.third.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.mongo.PengYuan;
 import com.jzfq.rms.third.common.dto.ResponseResult;
-import com.jzfq.rms.third.common.enums.*;
+import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
+import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.enums.SendMethodEnum;
+import com.jzfq.rms.third.common.enums.SystemIdEnum;
+import com.jzfq.rms.third.common.utils.Base64;
 import com.jzfq.rms.third.common.utils.CompressStringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
@@ -11,6 +15,7 @@ import com.jzfq.rms.third.persistence.dao.IPengYuanDao;
 import com.jzfq.rms.third.service.IPengYuanService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.xfire.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +24,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import com.jzfq.rms.third.common.utils.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -28,8 +32,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.util.*;
-import org.codehaus.xfire.client.Client;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 /**
  *
  * @description 鹏元服务接口实现
@@ -250,20 +256,25 @@ public class PengYuanServiceImpl implements IPengYuanService {
         }
         List<PengYuan> pyData = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId).and("idCard").is(carInfo.get("certCardNo"))),PengYuan.class);
         Object data = (pyData==null||pyData.size()==0)?null:pyData.get(0).getData();
-        return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,data);
+        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
     }
+
+    /**
+     * 远程调用鹏元接口
+     * @param carInfo
+     * @param commonParams
+     * @return
+     * @throws Exception
+     */
     private ResponseResult getCarDataByRpc(Map<String,Object> carInfo, Map<String,Object> commonParams)throws Exception{
-        boolean isRpc = (boolean)commonParams.get("isRpc");
         Long taskId = (Long)commonParams.get("taskId");
         String traceId = TraceIDThreadLocal.getTraceID();
 
-        JSONObject data = new JSONObject();
         String pyUrl = pengYuanDao.getPyUrl();
         if(StringUtils.isBlank(pyUrl)){
-            return new ResponseResult(traceId,ReturnCode.ERROR_SYSTEM_CONFIG_NULL.code(),
+            return new ResponseResult(traceId, ReturnCode.ERROR_SYSTEM_CONFIG_NULL.code(),
                     "获取鹏元接口系统配置地址为空",null);
         }
-
         commonParams.put("url",pyUrl);
         commonParams.put("targetId", SystemIdEnum.THIRD_PY.getCode());
         commonParams.put("appId", "");
@@ -273,14 +284,15 @@ public class PengYuanServiceImpl implements IPengYuanService {
 
         ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.PY01.getCode(),commonParams,carInfo);
         if(response==null){
-            log.info("traceId={} 鹏元车辆 响应信息为空",TraceIDThreadLocal.getTraceID());
+            log.info("traceId={} 鹏元车辆 响应信息为空", TraceIDThreadLocal.getTraceID());
             throw new BusinessException(ReturnCode.ERROR_RESPONSE_NULL.code(),"鹏元车辆信息接口失败 返回为空",true);
         }
-        if(response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
-            log.info("traceId={} 鹏元车辆 响应信息为空",TraceIDThreadLocal.getTraceID());
+        if(response.getCode()!= ReturnCode.REQUEST_SUCCESS.code()){
+            log.info("traceId={} 鹏元车辆 响应信息为空", TraceIDThreadLocal.getTraceID());
             return response;
         }
-        PengYuan py = new PengYuan(taskId,(String) carInfo.get("certCardNo"), "", (JSONObject)response.getData());
+        JSONObject data = (JSONObject)response.getData();
+        PengYuan py = new PengYuan(taskId,(String) carInfo.get("certCardNo"), "", data);
         saveData(py);
         return response;
     }

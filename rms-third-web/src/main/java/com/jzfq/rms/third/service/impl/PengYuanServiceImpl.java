@@ -282,6 +282,9 @@ public class PengYuanServiceImpl implements IPengYuanService {
         commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 
+        commonParams.put("userName", userName);
+        commonParams.put("passWord", passWord);
+
         ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.PY01.getCode(),commonParams,carInfo);
         if(response==null){
             log.info("traceId={} 鹏元车辆 响应信息为空", TraceIDThreadLocal.getTraceID());

@@ -38,12 +38,21 @@ public class RedisCatchTest {
 //        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
 //        System.out.println("interfaceCountCache"+ob);
 
-// hehehehehehehehehehehehehe
+// DEV
 //        prefixCache.setConfigByGroup("rms-third-interface-url","monitor","http://dev.rms-monitor.juzifenqi.com/inner/record/save.json");
 
 //        prefixCache.setConfigByGroup("rms-third-interface-url","gpj-evaluation","https://apigw.gongpingjia.com/api/cars/evaluation/juzi/");
 //        prefixCache.setConfigByGroup("rms-third-interface-url","gpj-detail-model","http://openapi.gongpingjia.com/api/modeldetail/lastupdated/");
 
-        prefixCache.setConfigByGroup("rms-third-interface-url","monitor","http://pre-rms-monitor.juzifenqi.com/inner/record/save.json");
+//        prefixCache.setConfigByGroup("rms-third-interface-url","rms-third-interface","http://dev2.rms.third.juzifenqi.com/inter");
+//
+//        prefixCache.setConfigByGroup("rms-third-interface-url","rms-task-id","http://dev2.rms.juzifenqi.com/rmsToThird/order.json");
+
+        // PRE
+                prefixCache.setConfigByGroup("rms-third-interface-url","monitor","http://pre-rms-monitor.juzifenqi.com/inner/record/save.json");
+                prefixCache.setConfigByGroup("rms-third-interface-url","gpj-evaluation","https://apigw.gongpingjia.com/api/cars/evaluation/juzi/");
+        prefixCache.setConfigByGroup("rms-third-interface-url","gpj-detail-model","http://openapi.gongpingjia.com/api/modeldetail/lastupdated/");
+                prefixCache.setConfigByGroup("rms-third-interface-url","rms-third-interface","http://pre.rms.third.juzifenqi.com/inter");
+                prefixCache.setConfigByGroup("rms-third-interface-url","rms-task-id","http://pre.rms.juzifenqi.com/rmsToThird/order.json");
     }
 }

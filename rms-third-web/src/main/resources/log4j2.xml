@@ -8,14 +8,14 @@
         <!-- 项目名称 -->
         <property name="PROJECT_NAME">rms-third</property>
         <!-- INFO级别日志名称 -->
-        <property name="LOG_INFO_NAME">rms-third-info.log</property>
+        <property name="LOG_INFO_NAME">info.log</property>
         <!-- INFO级别备份日志名称 -->
-        <property name="BACKUP_INFO_NAME">rms-third-info-%d{yyyy-MM-dd-HH}-%i.log.gz</property>
+        <property name="BACKUP_INFO_NAME">info-%d{yyyy-MM-dd-HH}-%i.log.gz</property>
 
         <!-- ERROR级别日志名称 -->
-        <property name="LOG_ERROR_NAME">rms-third-error.log</property>
+        <property name="LOG_ERROR_NAME">error.log</property>
         <!-- ERROR级别备份日志名称-->
-        <property name="BACKUP_ERROR_NAME">rms-third-error-%d{yyyy-MM-dd-HH}-%i.log.gz</property>
+        <property name="BACKUP_ERROR_NAME">error-%d{yyyy-MM-dd-HH}-%i.log.gz</property>
     </properties>
 
     <appenders>

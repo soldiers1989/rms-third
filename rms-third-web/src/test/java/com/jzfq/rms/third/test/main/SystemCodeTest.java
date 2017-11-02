@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.test;
+package com.jzfq.rms.third.test.main;
 
 import com.jzfq.rms.third.common.domain.TSysCode;
 import com.jzfq.rms.third.common.domain.TSysConfig;

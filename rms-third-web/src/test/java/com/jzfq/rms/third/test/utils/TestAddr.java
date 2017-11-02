@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.test;
+package com.jzfq.rms.third.test.utils;
 
 import org.apache.commons.lang.StringUtils;
 

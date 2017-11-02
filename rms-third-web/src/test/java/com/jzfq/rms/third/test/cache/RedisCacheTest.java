@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.test;
+package com.jzfq.rms.third.test.cache;
 
 import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.cache.ICountCache;
@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
-public class RedisCatchTest {
+public class RedisCacheTest {
     @Autowired
     ICountCache interfaceCountCache;
 
@@ -49,10 +49,17 @@ public class RedisCatchTest {
 //        prefixCache.setConfigByGroup("rms-third-interface-url","rms-task-id","http://dev2.rms.juzifenqi.com/rmsToThird/order.json");
 
         // PRE
-                prefixCache.setConfigByGroup("rms-third-interface-url","monitor","http://pre-rms-monitor.juzifenqi.com/inner/record/save.json");
-                prefixCache.setConfigByGroup("rms-third-interface-url","gpj-evaluation","https://apigw.gongpingjia.com/api/cars/evaluation/juzi/");
-        prefixCache.setConfigByGroup("rms-third-interface-url","gpj-detail-model","http://openapi.gongpingjia.com/api/modeldetail/lastupdated/");
-                prefixCache.setConfigByGroup("rms-third-interface-url","rms-third-interface","http://pre.rms.third.juzifenqi.com/inter");
-                prefixCache.setConfigByGroup("rms-third-interface-url","rms-task-id","http://pre.rms.juzifenqi.com/rmsToThird/order.json");
+//                prefixCache.setConfigByGroup("rms-third-interface-url","monitor","http://pre-rms-monitor.juzifenqi.com/inner/record/save.json");
+//                prefixCache.setConfigByGroup("rms-third-interface-url","gpj-evaluation","https://apigw.gongpingjia.com/api/cars/evaluation/juzi/");
+//        prefixCache.setConfigByGroup("rms-third-interface-url","gpj-detail-model","http://openapi.gongpingjia.com/api/modeldetail/lastupdated/");
+//                prefixCache.setConfigByGroup("rms-third-interface-url","rms-third-interface","http://pre.rms.third.juzifenqi.com/inter");
+//                prefixCache.setConfigByGroup("rms-third-interface-url","rms-task-id","http://pre.rms.juzifenqi.com/rmsToThird/order.json");
+
+        //prd
+//        prefixCache.setConfigByGroup("rms-third-interface-url","monitor","http://rms.monitor.juzifenqi.com/inner/record/save.json");
+//        prefixCache.setConfigByGroup("rms-third-interface-url","gpj-evaluation","https://apigw.gongpingjia.com/api/cars/evaluation/juzi/");
+//        prefixCache.setConfigByGroup("rms-third-interface-url","gpj-detail-model","http://openapi.gongpingjia.com/api/modeldetail/lastupdated/");
+//        prefixCache.setConfigByGroup("rms-third-interface-url","rms-third-interface","http://rms.third.juzifenqi.com/inter");
+//        prefixCache.setConfigByGroup("rms-third-interface-url","rms-task-id","http://rms.juzifenqi.com/rmsToThird/order.json");
     }
 }

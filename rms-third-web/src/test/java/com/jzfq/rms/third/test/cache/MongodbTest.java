@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.test;
+package com.jzfq.rms.third.test.cache;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -126,7 +126,7 @@ public class RmsThirdInterface {
 //        ResponseResult dto = rmsThirdService.send("","1","","1018","01",map);
 //        System.out.println(""+dto);
 
-        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
+        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/rms-third/inter");
         Map<String,Object> logParams = new HashMap<>();
         logParams.put("targetId", "17");
         logParams.put("interfaceId", 1);

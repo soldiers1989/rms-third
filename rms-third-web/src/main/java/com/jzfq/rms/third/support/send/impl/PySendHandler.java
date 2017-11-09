@@ -41,8 +41,8 @@ public class PySendHandler extends AbstractSendHandler {
             new BusinessException("鹏元获取车辆信息 接口URL为null",true);
         }
         Client client = new Client(new URL(pyUrl));
-        String userName =(String) this.getBizParams().get("userName");
-        String passWord =(String) this.getBizParams().get("passWord");
+        String userName =(String) this.getParams().get("userName");
+        String passWord =(String) this.getParams().get("passWord");
         //得到子报告结果
         logger.info("traceId=["+traceId+"]请求报文【"+queryInfo+"】");
         Object[] results = client.invoke("queryReport",new Object[]{userName,passWord,queryInfo,"xml"});

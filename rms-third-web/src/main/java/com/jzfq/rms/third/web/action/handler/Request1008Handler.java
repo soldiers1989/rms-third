@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
-import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ITdDataService;
 import com.jzfq.rms.third.support.cache.ICountCache;
@@ -41,7 +41,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
      */
     @Override
     protected boolean isCheckRepeat() {
-        return true;
+        return false;
     }
 
     /**
@@ -66,7 +66,6 @@ public class Request1008Handler  extends AbstractRequestHandler {
     private static final Long time = 3*24*60*60L;
     @Override
     protected boolean isRpc(Map<String, Serializable> params){
-
         return true;
     }
 
@@ -88,46 +87,55 @@ public class Request1008Handler  extends AbstractRequestHandler {
      * @param request
      * @return
      */
-    private  ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
+    private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
-        Integer loanType = (Integer)request.getParam("loanType");
-        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
-        RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
-                RiskPersonalInfo.class);
-        Map<String,Object> queryParams = new HashMap<>();
-        queryParams.put("traceId",traceId);
-        queryParams.put("taskId",taskId);
-        queryParams.put("personalInfo",personInfo);
-        queryParams.put("loanType",loanType);
-        Object data = tdDataService.getTdData(queryParams);
+        String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
+        Long taskId = Long.parseLong(taskIdStr);
+        if(taskId==null){
+            return new ResponseResult(traceId, ReturnCode.ERROR_TASK_ID_NULL,null);
+        }
+        Map<String,Object> commonParams = getCommonParams(  request);
+        String isRepeatKey = getKeyByTaskID(taskId);
+        commonParams.put("isRepeatKey",isRepeatKey);
+//        commonParams.put("redisCache",interfaceCountCache);
+        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
+        commonParams.put("isRpc",isRpc);
+        commonParams.put("traceId",traceId);
+        commonParams.put("taskId",taskId.toString());
+        Object data = tdDataService.getTdData(commonParams);
+        if(data == null||isRpc){
+            interfaceCountCache.setFailure(isRepeatKey);
+            throw new BusinessException("traceId=" +traceId+ "同盾分获取结果为null",true);
+        }
         if(data == null){
-            new RuntimeException("traceId=" +traceId+ "同盾分获取结果为null");
+            throw new BusinessException("traceId=" +traceId+ "远程调用接口中，或数据库中数据未过期，同盾分获取结果为null",true);
         }
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, data);
     }
 
+
+    private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
+        Integer loanType = (Integer)request.getParam("loanType");
+        RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
+                RiskPersonalInfo.class);
+        Map<String,Object> commonParams = new HashMap<>();
+
+        commonParams.put("personalInfo",personInfo);
+        commonParams.put("loanType",loanType);
+        return commonParams;
+    }
+
+    private String getKeyByTaskID(Long taskId){
+        return "rms_third_1008_"+taskId;
+    }
     /**
      * 版本02 处理器
      * @param request
      * @return
      */
-    private  ResponseResult handler02(AbstractRequestAuthentication request) throws Exception{
-        String traceId = TraceIDThreadLocal.getTraceID();
-        String orderNo = request.getParam("orderNo").toString();
-        Integer loanType = (Integer)request.getParam("loanType");
-        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
-        RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
-                RiskPersonalInfo.class);
-        Map<String,Object> queryParams = new HashMap<>();
-        queryParams.put("traceId",traceId);
-        queryParams.put("taskId",taskId);
-        queryParams.put("loanType",loanType);
-        ResponseResult result = tdDataService.queryTdDatas( queryParams,   personInfo);
-        if(result == null||result.getData()==null){
-            new RuntimeException("traceId=" +traceId+ "同盾分获取结果为null");
-        }
-        return result;
+    private ResponseResult handler02(AbstractRequestAuthentication request) throws Exception{
+        return null;
     }
 
 }

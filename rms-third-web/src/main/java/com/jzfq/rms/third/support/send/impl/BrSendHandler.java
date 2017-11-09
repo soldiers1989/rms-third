@@ -49,7 +49,7 @@ public class BrSendHandler extends AbstractSendHandler {
 
     private ResponseResult getBrData01() throws Exception{
         MerchantServer ms = (MerchantServer)this.getParams().get("ms");
-        MerchantBean bean = (MerchantBean)this.getBizParams().get("bean");
+        MerchantBean bean = (MerchantBean)this.getParams().get("bean");
         String data = ms.getApiData(bean);
         return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,data);
     }

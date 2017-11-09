@@ -1,4 +1,4 @@
-package com.jzfq.rms.third.test.main;
+package com.jzfq.rms.third.test.utils;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.jzfq.rms.third.common.utils.IPUtils;

@@ -30,7 +30,7 @@ public class RmsThirdInterface {
 //        carInfo.put("type","222");
 //        map.put("carInfo",carInfo);
 //        map.put("orderNo","8002386");
-//        ResponseResult dto = rmsThirdService.send("123","1","","1002","02",map);
+//        ResponseResult dto = rmsThirdService.send("123","1","","1002","01",map);
 //        System.out.println(dto);
 
 
@@ -77,7 +77,19 @@ public class RmsThirdInterface {
 //        personalInfo.put("name","gaorenpeng");
 //        map.put("personInfo",personalInfo);
 //        map.put("orderNo","8002386");
-//        ResponseResult dto = rmsThirdService.send("123","1","","1008","02",map);
+//        ResponseResult dto = rmsThirdService.send("123","1","","1008","01",map);
+//        System.out.println(dto);
+
+//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("frontId","111111");
+//        map.put("loanType",(byte)2);
+//        Map<String ,Object> personalInfo = new HashMap<>();
+//        map.put("customerType","0");
+//        personalInfo.put("name","gaorenpeng");
+//        map.put("personInfo",personalInfo);
+//        map.put("orderNo","8002386");
+//        ResponseResult dto = rmsThirdService.send("123","1","","1011","01",map);
 //        System.out.println(dto);
 
 
@@ -98,7 +110,7 @@ public class RmsThirdInterface {
 //        map.put("phone","13130485366");
 //        ResponseResult dto = rmsThirdService.send("123","1","","1005","01",map);
 //        System.out.println(dto);
-//    }
+
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
 //        Map<String,Object> map = new HashMap<>();
 //        map.put("frontId","111111");
@@ -109,9 +121,20 @@ public class RmsThirdInterface {
 //        ResponseResult dto = rmsThirdService.send("123","1","","1003","01",map);
 //        System.out.println(dto);
 
-        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
-        Map<String,Object> map = new HashMap<>();
-        ResponseResult dto = rmsThirdService.send("","1","","1018","01",map);
+//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
+//        Map<String,Object> map = new HashMap<>();
+//        ResponseResult dto = rmsThirdService.send("","1","","1018","01",map);
+//        System.out.println(""+dto);
+
+        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/rms-third/inter");
+        Map<String,Object> logParams = new HashMap<>();
+        logParams.put("targetId", "17");
+        logParams.put("interfaceId", 1);
+        logParams.put("status",2);
+        logParams.put("message",4);
+        logParams.put("params",6);
+        logParams.put("systemIP",null);
+        ResponseResult dto = rmsThirdService.send("HEHE","1","","S000","01",logParams);
         System.out.println(""+dto);
     }
 }

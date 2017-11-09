@@ -2,7 +2,11 @@ package com.jzfq.rms.third.support.send.impl;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
+import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
+import com.jzfq.rms.third.common.utils.MD5Helper;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.support.send.AbstractSendHandler;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -16,9 +20,8 @@ import org.slf4j.LoggerFactory;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author 大连桔子分期科技有限公司
@@ -37,14 +40,13 @@ public class JieanSendHandler extends AbstractSendHandler {
             return getJieanData01();
         }
         if(StringUtils.equals(InterfaceIdEnum.THIRD_JIEAN02.getCode(),(String)this.getParams().get("interfaceId"))){
-            return getJieanData01();
+            return getJieanData02();
         }
         if(StringUtils.equals(InterfaceIdEnum.THIRD_JIEAN03.getCode(),(String)this.getParams().get("interfaceId"))){
-            return getJieanData01();
+            return getJieanData03();
         }
-        return null;
+        return new ResponseResult(StringUtil.getStringOfObject(this.getParams().get("traceId")),ReturnCode.NOT_EXIST_SEND_HANDLER,null);
     }
-
     /**
      * 初始化
      *
@@ -57,8 +59,28 @@ public class JieanSendHandler extends AbstractSendHandler {
         this.setBizParams(bizParams);
     }
 
-    ResponseResult getJieanData01() throws Exception{
-        Map<String ,String> params = (Map<String ,String>)this.getParams().get("params");
+    /**
+     * 获取捷安数据方法 MP3
+     * @return
+     * @throws Exception
+     */
+    ResponseResult getJieanData03() throws Exception{
+
+        Map<String,String> params = new HashMap<>();
+        params.put("versionId","01");
+        params.put("chrSet","UTF-8");
+        params.put("custId",(String)this.getParams().get("custId"));
+        params.put("transType","STD_VERI");
+        params.put("busiType", SystemIdEnum.RMS_THIRD.getCode());
+        params.put("merPriv","");
+        params.put("retUrl","");
+        params.put("jsonStr","{\"CERT_ID\":\""+this.getBizParams().get("idNumber")+"\"," +
+                "\"CERT_NAME\":\""+this.getBizParams().get("name")+"\"," +
+                "\"MP\":\""+this.getBizParams().get("phone")+"\",\"PROD_ID\":\"MP3\"}");
+        params.put("merPriv","");
+        String ordId = getOrderId();
+        params.put("ordId",ordId);
+        logger.info("捷安三要素 traceId={} orderId={}",this.getParams().get("traceId"),ordId);
         String input = getInputStr(params);
         String url = (String)this.getParams().get("url");
         String MAC_KEY = (String)this.getParams().get("MAC_KEY");
@@ -66,6 +88,64 @@ public class JieanSendHandler extends AbstractSendHandler {
         return postData(url,params);
     }
 
+    /**
+     * 在网时长
+     * @return
+     * @throws Exception
+     */
+    ResponseResult getJieanData01() throws Exception{
+        Map<String,String> params = new HashMap<>();
+        params.put("versionId","01");
+        params.put("chrSet","UTF-8");
+        params.put("custId",(String)this.getParams().get("custId"));
+        params.put("transType","REPORT");
+        params.put("busiType",SystemIdEnum.RMS_THIRD.getCode());
+        params.put("merPriv","");
+        params.put("retUrl","");
+        params.put("jsonStr","{\"MP\":\""+this.getBizParams().get("phone")+"\",\"PROD_ID\":\"MPTIME\"}");
+        params.put("merPriv","");
+        String ordId = getOrderId();
+        params.put("ordId",ordId);
+        logger.info("捷安在网时长 traceId={} orderId={}",this.getParams().get("traceId"),ordId);
+        String input = getInputStr(params);
+        String url = (String)this.getParams().get("url");
+        String MAC_KEY = (String)this.getParams().get("MAC_KEY");
+        params.put("macStr", getMacStr(input,MAC_KEY));
+        return postData(url,params);
+    }
+
+    /**
+     * 在网状态
+     * @return
+     * @throws Exception
+     */
+    ResponseResult getJieanData02() throws Exception{
+        Map<String,String> params = new HashMap<>();
+        params.put("versionId","01");
+        params.put("chrSet","UTF-8");
+        params.put("custId",(String)this.getParams().get("custId"));
+        params.put("transType","REPORT");
+        params.put("busiType",SystemIdEnum.RMS_THIRD.getCode());
+        params.put("merPriv","");
+        params.put("retUrl","");
+        params.put("jsonStr","{\"MP\":\""+this.getBizParams().get("phone")+"\",\"PROD_ID\":\"MPSTAT\"}");
+        params.put("merPriv","");
+        String ordId = getOrderId();
+        params.put("ordId",ordId);
+        logger.info("捷安在网状态 traceId={} orderId={}",this.getParams().get("traceId"),ordId);
+        String input = getInputStr(params);
+        String url = (String)this.getParams().get("url");
+        String MAC_KEY = (String)this.getParams().get("MAC_KEY");
+        params.put("macStr", getMacStr(input,MAC_KEY));
+        return postData(url,params);
+    }
+    /**
+     * 调用方式
+     * @param apiUrl
+     * @param params
+     * @return
+     * @throws Exception
+     */
     public ResponseResult postData(String apiUrl,Map<String,String> params) throws Exception {
         logger.info("捷安请求参数："+params);
         return HttpConnectionManager.doUncheckPost(apiUrl,params);
@@ -100,6 +180,14 @@ public class JieanSendHandler extends AbstractSendHandler {
     }
 
     /**
+     * 流水号
+     * @return
+     */
+    private String getOrderId(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        return "JUZIFENQI"+formatter.format(new Date())+(new Random()).nextInt(1000);
+    }
+    /**
      * 获取加密字符串
      * @param input
      * @return
@@ -107,39 +195,5 @@ public class JieanSendHandler extends AbstractSendHandler {
     private String getMacStr(String input,String MAC_KEY ){
         logger.info("MD5摘要前字符串:"+input+MAC_KEY);
         return MD5Helper.encrypt(input+MAC_KEY);
-    }
-}
-class MD5Helper {
-    private static final int MD5_LENGTH = 32;
-
-    public static String encrypt(String str) {
-        String sRes;
-        try {
-            MessageDigest alg = MessageDigest.getInstance("MD5");
-            alg.update(str.getBytes("UTF-8"));
-            byte[] digesta = alg.digest();
-            sRes = byteToHex(digesta).toUpperCase();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("MD5散列出错，不支持MD5算法！", e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("MD5散列出错，不支持UTF-8字符集！", e);
-        }
-        return sRes;
-    }
-
-    public static String byteToHex(byte[] bytes) {
-        if (bytes == null) {
-            return null;
-        }
-        StringBuilder hex = new StringBuilder(MD5_LENGTH);
-        String temp;
-        for (int i = 0; i < bytes.length; i++) {
-            temp = Integer.toHexString(bytes[i] & 0XFF);
-            if (1 == temp.length()) {
-                hex.append('0');
-            }
-            hex.append(temp);
-        }
-        return hex.toString();
     }
 }

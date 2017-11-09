@@ -13,11 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * 捷安
@@ -38,38 +35,20 @@ public class JieAnServiceImpl implements IJieAnService {
     @Autowired
     ISendMessageService sendMessegeService;
 
-    private String getOrderId(){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        System.out.println(formatter.format(new Date()));
-        return "JUZITEST"+formatter.format(new Date())+(new Random()).nextInt(1000);
-    }
+
     /**
      * 在网时长
      *
-     * @param user_id
+     * @param taskId
      * @param bizData
      * @return
      * @throws Exception
      */
     @Override
-    public ResponseResult getPhoneNetworkLength(String user_id, Map<String, Object> bizData) throws Exception {
-        Map<String,String> params = new HashMap<>();
-        params.put("versionId","01");
-        params.put("chrSet","UTF-8");
-        params.put("custId",custId);
-
-        String orderId = getOrderId();
-        log.info("taskId="+user_id+" orderId="+orderId);
-        params.put("ordId",orderId);
-        params.put("transType","REPORT");
-        params.put("busiType",user_id);
-        params.put("merPriv","");
-        params.put("retUrl","");
-        params.put("jsonStr","{\"MP\":\""+bizData.get("phone")+"\",\"PROD_ID\":\"MPTIME\"}");
-        params.put("merPriv","");
-
+    public ResponseResult getPhoneNetworkLength(String taskId, Map<String, Object> bizData) throws Exception {
         Map<String,Object> commonParams = new HashMap<>();
-        commonParams.put("params",params);
+        commonParams.put("taskId",taskId);
+        commonParams.put("custId",custId);
         commonParams.put("MAC_KEY",MAC_KEY);
         commonParams.put("url",apiUrl);
         commonParams.put("targetId", SystemIdEnum.THIRD_JIEAN.getCode());
@@ -89,25 +68,9 @@ public class JieAnServiceImpl implements IJieAnService {
      */
     @Override
     public ResponseResult getMobilecheck3item(String taskId, Map<String, Object> bizData) throws Exception {
-        Map<String,String> params = new HashMap<>();
-        params.put("versionId","01");
-        params.put("chrSet","UTF-8");
-        params.put("custId",custId);
-
-        String orderId = getOrderId();
-        log.info("taskId="+taskId+" orderId="+orderId);
-        params.put("ordId",orderId);
-        params.put("transType","STD_VERI");
-        params.put("busiType",taskId);
-        params.put("merPriv","");
-        params.put("retUrl","");
-        params.put("jsonStr","{\"CERT_ID\":\""+bizData.get("idNumber")+"\"," +
-                "\"CERT_NAME\":\""+bizData.get("name")+"\"," +
-                "\"MP\":\""+bizData.get("phone")+"\",\"PROD_ID\":\"MP3\"}");
-        params.put("merPriv","");
-
         Map<String,Object> commonParams = new HashMap<>();
-        commonParams.put("params",params);
+        commonParams.put("taskId",taskId);
+        commonParams.put("custId",custId);
         commonParams.put("MAC_KEY",MAC_KEY);
         commonParams.put("url",apiUrl);
         commonParams.put("targetId", SystemIdEnum.THIRD_JIEAN.getCode());
@@ -128,23 +91,9 @@ public class JieAnServiceImpl implements IJieAnService {
      */
     @Override
     public ResponseResult getPhonestatus(String taskId, Map<String, Object> bizData) throws Exception {
-        Map<String,String> params = new HashMap<>();
-        params.put("versionId","01");
-        params.put("chrSet","UTF-8");
-        params.put("custId",custId);
-
-        String orderId = getOrderId();
-        log.info("taskId="+taskId+" orderId="+orderId);
-        params.put("ordId",orderId);
-        params.put("transType","REPORT");
-        params.put("busiType",taskId);
-        params.put("merPriv","");
-        params.put("retUrl","");
-        params.put("jsonStr","{\"MP\":\""+bizData.get("phone")+"\",\"PROD_ID\":\"MPSTAT\"}");
-        params.put("merPriv","");
-
         Map<String,Object> commonParams = new HashMap<>();
-        commonParams.put("params",params);
+        commonParams.put("taskId",taskId);
+        commonParams.put("custId",custId);
         commonParams.put("MAC_KEY",MAC_KEY);
         commonParams.put("url",apiUrl);
         commonParams.put("targetId", SystemIdEnum.THIRD_JIEAN.getCode());
@@ -154,7 +103,5 @@ public class JieAnServiceImpl implements IJieAnService {
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
         return sendMessegeService.sendByThreeChance(SendMethodEnum.JIEAN02.getCode(),commonParams,bizData);
     }
-
-
 }
 

@@ -158,39 +158,14 @@ public class Request1016Handler extends AbstractRequestHandler {
         return jsonPhonestatus.toString();
     }
 
-    private static String changeLengthByValue(String length){
-        if(!length.contains(",")){
-            return "";
-        }
-        String[] month = length.split(",");
-        String start = "";
-        if(month[0].length()>1){
-            start = month[0].substring(1,month[0].length()).trim();
-        }
-        String end = "";
-        if(month[1].length()>1){
-            end = month[1].substring(0,month[1].length()-1).trim();
-        }
-        if(NumberUtils.isNumber(end)){
-            Integer endMonth = Integer.parseInt(end);
-            if(endMonth<=6){
-                return "1";
-            }
-            if(endMonth<=12){
-                return "2";
-            }
-            if(endMonth<=24){
-                return "3";
-            }
-        }
-        if(NumberUtils.isNumber(start)){
-            Integer startMonth = Integer.parseInt(start);
-            if(startMonth>=24){
-                return "4";
-            }
-        }
-        return "";
-    }
+    /**
+     * 保存数据
+     * @param taskId
+     * @param desc
+     * @param data
+     * @param type
+     * @return
+     */
     private BrPostData editAndSavePostData(String taskId, String desc, String data, String type) {
         BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
                 .desc(desc).data(data).interfaceType(type).build();

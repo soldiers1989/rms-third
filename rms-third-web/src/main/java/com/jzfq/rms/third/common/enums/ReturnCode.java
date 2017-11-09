@@ -11,6 +11,7 @@ import java.util.Map;
  */
 public enum ReturnCode {
     ERROR_REFUSE_IP(-60,"拒绝IP"),
+    NOT_EXIST_SEND_HANDLER(-2, "不存在发送处理模块"),
 	ACTIVE_EXCEPTION(-1, "异常"),
     ACTIVE_SUCCESS(01, "操作成功"),
     ACTIVE_FAILURE(02, "操作失败"),

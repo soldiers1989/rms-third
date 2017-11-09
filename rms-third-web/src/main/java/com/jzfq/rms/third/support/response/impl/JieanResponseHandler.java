@@ -22,7 +22,7 @@ import java.util.Map;
  **/
 public class JieanResponseHandler extends AbstractResponseHandler {
     /**
-     * 发送
+     * 梳理响应结果
      *
      * @return
      */
@@ -52,6 +52,11 @@ public class JieanResponseHandler extends AbstractResponseHandler {
         this.params = params;
     }
 
+    /**
+     * 手机在网时长
+     * @return
+     * @throws Exception
+     */
     private ResponseResult handle01() throws Exception{
         ResponseResult response = (ResponseResult)params.get("response");
         ResponseResult result = new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,null);
@@ -63,31 +68,39 @@ public class JieanResponseHandler extends AbstractResponseHandler {
         try {
             doc = DocumentHelper.parseText(data);
         } catch (DocumentException e) {
-            logger.error("taskId:"+params.get("busiType")+"-捷安 接口调用解析报文出错",e);
+            logger.error("traceId:{}-捷安在网时长 接口调用解析报文出错{}",traceId,e);
             throw new Exception("Request JieAn api "+params.get("transType")+"exception");
         }
         if(doc==null){
-            logger.info("taskId:"+params.get("busiType")+"-捷安 接口返回为空");
-            throw new Exception("Request JieAn api "+params.get("transType")+"return null");
+            logger.info("taskId:{}-捷安 接口返回为空",traceId);
+            return new ResponseResult(traceId,ReturnCode.ERROR_RESPONSE_NULL.code(),
+                    "Request JieAn api "+params.get("transType")+"return null",data);
         }
         JSONObject resultJson = new JSONObject();
         Element root = doc.getRootElement();
         List<Element> list = root.content();
         for(Element ele:list){
             String text = ele.getText();
-            if(org.apache.commons.lang.StringUtils.isBlank(text)|| org.apache.commons.lang.StringUtils.equals(text,"null")){
+            if(StringUtils.isBlank(text)|| StringUtils.equals(text,"null")){
                 resultJson.put(ele.getName(), "");
                 continue;
             }
             resultJson.put(ele.getName(),text);
         }
         String respCode = resultJson.getString("respCode");
-        if (respCode == null ||!org.apache.commons.lang.StringUtils.equals(respCode,"071")) {
-            throw new Exception("traceId【"+traceId+"】Request JieAn api MPTIME returns fail" + respCode);
+        if (respCode == null ||!StringUtils.equals(respCode,"071")) {
+            return new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE.code(),
+                    "traceId【"+traceId+"】Request JieAn api MPTIME returns fail" + respCode,data);
         }
         result.setData(resultJson);
         return result;
     }
+
+    /**
+     * 手机在网状态
+     * @return
+     * @throws Exception
+     */
     private ResponseResult handle02() throws Exception{
         ResponseResult response = (ResponseResult)params.get("response");
         ResponseResult result = new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,null);
@@ -99,19 +112,20 @@ public class JieanResponseHandler extends AbstractResponseHandler {
         try {
             doc = DocumentHelper.parseText(data);
         } catch (DocumentException e) {
-            logger.error("taskId:"+params.get("busiType")+"-捷安 接口调用解析报文出错",e);
+            logger.error("traceId:{}-捷安在网状态 接口调用解析报文出错{}",traceId,e);
             throw new Exception("Request JieAn api "+params.get("transType")+"exception");
         }
         if(doc==null){
-            logger.info("taskId:"+params.get("busiType")+"-捷安 接口返回为空");
-            throw new Exception("Request JieAn api "+params.get("transType")+"return null");
+            logger.info("taskId:{}-捷安 接口返回为空",traceId);
+            return new ResponseResult(traceId,ReturnCode.ERROR_RESPONSE_NULL.code(),
+                    "Request JieAn api "+params.get("transType")+"return null",data);
         }
         JSONObject resultJson = new JSONObject();
         Element root = doc.getRootElement();
         List<Element> list = root.content();
         for(Element ele:list){
             String text = ele.getText();
-            if(org.apache.commons.lang.StringUtils.isBlank(text)|| org.apache.commons.lang.StringUtils.equals(text,"null")){
+            if(StringUtils.isBlank(text)|| StringUtils.equals(text,"null")){
                 resultJson.put(ele.getName(), "");
                 continue;
             }
@@ -119,12 +133,19 @@ public class JieanResponseHandler extends AbstractResponseHandler {
         }
 
         String respCode = resultJson.getString("respCode");
-        if (resultJson == null ||!org.apache.commons.lang.StringUtils.equals(respCode,"071")) {
-            throw new Exception("traceId【"+traceId+"】Request JieAn api MPSTAT returns fail" + respCode);
+        if (resultJson == null ||!StringUtils.equals(respCode,"071")) {
+            return new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE.code(),
+                    "traceId【"+traceId+"】Request JieAn api MPSTAT returns fail" + respCode,data);
         }
         result.setData(resultJson);
         return result;
     }
+
+    /**
+     * 三要素 运营商实名
+     * @return
+     * @throws Exception
+     */
     private ResponseResult handle03() throws Exception{
         ResponseResult response = (ResponseResult)params.get("response");
         ResponseResult result = new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,null);
@@ -136,33 +157,35 @@ public class JieanResponseHandler extends AbstractResponseHandler {
         try {
             doc = DocumentHelper.parseText(data);
         } catch (DocumentException e) {
-            logger.error("taskId:"+params.get("busiType")+"-捷安 接口调用解析报文出错",e);
+            logger.error("traceId:{}-捷安运营商实名 接口调用解析报文出错{}",traceId,e);
             throw new Exception("Request JieAn api "+params.get("transType")+"exception");
         }
         if(doc==null){
-            logger.info("taskId:"+params.get("busiType")+"-捷安 接口返回为空");
-            throw new Exception("Request JieAn api "+params.get("transType")+"return null");
+            logger.info("taskId:{}-捷安 接口返回为空",traceId);
+            return new ResponseResult(traceId,ReturnCode.ERROR_RESPONSE_NULL.code(),
+                    "Request JieAn api "+params.get("transType")+"return null",data);
         }
         JSONObject resultJson = new JSONObject();
         Element root = doc.getRootElement();
         List<Element> list = root.content();
         for(Element ele:list){
             String text = ele.getText();
-            if(org.apache.commons.lang.StringUtils.isBlank(text)|| org.apache.commons.lang.StringUtils.equals(text,"null")){
+            if(StringUtils.isBlank(text)|| StringUtils.equals(text,"null")){
                 resultJson.put(ele.getName(), "");
                 continue;
             }
             resultJson.put(ele.getName(),text);
         }
         String respCode = resultJson.getString("respCode");
-        if (respCode == null ||(!org.apache.commons.lang.StringUtils.equals(respCode,"000")&&
-                !org.apache.commons.lang.StringUtils.equals(respCode,"042")
+        if (respCode == null ||(!StringUtils.equals(respCode,"000")&&
+                !StringUtils.equals(respCode,"042")
 //                &&
-//                !org.apache.commons.lang.StringUtils.equals(respCode,"308")&&
-//                !org.apache.commons.lang.StringUtils.equals(respCode,"310")&&
-//                !org.apache.commons.lang.StringUtils.equals(respCode,"313")
+//                !StringUtils.equals(respCode,"308")&&
+//                !StringUtils.equals(respCode,"310")&&
+//                !StringUtils.equals(respCode,"313")
         )) {
-            throw new Exception("traceId【"+traceId+"】Request JieAn api MP3 returns fail code:" + respCode);
+            return new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE.code(),
+                    "traceId【"+traceId+"】Request JieAn api MP3 returns fail code:" + respCode,data);
         }
         result.setData(resultJson);
         return result;

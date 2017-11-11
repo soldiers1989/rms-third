@@ -1,12 +1,12 @@
 package com.jzfq.rms.third.support.response.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.support.response.AbstractResponseHandler;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -179,10 +179,10 @@ public class JieanResponseHandler extends AbstractResponseHandler {
         String respCode = resultJson.getString("respCode");
         if (respCode == null ||(!StringUtils.equals(respCode,"000")&&
                 !StringUtils.equals(respCode,"042")
-//                &&
-//                !StringUtils.equals(respCode,"308")&&
-//                !StringUtils.equals(respCode,"310")&&
-//                !StringUtils.equals(respCode,"313")
+                &&
+                !StringUtils.equals(respCode,"308")&&
+                !StringUtils.equals(respCode,"310")&&
+                !StringUtils.equals(respCode,"313")
         )) {
             return new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE.code(),
                     "traceId【"+traceId+"】Request JieAn api MP3 returns fail code:" + respCode,data);

@@ -4,6 +4,7 @@ import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.mchange.v1.lang.BooleanUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,5 +35,20 @@ public class ConfigCacheDao implements IConfigDao {
             return false;
         }
         return BooleanUtils.parseBoolean(debug);
+    }
+
+    /**
+     * 获取失效时间
+     *
+     * @param type
+     * @return
+     */
+    @Override
+    public Integer getOutTimeUnit(String type) {
+        String time = (String)prefixCache.readConfigByGroup("rms-third-interface-data-out-time",type);
+        if(StringUtils.isNotBlank(time)&& NumberUtils.isNumber(time)){
+            return Integer.parseInt(time);
+        }
+        return 30;
     }
 }

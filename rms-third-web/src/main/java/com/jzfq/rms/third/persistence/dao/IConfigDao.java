@@ -8,4 +8,11 @@ public interface IConfigDao {
     String getMonitorUrl();
 
     boolean isDebug();
+
+    /**
+     * 获取失效时间
+     * @param type
+     * @return
+     */
+    Integer getOutTimeUnit(String type);
 }

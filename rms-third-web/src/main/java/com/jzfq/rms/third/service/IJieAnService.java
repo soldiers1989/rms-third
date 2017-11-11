@@ -1,8 +1,10 @@
 package com.jzfq.rms.third.service;
 
+import com.jzfq.rms.third.common.domain.TJieanPhoneData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import net.sf.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,4 +39,23 @@ public interface IJieAnService {
      * @throws Exception
      */
     ResponseResult getPhonestatus(String taskId, Map<String, Object> Object) throws Exception;
+
+    /**
+     *
+     * @param type
+     * @param code
+     * @param result
+     * @param value
+     */
+    void savePhonesData(String type,String code,String result,String value,Map<String,Object> bizParams);
+
+    /**
+     * 获取数据
+     * @param name
+     * @param idNumber
+     * @param phone
+     * @param type
+     * @return
+     */
+    List<TJieanPhoneData> getJieanData(String name, String idNumber, String phone, String type);
 }

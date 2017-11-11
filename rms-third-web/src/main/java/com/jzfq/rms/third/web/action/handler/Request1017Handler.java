@@ -1,16 +1,19 @@
 package com.jzfq.rms.third.web.action.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.mongo.BrPostData;
+import com.jzfq.rms.third.common.domain.TJieanPhoneData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
+import com.jzfq.rms.third.common.enums.PhoneNetworkLengthEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
-import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IJieAnService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +21,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 捷安 手机在网时长
@@ -101,38 +103,68 @@ public class Request1017Handler extends AbstractRequestHandler {
             return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.ERROR_TASK_ID_NULL,null);
         }
         // 数据库查询
-        String isRepeatKey = getKeyByTaskID(taskId);
-        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
-
         String name = request.getParam("name").toString();
         String idNumber = request.getParam("idNumber").toString();
         String phone = request.getParam("phone").toString();
         String custumType = request.getParam("custumType").toString();
-        if(isRpc){
-            Map<String, Object> bizData = new HashMap<>();
-            bizData.put("name",name);
-            bizData.put("idNumber",idNumber);
-            bizData.put("phone",phone);
-            bizData.put("custumType",custumType);
-            ResponseResult result = jieAnService.getPhoneNetworkLength(taskIdStr, bizData);
-            if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
-                JSONObject json = (JSONObject) result.getData();
-                String status = changeBairongPhoneNetworkLength(json);
-                result.setData(status);
-                editAndSavePostData(taskIdStr, "手机在网时长", status, custumType);
-            }
-            return result;
-        }
-        JSONObject jsonObject = (JSONObject) riskPostDataService.queryPhonePeriodData(taskId,Integer.parseInt(custumType));
-        if(!CollectionUtils.isEmpty(jsonObject)){
-            return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,jsonObject);
-        }else{
-            throw new BusinessException("traceId=" + TraceIDThreadLocal.getTraceID()+ "远程调用接口中，或数据库中数据未过期，同盾分获取结果为null",true);
+        //业务参数
+        Map<String, Object> bizData = new HashMap<>();
+        bizData.put("name",name);
+        bizData.put("idNumber",idNumber);
+        bizData.put("phone",phone);
+        bizData.put("custumType",custumType);
+
+        List<TJieanPhoneData> list = jieAnService.getJieanData(name,idNumber,phone, InterfaceIdEnum.THIRD_JIEAN01.getCode());
+        if(!CollectionUtils.isEmpty(list)){
+            // 1.有效数据
+            TJieanPhoneData data = list.get(0);
+            // 获取老系统数据
+            String rmsData = changeBairongPhoneNetworkLength(data.getcResult(),bizData);
+            // 保存报mongodb
+            editAndSavePostData(taskIdStr, "手机在网时长", rmsData, custumType);
+            return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,data.getcValue());
         }
 
+        String isRepeatKey = getRpcControlKey(bizData);
+        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
+        if(!isRpc){
+            return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ACTIVE_THIRD_RPC,null);
+        }
+        bizData.put("orderId",getOrderId());
+        ResponseResult result = jieAnService.getPhoneNetworkLength(taskIdStr, bizData);
+        if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
+            // 获取捷安 返回时长
+            String length = getLength((JSONObject) result.getData());
+            String value = changeLengthByValue(length);
+            try {
+                // 获取老系统数据格式
+                String rmsData = changeBairongPhoneNetworkLength(length,bizData);
+                // 保存报mongodb
+                editAndSavePostData(taskIdStr, "手机在网时长", rmsData, custumType);
+                // 缓存到MYSQL
+                jieAnService.savePhonesData(InterfaceIdEnum.THIRD_JIEAN01.getCode(),((JSONObject)result.getData()).get("respCode").toString(),length, value,bizData);
+            }catch (Exception e){
+                log.error("异常",e);
+            }
+            result.setData(value);
+        }else{
+            interfaceCountCache.setFailure(isRepeatKey);
+        }
+        return result;
     }
-    private String getKeyByTaskID(Long taskId){
-        return "rms_third_1017_"+taskId;
+    /**
+     * 远程调用key
+     * @param bizData
+     * @return
+     */
+    private String getRpcControlKey(Map<String, Object> bizData){
+        StringBuilder sb = new StringBuilder("rms_third_1017_");
+        sb.append(StringUtil.getStringOfObject(bizData.get("name")));
+        sb.append("_");
+        sb.append(StringUtil.getStringOfObject(bizData.get("idNumber")));
+        sb.append("_");
+        sb.append(StringUtil.getStringOfObject(bizData.get("phone")));
+        return sb.toString() ;
     }
     /**
      * 版本02
@@ -143,27 +175,34 @@ public class Request1017Handler extends AbstractRequestHandler {
         return null;
     }
 
+
+    private String getLength(JSONObject data){
+        String key=data.getString("jsonStr");
+        JSONObject json = JSONObject.parseObject(key);
+        return json.getString("OUTPUT1");
+    }
     /**
      * 在网时间转换
-     * @param paramJson
+     * @param length
+     * @param bizParams
      * @return
      */
-    private static String changeBairongPhoneNetworkLength(JSONObject paramJson){
-
-        String key=paramJson.getString("jsonStr");
-        com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(key);
-        String length = json.getString("OUTPUT1");
-        String result ="{\"swift_number\":\"3100034_20170712173700_9237\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"2\",\"data\":{\"value\":\"3\"},\"costTime\":9},\"flag\":{\"flag_telperiod\":1}}";
-        JSONObject jsonNetworkLength = JSONObject.fromObject(result);
+    private static String changeBairongPhoneNetworkLength(String length,Map<String ,Object> bizParams){
+        String result ="{\"swift_number\":\""+bizParams.get("orderId")+"\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"2\",\"data\":{\"value\":\"3\"},\"costTime\":9},\"flag\":{\"flag_telperiod\":1}}";
+        JSONObject jsonNetworkLength = JSONObject.parseObject(result);
         JSONObject product = jsonNetworkLength.getJSONObject("product");
         JSONObject data = product.getJSONObject("data");
-        data.put("value", changeLengthByValue(length));
+        data.put("value", changeRmsLengthByValue(length));
         product.put("operation","4");
-
         return jsonNetworkLength.toString();
     }
 
-    private static String changeLengthByValue(String length){
+    /**
+     * 百融格式转换
+     * @param length
+     * @return
+     */
+    private static String changeRmsLengthByValue(String length){
         if(!length.contains(",")){
             return "";
         }
@@ -196,10 +235,60 @@ public class Request1017Handler extends AbstractRequestHandler {
         }
         return "";
     }
+
+    /**
+     * 新系统数值转换
+     * @param length
+     * @return
+     */
+    private static String changeLengthByValue(String length){
+        if(!length.contains(",")){
+            return "";
+        }
+        String[] month = length.split(",");
+        String start = "";
+        if(month[0].length()>1){
+            start = month[0].substring(1,month[0].length()).trim();
+        }
+        String end = "";
+        if(month[1].length()>1){
+            end = month[1].substring(0,month[1].length()-1).trim();
+        }
+        if(NumberUtils.isNumber(end)){
+            Integer endMonth = Integer.parseInt(end);
+            if(endMonth<=3){
+                return PhoneNetworkLengthEnum.THREE_MONTH.getCode();
+            }
+            if(endMonth<=6){
+                return PhoneNetworkLengthEnum.SIX_MONTH.getCode();
+            }
+            if(endMonth<=12){
+                return PhoneNetworkLengthEnum.ONE_YEAR.getCode();
+            }
+            if(endMonth<=24){
+                return PhoneNetworkLengthEnum.TWO_YEAR.getCode();
+            }
+        }
+        if(NumberUtils.isNumber(start)){
+            Integer startMonth = Integer.parseInt(start);
+            if(startMonth>=24){
+                return PhoneNetworkLengthEnum.OVER_TWO_YEAR.getCode();
+            }
+        }
+        return PhoneNetworkLengthEnum.OTHER.getCode();
+    }
     private BrPostData editAndSavePostData(String taskId, String desc, String data, String type) {
         BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
                 .desc(desc).data(data).interfaceType(type).build();
         riskPostDataService.saveData(dataBean);
         return dataBean;
+    }
+    /**
+     * 流水号
+     * @return
+     */
+    private String getOrderId(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        return "JUZIFENQI"+formatter.format(new Date())+(new Random()).nextInt(1000);
     }
 }

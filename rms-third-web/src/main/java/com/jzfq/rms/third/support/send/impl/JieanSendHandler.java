@@ -78,7 +78,7 @@ public class JieanSendHandler extends AbstractSendHandler {
                 "\"CERT_NAME\":\""+this.getBizParams().get("name")+"\"," +
                 "\"MP\":\""+this.getBizParams().get("phone")+"\",\"PROD_ID\":\"MP3\"}");
         params.put("merPriv","");
-        String ordId = getOrderId();
+        String ordId = StringUtil.getStringOfObject(this.getBizParams().get("orderId"));
         params.put("ordId",ordId);
         logger.info("捷安三要素 traceId={} orderId={}",this.getParams().get("traceId"),ordId);
         String input = getInputStr(params);
@@ -104,7 +104,7 @@ public class JieanSendHandler extends AbstractSendHandler {
         params.put("retUrl","");
         params.put("jsonStr","{\"MP\":\""+this.getBizParams().get("phone")+"\",\"PROD_ID\":\"MPTIME\"}");
         params.put("merPriv","");
-        String ordId = getOrderId();
+        String ordId = StringUtil.getStringOfObject(this.getBizParams().get("orderId"));
         params.put("ordId",ordId);
         logger.info("捷安在网时长 traceId={} orderId={}",this.getParams().get("traceId"),ordId);
         String input = getInputStr(params);
@@ -130,7 +130,7 @@ public class JieanSendHandler extends AbstractSendHandler {
         params.put("retUrl","");
         params.put("jsonStr","{\"MP\":\""+this.getBizParams().get("phone")+"\",\"PROD_ID\":\"MPSTAT\"}");
         params.put("merPriv","");
-        String ordId = getOrderId();
+        String ordId = StringUtil.getStringOfObject(this.getBizParams().get("orderId"));
         params.put("ordId",ordId);
         logger.info("捷安在网状态 traceId={} orderId={}",this.getParams().get("traceId"),ordId);
         String input = getInputStr(params);
@@ -177,15 +177,6 @@ public class JieanSendHandler extends AbstractSendHandler {
             return "";
         }
         return input;
-    }
-
-    /**
-     * 流水号
-     * @return
-     */
-    private String getOrderId(){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        return "JUZIFENQI"+formatter.format(new Date())+(new Random()).nextInt(1000);
     }
     /**
      * 获取加密字符串

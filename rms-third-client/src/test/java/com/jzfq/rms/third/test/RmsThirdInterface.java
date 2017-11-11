@@ -34,16 +34,16 @@ public class RmsThirdInterface {
 //        System.out.println(dto);
 
 
-//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("frontId","111111");
-//        map.put("custumType","0");
-//        map.put("idNumber","210282198909062117");
-//        map.put("name","高仁鹏");
-//        map.put("phone","13130485366");
-//        map.put("orderNo","8002386");
-//        ResponseResult dto = rmsThirdService.send("123","1","","1015","01",map);
-//        System.out.println(dto);
+        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
+        Map<String,Object> map = new HashMap<>();
+        map.put("frontId","111111");
+        map.put("custumType","0");
+        map.put("idNumber","210282198909062117");
+        map.put("name","高仁鹏");
+        map.put("phone","13130485366");
+        map.put("orderNo","8002386");
+        ResponseResult dto = rmsThirdService.send("123","1","","1015","01",map);
+        System.out.println(dto);
 
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
@@ -126,15 +126,15 @@ public class RmsThirdInterface {
 //        ResponseResult dto = rmsThirdService.send("","1","","1018","01",map);
 //        System.out.println(""+dto);
 
-        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/rms-third/inter");
-        Map<String,Object> logParams = new HashMap<>();
-        logParams.put("targetId", "17");
-        logParams.put("interfaceId", 1);
-        logParams.put("status",2);
-        logParams.put("message",4);
-        logParams.put("params",6);
-        logParams.put("systemIP",null);
-        ResponseResult dto = rmsThirdService.send("HEHE","1","","S000","01",logParams);
-        System.out.println(""+dto);
+//        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/rms-third/inter");
+//        Map<String,Object> logParams = new HashMap<>();
+//        logParams.put("targetId", "17");
+//        logParams.put("interfaceId", 1);
+//        logParams.put("status",2);
+//        logParams.put("message",4);
+//        logParams.put("params",6);
+//        logParams.put("systemIP",null);
+//        ResponseResult dto = rmsThirdService.send("HEHE","1","","S000","01",logParams);
+//        System.out.println(""+dto);
     }
 }

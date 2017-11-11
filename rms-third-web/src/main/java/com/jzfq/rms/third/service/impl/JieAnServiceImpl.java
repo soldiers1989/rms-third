@@ -1,20 +1,25 @@
 package com.jzfq.rms.third.service.impl;
 
+import com.jzfq.rms.third.common.domain.TJieanPhoneData;
+import com.jzfq.rms.third.common.domain.example.TJieanPhoneDataExample;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.persistence.dao.IConfigDao;
+import com.jzfq.rms.third.persistence.mapper.TJieanPhoneDataMapper;
 import com.jzfq.rms.third.service.IJieAnService;
 import com.jzfq.rms.third.service.ISendMessageService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 捷安
@@ -24,7 +29,7 @@ import java.util.Map;
 @Service
 public class JieAnServiceImpl implements IJieAnService {
 
-    private static final Logger log = LoggerFactory.getLogger("JieAnService");
+    private static final Logger log = LoggerFactory.getLogger(JieAnServiceImpl.class);
     @Value("${jiean.request.mac.key}")
     private String MAC_KEY;
     @Value("${jiean.request.api.url}")
@@ -35,6 +40,11 @@ public class JieAnServiceImpl implements IJieAnService {
     @Autowired
     ISendMessageService sendMessegeService;
 
+    @Autowired
+    TJieanPhoneDataMapper jieanPhoneDataMapper;
+
+    @Autowired
+    IConfigDao configCacheDao;
 
     /**
      * 在网时长
@@ -102,6 +112,64 @@ public class JieAnServiceImpl implements IJieAnService {
         commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
         return sendMessegeService.sendByThreeChance(SendMethodEnum.JIEAN02.getCode(),commonParams,bizData);
+    }
+
+    /**
+     * @param type
+     * @param code
+     * @param result
+     * @param value
+     * @param bizParams
+     */
+    @Override
+    public void savePhonesData(String type, String code, String result, String value, Map<String, Object> bizParams) {
+        TJieanPhoneData record = new TJieanPhoneData();
+        record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
+        record.setcType(type);
+        record.setcJieanId(StringUtil.getStringOfObject(bizParams.get("orderId")));
+        record.setcCertcardNo(StringUtil.getStringOfObject(bizParams.get("idNumber")));
+        record.setcName(StringUtil.getStringOfObject(bizParams.get("name")));
+        record.setcPhone(StringUtil.getStringOfObject(bizParams.get("phone")));
+        record.setcStatus(code);
+        record.setcResult(result);
+        record.setcValue(value);
+        record.setDtUpdateTime(new Date());
+        jieanPhoneDataMapper.insert(record);
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param name
+     * @param idNumber
+     * @param phone
+     * @param type
+     * @return
+     */
+    @Override
+    public List<TJieanPhoneData> getJieanData(String name, String idNumber, String phone, String type) {
+        TJieanPhoneDataExample example = new TJieanPhoneDataExample();
+        TJieanPhoneDataExample.Criteria criteria =example.createCriteria();
+        criteria.andCTypeEqualTo(type);
+        if(StringUtils.isNotBlank(name)){
+            criteria.andCNameEqualTo(name);
+        }
+        if(StringUtils.isNotBlank(idNumber)){
+            criteria.andCCertcardNoEqualTo(idNumber);
+        }
+        if(StringUtils.isNotBlank(phone)){
+            criteria.andCPhoneEqualTo(phone);
+        }
+        Integer outTime = configCacheDao.getOutTimeUnit(type);
+        Date minTime = getMinTime(outTime);
+        criteria.andDtUpdateTimeGreaterThanOrEqualTo(minTime);
+        example.setOrderByClause("dt_update_time desc");
+        return jieanPhoneDataMapper.selectByExample(example);
+    }
+    private Date getMinTime(Integer time){
+        Calendar calendar = Calendar.getInstance();//使用默认时区和语言环境获得一个日历。
+        calendar.add(Calendar.DAY_OF_MONTH, -1*time);//取当前日期的前一天.
+        return calendar.getTime();
     }
 }
 

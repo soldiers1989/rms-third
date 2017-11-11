@@ -1,16 +1,19 @@
 package com.jzfq.rms.third.web.action.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.mongo.BrPostData;
+import com.jzfq.rms.third.common.domain.TJieanPhoneData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
+import com.jzfq.rms.third.common.enums.PhoneThreeItemEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
-import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IJieAnService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +21,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 捷安 手机三要素
@@ -103,39 +105,71 @@ public class Request1015Handler extends AbstractRequestHandler {
             return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.ERROR_TASK_ID_NULL,null);
         }
         // 数据库查询
-        String isRepeatKey = getKeyByTaskID(taskId);
-        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
-
         String name = request.getParam("name").toString();
         String idNumber = request.getParam("idNumber").toString();
         String phone = request.getParam("phone").toString();
         String custumType = request.getParam("custumType").toString();
-        if(isRpc){
-            Map<String, Object> bizData = new HashMap<>();
-            bizData.put("name",name);
-            bizData.put("idNumber",idNumber);
-            bizData.put("phone",phone);
-            bizData.put("custumType",custumType);
-            ResponseResult result = jieAnService.getMobilecheck3item(taskIdStr, bizData);
-            if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
-                JSONObject json = (JSONObject) result.getData();
-                String status = changeBairongPhone3rdinfo(json);
-                result.setData(status);
-                editAndSavePostData(taskIdStr, "手机三要素", status, custumType);
-            }else{
-                interfaceCountCache.setFailure(isRepeatKey);
+        //业务参数
+        Map<String, Object> bizData = new HashMap<>();
+        bizData.put("name",name);
+        bizData.put("idNumber",idNumber);
+        bizData.put("phone",phone);
+        bizData.put("custumType",custumType);
+
+        List<TJieanPhoneData> list = jieAnService.getJieanData(name,idNumber,phone, InterfaceIdEnum.THIRD_JIEAN03.getCode());
+        if(!CollectionUtils.isEmpty(list)){
+            // 1.有效数据
+            TJieanPhoneData data = list.get(0);
+            // 获取老系统数据
+            String rmsData = changeBairongPhone3rdinfo(data.getcResult(),bizData);
+            // 保存报mongodb
+            editAndSavePostData(taskIdStr, "手机三要素", rmsData, custumType);
+            return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,data.getcValue());
+        }
+
+        String isRepeatKey = getRpcControlKey(bizData);
+        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
+
+        if(!isRpc){
+            return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ACTIVE_THIRD_RPC,null);
+        }
+        // 2.远程调用
+        bizData.put("orderId",getOrderId());
+        ResponseResult result = jieAnService.getMobilecheck3item(taskIdStr, bizData);
+        if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
+            // 获取捷安 返回时长
+            String threeItem = getThreeItem((JSONObject) result.getData());
+            String value = getThreeItemValue(threeItem);
+            try {
+                // 获取老系统数据
+                String rmsData = changeBairongPhone3rdinfo(threeItem,bizData);
+                // 保存报mongodb
+                editAndSavePostData(taskIdStr, "手机三要素", rmsData, custumType);
+                // 缓存到MYSQL
+                jieAnService.savePhonesData(InterfaceIdEnum.THIRD_JIEAN03.getCode(),((com.alibaba.fastjson.JSONObject)result.getData()).get("respCode").toString(),threeItem, value,bizData);
+            }catch (Exception e){
+                log.error("异常",e);
             }
-            return result;
-        }
-        JSONObject jsonObject = (JSONObject) riskPostDataService.queryPhoneThreeData(taskId,Integer.parseInt(custumType));
-        if(!CollectionUtils.isEmpty(jsonObject)){
-            return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,jsonObject);
+            result.setData(value);
         }else{
-            throw new BusinessException("traceId=" + TraceIDThreadLocal.getTraceID()+ "远程调用接口中，或数据库中数据未过期，同盾分获取结果为null",true);
+            interfaceCountCache.setFailure(isRepeatKey);
         }
+        return result;
     }
-    private String getKeyByTaskID(Long taskId){
-        return "rms_third_1015_"+taskId;
+
+    /**
+     * 远程调用key
+     * @param bizData
+     * @return
+     */
+    private String getRpcControlKey(Map<String, Object> bizData){
+        StringBuilder sb = new StringBuilder("rms_third_1015_");
+        sb.append(StringUtil.getStringOfObject(bizData.get("name")));
+        sb.append("_");
+        sb.append(StringUtil.getStringOfObject(bizData.get("idNumber")));
+        sb.append("_");
+        sb.append(StringUtil.getStringOfObject(bizData.get("phone")));
+        return sb.toString() ;
     }
     /**
      * 版本02
@@ -145,66 +179,71 @@ public class Request1015Handler extends AbstractRequestHandler {
     private ResponseResult handler02(AbstractRequestAuthentication request){
         return null;
     }
+
     /**
-     * 三要素转换
-     * @param paramJson
+     * 三要素结果转化
+     * @param data
      * @return
      */
-    private static String changeBairongPhone3rdinfo(JSONObject paramJson){
-        String jsonRsult="";
-        if(StringUtils.equals(paramJson.getString("respCode"),"000")){
-            jsonRsult ="1";
-        }else if(StringUtils.equals(paramJson.getString("respCode"),"042")) {
-            jsonRsult = "2";
-        }else{
-            jsonRsult = "0";
-        }
-        String result ="{\"swift_number\":\"3100034_20170629114811_9744\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"3\",\"costTime\":31},\"flag\":{\"flag_telCheck\":1}}";
-        JSONObject json3rd = JSONObject.fromObject(result);
-        JSONObject product = json3rd.getJSONObject("product");
-        product.put("result",jsonRsult);
-        product.put("operation","4");
+    private String getThreeItem(JSONObject data){
+        return data.getString("respCode");
+    }
 
+    /**
+     * 三要素结果转化
+     * @param threeItem
+     * @return
+     */
+    private static String getThreeItemValue(String threeItem){
+        if(StringUtils.equals(threeItem,"000")){
+            return PhoneThreeItemEnum.AGREE.getCode();
+        }
+        if(StringUtils.equals(threeItem,"042")) {
+            return  PhoneThreeItemEnum.UNAGREE.getCode();
+        }
+        return PhoneThreeItemEnum.OTHER.getCode();
+    }
+    /**
+     * rms三要素结果转化
+     * @param threeItem
+     * @return
+     */
+    private static String getRmsThreeItemValue(String threeItem){
+        if(StringUtils.equals(threeItem,"000")){
+            return "1";
+        }
+        if(StringUtils.equals(threeItem,"042")) {
+            return  "2";
+        }
+        return "0";
+    }
+    /**
+     * 三要素转换  获取mongo保存值
+     * @param threeItem
+     * @param bizData
+     * @return
+     */
+    private static String changeBairongPhone3rdinfo(String threeItem, Map<String,Object> bizData){
+        String result ="{\"swift_number\":\""+bizData.get("orderId")+"\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"3\",\"costTime\":31},\"flag\":{\"flag_telCheck\":1}}";
+        JSONObject json3rd = JSONObject.parseObject(result);
+        JSONObject product = json3rd.getJSONObject("product");
+        product.put("result",getRmsThreeItemValue(threeItem));
+        product.put("operation","4");
         return json3rd.toString();
     }
 
-    private static String changeLengthByValue(String length){
-        if(!length.contains(",")){
-            return "";
-        }
-        String[] month = length.split(",");
-        String start = "";
-        if(month[0].length()>1){
-            start = month[0].substring(1,month[0].length()).trim();
-        }
-        String end = "";
-        if(month[1].length()>1){
-            end = month[1].substring(0,month[1].length()-1).trim();
-        }
-        if(NumberUtils.isNumber(end)){
-            Integer endMonth = Integer.parseInt(end);
-            if(endMonth<=6){
-                return "1";
-            }
-            if(endMonth<=12){
-                return "2";
-            }
-            if(endMonth<=24){
-                return "3";
-            }
-        }
-        if(NumberUtils.isNumber(start)){
-            Integer startMonth = Integer.parseInt(start);
-            if(startMonth>=24){
-                return "4";
-            }
-        }
-        return "";
-    }
     private BrPostData editAndSavePostData(String taskId, String desc, String data, String type) {
         BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
                 .desc(desc).data(data).interfaceType(type).build();
         riskPostDataService.saveData(dataBean);
         return dataBean;
+    }
+    /**
+     * 流水号
+     * @return
+     */
+    private String getOrderId(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        return "JUZIFENQI"+formatter.format(new Date())+(new Random()).nextInt(1000);
     }
 }

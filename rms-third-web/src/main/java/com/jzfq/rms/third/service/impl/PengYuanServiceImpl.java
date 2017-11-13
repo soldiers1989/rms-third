@@ -64,63 +64,6 @@ public class PengYuanServiceImpl implements IPengYuanService {
 
     @Autowired
     IConfigDao configCacheDao;
-    @Override
-    public JSONObject queryPengYuanData(Long taskId,  Map<String,Object> carInfo) {
-
-        List<PengYuan> pyData = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId).and("idCard").is(carInfo.get("certCardNo"))),PengYuan.class);
-
-        JSONObject data = new JSONObject();
-        if (null != pyData && pyData.size() > 0) {
-            data = pyData.get(0).getData();
-        } else {
-            String pyUrl = pengYuanDao.getPyUrl();
-            if(StringUtils.isBlank(pyUrl)){
-                data.put("errorCode", ReturnCode.ERROR_SYSTEM_CONFIG_NULL.code());
-                data.put("errorMessage","获取鹏元接口系统配置地址为空");
-                return data;
-            }
-            long start=System.currentTimeMillis();
-            String queryInfo = reqData(carInfo);
-            try {
-                log.info("taskId=["+taskId+"]开始获取鹏元数据......");
-                //调用webservice
-                Client client = new Client(new URL(pyUrl));
-                //得到子报告结果
-                log.info("taskId=["+taskId+"]请求报文【"+queryInfo+"】");
-                Object[] results = client.invoke("queryReport",new Object[]{userName,passWord,queryInfo,"xml"});
-                log.info("taskId=["+taskId+"]执行结束, 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
-
-                data = parseXml2Json(results[0].toString());
-                log.info("taskId=["+taskId+"]请求结果【" + Arrays.toString(results) + "】");
-                log.info("taskId=["+taskId+"]解析后的数据：" + data);
-                if (data.getIntValue("status") == 1) { //返回状态为1是正常报文，2为发生异常
-                    String returnValue1 = data.getString("returnValue");
-                    Base64 base64 = new Base64();
-                    byte [] re = base64.decode(returnValue1);
-                    String xml = new CompressStringUtil().decompress(re);
-                    log.info("taskId=["+taskId+"]响应报文 result ==>" + xml);
-                    data = parseXml2Json(xml);
-
-                }else {
-                    return data;
-                }
-
-                log.info("鹏元数据 taskId=[" + taskId + "]\r\n" + data);
-
-                JSONObject checkInfo = data.getJSONObject("carCheckInfo");
-                if (!checkInfo.containsKey("errorCode")) {
-                    PengYuan py = new PengYuan(taskId, carInfo.get("certCardNo").toString(), "", data);
-                    saveData(py);
-                }
-            } catch (Exception e) {
-                data.put("errorCode", "2004");
-                data.put("errorMessage", "获取鹏元信息失败");
-                log.error("taskId=["+taskId+"]获取鹏元信息失败",e);
-                return data;
-            }
-        }
-        return data;
-    }
 
     private JSONObject parseXml2Json(String xml) {
         JSONObject data = new JSONObject();
@@ -145,11 +88,6 @@ public class PengYuanServiceImpl implements IPengYuanService {
                 }else{
                     data.put("carCheckInfo", carCheckInfo);
                 }
-
-//                JSONObject carStatusInfo = listNode(document,"carStatusInfo");
-//                data.put("carStatusInfo", carStatusInfo);
-//                JSONObject carInfo = listNode(document,"carInfo");
-//                data.put("carInfo", carInfo);
             } else {
                 data = listNode(document,"result");
             }
@@ -327,7 +265,7 @@ public class PengYuanServiceImpl implements IPengYuanService {
         pyCarCheck.setcValue(value);
         pyCarCheck.setcStatus(status.toString());
         pyCarCheck.setDtUpdateTime(new Date());
-
+        pengYuanDao.save(pyCarCheck);
     }
 
 }

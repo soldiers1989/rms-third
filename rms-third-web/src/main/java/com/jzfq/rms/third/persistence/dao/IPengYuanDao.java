@@ -22,4 +22,10 @@ public interface IPengYuanDao {
      * @return
      */
     List<TPyCarCheck> getPengYuanData(String name, String documentNo, String lisence, String carType,Integer outTime);
+
+    /**
+     * 保存 车辆审核数据
+     * @param pyCarCheck
+     */
+    void save(TPyCarCheck pyCarCheck);
 }

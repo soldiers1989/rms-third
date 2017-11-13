@@ -14,9 +14,13 @@ import java.util.Map;
  *
  */
 public interface IPengYuanService {
-
-    JSONObject queryPengYuanData(Long taskId,  Map<String,Object> carInfo);
-
+    /**
+     * 远程 调用查询车辆核查信息
+     * @param carInfo
+     * @param commonParams
+     * @return
+     * @throws Exception
+     */
     ResponseResult queryPyCarDatas(Map<String,Object> carInfo, Map<String,Object> commonParams)throws Exception;
 
     /**

@@ -65,8 +65,8 @@ public class PyResponseHandler extends AbstractResponseHandler {
         logger.info("鹏元数据 traceId=[" + traceId + "]\r\n" + data);
         JSONObject checkInfo = data.getJSONObject("carCheckInfo");
         if (checkInfo.containsKey("errorCode")) {
+            result = new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE,data);
             result.setMsg(checkInfo.getString("errorCode")+checkInfo.getString("errorMessage"));
-            new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE,data);
             return result;
         }
         return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,data);
@@ -135,18 +135,18 @@ public class PyResponseHandler extends AbstractResponseHandler {
                     }
                 }
             }
-        } else {
-            for(int i=0;i<list.getLength();i++) {
-                NodeList items = list.item(i).getChildNodes();
-                for(int j=0;j<items.getLength();j++) {
-                    NodeList childs = items.item(j).getChildNodes();
-                    for(int k=0;k<childs.getLength();k++) {
-                        short nodeType = childs.item(k).getNodeType();
-                        if (nodeType == Node.ELEMENT_NODE) {
-                            String nodeName = childs.item(k).getNodeName();
-                            String nodeValue = childs.item(k).getTextContent();
-                            json.put(nodeName, nodeValue);
-                        }
+            return json;
+        }
+        for(int i=0;i<list.getLength();i++) {
+            NodeList items = list.item(i).getChildNodes();
+            for(int j=0;j<items.getLength();j++) {
+                NodeList childs = items.item(j).getChildNodes();
+                for(int k=0;k<childs.getLength();k++) {
+                    short nodeType = childs.item(k).getNodeType();
+                    if (nodeType == Node.ELEMENT_NODE) {
+                        String nodeName = childs.item(k).getNodeName();
+                        String nodeValue = childs.item(k).getTextContent();
+                        json.put(nodeName, nodeValue);
                     }
                 }
             }

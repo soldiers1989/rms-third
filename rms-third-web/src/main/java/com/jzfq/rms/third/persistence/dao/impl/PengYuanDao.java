@@ -61,6 +61,16 @@ public class PengYuanDao implements IPengYuanDao{
         return pyCarCheckMapper.selectByExample(example);
     }
 
+    /**
+     * 保存 车辆审核数据
+     *
+     * @param pyCarCheck
+     */
+    @Override
+    public void save(TPyCarCheck pyCarCheck) {
+        pyCarCheckMapper.insert(pyCarCheck);
+    }
+
     private Date getMinTime(Integer time){
         Calendar calendar = Calendar.getInstance();//使用默认时区和语言环境获得一个日历。
         calendar.add(Calendar.DAY_OF_MONTH, -1*time);//取当前日期的前一天.

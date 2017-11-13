@@ -26,7 +26,7 @@ import java.util.Map;
  **/
 @Component("request1002Handler")
 public class Request1002Handler extends AbstractRequestHandler {
-    private static final Logger log = LoggerFactory.getLogger("PengYuan");
+    private static final Logger log = LoggerFactory.getLogger(Request1002Handler.class);
 
 
     @Autowired
@@ -35,22 +35,8 @@ public class Request1002Handler extends AbstractRequestHandler {
     @Autowired
     IRmsService rmsService;
 
-
-
-    /**
-     * 是否控制重复调用
-     *
-     * @return 合法返回true，否则返回false
-     */
-    @Override
-    protected boolean isCheckRepeat() {
-        return false;
-    }
-
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-        String taskId = (String)params.get("traceId");
-
         String orderNo = (String)params.get("orderNo");
         if(StringUtils.isBlank(orderNo)||params.get("carInfo")==null){
             return false;
@@ -87,12 +73,14 @@ public class Request1002Handler extends AbstractRequestHandler {
         if(taskId==null){
             return new ResponseResult(traceId, ReturnCode.ERROR_TASK_ID_NULL,null);
         }
+        // 根据查询数据库
+
+
         Map<String,Object> carInfo = JSONObject.parseObject(request.getParam("carInfo").toString(), HashMap.class);
         log.info("traceId="+traceId+" 鹏元车辆信息 params：【"+carInfo+"】");
-        Map<String,Object> commonParams = getCommonParams(  request);
+        Map<String,Object> commonParams = getCommonParams(request);
         String isRepeatKey = getKeyByTaskID(taskId);
         commonParams.put("isRepeatKey",isRepeatKey);
-//        commonParams.put("redisCache",interfaceCountCache);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         commonParams.put("isRpc",isRpc);
         ResponseResult result = null;

@@ -2,6 +2,7 @@ package com.jzfq.rms.third.web.action.handler;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.slf4j.Logger;
@@ -81,16 +82,14 @@ public abstract class AbstractRequestHandler {
                 boolean rpc = handler.isRpc(request.getParams());
                 handler.setRpc(rpc);
             }
-
             return handler.bizHandle(request);
         } catch (BusinessException e){
             throw e;
         }catch (Throwable t) {
             log.error("处理请求出错！请求：{}", request, t);
-            ResponseResult result = new ResponseResult("",ReturnCode.ACTIVE_EXCEPTION);
-            return new ResponseResult("",ReturnCode.ACTIVE_EXCEPTION);
+            ResponseResult result = new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ACTIVE_EXCEPTION);
+            return result;
         }
-
     }
     /**
      * 是否远程调用
@@ -111,7 +110,9 @@ public abstract class AbstractRequestHandler {
      * 是否控制重复调用
      * @return 合法返回true，否则返回false
      */
-    protected abstract boolean isCheckRepeat();
+    protected  boolean isCheckRepeat(){
+        return false;
+    }
     /**
      * 检查业务参数是否合法，交由子类实现。
      * @param params 请求中携带的业务参数

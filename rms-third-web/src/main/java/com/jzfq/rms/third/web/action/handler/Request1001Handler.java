@@ -25,7 +25,7 @@ import java.util.Map;
  **/
 @Component("request1001Handler")
 public class Request1001Handler  extends AbstractRequestHandler{
-    private static final Logger log = LoggerFactory.getLogger("GongPingjiaService");
+    private static final Logger log = LoggerFactory.getLogger(Request1001Handler.class);
     @Autowired
     private IGongPingjiaService gongPingjiaService;
 

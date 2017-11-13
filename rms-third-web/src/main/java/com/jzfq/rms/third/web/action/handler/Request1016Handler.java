@@ -40,15 +40,6 @@ public class Request1016Handler extends AbstractRequestHandler {
 
     @Autowired
     IRmsService rmsService;
-    /**
-     * 是否控制重复调用
-     *
-     * @return 合法返回true，否则返回false
-     */
-    @Override
-    protected boolean isCheckRepeat() {
-        return false;
-    }
 
     /**
      * 检查业务参数是否合法，交由子类实现。
@@ -117,7 +108,6 @@ public class Request1016Handler extends AbstractRequestHandler {
         if(!CollectionUtils.isEmpty(list)){
             // 1.有效数据
             TJieanPhoneData data = list.get(0);
-            //TODO 保存到mongodb
             // 获取老系统数据
             String rmsData = changeBairongPhonestatus(data.getcResult(),bizData);
             // 保存报mongodb

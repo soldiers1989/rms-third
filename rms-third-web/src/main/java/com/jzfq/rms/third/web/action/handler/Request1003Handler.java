@@ -24,7 +24,7 @@ import java.util.Map;
  **/
 @Component("request1003Handler")
 public class Request1003Handler   extends AbstractRequestHandler {
-    private static final Logger log = LoggerFactory.getLogger("JXL 1003");
+    private static final Logger log = LoggerFactory.getLogger(Request1003Handler.class);
     @Autowired
     IJxlDataService jxlDataService;
 

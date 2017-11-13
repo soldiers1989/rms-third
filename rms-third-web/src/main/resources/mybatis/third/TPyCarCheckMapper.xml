@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TPyCarCheckMapper">
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TPyCarCheck">
+    <id column="c_id" jdbcType="VARCHAR" property="cId" />
+    <result column="c_pengyuan_id" jdbcType="VARCHAR" property="cPengyuanId" />
+    <result column="c_license_no" jdbcType="CHAR" property="cLicenseNo" />
+    <result column="c_name" jdbcType="VARCHAR" property="cName" />
+    <result column="c_certcard_no" jdbcType="VARCHAR" property="cCertcardNo" />
+    <result column="c_car_type" jdbcType="VARCHAR" property="cCarType" />
+    <result column="c_status" jdbcType="VARCHAR" property="cStatus" />
+    <result column="c_result" jdbcType="VARCHAR" property="cResult" />
+    <result column="c_value" jdbcType="CHAR" property="cValue" />
+    <result column="dt_update_time" jdbcType="TIMESTAMP" property="dtUpdateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    c_id, c_pengyuan_id, c_license_no, c_name, c_certcard_no, c_car_type, c_status, c_result, 
+    c_value, dt_update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.jzfq.rms.third.common.domain.example.TPyCarCheckExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_py_car_check
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_py_car_check
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_py_car_check
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TPyCarCheckExample">
+    delete from t_py_car_check
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TPyCarCheck">
+    insert into t_py_car_check (c_id, c_pengyuan_id, c_license_no, 
+      c_name, c_certcard_no, c_car_type, 
+      c_status, c_result, c_value, 
+      dt_update_time)
+    values (#{cId,jdbcType=VARCHAR}, #{cPengyuanId,jdbcType=VARCHAR}, #{cLicenseNo,jdbcType=CHAR}, 
+      #{cName,jdbcType=VARCHAR}, #{cCertcardNo,jdbcType=VARCHAR}, #{cCarType,jdbcType=VARCHAR}, 
+      #{cStatus,jdbcType=VARCHAR}, #{cResult,jdbcType=VARCHAR}, #{cValue,jdbcType=CHAR}, 
+      #{dtUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TPyCarCheck">
+    insert into t_py_car_check
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        c_id,
+      </if>
+      <if test="cPengyuanId != null">
+        c_pengyuan_id,
+      </if>
+      <if test="cLicenseNo != null">
+        c_license_no,
+      </if>
+      <if test="cName != null">
+        c_name,
+      </if>
+      <if test="cCertcardNo != null">
+        c_certcard_no,
+      </if>
+      <if test="cCarType != null">
+        c_car_type,
+      </if>
+      <if test="cStatus != null">
+        c_status,
+      </if>
+      <if test="cResult != null">
+        c_result,
+      </if>
+      <if test="cValue != null">
+        c_value,
+      </if>
+      <if test="dtUpdateTime != null">
+        dt_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cPengyuanId != null">
+        #{cPengyuanId,jdbcType=VARCHAR},
+      </if>
+      <if test="cLicenseNo != null">
+        #{cLicenseNo,jdbcType=CHAR},
+      </if>
+      <if test="cName != null">
+        #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="cCertcardNo != null">
+        #{cCertcardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cCarType != null">
+        #{cCarType,jdbcType=VARCHAR},
+      </if>
+      <if test="cStatus != null">
+        #{cStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cResult != null">
+        #{cResult,jdbcType=VARCHAR},
+      </if>
+      <if test="cValue != null">
+        #{cValue,jdbcType=CHAR},
+      </if>
+      <if test="dtUpdateTime != null">
+        #{dtUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TPyCarCheckExample" resultType="java.lang.Long">
+    select count(*) from t_py_car_check
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_py_car_check
+    <set>
+      <if test="record.cId != null">
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPengyuanId != null">
+        c_pengyuan_id = #{record.cPengyuanId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLicenseNo != null">
+        c_license_no = #{record.cLicenseNo,jdbcType=CHAR},
+      </if>
+      <if test="record.cName != null">
+        c_name = #{record.cName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCertcardNo != null">
+        c_certcard_no = #{record.cCertcardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCarType != null">
+        c_car_type = #{record.cCarType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStatus != null">
+        c_status = #{record.cStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cResult != null">
+        c_result = #{record.cResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cValue != null">
+        c_value = #{record.cValue,jdbcType=CHAR},
+      </if>
+      <if test="record.dtUpdateTime != null">
+        dt_update_time = #{record.dtUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_py_car_check
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_pengyuan_id = #{record.cPengyuanId,jdbcType=VARCHAR},
+      c_license_no = #{record.cLicenseNo,jdbcType=CHAR},
+      c_name = #{record.cName,jdbcType=VARCHAR},
+      c_certcard_no = #{record.cCertcardNo,jdbcType=VARCHAR},
+      c_car_type = #{record.cCarType,jdbcType=VARCHAR},
+      c_status = #{record.cStatus,jdbcType=VARCHAR},
+      c_result = #{record.cResult,jdbcType=VARCHAR},
+      c_value = #{record.cValue,jdbcType=CHAR},
+      dt_update_time = #{record.dtUpdateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TPyCarCheck">
+    update t_py_car_check
+    <set>
+      <if test="cPengyuanId != null">
+        c_pengyuan_id = #{cPengyuanId,jdbcType=VARCHAR},
+      </if>
+      <if test="cLicenseNo != null">
+        c_license_no = #{cLicenseNo,jdbcType=CHAR},
+      </if>
+      <if test="cName != null">
+        c_name = #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="cCertcardNo != null">
+        c_certcard_no = #{cCertcardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cCarType != null">
+        c_car_type = #{cCarType,jdbcType=VARCHAR},
+      </if>
+      <if test="cStatus != null">
+        c_status = #{cStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cResult != null">
+        c_result = #{cResult,jdbcType=VARCHAR},
+      </if>
+      <if test="cValue != null">
+        c_value = #{cValue,jdbcType=CHAR},
+      </if>
+      <if test="dtUpdateTime != null">
+        dt_update_time = #{dtUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TPyCarCheck">
+    update t_py_car_check
+    set c_pengyuan_id = #{cPengyuanId,jdbcType=VARCHAR},
+      c_license_no = #{cLicenseNo,jdbcType=CHAR},
+      c_name = #{cName,jdbcType=VARCHAR},
+      c_certcard_no = #{cCertcardNo,jdbcType=VARCHAR},
+      c_car_type = #{cCarType,jdbcType=VARCHAR},
+      c_status = #{cStatus,jdbcType=VARCHAR},
+      c_result = #{cResult,jdbcType=VARCHAR},
+      c_value = #{cValue,jdbcType=CHAR},
+      dt_update_time = #{dtUpdateTime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

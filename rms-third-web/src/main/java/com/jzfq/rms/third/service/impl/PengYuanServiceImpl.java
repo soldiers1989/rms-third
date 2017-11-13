@@ -2,6 +2,8 @@ package com.jzfq.rms.third.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.mongo.PengYuan;
+import com.jzfq.rms.third.common.domain.TPyCarCheck;
+import com.jzfq.rms.third.common.domain.example.TPyCarCheckExample;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
@@ -9,8 +11,10 @@ import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.common.utils.Base64;
 import com.jzfq.rms.third.common.utils.CompressStringUtil;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
+import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.persistence.dao.IPengYuanDao;
 import com.jzfq.rms.third.service.IPengYuanService;
 import com.jzfq.rms.third.service.ISendMessageService;
@@ -32,9 +36,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -59,6 +61,9 @@ public class PengYuanServiceImpl implements IPengYuanService {
 
     @Autowired
     ISendMessageService sendMessegeService;
+
+    @Autowired
+    IConfigDao configCacheDao;
     @Override
     public JSONObject queryPengYuanData(Long taskId,  Map<String,Object> carInfo) {
 
@@ -248,15 +253,7 @@ public class PengYuanServiceImpl implements IPengYuanService {
 
     @Override
     public ResponseResult queryPyCarDatas(Map<String,Object> carInfo, Map<String,Object> commonParams) throws Exception{
-        boolean isRpc = (boolean)commonParams.get("isRpc");
-        Long taskId = (Long)commonParams.get("taskId");
-        String traceId = TraceIDThreadLocal.getTraceID();
-        if(isRpc){
-            return getCarDataByRpc(carInfo,commonParams);
-        }
-        List<PengYuan> pyData = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId).and("idCard").is(carInfo.get("certCardNo"))),PengYuan.class);
-        Object data = (pyData==null||pyData.size()==0)?null:pyData.get(0).getData();
-        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
+        return getCarDataByRpc(carInfo,commonParams);
     }
 
     /**
@@ -267,9 +264,7 @@ public class PengYuanServiceImpl implements IPengYuanService {
      * @throws Exception
      */
     private ResponseResult getCarDataByRpc(Map<String,Object> carInfo, Map<String,Object> commonParams)throws Exception{
-        Long taskId = (Long)commonParams.get("taskId");
         String traceId = TraceIDThreadLocal.getTraceID();
-
         String pyUrl = pengYuanDao.getPyUrl();
         if(StringUtils.isBlank(pyUrl)){
             return new ResponseResult(traceId, ReturnCode.ERROR_SYSTEM_CONFIG_NULL.code(),
@@ -294,10 +289,46 @@ public class PengYuanServiceImpl implements IPengYuanService {
             log.info("traceId={} 鹏元车辆 响应信息为空", TraceIDThreadLocal.getTraceID());
             return response;
         }
-        JSONObject data = (JSONObject)response.getData();
-        PengYuan py = new PengYuan(taskId,(String) carInfo.get("certCardNo"), "", data);
-        saveData(py);
         return response;
     }
+    /**
+     * 获取 鹏元车辆核查数据
+     *
+     * @param name
+     * @param documentNo
+     * @param lisence
+     * @param carType
+     * @return
+     */
+    @Override
+    public List<TPyCarCheck> getPengYuanData(String name, String documentNo, String lisence, String carType) {
+        Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_PY01.getCode());
+        return pengYuanDao.getPengYuanData(name, documentNo, lisence, carType,outTime);
+    }
+
+    /**
+     * 保存 车辆审核信息
+     *
+     * @param result
+     * @param value
+     * @param carInfo
+     * @param status
+     */
+    @Override
+    public void saveCarCheckInfo(String reqId, String result, String value, Map<String, Object> carInfo, Integer status) {
+        TPyCarCheck pyCarCheck = new TPyCarCheck();
+        pyCarCheck.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
+        pyCarCheck.setcPengyuanId(reqId);
+        pyCarCheck.setcName(StringUtil.getStringOfObject(carInfo.get("name")));
+        pyCarCheck.setcCertcardNo(StringUtil.getStringOfObject(carInfo.get("certCardNo")));
+        pyCarCheck.setcLicenseNo(StringUtil.getStringOfObject(carInfo.get("plateNo")));
+        pyCarCheck.setcCarType(StringUtil.getStringOfObject(carInfo.get("type")));
+        pyCarCheck.setcResult(result);
+        pyCarCheck.setcValue(value);
+        pyCarCheck.setcStatus(status.toString());
+        pyCarCheck.setDtUpdateTime(new Date());
+
+    }
+
 }
 

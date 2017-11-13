@@ -84,7 +84,7 @@ public class Request1002Handler extends AbstractRequestHandler {
         List<TPyCarCheck> carChecksInfo = pengYuanService.getPengYuanData(StringUtil.getStringOfObject(carInfo.get("name")),StringUtil.getStringOfObject(carInfo.get("certCardNo")),StringUtil.getStringOfObject(carInfo.get("plateNo")),StringUtil.getStringOfObject(carInfo.get("type")));
         if(!CollectionUtils.isEmpty(carChecksInfo)){
             TPyCarCheck carCheck = carChecksInfo.get(0);
-            //TODO 存mongodb
+            // 存mongodb
             String result = carCheck.getcResult();
             JSONObject json = new JSONObject();
             if(StringUtils.isNotBlank(result)){

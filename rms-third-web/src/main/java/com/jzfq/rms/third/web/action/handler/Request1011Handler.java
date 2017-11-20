@@ -122,7 +122,13 @@ public class Request1011Handler extends AbstractRequestHandler {
             BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", jsonObject.toJSONString(), customerType.toString());
             //保存rms系统数据结构
             riskPostDataService.saveData(data);
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
+            JSONObject resultJson = new JSONObject();
+            resultJson.put("score",jsonObject.getString("scorepettycashv1"));
+            if (StringUtils.isBlank(resultJson.getString("score"))){
+                resultJson.put("score",jsonObject.getString("scoreconsoffv2"));
+            }
+            resultJson.put("weight",jsonObject.getString("Rule_final_weight"));
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
         }
         // 2.判断是否远程拉取
         String isRepeatKey = getKeyPersonalInfo(info);
@@ -151,7 +157,14 @@ public class Request1011Handler extends AbstractRequestHandler {
                 log.error("traceId={} 保存数据失败",traceId,e);
                 interfaceCountCache.setFailure(isRepeatKey);
             }
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,result);
+            JSONObject resultJson = new JSONObject();
+            JSONObject tempResult = JSONObject.parseObject(result);
+            resultJson.put("score",jsonObject.getString("scorepettycashv1"));
+            if (StringUtils.isBlank(tempResult.getString("score"))){
+                resultJson.put("score",jsonObject.getString("scoreconsoffv2"));
+            }
+            resultJson.put("weight",jsonObject.getString("Rule_final_weight"));
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
         }
         interfaceCountCache.setFailure(isRepeatKey);
         return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);

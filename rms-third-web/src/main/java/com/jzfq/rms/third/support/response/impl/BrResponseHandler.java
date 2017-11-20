@@ -18,6 +18,7 @@ import java.util.Map;
  **/
 public class BrResponseHandler extends AbstractResponseHandler {
 	private static final String SUCCESS_CODE = "00";
+    private static final String NO_RESULT_CODE = "100002";
     /**
      * 发送
      *
@@ -66,7 +67,8 @@ public class BrResponseHandler extends AbstractResponseHandler {
             return result;
         }
         JSONObject data = JSONObject.parseObject(responseData);
-        if(StringUtils.equals(StringUtil.getStringOfObject(data.get("code")),SUCCESS_CODE)){
+        String code = StringUtil.getStringOfObject(data.get("code"));
+        if(StringUtils.equals(code,SUCCESS_CODE)||StringUtils.equals(code,NO_RESULT_CODE)){
             result.setData(responseData);
             return result;
         }

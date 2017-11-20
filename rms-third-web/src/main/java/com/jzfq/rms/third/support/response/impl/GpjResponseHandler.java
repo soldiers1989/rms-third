@@ -99,12 +99,11 @@ public class GpjResponseHandler extends AbstractResponseHandler {
         JSONObject data = JSONObject.parseObject(responseData);
         if(StringUtils.equals(StringUtil.getStringOfObject(data.get("status")),"0")){
             return response;
-        }else {
-            result.setCode(ReturnCode.ERROR_THIRD_RESPONSE.code());
-            result.setMsg(StringUtil.getStringOfObject(data.get("status"))
-                    + ":"
-                    + StringUtil.getStringOfObject(data.get("msg")));
         }
+        result.setCode(ReturnCode.ERROR_THIRD_RESPONSE.code());
+        result.setMsg(StringUtil.getStringOfObject(data.get("status"))
+                + ":"
+                + StringUtil.getStringOfObject(data.get("msg")));
         return result;
     }
 }

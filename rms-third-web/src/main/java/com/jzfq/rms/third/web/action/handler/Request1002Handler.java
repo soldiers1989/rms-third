@@ -97,7 +97,7 @@ public class Request1002Handler extends AbstractRequestHandler {
         Map<String,Object> commonParams = getCommonParams(request);
         String isRepeatKey = getKeyByFourItem(carInfo);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
-        if(isRpc){
+        if(!isRpc){
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
         }
         String reqId = getReqId();

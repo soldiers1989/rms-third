@@ -24,13 +24,13 @@ public class BrSendHandler extends AbstractSendHandler {
     @Override
     public ResponseResult send() throws Exception{
         if(StringUtils.equals(InterfaceIdEnum.THIRD_BR01.getCode(),(String)this.getParams().get("interfaceId"))){
-            return getBrData01();
+            return getBrScore();
         }
         if(StringUtils.equals(InterfaceIdEnum.THIRD_BR02.getCode(),(String)this.getParams().get("interfaceId"))){
-            return getBrData02();
+            return getBrFourItemsOfBank();
         }
         if(StringUtils.equals(InterfaceIdEnum.THIRD_BR03.getCode(),(String)this.getParams().get("interfaceId"))){
-            return getBrData03();
+            return getBrLogin();
         }
         return null;
     }
@@ -47,23 +47,28 @@ public class BrSendHandler extends AbstractSendHandler {
         this.setBizParams(bizParams);
     }
 
-    private ResponseResult getBrData01() throws Exception{
-        MerchantServer ms = (MerchantServer)this.getParams().get("ms");
-        MerchantBean bean = (MerchantBean)this.getParams().get("bean");
-        String data = ms.getApiData(bean);
-        return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,data);
-    }
-
-    private ResponseResult getBrData02(){
-        return null;
-    }
-
-    private ResponseResult getBrData03() throws Exception{
+    /**
+     * 登陆事件
+     * @return
+     * @throws Exception
+     */
+    private ResponseResult getBrLogin() throws Exception{
         MerchantServer ms = (MerchantServer)this.getParams().get("ms");
         String userName = (String)getBizParams().get("userName");
         String pwd = (String)getBizParams().get("pwd");
         String apicode = (String)getBizParams().get("apicode");
         String loginResult = ms.login(userName, pwd, apicode);
         return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,loginResult);
+    }
+
+    private ResponseResult getBrFourItemsOfBank(){
+        return null;
+    }
+
+    private ResponseResult getBrScore() throws Exception{
+        MerchantServer ms = (MerchantServer)this.getParams().get("ms");
+        MerchantBean bean = (MerchantBean)this.getParams().get("bean");
+        String data = ms.getApiData(bean);
+        return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,data);
     }
 }

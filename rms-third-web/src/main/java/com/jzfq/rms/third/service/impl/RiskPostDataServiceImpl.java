@@ -1,22 +1,24 @@
 package com.jzfq.rms.third.service.impl;
 
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.jzfq.rms.constants.CourtException;
 import com.jzfq.rms.constants.SpecialListCode;
-import com.jzfq.rms.domain.RiskPostTask;
 import com.jzfq.rms.enums.BaiRongMapEnum;
 import com.jzfq.rms.enums.CustomerTypeEnum;
-import com.jzfq.rms.enums.DictionaryTypeEnum;
 import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.mongo.TdData;
-import com.jzfq.rms.mongo.XcData;
+import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
+import com.jzfq.rms.third.common.mongo.BairongData;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.constant.Constants;
+import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -24,7 +26,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -44,6 +45,8 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    IConfigDao configCacheDao;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -52,7 +55,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
     }
 
     @Override
-    public void saveData(BrPostData data) {
+    public void saveData(Object data) {
         mongoTemplate.insert(data);
     }
 
@@ -65,7 +68,6 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         if (type == CustomerTypeEnum.CUSTOMERTYPE_CAR.getCode()){
             type = CustomerTypeEnum.CUSTOMERTYPE_WHITE_COLLAR.getCode();
         }
-
         List<BrPostData> datas = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId + "")
                 .and("interfaceType").is(type + "")), BrPostData.class);
         JSONObject jsonObject = new JSONObject();
@@ -85,181 +87,6 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         return jsonObject;
     }
 
-    @Override
-    public Object queryXingChenSchooldata(long taskId) {
-         List<XcData> datas = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId + "")
-                .and("desc").is("星辰征信学籍命中列表")), XcData.class);
-        JSONObject jsonObject = new JSONObject();
-         for (XcData data : datas) {
-              if (!StringUtils.isEmpty(data.getData())) {
-                 String str = data.getData().replace("1","一致");
-                 str = str.replace("\"\"","\"不一致\"");
-                jsonObject.putAll(JSON.parseObject(str));
-            }
-        }
-        //翻译数据  如果数据为空直接返回
-        if (!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2) {
-            processResult(jsonObject);
-        }
-        return jsonObject;
-    }
-
-    public Object queryPhoneThreeData(long taskId, int type) {
-        if (type == CustomerTypeEnum.CUSTOMERTYPE_CAR.getCode()){
-            type = CustomerTypeEnum.CUSTOMERTYPE_WHITE_COLLAR.getCode();
-        }
-
-        List<BrPostData> datas = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId + "")
-                .and("interfaceType").is(type + "")
-                .and("desc").is("手机三要素")), BrPostData.class);
-        JSONObject jsonObject = new JSONObject();
-        for (BrPostData data : datas) {
-            if (!StringUtils.isEmpty(data.getData()))
-                jsonObject.putAll(JSON.parseObject(data.getData()));
-        }
-        //翻译数据  如果数据为空直接返回
-        if (!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2) {
-            processResult(jsonObject);
-        }
-        return jsonObject;
-    }
-    public boolean checkPhoneThreeData(Object obj){
-
-        int phonePeriodValue = 0;
-        try {
-            net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(obj);
-            String product = json.optString("product");
-            if (product == ""){
-                return false;
-            }
-            json = net.sf.json.JSONObject.fromObject(product);
-            product = json.optString("result");
-            if (product == ""){
-                return false;
-            }
-            phonePeriodValue = Integer.parseInt(product.toString());
-        } catch (NumberFormatException e) {
-            return false;
-        } finally {
-            if (phonePeriodValue == 1){         // 1均一致   2均不一致  3姓名手机号一致，姓名身份证号不一致
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean checkPhoneThreeData(long taskId, int type){
-        Object obj = queryPhoneThreeData(taskId, type);
-        return checkPhoneThreeData(obj);
-    }
-
-    public Object queryPhonePeriodData(long taskId, int type) {
-        if (type == CustomerTypeEnum.CUSTOMERTYPE_CAR.getCode()){
-            type = CustomerTypeEnum.CUSTOMERTYPE_WHITE_COLLAR.getCode();
-        }
-
-
-        List<BrPostData> datas = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId + "")
-                .and("interfaceType").is(type + "")
-                .and("desc").is("手机在网时长")), BrPostData.class);
-        JSONObject jsonObject = new JSONObject();
-        for (BrPostData data : datas) {
-            if (!StringUtils.isEmpty(data.getData()))
-                jsonObject.putAll(JSON.parseObject(data.getData()));
-        }
-        //翻译数据  如果数据为空直接返回
-        if (!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2) {
-            processResult(jsonObject);
-        }
-        return jsonObject;
-    }
-
-//    public boolean checkPhonePeriodData(Object obj){
-//        int phonePeriodValue = 0;        //手机在网时长		防止拉取不到数据百融数据，默认给一个最低分
-//        int phonePeriodData = Integer.parseInt(dictionaryService.getValue(DictionaryTypeEnum.JZFQRZ_CHECK_PHONE_PERIOD_DATA.getValue(), "1"));
-//        try {
-//            net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(obj);
-//            String product = json.optString("product");
-//            json = net.sf.json.JSONObject.fromObject(product);
-//            product = json.optString("data");
-//
-//            json = net.sf.json.JSONObject.fromObject(product);
-//            product = json.optString("value");
-//            phonePeriodValue = Integer.parseInt(product.toString());
-//        } catch (Exception e) {
-//            return false;
-//        } finally {
-////            1：[0,6)
-////            2：[6,12)
-////            3：[12,24)
-////            4：[24,+)
-//            if(phonePeriodValue==phonePeriodData){//小于6个月闭单为真
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
-    /**
-     * 根据任务id 查询 手机在网状态
-     * @param taskId
-     * @param type
-     * @return
-     */
-    public Object queryPhoneStatusData(long taskId, int type) {
-        if (type == CustomerTypeEnum.CUSTOMERTYPE_CAR.getCode()){
-            type = CustomerTypeEnum.CUSTOMERTYPE_WHITE_COLLAR.getCode();
-        }
-
-
-        List<BrPostData> datas = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId + "")
-                .and("interfaceType").is(type + "")
-                .and("desc").is("手机在网状态")), BrPostData.class);
-        JSONObject jsonObject = new JSONObject();
-        for (BrPostData data : datas) {
-            if (!StringUtils.isEmpty(data.getData()))
-                jsonObject.putAll(JSON.parseObject(data.getData()));
-        }
-        //翻译数据  如果数据为空直接返回
-        if (!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2) {
-            processResult(jsonObject);
-        }
-        return jsonObject;
-    }
-
-    public boolean checkPhoneStatusData(Object obj){
-        String product ="";
-        try {
-//            net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(obj);
-//            JSONArray jsonObject0 = json.getJSONArray("tianji_api_jiao_phonestatus_response");
-//            net.sf.json.JSONObject jsonObject1 = jsonObject0.getJSONObject(0);
-//            net.sf.json.JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
-//            net.sf.json.JSONObject jsonObject3 = jsonObject2.getJSONObject("ISPNUM");
-//            JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-//            net.sf.json.JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
-//            net.sf.json.JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
-//            String jsonOperation0=jsonObject3.getString("isp");
-//            code=jsonObject6.getString("code");
-
-            net.sf.json.JSONObject json = net.sf.json.JSONObject.fromObject(obj);
-            product = json.optString("product");
-            if (product == ""){
-                return false;
-            }
-            json = net.sf.json.JSONObject.fromObject(product);
-            product = json.optString("result");
-            if (!"正常在用" .equals(product)){
-                return false;
-            }
-
-        } catch (Exception e) {
-            return false;
-        } finally {
-            if ("正常在用" .equals(product)){
-                return true;//正常使用
-            }
-        }
-        return false;
-    }
     @Override
     public Object queryTdRuleData(long taskId) {
         List<TdData> tdDatas = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId + "")
@@ -281,7 +108,33 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         return jsonObject;
     }
 
-
+    /**
+     * @param name
+     * @param certCardNo
+     * @param mobile
+     * @param type
+     * @return
+     */
+    @Override
+    public JSONObject getBairongData(String name, String certCardNo, String mobile, String type) {
+        Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_BR01.getCode());
+        List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
+                .and("certCardNo").is(certCardNo).and("mobile").is(mobile)
+        .and("createTime").gte(getMinTime(outTime))), BairongData.class);
+        if(CollectionUtils.isEmpty(datas)){
+            return null;
+        }
+        String data = datas.get(0).getData();
+        if(StringUtils.isBlank(data)){
+            return null;
+        }
+        return JSONObject.parseObject(data);
+    }
+    private Date getMinTime(Integer time){
+        Calendar calendar = Calendar.getInstance();//使用默认时区和语言环境获得一个日历。
+        calendar.add(Calendar.DAY_OF_MONTH, -1*time);//取当前日期的前一天.
+        return calendar.getTime();
+    }
 
     private void processResult(JSONObject json) {
         String value = (String) json.get(BaiRongMapEnum.RULE_FINAL_DECISION.getUrl());
@@ -319,7 +172,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
 
         //转译 银行信息码
         JSONObject bankObj = (JSONObject) json.get("product");
-        if (!StringUtils.isEmpty(bankObj)) {
+        if (bankObj!=null&&!bankObj.isEmpty()) {
             bankObj.put("respCode", BaiRongMapEnum.CODES.get(bankObj.get("respCode")));
         }
 
@@ -340,7 +193,6 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
 
     }
 
-
     /**
      * 获取json数据中一共有几组法院执行数据
      *
@@ -358,7 +210,6 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         }
         return count;
     }
-
 
     /**
      * 把json 数据转换为正常的list
@@ -387,7 +238,6 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         return list;
     }
 
-
     private DefaultKeyValue getKv(String key, String value) {
         String exception = key.substring(key.lastIndexOf("_") + 1);
         String nameKey = CourtException.COURT_EXCEPTIONS.get(exception);
@@ -396,6 +246,4 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         kv.setValue(value);
         return kv;
     }
-
-
 }

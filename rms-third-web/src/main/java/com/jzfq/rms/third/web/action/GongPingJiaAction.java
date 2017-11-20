@@ -53,7 +53,7 @@ public class GongPingJiaAction {
             return dto;
         }
         Map<String,Object> commonParams = new HashMap<>();
-        ResponseResult result = gongPingjiaService.queryCarEvaluations( vin, licensePlatHeader,commonParams);
+        ResponseResult result = gongPingjiaService.queryCarEvaluations( vin, licensePlatHeader.toUpperCase(),commonParams);
         log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束{}",result.getMsg());
         return result;
     }

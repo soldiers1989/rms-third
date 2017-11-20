@@ -1,16 +1,13 @@
 package com.jzfq.rms.third.web.action.handler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.br.bean.TerBean;
 import com.jzfq.rms.domain.RiskPersonalInfo;
-import com.jzfq.rms.enums.BrPostUrl;
-import com.jzfq.rms.enums.ProductTypeEnum;
 import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.mongo.BairongData;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
-import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.impl.BrPostService;
@@ -46,14 +43,6 @@ public class Request1011Handler extends AbstractRequestHandler {
     @Autowired
     IRmsService rmsService;
 
-    private Map<Integer, String> urls = new HashMap<Integer, String>(10);
-
-    {
-        urls.put(BrPostService.OFFICE_TYPE, BrPostUrl.OFFICE_LIST);
-        urls.put(BrPostService.STU_TYPE, BrPostUrl.STU_LIST);
-        urls.put(BrPostService.OFFICE_TYPE_XJD, BrPostUrl.OFFICE_LIST_XJD);
-        urls.put(BrPostService.STU_TYPE_XJD, BrPostUrl.STU_LIST_XJD);
-    }
     /**
      * 是否控制重复调用
      *
@@ -116,58 +105,90 @@ public class Request1011Handler extends AbstractRequestHandler {
      */
     private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
-
         String orderNo = request.getParam("orderNo").toString();
         String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
         Long taskId = Long.parseLong(taskIdStr);
         if(taskId==null){
             return new ResponseResult(traceId, ReturnCode.ERROR_TASK_ID_NULL,null);
         }
-
         String customerType =(String) request.getParam("customerType");
         Integer loanType = (Integer)request.getParam("loanType");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
         Integer type = Integer.parseInt(customerType);
-        // 数据库查询
-        String isRepeatKey = getKeyByTaskID(taskId);
+        // 1.搜索mongo中是否存在
+        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile(),customerType);
+        if(null != jsonObject){
+            BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", jsonObject.toJSONString(), customerType.toString());
+            //保存rms系统数据结构
+            riskPostDataService.saveData(data);
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
+        }
+        // 2.判断是否远程拉取
+        String isRepeatKey = getKeyPersonalInfo(info);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
-            JSONObject jsonObject = (JSONObject) riskPostDataService.queryData(taskId,type);
-            if(!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2){
-                return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
-            }else{
-                throw new BusinessException("traceId=" +traceId+ "远程调用接口中，或数据库中数据未过期，同盾分获取结果为null",true);
-            }
+            return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
         }
-        // 远程查询
-        String url = "";
-        if (loanType == ProductTypeEnum.CASH_LOAN.getCode().byteValue()){
-            int customerTypeNum = type + 2;
-            url = urls.get(customerTypeNum);                //现金贷，需要换取百融分的接口
-        }else {
-            url = urls.get(type);
+        // 3.远程拉取
+        String result = null;
+        try{
+            result = brPostService.getApiData(info,type,loanType,getCommonParams(request));
+        }catch (Exception e){
+            interfaceCountCache.setFailure(isRepeatKey);
+            log.error("traceId={} 保存数据失败",traceId,e);
+            throw e;
         }
-        Map<String,Object> commonParams = getCommonParams( request);
-        TerBean terBean = createBean(url, info, type);
-        String result = brPostService.getApiData(terBean, type,commonParams);
         if (StringUtil.checkNotEmpty(result)) {
-            BrPostData data = buildPostData(taskId.toString(), "", result, customerType.toString());
-            //保存信息，并且更新任务
-            riskPostDataService.saveData(data);
+            try{
+                BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", result, customerType.toString());
+                //保存rms系统数据结构
+                riskPostDataService.saveData(data);
+                BairongData baiRongScore = buildBairongData(info.getName(), info.getCertCardNo(), info.getMobile(),
+                        customerType,result);
+                riskPostDataService.saveData(baiRongScore);
+            }catch (Exception e) {
+                log.error("traceId={} 保存数据失败",traceId,e);
+                interfaceCountCache.setFailure(isRepeatKey);
+            }
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,result);
         }
         interfaceCountCache.setFailure(isRepeatKey);
         return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);
     }
+
+    /**
+     * 构建 老rms系统 百融数据结构
+     * @param taskId
+     * @param desc
+     * @param data
+     * @param type
+     * @return
+     */
     private BrPostData buildPostData(String taskId, String desc, String data, String type) {
         BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
                 .desc(desc).data(data).interfaceType(type).build();
         return dataBean;
     }
 
-    private String getKeyByTaskID(Long taskId){
-        return "rms_third_1011_"+taskId;
+
+    private BairongData buildBairongData(String name, String certCardNo, String mobile, String type,String data) {
+        BairongData dataBean = new BairongData.BairongDataBuild().createTime(new Date()).name(name)
+                .certCardNo(certCardNo).mobile(mobile).type(type).data(data).build();
+        return dataBean;
+    }
+    /**
+     * 获取 唯一Key
+     * @return
+     */
+    private String getKeyPersonalInfo(RiskPersonalInfo info){
+        StringBuilder sb = new StringBuilder("rms_third_1011_");
+        sb.append(info.getName());
+        sb.append("_");
+        sb.append(info.getCertCardNo());
+        sb.append("_");
+        sb.append(info.getMobile());
+        return sb.toString();
     }
     /**
      * 版本02
@@ -183,14 +204,6 @@ public class Request1011Handler extends AbstractRequestHandler {
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
         Integer type = Integer.parseInt(customerType);
-        String url = "";
-        if (loanType == ProductTypeEnum.CASH_LOAN.getCode().byteValue()){
-            int customerTypeNum = type + 2;
-            url = urls.get(customerTypeNum);                //现金贷，需要换取百融分的接口
-        }else {
-            url = urls.get(type);
-        }
-        TerBean terBean = createBean(url, info, type);
         JSONObject jsonObject = (JSONObject) riskPostDataService.queryData(Long.parseLong(taskId),type);
         if(!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2){
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
@@ -199,7 +212,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         commonParams.put("customerType",customerType);
         commonParams.put("loanType",loanType);
         commonParams.put("personInfo",info);
-        String result = brPostService.getApiData(terBean, type,commonParams);
+        String result = brPostService.getApiData(info, type,loanType, commonParams);
         if (StringUtil.checkNotEmpty(result)) {
             BrPostData data = buildPostData(taskId, "", result, customerType.toString());
             //保存信息，并且更新任务
@@ -217,22 +230,5 @@ public class Request1011Handler extends AbstractRequestHandler {
         return commonParams;
     }
 
-    /**
-     * 创建批量查询的bean
-     *
-     * @param url
-     * @param info
-     * @param type
-     * @return
-     */
-    private TerBean createBean(String url, RiskPersonalInfo info, int type) {
-        TerBean bean = new TerBean();
-        bean.setMeal(url);
-        bean.setApicode(brPostService.getApiCode(type));
-        bean.setId(info.getCertCardNo());
-        bean.setName(info.getName());
-        bean.setCell(info.getMobile());
-        bean.setApiType("ter");
-        return bean;
-    }
+
 }

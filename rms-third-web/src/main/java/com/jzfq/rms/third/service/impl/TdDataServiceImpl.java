@@ -1,6 +1,5 @@
 package com.jzfq.rms.third.service.impl;
 
-import cn.fraudmetrix.riskservice.RuleDetailClient;
 import cn.fraudmetrix.riskservice.RuleDetailResult;
 import cn.fraudmetrix.riskservice.object.Environment;
 import com.alibaba.fastjson.JSON;
@@ -11,13 +10,13 @@ import com.jzfq.rms.enums.ProductTypeEnum;
 import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.mongo.TdHitRuleData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
-import com.jzfq.rms.third.common.enums.*;
+import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
+import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.enums.SendMethodEnum;
+import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.common.mongo.TongDunData;
-import com.jzfq.rms.third.common.pojo.tongdun.FraudApiInvoker;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
-import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
-import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.ITdDao;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.service.ITdDataService;
@@ -29,13 +28,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @description 同盾数据服务实现
@@ -136,40 +133,57 @@ public class TdDataServiceImpl implements ITdDataService {
     @Override
     public void saveResult(String taskId, String orderNo, FraudApiResponse apiResp) {
         String traceId = TraceIDThreadLocal.getTraceID();
-        ThreadProvider.getThreadPool().execute(() ->  {
-            TongDunData tongDunData = new TongDunData();
-            tongDunData.setOrderNo(orderNo);
-            tongDunData.setCreateTime(new Date());
-            tongDunData.setApiResp(apiResp);
-            //同盾信息写入mongo
-            TdHitRuleData tdHitRuleData = new TdHitRuleData(null,
-                    "同盾规则命中信息", new Date());
-            tdHitRuleData.setTaskId(taskId);
-            if(apiResp.getDevice_info()!=null && apiResp.getDevice_info().get("deviceId")!=null){
-                tdHitRuleData.setData(apiResp.getDevice_info().get("deviceId").toString());
-            }
-            log.info("traceId= {} 同盾拉取结果：{} --同盾分= {} 拉取结果:{}"
-                    ,traceId,apiResp.getSuccess(),apiResp.getFinal_score(),apiResp.toString());     //是否成功
-            try{
-                BeanUtils.copyProperties(tdHitRuleData, apiResp);
-            }catch (Exception e){
-                log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
-            }
-            if (tdHitRuleData==null){
-                log.info("保存数据 订单号为{}获取同盾是返回的结果为null",orderNo);
-                return ;
-            }
-            mongoTemplate.insert(tdHitRuleData);
-            String sequenceId = tdHitRuleData.getSeq_id();
-            if (StringUtils.isBlank(sequenceId)){
-                log.info("保存数据 订单号为{}获取同盾是返回的结果seq_id为空",orderNo);
-                return ;
-            }
-            //通过seqid 查询 同盾规则详情，保存到mongo
-            RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId);
-            tongDunData.setRuleDetailResult(ruleDetailResult);
-            mongoTemplate.insert(tongDunData);
-        });
+        try{
+            ThreadProvider.getThreadPool().execute(() ->  {
+                TongDunData tongDunData = new TongDunData();
+                tongDunData.setOrderNo(orderNo);
+                tongDunData.setCreateTime(new Date());
+                tongDunData.setApiResp(apiResp);
+                //同盾信息写入mongo
+                TdHitRuleData tdHitRuleData = new TdHitRuleData(null,
+                        "同盾规则命中信息", new Date());
+                tdHitRuleData.setTaskId(taskId);
+                if(apiResp.getDevice_info()!=null && apiResp.getDevice_info().get("deviceId")!=null){
+                    tdHitRuleData.setData(apiResp.getDevice_info().get("deviceId").toString());
+                }
+                log.info("traceId= {} 同盾拉取结果：{} --同盾分= {} 拉取结果:{}"
+                        ,traceId,apiResp.getSuccess(),apiResp.getFinal_score(),apiResp.toString());     //是否成功
+                try{
+                    BeanUtils.copyProperties(tdHitRuleData, apiResp);
+                }catch (Exception e){
+                    log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
+                }
+                if (tdHitRuleData==null){
+                    log.info("保存数据 订单号为{}获取同盾是返回的结果为null",orderNo);
+                    return ;
+                }
+                mongoTemplate.insert(tdHitRuleData);
+                String sequenceId = tdHitRuleData.getSeq_id();
+                if (StringUtils.isBlank(sequenceId)){
+                    log.info("保存数据 订单号为{}获取同盾是返回的结果seq_id为空",orderNo);
+                    return ;
+                }
+                //通过seqid 查询 同盾规则详情，保存到mongo
+                RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId);
+                tongDunData.setRuleDetailResult(ruleDetailResult);
+                mongoTemplate.insert(tongDunData);
+            });
+        }catch (Exception e){
+            log.info("保存数据 订单号为{}异常",e);
+        }
+    }
+
+    /**
+     * 根据订单号 获取同盾数据
+     *
+     * @param orderNo
+     * @return
+     */
+    @Override
+    public List<TongDunData> getTongDongData(String orderNo) {
+        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo))
+                , TongDunData.class);
+        return datas;
     }
 
     /**

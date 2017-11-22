@@ -4,9 +4,11 @@ import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.mongo.TdHitRuleData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.mongo.TongDunData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,4 +33,11 @@ public interface ITdDataService {
      * @param orderNo
      */
      void saveResult(String taskId, String orderNo, FraudApiResponse apiResp);
+
+    /**
+     * 根据订单号 获取同盾数据
+     * @param orderNo
+     * @return
+     */
+     List<TongDunData> getTongDongData(String orderNo);
 }

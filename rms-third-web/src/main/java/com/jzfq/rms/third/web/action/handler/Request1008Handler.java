@@ -5,6 +5,7 @@ import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.mongo.TdHitRuleData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.mongo.TongDunData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
@@ -18,10 +19,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,15 +41,6 @@ public class Request1008Handler  extends AbstractRequestHandler {
 
     @Autowired
     IRmsService rmsService;
-    /**
-     * 是否控制重复调用
-     *
-     * @return 合法返回true，否则返回false
-     */
-    @Override
-    protected boolean isCheckRepeat() {
-        return false;
-    }
 
     /**
      * 检查业务参数是否合法，交由子类实现。
@@ -100,8 +94,13 @@ public class Request1008Handler  extends AbstractRequestHandler {
             return new ResponseResult(traceId, ReturnCode.ERROR_TASK_ID_NULL,null);
         }
         // 根据orderNo查询数据库
-
-
+        List<TongDunData> datas = tdDataService.getTongDongData(orderNo);
+        if(!CollectionUtils.isEmpty(datas)){
+            ResponseResult responseResult = new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,null);
+            TongDunData data = datas.get(0);
+            responseResult.setData(data.getApiResp().getFinal_score());
+            return responseResult;
+        }
         String isRepeatKey = getKeyByOrderNo(orderNo);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
@@ -109,12 +108,21 @@ public class Request1008Handler  extends AbstractRequestHandler {
         }
         Map<String,Object> commonParams = getCommonParams(request);
         commonParams.put("taskId",taskId.toString());
-        ResponseResult response = tdDataService.queryTdDatas(commonParams);
+        ResponseResult response =null;
+        try {
+            response = tdDataService.queryTdDatas(commonParams);
+        }catch (Exception e){
+            log.info("traceId={} 同盾拉取无效：false ",commonParams.get("traceId"));     //失败
+            interfaceCountCache.setFailure(isRepeatKey);
+            throw e;
+        }
         if (response == null){
             log.info("traceId={} 同盾拉取无效：false ",commonParams.get("traceId"));     //失败
+            interfaceCountCache.setFailure(isRepeatKey);
             new BusinessException("traceId={} 同盾拉取无效：false",true);
         }
         if(response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+            interfaceCountCache.setFailure(isRepeatKey);
             return response;
         }
         FraudApiResponse apiResp = (FraudApiResponse)response.getData();

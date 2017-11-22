@@ -1,10 +1,10 @@
 package com.jzfq.rms.third.service;
 
 import com.jzfq.rms.domain.RiskPersonalInfo;
-import com.jzfq.rms.domain.RiskPostTask;
 import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.mongo.TdHitRuleData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 
 import java.io.IOException;
 import java.util.Map;
@@ -19,33 +19,16 @@ public interface ITdDataService {
 
     /**
      * 抓取同盾数据
-     * @param riskPostInfo
-     * @throws IOException
-     */
-    Object getTdData(Map<String, Object> riskPostInfo) throws Exception;
-
-    /**
-     * 抓取同盾数据
      * @param params
-     * @param person
      * @return
      * @throws Exception
      */
-    ResponseResult queryTdDatas(Map<String,Object> params,RiskPersonalInfo info) throws Exception;
+    ResponseResult queryTdDatas(Map<String,Object> params) throws Exception;
 
     /**
-     * 抓取同盾分
-     * @param riskPostInfo
-     * @return
-     */
-    public TdHitRuleData getTdStoreData(Map<String, Object> riskPostInfo);
-
-    /**
-     * 同盾规则
+     * 保存同盾规则按照订单号
+     * @param taskId
      * @param orderNo
-     * @param sequenceId
-     * @param traceId
-     * @return
      */
-     public TdData getTdRuleData(String orderNo, String sequenceId, String traceId);
+     void saveResult(String taskId, String orderNo, FraudApiResponse apiResp);
 }

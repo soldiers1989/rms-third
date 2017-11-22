@@ -68,30 +68,31 @@ public class RmsThirdInterface {
 //        System.out.println(dto);
 
 
-//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("frontId","111111");
-//        map.put("loanType",(byte)1);
-//        Map<String ,Object> personalInfo = new HashMap<>();
-//        personalInfo.put("name","gaorenpeng");
-//        map.put("personInfo",personalInfo);
-//        map.put("orderNo","8002386");
-//        ResponseResult dto = rmsThirdService.send("123","1","","1008","01",map);
-//        System.out.println(dto);
-
         RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.2.163:8099/rms-third/inter");
         Map<String,Object> map = new HashMap<>();
         map.put("frontId","111111");
-        map.put("loanType",(byte)2);
+        map.put("loanType",(byte)1);
+        map.put("channel","IOS");
         Map<String ,Object> personalInfo = new HashMap<>();
-        map.put("customerType","0");
-        personalInfo.put("name","王亮");
-        personalInfo.put("certCardNo","140502198811102244");
-        personalInfo.put("mobile","13986671110");
+        personalInfo.put("name","gaorenpeng");
         map.put("personInfo",personalInfo);
-        map.put("orderNo","305677");
-        ResponseResult dto = rmsThirdService.send("123","1","","1011","01",map);
+        map.put("orderNo","305582");
+        ResponseResult dto = rmsThirdService.send("123","1","","1008","01",map);
         System.out.println(dto);
+
+//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.2.163:8099/rms-third/inter");
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("frontId","111111");
+//        map.put("loanType",(byte)2);
+//        Map<String ,Object> personalInfo = new HashMap<>();
+//        map.put("customerType","0");
+//        personalInfo.put("name","王亮");
+//        personalInfo.put("certCardNo","140502198811102244");
+//        personalInfo.put("mobile","13986671110");
+//        map.put("personInfo",personalInfo);
+//        map.put("orderNo","305677");
+//        ResponseResult dto = rmsThirdService.send("123","1","","1011","01",map);
+//        System.out.println(dto);
 
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.3.36:8099/rms-third/inter");

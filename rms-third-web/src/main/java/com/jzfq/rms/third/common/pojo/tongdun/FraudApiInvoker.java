@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * 查询同盾分的方法
@@ -67,7 +68,7 @@ public class FraudApiInvoker {
         requestConfig = configBuilder.build();
     }
 
-    public FraudApiResponse invoke(Map<String, Object> params) throws IOException {
+    public FraudApiResponse invoke(Map<String, Object> params) throws Exception {
         CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(createSSLConnSocketFactory()).setConnectionManager(connMgr).setDefaultRequestConfig(requestConfig).build();
         HttpPost httpPost = new HttpPost(apiUrl);
         CloseableHttpResponse response = null;
@@ -96,12 +97,12 @@ public class FraudApiInvoker {
             return JSON.parseObject(result, FraudApiResponse.class);
         } catch (Exception e) {
             log.error("[FraudApiInvoker] invoke throw exception, details: ", e);
+            throw e;
         } finally {
             if (response != null) {
                 EntityUtils.consume(response.getEntity());
             }
         }
-        return null;
     }
 
     private SSLConnectionSocketFactory createSSLConnSocketFactory() {
@@ -138,7 +139,7 @@ public class FraudApiInvoker {
         return sslsf;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         String url = "https://apitest.tongdun.cn/riskService";
 
         Map<String, Object> params = new HashMap<String, Object>();

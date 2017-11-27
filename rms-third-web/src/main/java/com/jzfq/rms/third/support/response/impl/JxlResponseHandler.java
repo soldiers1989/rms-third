@@ -3,15 +3,15 @@ package com.jzfq.rms.third.support.response.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.jzfq.rms.constants.RmsConstants;
-import com.jzfq.rms.mongo.JxlData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.service.impl.JxlDataServiceImpl;
 import com.jzfq.rms.third.support.response.AbstractResponseHandler;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -20,6 +20,7 @@ import java.util.Map;
  * @date 2017/10/25 15:42.
  **/
 public class JxlResponseHandler extends AbstractResponseHandler {
+    private static final Logger logger = LoggerFactory.getLogger(JxlResponseHandler.class);
     /**
      * 发送
      *
@@ -61,6 +62,7 @@ public class JxlResponseHandler extends AbstractResponseHandler {
         Map<String ,Object> commonParams = (Map<String ,Object> )this.params.get("params");
         String traceId = (String)commonParams.get("traceId");
         ResponseResult response = (ResponseResult)params.get("response");
+        logger.info("traceId={} 获取聚信立报告状态{}",traceId,response);
         if(null==response){
             return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,null);
         }
@@ -69,17 +71,35 @@ public class JxlResponseHandler extends AbstractResponseHandler {
         }
         String result = (String)response.getData();
         JSONObject jsonResult= JSON.parseObject(result);
-        if(null!=jsonResult && jsonResult.getString("success").equalsIgnoreCase("true")){
-            JSONObject data= jsonResult.getJSONObject("data");
-            JSONArray details=data.getJSONArray("details");
-            String status = null;
-            if (details.size() != 0) {
-                JSONObject json = details.getJSONObject(0);
-                status = json.getString("websiteStatus");
+        if(null==jsonResult){
+            return new ResponseResult(traceId, ReturnCode.REQUEST_THIRD_GETING,response.getData());
+        }
+        if(!jsonResult.getString("success").equalsIgnoreCase("true")){
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,jsonResult.getString("code"));
+        }
+
+        if(!StringUtils.equals(jsonResult.getString("code"), "30015")){
+
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE.code(),jsonResult.getString("code"),jsonResult.getString("code"));
+        }
+
+        JSONObject data= jsonResult.getJSONObject("data");
+//        if(StringUtils.equals(data.getString("status"),"抓取中")){
+//            return new ResponseResult(traceId, ReturnCode.REQUEST_THIRD_GETING,null);
+//        }
+        JSONArray details=data.getJSONArray("details");
+        if (details.size() != 0) {
+            for(int i = 0;i<details.size(); i++){
+                JSONObject json = details.getJSONObject(i);
+                String status = json.getString("websiteStatus");
+                if(StringUtils.endsWithIgnoreCase(status,"SUCCESS")){
+                    return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,details);
+                }
             }
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,status);
+
         }
         return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,response.getData());
+
     }
 
     private ResponseResult handle02(){

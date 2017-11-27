@@ -48,20 +48,11 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
     @Autowired
     IConfigDao configCacheDao;
 
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void saveDataAndUpdateTask(BrPostData data, long taskId, byte taskState) {
-        mongoTemplate.save(data);
-    }
-
     @Override
     public void saveData(Object data) {
         mongoTemplate.insert(data);
     }
 
-    @Override
-    public void updateTask(long taskId, byte taskState) {
-    }
 
     @Override
     public Object queryData(long taskId, int type) {

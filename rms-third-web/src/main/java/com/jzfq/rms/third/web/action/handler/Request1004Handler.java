@@ -1,21 +1,32 @@
 package com.jzfq.rms.third.web.action.handler;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jzfq.rms.constants.RmsConstants;
+import com.jzfq.rms.mongo.JxlData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
+import com.jzfq.rms.third.common.enums.JxlDataTypeEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.mongo.JuXinLiData;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IJxlDataService;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,16 +39,6 @@ public class Request1004Handler   extends AbstractRequestHandler {
     private static final Logger log = LoggerFactory.getLogger("JXL 1004");
     @Autowired
     IJxlDataService jxlDataService;
-
-    /**
-     * 是否控制重复调用
-     *
-     * @return 合法返回true，否则返回false
-     */
-    @Override
-    protected boolean isCheckRepeat() {
-        return true;
-    }
 
     @Autowired
     ICountCache interfaceCountCache;
@@ -88,15 +89,12 @@ public class Request1004Handler   extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
-        String traceId = TraceIDThreadLocal.getTraceID();
-        String customerName = request.getParam("customerName").toString();
-        String idCard = request.getParam("idCard").toString();
-        String phone = request.getParam("phone").toString();
-        log.info("开始获取用户报告数据, [ "+ customerName +" ], [ "+ phone +" ], [ "+ idCard +" ]");
-        Map<String,Object> commonParams = getCommonParams( request);
-        JSONObject data = jxlDataService.queryAccessReportData(customerName, idCard, phone, commonParams);
-        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
+    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+//        if(StringUtils.equals(request.getApiVersion(),"02")){
+//            return handler02(request);
+//        }
+        return handler01(request);
+
     }
 
     private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
@@ -104,5 +102,49 @@ public class Request1004Handler   extends AbstractRequestHandler {
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         commonParams.put("isRpc",this.isRpc());
         return commonParams;
+    }
+
+    /**
+     * 版本01 处理器
+     * @param request
+     * @return
+     */
+    private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
+        String traceId = TraceIDThreadLocal.getTraceID();
+        String customerName = request.getParam("customerName").toString();
+        String idCard = request.getParam("idCard").toString();
+        String phone = request.getParam("phone").toString();
+        log.info("traceId={} 开始获取用户报告数据, [{}], [{}], [{}]",traceId,customerName, phone, idCard);
+        // 查询数据库
+        List<JuXinLiData> juXinLiDatas = jxlDataService.getJuXinLiDatas(customerName+"_"+idCard+"_"+phone, JxlDataTypeEnum.JXL_DATA_TYPE_REPORT.code(), InterfaceIdEnum.THIRD_JXL02.getCode());
+        if(!CollectionUtils.isEmpty(juXinLiDatas)){
+            JuXinLiData juXinLiData = juXinLiDatas.get(0);
+            log.info("traceId={} 聚信立获取用户报告数据结束");
+            return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,juXinLiData.getData());
+        }
+        String isRepeatKey = getKeyByInfo(customerName, idCard, phone);
+        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
+        if(false){
+            return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
+        }
+        // 远程调用
+        Map<String,Object> commonParams = getCommonParams( request);
+        ResponseResult response = jxlDataService.queryAccessReportData(customerName, idCard, phone, commonParams);
+        if(response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+            log.info("traceId={} 聚信立获取用户报告数据",traceId,response);
+            interfaceCountCache.setFailure(isRepeatKey);
+            return response;
+        }
+        return response;
+    }
+
+    private String getKeyByInfo(String name, String idCard, String phone){
+        StringBuilder sb = new StringBuilder("rms_third_1004_");
+        sb.append(name);
+        sb.append("_");
+        sb.append(idCard);
+        sb.append("_");
+        sb.append(phone);
+        return sb.toString() ;
     }
 }

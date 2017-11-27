@@ -1,22 +1,15 @@
 package com.jzfq.rms.third.support.response.impl;
 
-import cn.fraudmetrix.riskservice.RuleDetailClient;
 import cn.fraudmetrix.riskservice.RuleDetailResult;
-import cn.fraudmetrix.riskservice.object.Environment;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jzfq.rms.mongo.TdData;
-import com.jzfq.rms.mongo.TdHitRuleData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.support.response.AbstractResponseHandler;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Date;
 import java.util.Map;
 
 /**

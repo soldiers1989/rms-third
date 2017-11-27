@@ -14,12 +14,7 @@ import java.util.List;
  */
 public interface IRiskPostDataService {
 
-    void saveDataAndUpdateTask(BrPostData data, long taskId, byte taskState);
-
     void saveData(Object data);
-
-    void updateTask(long taskId, byte taskState);
-
     /**
      * 根据任务id 和 接口类型，查询请求的信用数据
      *

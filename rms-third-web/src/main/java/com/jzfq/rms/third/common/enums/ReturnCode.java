@@ -26,6 +26,7 @@ public enum ReturnCode {
     ERROR_THIRD_RRSPONSE_NULL(11,"第三方返回为空"),
     ERROR_TASK_ID_NULL(11,"根据订单号获取taskId失败"),
     ACTIVE_THIRD_RPC(12,"远程调用接口中"),
+    REQUEST_THIRD_GETING(13,"数据抓取中"),
     REQUEST_SAME_EXCUTING(199,"有相同的请求正在执行"),
     REQUEST_SUCCESS(200,"请求成功"),
     ERROR_PARAMS(400, "参数不完整"),

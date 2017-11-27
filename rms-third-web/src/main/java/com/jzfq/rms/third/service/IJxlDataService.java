@@ -79,4 +79,11 @@ public interface IJxlDataService {
 	 * @return
 	 */
 	List<JuXinLiData> getJuXinLiDatas(String key, String type, String interfaceId);
+
+	/**
+	 * 根据key和用户报告返回rms-pull所需数据
+	 * @param key
+	 * @return
+	 */
+	JSONObject getJuXinLiToRmsPull(String key,JuXinLiData report);
 }

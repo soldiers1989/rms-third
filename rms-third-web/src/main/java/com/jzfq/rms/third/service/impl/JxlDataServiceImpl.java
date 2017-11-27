@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -135,7 +136,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		if(reportData==null){
 			return response;
 		}
-		JSONArray details = (JSONArray)statusResponse.getData();
+//		JSONArray details = (JSONArray)statusResponse.getData();
 		JSONObject report = JSONObject.parseObject(reportData);
 		JSONObject result = new JSONObject();
 		result.put("contact_list",report.get("contact_list"));
@@ -295,6 +296,37 @@ public class JxlDataServiceImpl implements IJxlDataService {
 				.and("type").is(type).and("createTime").gte(getMinTime(outTime))), JuXinLiData.class);
 		return report;
 	}
+
+	/**
+	 * 根据key和用户报告返回rms-pull所需数据
+	 *
+	 * @param key
+	 * @param report
+	 * @return
+	 */
+	@Override
+	public JSONObject getJuXinLiToRmsPull(String key, JuXinLiData report) {
+		JSONObject reportJson = JSONObject.parseObject(report.getData());
+		JSONObject result = new JSONObject();
+		result.put("contact_list",reportJson.get("contact_list"));
+		result.put("application_check",reportJson.get("application_check"));
+		result.put("contact_region",reportJson.get("contact_region"));
+		Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_JXL04.getCode());
+		List<JuXinLiData> datas = mongoTemplate.find(new Query(Criteria.where("key").is(key)
+				.and("type").is(JxlDataTypeEnum.JXL_DATA_TYPE_EBUSINESS.code()).and("createTime").gte(getMinTime(outTime))), JuXinLiData.class);
+		if(!CollectionUtils.isEmpty(datas)){
+			JuXinLiData ebusinessObject = datas.get(0);
+			String ebusinessData = (String) ebusinessObject.getData();
+			JSONObject ebusiness = JSONObject.parseObject(ebusinessData);
+			String code = ebusiness.getJSONObject("members").getString("error_code");
+			if(StringUtils.equals("31200",code)){
+				ebusiness.getJSONObject("members").getJSONObject("basic");
+				result.putAll(getJingDongInfo(ebusiness.getJSONObject("members").getJSONArray("transactions")));
+			}
+		}
+		return result;
+	}
+
 	private Date getMinTime(Integer time){
 		Calendar calendar = Calendar.getInstance();//使用默认时区和语言环境获得一个日历。
 		calendar.add(Calendar.DAY_OF_MONTH, -1*time);//取当前日期的前一天.

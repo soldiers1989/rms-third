@@ -120,11 +120,12 @@ public class Request1004Handler   extends AbstractRequestHandler {
         if(!CollectionUtils.isEmpty(juXinLiDatas)){
             JuXinLiData juXinLiData = juXinLiDatas.get(0);
             log.info("traceId={} 聚信立获取用户报告数据结束");
-            return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,juXinLiData.getData());
+            return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,
+                    jxlDataService.getJuXinLiToRmsPull(customerName+"_"+idCard+"_"+phone,juXinLiData));
         }
         String isRepeatKey = getKeyByInfo(customerName, idCard, phone);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
-        if(false){
+        if(!isRpc){
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
         }
         // 远程调用

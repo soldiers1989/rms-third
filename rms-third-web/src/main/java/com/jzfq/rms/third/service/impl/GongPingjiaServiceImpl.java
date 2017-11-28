@@ -2,10 +2,13 @@ package com.jzfq.rms.third.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jzfq.rms.mongo.JxlData;
 import com.jzfq.rms.third.common.domain.GpjCarDetailModel;
 import com.jzfq.rms.third.common.domain.SysTask;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
+import com.jzfq.rms.third.common.mongo.GongPingJiaData;
+import com.jzfq.rms.third.common.mongo.JuXinLiData;
 import com.jzfq.rms.third.common.utils.JWTUtils;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
@@ -16,11 +19,13 @@ import com.jzfq.rms.third.persistence.mapper.SysTaskMapper;
 import com.jzfq.rms.third.service.IGongPingjiaService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.support.cache.ICache;
+import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -32,10 +37,6 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
 
     private static final Logger log = LoggerFactory.getLogger("GongPingjiaService");
 
-//    @Value("${gongpingjia.evaluation.apiUrl}")
-//    private String evaluationUrl;
-//    @Value("${gongpingjia.detail.model.apiUrl}")
-//    private String detailModelInfoUrl;
     @Value("${gongpingjia.key}")
     private String key;
     @Value("${gongpingjia.secret}")
@@ -58,6 +59,8 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
     @Autowired
     ISendMessageService sendMessegeService;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     public List<EvaluationInfoVo> queryGaopingjiaEvalation(String vin, String licensePlatHeader){
         log.info("公平价接口调用[车架号="+vin+"车牌头两位"+licensePlatHeader+"]-开始");
@@ -74,7 +77,6 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
      * @return
      */
     private JSONObject getGongpingjiaData(String vin, String licensePlatHeader){
-        JSONObject result = new JSONObject();
         ResponseResult response ;
         try{
             response = JWTUtils.getData(key, secret, timeout,getEvaluationUrl(vin, licensePlatHeader));
@@ -98,11 +100,133 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         log.info("公平价估价接口调用[车架号="+vin+"车牌头两位="+licensePlatHeader+"]成功");
         return evaluationInfo;
     }
-    Double calculateVluationAndSaveData(ResponseResult result){
 
-        return 0d;
+    /**
+     * 计算残值和保存车辆估值
+     * @param result
+     * @return
+     */
+    private String calculateVluationAndSaveData(ResponseResult result, String vin, String licensePlatHeader){
+        Integer productiveYear = getProductiveYearByVin(vin);
+        if(productiveYear == null){
+            return null;
+        }
+        List<Map<String,String>> datas = (List<Map<String,String>>)result.getData();
+        if(CollectionUtils.isEmpty(datas)){
+            return null;
+        }
+        Set<String> slugs = new HashSet<>();
+        List<EvaluationInfoVo> evaluationInfos = new ArrayList<>();
+        for(Map<String,String> data:datas){
+            EvaluationInfoVo evaluation = getEvaluationDatas(data,slugs);
+            if(evaluation!=null){
+                evaluationInfos.add(evaluation);
+            }
+        }
+        // 查新车型库信息
+        if(CollectionUtils.isEmpty(slugs)||CollectionUtils.isEmpty(evaluationInfos)){
+            return null;
+        }
+        List<GpjCarDetailModel> carRepositories = gpjCarDetailModelMapper.selectByModelSlugList(slugs);
+        if(CollectionUtils.isEmpty(carRepositories)){
+            return null;
+        }
+        Map<String,GpjCarDetailModel> repositories = new HashMap<>();
+        for(GpjCarDetailModel repository:carRepositories){
+            repositories.put(repository.getDetailModelSlug(),repository);
+        }
+        for(EvaluationInfoVo evaluation:evaluationInfos){
+            String modelSlug = evaluation.getDetailModelSlug();
+            GpjCarDetailModel repository = repositories.get(modelSlug);
+            if(repository ==null){
+                continue;
+            }
+            evaluation.setBrandName(repository.getBrandName());
+            evaluation.setBrandSlug(repository.getBrandSlug());
+            evaluation.setModelName(repository.getModelName());
+            evaluation.setModelSlug(repository.getModelSlug());
+            evaluation.setDetailModelName(repository.getDetailModelName());
+            evaluation.setGuidePrice(repository.getPriceBn());
+            evaluation.setListedYear(repository.getListedYear());
+        }
+        EvaluationInfoVo tempEvaluation = null;
+        for(EvaluationInfoVo evaluation:evaluationInfos){
+            if(tempEvaluation == null){
+                tempEvaluation = evaluation;
+                continue;
+            }
+            tempEvaluation = getDataByNearYear(tempEvaluation, evaluation, productiveYear);
+        }
+        // 保存数据
+        saveGongPingJiaData(vin, licensePlatHeader, evaluationInfos,tempEvaluation.getPrivatePrice());
+        return tempEvaluation.getPrivatePrice();
     }
 
+    /**
+     * 保存数据
+     * @param vin
+     * @param licensePlatHeader
+     * @param evaluationInfos
+     * @param value
+     */
+    private void saveGongPingJiaData(String vin, String licensePlatHeader,List<EvaluationInfoVo> evaluationInfos,String value){
+        ThreadProvider.getThreadPool().execute(()->{
+            saveData(new GongPingJiaData(vin, licensePlatHeader, GpjTypeEnum.GPJ_EVALUATION,value,evaluationInfos,new Date()));
+        });
+    }
+    /**
+     * 根据规则获取最终数据
+     * 若该型号车有多个款型，取与该车生产年份相同或相近的款型的个人对个人价作为该车的实际估值，
+     * 且先生产的款型较后生产的款型优先级跟高。例如由车架号判断出该车生产年份为2010年，公平价返回有生产年份为2008,
+     * 2009,2011，2015年的款型，则取2009年款型的个人对个人价作为车辆估值。
+     * @param currentInfo
+     * @param otherInfo
+     * @param productYear
+     * @return
+     */
+    private EvaluationInfoVo getDataByNearYear(EvaluationInfoVo currentInfo, EvaluationInfoVo otherInfo, Integer productYear){
+        // 年份相同 去最小值
+        if(otherInfo.getListedYear() == currentInfo.getListedYear()){
+            if(Integer.parseInt(otherInfo.getPrivatePrice())<Integer.parseInt(currentInfo.getPrivatePrice())){
+                return otherInfo;
+            }
+        }
+        // 去和上市年份相近的 靠前年份
+        Integer current = currentInfo.getListedYear()-productYear;
+        Integer other = otherInfo.getListedYear()-productYear;
+        if(isCurrentInfo(current, other)){
+            return currentInfo;
+        }
+        return otherInfo;
+    }
+
+    /**
+     * 判断是否取当前值作为下次比较
+     * @param current
+     * @param other
+     * @return
+     */
+    private boolean isCurrentInfo(Integer current, Integer other){
+        if(current == 0){
+            return true;
+        }
+        if(other == 0){
+            return false;
+        }
+        if(Math.abs(current) > Math.abs(other)){
+            return false;
+        }
+        Integer flag = current * other;
+        if(flag > 0){
+            return true;
+        }
+        if(Math.abs(current) == Math.abs(other)){
+            if(other < 0){
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      * 根据车辆信息和公平价返回数据拼接页面数据
      * @param datas
@@ -149,6 +273,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
 
         return evaluationInfos;
     }
+
     private EvaluationInfoVo getEvaluationDatas(Map<String,String> data,Set<String> slugs){
         String modelDetailSlug = data.get("model_detail_slug");
         if(StringUtils.isBlank(modelDetailSlug)||slugs.contains(modelDetailSlug)){
@@ -193,6 +318,17 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         Integer page=1;
         synchronizeData(  totalPages,  currentTask,  page,  "all",  null);
     }
+
+    private void saveData(Object data) {
+        log.info("开始入库...");
+        try {
+            mongoTemplate.insert(data);
+        } catch (Exception e) {
+            log.error("入库失败", e);
+        }
+        log.info("入库结束...");
+    }
+
     public int getCountCarDetailModels(){
         return gpjCarDetailModelMapper.getCountCarDetailModel();
     }
@@ -369,12 +505,59 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
             return result;
         }
         // 计算估值
-        Double evaluation = calculateVluationAndSaveData(result);
-        result.setData(evaluation);
         result.setData(createCarEvaluations(list));
         return result;
     }
 
+    /**
+     * 远程获取估值信息和计算这两残值
+     *
+     * @param vin
+     * @param licensePlatHeader
+     * @param commonParams
+     * @return
+     */
+    @Override
+    public ResponseResult getGpjDataAndCalculateEvaluations(String vin, String licensePlatHeader, Map<String, Object> commonParams) throws BusinessException {
+        log.info("traceId={} 公平价接口调用[车架号={} 车牌头两位{}]-开始",
+                TraceIDThreadLocal.getTraceID(),vin,licensePlatHeader);
+        Map<String, Object> params = new HashMap<>();
+        params.put("key",key);
+        params.put("secret",secret);
+        params.put("timeout",timeout);
+        String url = (String)prefixCache.readConfigByGroup("rms-third-interface-url","gpj-evaluation");
+        params.put("url",url);
+        params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
+        params.put("appId", "");
+        params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
+        params.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+        params.put("traceId", TraceIDThreadLocal.getTraceID());
+
+        Map<String, Object> bizParams  = new HashMap<>();
+        bizParams.put("vin",vin);
+        bizParams.put("licensePlatHeader",licensePlatHeader);
+        ResponseResult result = getGongpingjiaData( params ,bizParams);
+        List<Map<String,String>> list = (List<Map<String,String>>)result.getData();
+        if(list == null&&result.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+            return result;
+        }
+        // 计算估值
+        String evaluation = calculateVluationAndSaveData(result, vin, licensePlatHeader);
+        result.setData(evaluation);
+        return result;
+    }
+    /**
+     * 根据vin第十位获取生产年份
+     * @param vin
+     * @return
+     */
+    Integer getProductiveYearByVin(String vin){
+        if(StringUtils.isBlank(vin)||vin.length()<10){
+            return null;
+        }
+        String vinTenStr = vin.substring(9,10);
+        return CarProductiveYearEnum.getCode(vinTenStr);
+    }
     /**
      * 调用公平价接口 02
      * @param params

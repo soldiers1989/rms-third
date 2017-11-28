@@ -44,4 +44,12 @@ public interface IGongPingjiaService {
      * @return
      */
     ResponseResult queryCarEvaluations(String vin, String licensePlatHeader, Map<String,Object> commonParams) throws BusinessException;
+
+    /**
+     * 远程获取估值信息和计算这两残值
+     * @param vin
+     * @param licensePlatHeader
+     * @return
+     */
+    ResponseResult getGpjDataAndCalculateEvaluations(String vin, String licensePlatHeader, Map<String,Object> commonParams) throws BusinessException;
 }

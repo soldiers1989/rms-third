@@ -1,6 +1,7 @@
 package com.jzfq.rms.third.common.mongo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jzfq.rms.third.common.enums.GpjTypeEnum;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -26,9 +27,22 @@ public class GongPingJiaData {
     @Indexed
     private String plantNo;
 
-    private String data;
+    private Object data;
+
+    private String value;
 
     private Date createTime;
+
+    public GongPingJiaData(String vin, String plantNo, GpjTypeEnum type, String value, Object data, Date createTime){
+        this.vin = vin;
+        this.plantNo = plantNo;
+        this.type = type.code();
+        this.desc = type.msg();
+        this.value = value;
+        this.data = data;
+        this.createTime = createTime;
+
+    }
 
     public String getType() {
         return type;
@@ -62,11 +76,11 @@ public class GongPingJiaData {
         this.plantNo = plantNo;
     }
 
-    public String getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Object data) {
         this.data = data;
     }
 
@@ -76,5 +90,13 @@ public class GongPingJiaData {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

@@ -67,7 +67,7 @@ public class Request1001Handler  extends AbstractRequestHandler{
         String licensePlatHeader = (String)request.getParam("licensePlatHeader");
         log.info("traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】",TraceIDThreadLocal.getTraceID());
         Map<String,Object> commonParams = getCommonParams(request);
-        ResponseResult result = gongPingjiaService.queryCarEvaluations( vin, licensePlatHeader.toUpperCase(),commonParams);
+        ResponseResult result = gongPingjiaService.getGpjDataAndCalculateEvaluations( vin, licensePlatHeader.toUpperCase(),commonParams);
         log.info("traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束 {}",TraceIDThreadLocal.getTraceID(),result.getMsg());
         return result;
     }

@@ -52,4 +52,12 @@ public interface IGongPingjiaService {
      * @return
      */
     ResponseResult getGpjDataAndCalculateEvaluations(String vin, String licensePlatHeader, Map<String,Object> commonParams) throws BusinessException;
+
+    /**
+     * 获取mongo缓存
+     * @param vin
+     * @param plantNo
+     * @return
+     */
+    String getEvaluatePrice(String vin, String plantNo);
 }

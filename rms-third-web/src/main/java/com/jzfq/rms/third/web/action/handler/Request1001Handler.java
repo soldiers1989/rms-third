@@ -7,6 +7,7 @@ import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IGongPingjiaService;
+import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -56,7 +57,10 @@ public class Request1001Handler  extends AbstractRequestHandler{
         }
         return handlerOfVersion01(request);
     }
+    @Autowired
+    ICountCache interfaceCountCache;
 
+    Long time = 24*60*60*3L;
     /**
      * 版本10
      * @param request
@@ -65,13 +69,28 @@ public class Request1001Handler  extends AbstractRequestHandler{
     private ResponseResult handlerOfVersion01(AbstractRequestAuthentication request) throws BusinessException{
         String vin = (String)request.getParam("vin");
         String licensePlatHeader = (String)request.getParam("licensePlatHeader");
+//        String isRepeatKey = getKey(vin, licensePlatHeader);
+//        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
+//        if(!isRpc){
+//            return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ACTIVE_THIRD_RPC,null);
+//        }
+        String price = gongPingjiaService.getEvaluatePrice(vin, licensePlatHeader);
+        if(StringUtils.isNotBlank(price)){
+            return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,price);
+        }
         log.info("traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】",TraceIDThreadLocal.getTraceID());
         Map<String,Object> commonParams = getCommonParams(request);
         ResponseResult result = gongPingjiaService.getGpjDataAndCalculateEvaluations( vin, licensePlatHeader.toUpperCase(),commonParams);
         log.info("traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束 {}",TraceIDThreadLocal.getTraceID(),result.getMsg());
         return result;
     }
-
+    private String getKey(String vin, String plantNo){
+        StringBuilder sb = new StringBuilder("rms_third_1001_");
+        sb.append(vin);
+        sb.append("_");
+        sb.append(plantNo);
+        return sb.toString() ;
+    }
     private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));

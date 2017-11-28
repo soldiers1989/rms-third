@@ -33,6 +33,10 @@ public class GongPingJiaData {
 
     private Date createTime;
 
+    public GongPingJiaData(){
+
+    }
+
     public GongPingJiaData(String vin, String plantNo, GpjTypeEnum type, String value, Object data, Date createTime){
         this.vin = vin;
         this.plantNo = plantNo;

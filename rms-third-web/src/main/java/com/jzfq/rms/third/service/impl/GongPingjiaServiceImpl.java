@@ -14,6 +14,7 @@ import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
+import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
 import com.jzfq.rms.third.persistence.mapper.SysTaskMapper;
 import com.jzfq.rms.third.service.IGongPingjiaService;
@@ -26,6 +27,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -545,6 +548,32 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         String evaluation = calculateVluationAndSaveData(result, vin, licensePlatHeader);
         result.setData(evaluation);
         return result;
+    }
+
+    @Autowired
+    IConfigDao configCacheDao;
+
+    /**
+     * 获取mongo缓存
+     *
+     * @param vin
+     * @param plantNo
+     * @return
+     */
+    @Override
+    public String getEvaluatePrice(String vin, String plantNo) {
+        Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
+        List<GongPingJiaData> report = mongoTemplate.find(new Query(Criteria.where("vin").is(vin)
+                .and("plantNo").is(plantNo).and("createTime").gte(getMinTime(outTime))), GongPingJiaData.class);
+        if(CollectionUtils.isEmpty(report)){
+            return null;
+        }
+        return report.get(0).getValue();
+    }
+    private Date getMinTime(Integer time){
+        Calendar calendar = Calendar.getInstance();//使用默认时区和语言环境获得一个日历。
+        calendar.add(Calendar.DAY_OF_MONTH, -1*time);//取当前日期的前一天.
+        return calendar.getTime();
     }
     /**
      * 根据vin第十位获取生产年份

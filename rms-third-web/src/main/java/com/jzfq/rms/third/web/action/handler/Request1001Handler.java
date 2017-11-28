@@ -65,10 +65,10 @@ public class Request1001Handler  extends AbstractRequestHandler{
     private ResponseResult handlerOfVersion01(AbstractRequestAuthentication request) throws BusinessException{
         String vin = (String)request.getParam("vin");
         String licensePlatHeader = (String)request.getParam("licensePlatHeader");
-        log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");
+        log.info("traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】",TraceIDThreadLocal.getTraceID());
         Map<String,Object> commonParams = getCommonParams(request);
         ResponseResult result = gongPingjiaService.queryCarEvaluations( vin, licensePlatHeader.toUpperCase(),commonParams);
-        log.info("公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束 {}",result.getMsg());
+        log.info("traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束 {}",TraceIDThreadLocal.getTraceID(),result.getMsg());
         return result;
     }
 

@@ -98,7 +98,10 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         log.info("公平价估价接口调用[车架号="+vin+"车牌头两位="+licensePlatHeader+"]成功");
         return evaluationInfo;
     }
+    Double calculateVluationAndSaveData(ResponseResult result){
 
+        return 0d;
+    }
 
     /**
      * 根据车辆信息和公平价返回数据拼接页面数据
@@ -365,6 +368,9 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         if(list == null&&result.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
             return result;
         }
+        // 计算估值
+        Double evaluation = calculateVluationAndSaveData(result);
+        result.setData(evaluation);
         result.setData(createCarEvaluations(list));
         return result;
     }

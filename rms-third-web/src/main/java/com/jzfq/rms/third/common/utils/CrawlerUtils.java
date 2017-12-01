@@ -40,8 +40,8 @@ public class CrawlerUtils {
      * @param params
      * @return
      */
-    public static String getSortParams(Map<String, String> params) {
-        SortedMap<String, String> map = new TreeMap<String, String>();
+    public static String getSortParams(Map<String, Object> params) {
+        SortedMap<String, Object> map = new TreeMap<String, Object>();
         for (String key: params.keySet()) {
             map.put(key, params.get(key));
         }
@@ -51,7 +51,7 @@ public class CrawlerUtils {
         String str = "";
         while (iter.hasNext()) {
             String key = iter.next();
-            String value = map.get(key);
+            String value = (String)map.get(key);
             str += key + "=" + value + "&";
         }
         if(str.length()>0){

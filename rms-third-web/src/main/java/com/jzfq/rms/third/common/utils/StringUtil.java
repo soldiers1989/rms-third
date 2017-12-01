@@ -623,7 +623,7 @@ public static final int DEFAULT_HASH_LENGTH=32;
 		return ob.toString().trim();
 	}
 
-	public  static     String getString(Map<String,Object> params,String key){
+	public static String getString(Map<String,Object> params,String key){
 		Object input = params.get(key);
 		if(input==null){
 			return "N/A";

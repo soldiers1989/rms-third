@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class RequestUtil<K, V> {
 
-    public static String request(String method, Map<String, String> params, Map<String, String> bizData, String appId,
+    public static String request(String method, Map<String, Object> params, Map<String, Object> bizData, String appId,
     		String privateKey, boolean isTestEnv,String url) throws Exception {
     	if (StringUtils.isEmpty(method) || bizData.isEmpty()) {
     		throw new IllegalArgumentException("参数错误！method和biz_data不能为空！");
@@ -37,7 +37,7 @@ public class RequestUtil<K, V> {
     	return Pattern.matches(pattern, method);
     }
 
-    private static void checkNull(Map<String, String> params) {
+    private static void checkNull(Map<String, Object> params) {
     	for (Map.Entry entry : params.entrySet()) {
             if (entry.getValue() == null) {
                 throw new NullPointerException("参数" + entry.getKey() + "不能为空！");

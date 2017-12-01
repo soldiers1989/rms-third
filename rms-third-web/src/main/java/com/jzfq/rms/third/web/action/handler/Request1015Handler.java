@@ -69,7 +69,7 @@ public class Request1015Handler extends AbstractRequestHandler {
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
-        if(org.apache.commons.lang3.StringUtils.equals(request.getApiVersion(),"02")){
+        if(StringUtils.equals(request.getApiVersion(),"02")){
             return handler02(request);
         }
         return handler01(request);
@@ -135,7 +135,7 @@ public class Request1015Handler extends AbstractRequestHandler {
                 // 保存报mongodb
                 editAndSavePostData(taskIdStr, "手机三要素", rmsData, custumType);
                 // 缓存到MYSQL
-                jieAnService.savePhonesData(InterfaceIdEnum.THIRD_JIEAN03.getCode(),((com.alibaba.fastjson.JSONObject)result.getData()).get("respCode").toString(),threeItem, value,bizData);
+                jieAnService.savePhonesData(InterfaceIdEnum.THIRD_JIEAN03.getCode(),((JSONObject)result.getData()).get("respCode").toString(),threeItem, value,bizData);
             }catch (Exception e){
                 log.error("异常",e);
             }

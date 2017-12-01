@@ -16,6 +16,6 @@ import java.util.Map;
  */
 public interface RongClient {
     
-    public String execute(Map<String, String> params) throws Exception;
+    public String execute(Map<String, Object> params) throws Exception;
     
 }

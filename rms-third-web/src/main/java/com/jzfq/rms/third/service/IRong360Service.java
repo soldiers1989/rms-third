@@ -3,7 +3,9 @@ package com.jzfq.rms.third.service;
 
 
 
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
+import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.PhoneDataTypeEnum;
 
 import java.util.Map;
 
@@ -14,11 +16,13 @@ import java.util.Map;
  *
  */
 public interface IRong360Service {
-    JSONObject doOpenApiRequest(String method, Map<String, String> params, Map<String, String> bizData) throws Exception;
+    ResponseResult getPhoneNetworkLength(Map<String, Object> bizData) throws Exception;
 
-    JSONObject getPhoneNetworkLength(String taskId, Map<String, String> bizData) throws Exception;
+    ResponseResult getMobilecheck3item(Map<String, Object> bizData) throws Exception;
 
-    JSONObject getMobilecheck3item(String taskId, Map<String, String> bizData) throws Exception;
+    ResponseResult getPhonestatus(Map<String, Object> bizData) throws Exception;
 
-    JSONObject getPhonestatus(String taskId, Map<String, String> bizData) throws Exception;
+    void saveDatas(String taskId, PhoneDataTypeEnum type, String value, JSONObject result, Map<String, Object> bizData);
+
+    String getValueByDB(String taskId, String interfaceId, PhoneDataTypeEnum type,Map<String, Object> bizData);
 }

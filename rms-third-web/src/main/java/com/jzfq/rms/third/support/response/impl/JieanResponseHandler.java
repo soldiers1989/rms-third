@@ -72,7 +72,7 @@ public class JieanResponseHandler extends AbstractResponseHandler {
             throw new Exception("Request JieAn api "+params.get("transType")+"exception");
         }
         if(doc==null){
-            logger.info("taskId:{}-捷安 接口返回为空",traceId);
+            logger.info("traceId:{}-捷安 接口返回为空",traceId);
             return new ResponseResult(traceId,ReturnCode.ERROR_RESPONSE_NULL.code(),
                     "Request JieAn api "+params.get("transType")+"return null",data);
         }
@@ -116,7 +116,7 @@ public class JieanResponseHandler extends AbstractResponseHandler {
             throw new Exception("Request JieAn api "+params.get("transType")+"exception");
         }
         if(doc==null){
-            logger.info("taskId:{}-捷安 接口返回为空",traceId);
+            logger.info("traceId:{}-捷安 接口返回为空",traceId);
             return new ResponseResult(traceId,ReturnCode.ERROR_RESPONSE_NULL.code(),
                     "Request JieAn api "+params.get("transType")+"return null",data);
         }
@@ -161,7 +161,7 @@ public class JieanResponseHandler extends AbstractResponseHandler {
             throw new Exception("Request JieAn api "+params.get("transType")+"exception");
         }
         if(doc==null){
-            logger.info("taskId:{}-捷安 接口返回为空",traceId);
+            logger.info("traceId:{}-捷安 接口返回为空",traceId);
             return new ResponseResult(traceId,ReturnCode.ERROR_RESPONSE_NULL.code(),
                     "Request JieAn api "+params.get("transType")+"return null",data);
         }

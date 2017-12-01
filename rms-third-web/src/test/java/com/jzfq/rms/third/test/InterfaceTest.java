@@ -18,7 +18,7 @@ public class InterfaceTest {
     @Test
     public void test() throws  Exception{
         String url = "http://192.168.1.166:8080/inter";
-        Map<String,String> params = new HashMap();
+        Map<String,Object> params = new HashMap();
         params.put("appId","com.jzfq.rms");
         params.put("apiId","1001");
         params.put("timestamp","111");

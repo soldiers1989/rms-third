@@ -227,4 +227,6 @@ public class Request1016Handler extends AbstractRequestHandler {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         return "JUZIFENQI"+formatter.format(new Date())+(new Random()).nextInt(1000);
     }
+
+
 }

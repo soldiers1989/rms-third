@@ -50,9 +50,9 @@ public class DefaultRongClient implements RongClient {
      * @throws Exception 
      */
     @Override
-    public String execute(Map<String,String> params) throws Exception {
+    public String execute(Map<String,Object> params) throws Exception {
         if(params==null){
-            params = new HashMap<String,String>();
+            params = new HashMap<String,Object>();
         }
         params.put("app_id", this.appId);
         params.put("version", this.version);

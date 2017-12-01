@@ -114,7 +114,7 @@ public class HttpTools {
             .build();
     }
     
-    public static String post(String url, Map<String, String> params, int connectTimeout, 
+    public static String post(String url, Map<String, Object> params, int connectTimeout,
     		int readTimeout) throws Exception {
         CloseableHttpClient httpclient = null;
         HttpPost httppost = new HttpPost(url);
@@ -127,7 +127,7 @@ public class HttpTools {
             // 创建参数队列
             List<NameValuePair> formparams = new ArrayList<NameValuePair>();
             for (String key : params.keySet()) {
-                formparams.add(new BasicNameValuePair(key, params.get(key)));
+                formparams.add(new BasicNameValuePair(key, (String)params.get(key)));
             }
             UrlEncodedFormEntity uefEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
             httppost.setEntity(uefEntity);

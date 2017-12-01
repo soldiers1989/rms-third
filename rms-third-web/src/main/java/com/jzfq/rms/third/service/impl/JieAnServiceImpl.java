@@ -79,7 +79,6 @@ public class JieAnServiceImpl implements IJieAnService {
     @Override
     public ResponseResult getMobilecheck3item(String taskId, Map<String, Object> bizData) throws Exception {
         Map<String,Object> commonParams = new HashMap<>();
-        commonParams.put("taskId",taskId);
         commonParams.put("custId",custId);
         commonParams.put("MAC_KEY",MAC_KEY);
         commonParams.put("url",apiUrl);

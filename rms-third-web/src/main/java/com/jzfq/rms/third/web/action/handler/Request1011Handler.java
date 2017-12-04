@@ -43,16 +43,6 @@ public class Request1011Handler extends AbstractRequestHandler {
     @Autowired
     IRmsService rmsService;
 
-    /**
-     * 是否控制重复调用
-     *
-     * @return 合法返回true，否则返回false
-     */
-    @Override
-    protected boolean isCheckRepeat() {
-        return true;
-    }
-
     @Autowired
     ICountCache interfaceCountCache;
     /**
@@ -60,11 +50,6 @@ public class Request1011Handler extends AbstractRequestHandler {
      */
     private static final Long time = 3*24*60*60L;
 
-    private static final String SPLIT_STR = "_";
-    @Override
-    protected boolean isRpc(Map<String, Serializable> params){
-        return true;
-    }
     /**
      * 检查业务参数是否合法，交由子类实现。
      *
@@ -73,10 +58,11 @@ public class Request1011Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        String frontId = (String)params.get("frontId");
         String orderNo = (String)params.get("orderNo");
         String customerType = (String)params.get("customerType");
         Integer loanType = (Integer)params.get("loanType");
-        if(StringUtils.isBlank(orderNo)||params.get("personInfo")==null
+        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)||params.get("personInfo")==null
                 || loanType==null||StringUtils.isBlank(orderNo)
                 || StringUtils.isBlank(customerType)){
             return false;

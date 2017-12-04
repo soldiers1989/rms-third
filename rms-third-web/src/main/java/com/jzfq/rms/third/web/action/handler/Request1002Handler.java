@@ -42,8 +42,9 @@ public class Request1002Handler extends AbstractRequestHandler {
 
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        String frontId = (String)params.get("frontId");
         String orderNo = (String)params.get("orderNo");
-        if(StringUtils.isBlank(orderNo)||params.get("carInfo")==null){
+        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)||params.get("carInfo")==null){
             return false;
         }
         Map<String,Object> carInfo = JSONObject.parseObject(params.get("carInfo").toString(), HashMap.class);

@@ -20,15 +20,6 @@ import java.util.Map;
 public class Request1018Handler extends AbstractRequestHandler {
     @Autowired
     private CarDetailModelObservable syncTask;
-    /**
-     * 是否控制重复调用
-     *
-     * @return 合法返回true，否则返回false
-     */
-    @Override
-    protected boolean isCheckRepeat() {
-        return false;
-    }
 
     /**
      * 检查业务参数是否合法，交由子类实现。
@@ -48,7 +39,7 @@ public class Request1018Handler extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException, Exception {
+    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
         syncTask.sync();
         return new ResponseResult("doCarDetailModelTask",ReturnCode.REQUEST_SUCCESS);
     }

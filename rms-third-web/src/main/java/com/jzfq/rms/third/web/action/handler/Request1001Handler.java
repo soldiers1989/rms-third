@@ -30,21 +30,13 @@ public class Request1001Handler  extends AbstractRequestHandler{
     @Autowired
     private IGongPingjiaService gongPingjiaService;
 
-    /**
-     * 是否控制重复调用
-     *
-     * @return 合法返回true，否则返回false
-     */
-    @Override
-    protected boolean isCheckRepeat() {
-        return false;
-    }
-
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        String frontId = (String)params.get("frontId");
         String vin = (String)params.get("vin");
         String licensePlatHeader = (String)params.get("licensePlatHeader");
-        if(StringUtils.isBlank(vin)||StringUtils.isBlank(licensePlatHeader)){
+        if(StringUtils.isBlank(frontId)||
+                StringUtils.isBlank(vin)||StringUtils.isBlank(licensePlatHeader)){
             return false;
         }
         return true;

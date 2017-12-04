@@ -7,6 +7,7 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.mongo.TongDunData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IRmsService;
@@ -50,8 +51,10 @@ public class Request1008Handler  extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        String frontId = (String)params.get("frontId");
         String orderNo = (String)params.get("orderNo");
-        if(StringUtils.isBlank(orderNo)||params.get("loanType")==null||params.get("personInfo")==null){
+        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)
+                ||params.get("loanType")==null||params.get("personInfo")==null){
             return false;
         }
         return true;
@@ -137,6 +140,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
         RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
         Map<String,Object> commonParams = new HashMap<>();
+        commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         commonParams.put("traceId",TraceIDThreadLocal.getTraceID());
         commonParams.put("personalInfo",personInfo);
         commonParams.put("loanType",loanType);

@@ -46,22 +46,6 @@ public class Request1005Handler   extends AbstractRequestHandler{
      */
     private static final Long time = 3*24*60*60L;
 
-    private static final String SPLIT_STR = "_";
-    @Override
-    protected boolean isRpc(Map<String, Serializable> params){
-        String traceId = (String)params.get("traceId");
-        String customerName = (String)params.get("customerName");
-        String idCard = (String)params.get("idCard");
-        String phone = (String)params.get("phone");
-        StringBuilder key = new StringBuilder();
-        key.append("rms_third_1004_").append(StringUtil.getStringOfObject(customerName))
-                .append(SPLIT_STR)
-                .append(StringUtil.getStringOfObject(idCard))
-                .append(SPLIT_STR)
-                .append(StringUtil.getStringOfObject(phone));
-        return interfaceCountCache.isRequestOutInterface(key.toString(),time);
-    }
-
     /**
      * 检查业务参数是否合法，交由子类实现。
      *
@@ -70,10 +54,11 @@ public class Request1005Handler   extends AbstractRequestHandler{
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        String frontId = (String)params.get("frontId");
         String customerName = (String)params.get("customerName");
         String idCard = (String)params.get("idCard");
         String phone = (String)params.get("phone");
-        boolean check = StringUtils.isBlank(customerName)||
+        boolean check = StringUtils.isBlank(frontId)||StringUtils.isBlank(customerName)||
                 StringUtils.isBlank(idCard)||StringUtils.isBlank(phone);
         if(check){
             return false;

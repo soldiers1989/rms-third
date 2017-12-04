@@ -18,15 +18,6 @@ import java.util.Map;
 public class Request1007Handler   extends AbstractRequestHandler{
     private static final Logger log = LoggerFactory.getLogger("JXL 1007");
 
-    /**
-     * 是否控制重复调用
-     *
-     * @return 合法返回true，否则返回false
-     */
-    @Override
-    protected boolean isCheckRepeat() {
-        return false;
-    }
 
     /**
      * 检查业务参数是否合法，交由子类实现。

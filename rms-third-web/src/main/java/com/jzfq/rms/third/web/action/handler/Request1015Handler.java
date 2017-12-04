@@ -48,14 +48,15 @@ public class Request1015Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        String frontId = (String)params.get("frontId");
         String orderNo = (String)params.get("orderNo");
         String name = (String)params.get("name");
         String idNumber = (String)params.get("idNumber");
         String phone = (String)params.get("phone");
         String custumType = (String)params.get("custumType");
-        if(org.apache.commons.lang3.StringUtils.isBlank(orderNo)|| org.apache.commons.lang3.StringUtils.isBlank(name)
-                || org.apache.commons.lang3.StringUtils.isBlank(idNumber)|| org.apache.commons.lang3.StringUtils.isBlank(phone)
-                || org.apache.commons.lang3.StringUtils.isBlank(custumType)){
+        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)||StringUtils.isBlank(name)
+                ||StringUtils.isBlank(idNumber)||StringUtils.isBlank(phone)
+                ||StringUtils.isBlank(custumType)){
             return false;
         }
         return true;

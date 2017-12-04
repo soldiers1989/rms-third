@@ -71,10 +71,11 @@ public class Request1004Handler   extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        String frontId = (String)params.get("frontId");
         String customerName = (String)params.get("customerName");
         String idCard = (String)params.get("idCard");
         String phone = (String)params.get("phone");
-        boolean check = StringUtils.isBlank(customerName)||
+        boolean check = StringUtils.isBlank(frontId)||StringUtils.isBlank(customerName)||
                 StringUtils.isBlank(idCard)||StringUtils.isBlank(phone);
         if(check){
             return false;

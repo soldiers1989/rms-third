@@ -29,18 +29,6 @@ public class Request1003Handler   extends AbstractRequestHandler {
     IJxlDataService jxlDataService;
 
     /**
-     * 是否控制重复调用
-     *
-     * @return 合法返回true，否则返回false
-     */
-    @Override
-    protected boolean isCheckRepeat() {
-        return false;
-    }
-
-
-
-    /**
      * 检查业务参数是否合法，交由子类实现。
      *
      * @param params 请求中携带的业务参数
@@ -48,11 +36,12 @@ public class Request1003Handler   extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        String frontId = (String)params.get("frontId");
         String customerName = (String)params.get("customerName");
         String idCard = (String)params.get("idCard");
         String phone = (String)params.get("phone");
         String category = (String)params.get("category");
-        boolean check = StringUtils.isBlank(customerName)||
+        boolean check = StringUtils.isBlank(frontId)||StringUtils.isBlank(customerName)||
                 StringUtils.isBlank(idCard)||StringUtils.isBlank(phone)
                 ||StringUtils.isBlank(category);
         if(check){

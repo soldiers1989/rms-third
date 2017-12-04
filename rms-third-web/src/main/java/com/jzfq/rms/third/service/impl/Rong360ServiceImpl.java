@@ -91,6 +91,7 @@ public class Rong360ServiceImpl implements IRong360Service {
 	@Override
 	public ResponseResult getPhoneNetworkLength(Map<String, Object> bizData) throws Exception {
 		Map<String,Object> commonParams = getCommonParams(method_phoneNetworkLength, InterfaceIdEnum.THIRD_RSLL01);
+		commonParams.put("frontId",bizData.get("frontId"));
 		return sendMessegeService.sendByThreeChance(SendMethodEnum.RSLL01.getCode(),commonParams,bizData);
 	}
 	/**
@@ -100,6 +101,7 @@ public class Rong360ServiceImpl implements IRong360Service {
 	@Override
 	public ResponseResult getMobilecheck3item(Map<String, Object> bizData) throws Exception {
 		Map<String,Object> commonParams = getCommonParams(method_mobileCheck3item, InterfaceIdEnum.THIRD_RSLL03);
+		commonParams.put("frontId",bizData.get("frontId"));
 		return sendMessegeService.sendByThreeChance(SendMethodEnum.RSLL03.getCode(),commonParams,bizData);
 	}
 	/**
@@ -109,6 +111,7 @@ public class Rong360ServiceImpl implements IRong360Service {
 	@Override
 	public ResponseResult getPhonestatus(Map<String, Object> bizData) throws Exception {
 		Map<String,Object> commonParams = getCommonParams(method_phoneStatus, InterfaceIdEnum.THIRD_RSLL02);
+		commonParams.put("frontId",bizData.get("frontId"));
 		return sendMessegeService.sendByThreeChance(SendMethodEnum.RSLL02.getCode(),commonParams,bizData);
 	}
 

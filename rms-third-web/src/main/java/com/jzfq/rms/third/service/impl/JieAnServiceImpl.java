@@ -61,6 +61,7 @@ public class JieAnServiceImpl implements IJieAnService {
         commonParams.put("custId",custId);
         commonParams.put("MAC_KEY",MAC_KEY);
         commonParams.put("url",apiUrl);
+        commonParams.put("frontId",bizData.get("frontId"));
         commonParams.put("targetId", SystemIdEnum.THIRD_JIEAN.getCode());
         commonParams.put("appId", "");
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JIEAN01.getCode());
@@ -82,6 +83,7 @@ public class JieAnServiceImpl implements IJieAnService {
         commonParams.put("custId",custId);
         commonParams.put("MAC_KEY",MAC_KEY);
         commonParams.put("url",apiUrl);
+        commonParams.put("frontId",bizData.get("frontId"));
         commonParams.put("targetId", SystemIdEnum.THIRD_JIEAN.getCode());
         commonParams.put("appId", "");
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JIEAN03.getCode());
@@ -102,6 +104,7 @@ public class JieAnServiceImpl implements IJieAnService {
     public ResponseResult getPhonestatus(String taskId, Map<String, Object> bizData) throws Exception {
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("taskId",taskId);
+        commonParams.put("frontId",bizData.get("frontId"));
         commonParams.put("custId",custId);
         commonParams.put("MAC_KEY",MAC_KEY);
         commonParams.put("url",apiUrl);

@@ -69,7 +69,7 @@ public class Request1013Handler extends AbstractRequestHandler {
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
-        if(org.apache.commons.lang.StringUtils.equals(request.getApiVersion(),"02")){
+        if(StringUtils.equals(request.getApiVersion(),"02")){
             return handler01(request);
         }
         return handler01(request);
@@ -100,11 +100,13 @@ public class Request1013Handler extends AbstractRequestHandler {
         String idNumber = request.getParam("idNumber").toString();
         String phone = request.getParam("phone").toString();
         String custumType = request.getParam("custumType").toString();
+        String frontId = request.getParam("frontId").toString();
         Map<String, Object> bizData = new HashMap<>();
         bizData.put("name",name);
         bizData.put("idNumber",idNumber);
         bizData.put("phone",phone);
         bizData.put("custumType",custumType);
+        bizData.put("frontId",frontId);
         // 数据库
         String valueDb = rong360Service.getValueByDB(taskIdStr, InterfaceIdEnum.THIRD_RSLL01.getCode(),PhoneDataTypeEnum.NETWORK_LENGTH,bizData);
         if(StringUtils.isNotBlank(valueDb)){

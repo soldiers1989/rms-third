@@ -97,11 +97,13 @@ public class Request1012Handler extends AbstractRequestHandler {
         String idNumber = request.getParam("idNumber").toString();
         String phone = request.getParam("phone").toString();
         String custumType = request.getParam("custumType").toString();
+        String frontId = request.getParam("frontId").toString();
         Map<String, Object> bizData = new HashMap<>();
         bizData.put("name",name);
         bizData.put("idNumber",idNumber);
         bizData.put("phone",phone);
         bizData.put("custumType",custumType);
+        bizData.put("frontId",frontId);
         // 数据库
         String valueDb = rong360Service.getValueByDB(taskIdStr, InterfaceIdEnum.THIRD_RSLL03.getCode(),PhoneDataTypeEnum.THREE_ITEM,bizData);
         if(StringUtils.isNotBlank(valueDb)){

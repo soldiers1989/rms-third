@@ -99,12 +99,14 @@ public class Request1015Handler extends AbstractRequestHandler {
         String idNumber = request.getParam("idNumber").toString();
         String phone = request.getParam("phone").toString();
         String custumType = request.getParam("custumType").toString();
+        String frontId = request.getParam("frontId").toString();
         //业务参数
         Map<String, Object> bizData = new HashMap<>();
         bizData.put("name",name);
         bizData.put("idNumber",idNumber);
         bizData.put("phone",phone);
         bizData.put("custumType",custumType);
+        bizData.put("frontId",frontId);
 
         List<TJieanPhoneData> list = jieAnService.getJieanData(name,idNumber,phone, InterfaceIdEnum.THIRD_JIEAN03.getCode());
         if(!CollectionUtils.isEmpty(list)){

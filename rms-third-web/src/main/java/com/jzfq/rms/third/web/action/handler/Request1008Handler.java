@@ -91,11 +91,6 @@ public class Request1008Handler  extends AbstractRequestHandler {
     private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
-        String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
-        Long taskId = Long.parseLong(taskIdStr);
-        if(taskId==null){
-            return new ResponseResult(traceId, ReturnCode.ERROR_TASK_ID_NULL,null);
-        }
         // 根据orderNo查询数据库
         List<TongDunData> datas = tdDataService.getTongDongData(orderNo);
         if(!CollectionUtils.isEmpty(datas)){
@@ -108,6 +103,11 @@ public class Request1008Handler  extends AbstractRequestHandler {
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
+        }
+        String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
+        Long taskId = null;
+        if(StringUtils.isNotBlank(taskIdStr)){
+            taskId = Long.parseLong(taskIdStr);
         }
         Map<String,Object> commonParams = getCommonParams(request);
         commonParams.put("taskId",taskId.toString());

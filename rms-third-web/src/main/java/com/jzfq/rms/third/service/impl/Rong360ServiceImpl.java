@@ -14,6 +14,7 @@ import com.jzfq.rms.third.common.mongo.Rong360Data;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.service.IRiskPostDataService;
+import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.IRong360Service;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
@@ -114,15 +115,21 @@ public class Rong360ServiceImpl implements IRong360Service {
 		commonParams.put("frontId",bizData.get("frontId"));
 		return sendMessegeService.sendByThreeChance(SendMethodEnum.RSLL02.getCode(),commonParams,bizData);
 	}
+	@Autowired
+	IRmsService rmsService;
 
 	@Override
-	public void saveDatas(String taskId, PhoneDataTypeEnum type, String value, JSONObject resultJson, Map<String, Object> bizData) {
+	public void saveDatas(String orderNo, PhoneDataTypeEnum type, String value, JSONObject resultJson, Map<String, Object> bizData) {
 		String traceId = TraceIDThreadLocal.getTraceID();
 		ThreadProvider.getThreadPool().execute(()->{
+			String taskId = rmsService.queryByOrderNo(TraceIDThreadLocal.getTraceID(), orderNo);
 			try{
 				// 保存数据 Rong360Data
 				saveData(new Rong360Data((String)bizData.get("name"),(String)bizData.get("idNumber")
 				,(String)bizData.get("phone"),value,type,resultJson));
+				if(StringUtils.isBlank(taskId)){
+					return;
+				}
 				// 保存rms数据
 				String result = "";
 				if(StringUtils.equals(type.getCode(),PhoneDataTypeEnum.THREE_ITEM.getCode())){
@@ -144,7 +151,7 @@ public class Rong360ServiceImpl implements IRong360Service {
 	@Autowired
 	IConfigDao configCacheDao;
 	@Override
-	public String getValueByDB(String taskId, String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData) {
+	public String getValueByDB(String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData) {
 		Integer outTime = configCacheDao.getOutTimeUnit(interfaceId);
 		List<Rong360Data> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
 				.and("name").is(bizData.get("name")).and("idCard")

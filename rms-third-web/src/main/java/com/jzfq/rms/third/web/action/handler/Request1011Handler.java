@@ -78,9 +78,7 @@ public class Request1011Handler extends AbstractRequestHandler {
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
-        if(StringUtils.equals(request.getApiVersion(),"02")){
-            return handler02(request);
-        }
+
         return handler01(request);
     }
 
@@ -93,10 +91,10 @@ public class Request1011Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
-        Long taskId = Long.parseLong(taskIdStr);
-        if(taskId==null){
-            return new ResponseResult(traceId, ReturnCode.ERROR_TASK_ID_NULL,null);
-        }
+//        Long taskId = Long.parseLong(taskIdStr);
+//        if(taskId==null){
+//            return new ResponseResult(traceId, ReturnCode.ERROR_TASK_ID_NULL,null);
+//        }
         String customerType =(String) request.getParam("customerType");
         Integer loanType = (Integer)request.getParam("loanType");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
@@ -105,9 +103,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         // 1.搜索mongo中是否存在
         JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile(),customerType);
         if(null != jsonObject){
-            BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", jsonObject.toJSONString(), customerType.toString());
-            //保存rms系统数据结构
-            riskPostDataService.saveData(data);
+            riskPostDataService.saveRmsData(taskIdStr, jsonObject.toJSONString(), customerType);
             JSONObject resultJson = new JSONObject();
             resultJson.put("score",jsonObject.getString("scorepettycashv1"));
             if (StringUtils.isBlank(resultJson.getString("score"))){
@@ -133,12 +129,8 @@ public class Request1011Handler extends AbstractRequestHandler {
         }
         if (StringUtil.checkNotEmpty(result)) {
             try{
-                BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", result, customerType.toString());
-                //保存rms系统数据结构
-                riskPostDataService.saveData(data);
-                BairongData baiRongScore = buildBairongData(info.getName(), info.getCertCardNo(), info.getMobile(),
-                        customerType,result);
-                riskPostDataService.saveData(baiRongScore);
+                riskPostDataService.saveRmsData(taskIdStr, result, customerType);
+                riskPostDataService.saveRmsThirdData(info, customerType, result);
             }catch (Exception e) {
                 log.error("traceId={} 保存数据失败",traceId,e);
                 interfaceCountCache.setFailure(isRepeatKey);
@@ -156,26 +148,10 @@ public class Request1011Handler extends AbstractRequestHandler {
         return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);
     }
 
-    /**
-     * 构建 老rms系统 百融数据结构
-     * @param taskId
-     * @param desc
-     * @param data
-     * @param type
-     * @return
-     */
-    private BrPostData buildPostData(String taskId, String desc, String data, String type) {
-        BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
-                .desc(desc).data(data).interfaceType(type).build();
-        return dataBean;
-    }
 
 
-    private BairongData buildBairongData(String name, String certCardNo, String mobile, String type,String data) {
-        BairongData dataBean = new BairongData.BairongDataBuild().createTime(new Date()).name(name)
-                .certCardNo(certCardNo).mobile(mobile).type(type).data(data).build();
-        return dataBean;
-    }
+
+
     /**
      * 获取 唯一Key
      * @return
@@ -189,38 +165,6 @@ public class Request1011Handler extends AbstractRequestHandler {
         sb.append(info.getMobile());
         return sb.toString();
     }
-    /**
-     * 版本02
-     * @param request
-     * @return
-     */
-    private ResponseResult handler02(AbstractRequestAuthentication request) throws Exception{
-        String traceId = TraceIDThreadLocal.getTraceID();
-        String customerType =(String) request.getParam("customerType");
-        String orderNo = request.getParam("orderNo").toString();
-        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
-        Integer loanType = (Integer)request.getParam("loanType");
-        RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
-                RiskPersonalInfo.class);
-        Integer type = Integer.parseInt(customerType);
-        JSONObject jsonObject = (JSONObject) riskPostDataService.queryData(Long.parseLong(taskId),type);
-        if(!CollectionUtils.isEmpty(jsonObject) && jsonObject.size() > 2){
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
-        }
-        Map<String,Object> commonParams = getCommonParams( request);
-        commonParams.put("customerType",customerType);
-        commonParams.put("loanType",loanType);
-        commonParams.put("personInfo",info);
-        String result = brPostService.getApiData(info, type,loanType, commonParams);
-        if (StringUtil.checkNotEmpty(result)) {
-            BrPostData data = buildPostData(taskId, "", result, customerType.toString());
-            //保存信息，并且更新任务
-            riskPostDataService.saveData(data);
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,data);
-        }
-        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,jsonObject);
-    }
-
 
     private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
         Map<String,Object> commonParams = new HashMap<>();

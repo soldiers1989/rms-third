@@ -34,9 +34,6 @@ public class Request1012Handler extends AbstractRequestHandler {
     @Autowired
     IRong360Service rong360Service;
 
-    @Autowired
-    IRmsService rmsService;
-
     /**
      * 检查业务参数是否合法，交由子类实现。
      *
@@ -87,11 +84,11 @@ public class Request1012Handler extends AbstractRequestHandler {
     private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
-        String taskIdStr = rmsService.queryByOrderNo(TraceIDThreadLocal.getTraceID(), orderNo);
-        Long taskId = Long.parseLong(taskIdStr);
-        if(taskId==null){
-            return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.ERROR_TASK_ID_NULL,null);
-        }
+
+//        Long taskId = Long.parseLong(taskIdStr);
+//        if(taskId==null){
+//            return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.ERROR_TASK_ID_NULL,null);
+//        }
         // 数据库查询
         String name = request.getParam("name").toString();
         String idNumber = request.getParam("idNumber").toString();
@@ -105,7 +102,7 @@ public class Request1012Handler extends AbstractRequestHandler {
         bizData.put("custumType",custumType);
         bizData.put("frontId",frontId);
         // 数据库
-        String valueDb = rong360Service.getValueByDB(taskIdStr, InterfaceIdEnum.THIRD_RSLL03.getCode(),PhoneDataTypeEnum.THREE_ITEM,bizData);
+        String valueDb = rong360Service.getValueByDB(InterfaceIdEnum.THIRD_RSLL03.getCode(),PhoneDataTypeEnum.THREE_ITEM,bizData);
         if(StringUtils.isNotBlank(valueDb)){
             return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb);
         }
@@ -126,7 +123,7 @@ public class Request1012Handler extends AbstractRequestHandler {
             // 转换rms-pull需要的值
             String value = getValueOfRmsPull(resultJson);
             // 保存数据
-            rong360Service.saveDatas(taskIdStr, PhoneDataTypeEnum.THREE_ITEM, value, resultJson, bizData);
+            rong360Service.saveDatas(orderNo, PhoneDataTypeEnum.THREE_ITEM, value, resultJson, bizData);
             responseResult.setData(value);
             return responseResult;
         }catch (Exception e){

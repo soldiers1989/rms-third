@@ -140,25 +140,27 @@ public class TdDataServiceImpl implements ITdDataService {
                 tongDunData.setCreateTime(new Date());
                 tongDunData.setApiResp(apiResp);
                 //同盾信息写入mongo
-                TdHitRuleData tdHitRuleData = new TdHitRuleData(null,
-                        "同盾规则命中信息", new Date());
-                tdHitRuleData.setTaskId(taskId);
-                if(apiResp.getDevice_info()!=null && apiResp.getDevice_info().get("deviceId")!=null){
-                    tdHitRuleData.setData(apiResp.getDevice_info().get("deviceId").toString());
+                if(taskId!=null){
+                    TdHitRuleData tdHitRuleData = new TdHitRuleData(null,
+                            "同盾规则命中信息", new Date());
+                    tdHitRuleData.setTaskId(taskId);
+                    if(apiResp.getDevice_info()!=null && apiResp.getDevice_info().get("deviceId")!=null){
+                        tdHitRuleData.setData(apiResp.getDevice_info().get("deviceId").toString());
+                    }
+                    log.info("traceId= {} 同盾拉取结果：{} --同盾分= {} 拉取结果:{}"
+                            ,traceId,apiResp.getSuccess(),apiResp.getFinal_score(),apiResp.toString());     //是否成功
+                    try{
+                        BeanUtils.copyProperties(tdHitRuleData, apiResp);
+                    }catch (Exception e){
+                        log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
+                    }
+                    if (tdHitRuleData==null){
+                        log.info("保存数据 订单号为{}获取同盾是返回的结果为null",orderNo);
+                        return ;
+                    }
+                    mongoTemplate.insert(tdHitRuleData);
                 }
-                log.info("traceId= {} 同盾拉取结果：{} --同盾分= {} 拉取结果:{}"
-                        ,traceId,apiResp.getSuccess(),apiResp.getFinal_score(),apiResp.toString());     //是否成功
-                try{
-                    BeanUtils.copyProperties(tdHitRuleData, apiResp);
-                }catch (Exception e){
-                    log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
-                }
-                if (tdHitRuleData==null){
-                    log.info("保存数据 订单号为{}获取同盾是返回的结果为null",orderNo);
-                    return ;
-                }
-                mongoTemplate.insert(tdHitRuleData);
-                String sequenceId = tdHitRuleData.getSeq_id();
+                String sequenceId = apiResp.getSeq_id();
                 if (StringUtils.isBlank(sequenceId)){
                     log.info("保存数据 订单号为{}获取同盾是返回的结果seq_id为空",orderNo);
                     return ;

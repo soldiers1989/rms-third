@@ -41,4 +41,11 @@ public interface IPengYuanService {
      * @param status
      */
     void saveCarCheckInfo(String reqId, String result, String value, Map<String,Object> carInfo,Integer status);
+
+    /**
+     * 保存rms旧系统鹏元数据
+     * @param taskId
+     * @param result
+     */
+    void saveRmsDatas(Long taskId, String result, Map<String,Object> carInfo);
 }

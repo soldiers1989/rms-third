@@ -22,7 +22,7 @@ public interface IRong360Service {
 
     ResponseResult getPhonestatus(Map<String, Object> bizData) throws Exception;
 
-    void saveDatas(String taskId, PhoneDataTypeEnum type, String value, JSONObject result, Map<String, Object> bizData);
+    void saveDatas(String orderNo, PhoneDataTypeEnum type, String value, JSONObject result, Map<String, Object> bizData);
 
-    String getValueByDB(String taskId, String interfaceId, PhoneDataTypeEnum type,Map<String, Object> bizData);
+    String getValueByDB( String interfaceId, PhoneDataTypeEnum type,Map<String, Object> bizData);
 }

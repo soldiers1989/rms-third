@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.jzfq.rms.constants.CourtException;
 import com.jzfq.rms.constants.SpecialListCode;
+import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.enums.BaiRongMapEnum;
 import com.jzfq.rms.enums.CustomerTypeEnum;
 import com.jzfq.rms.mongo.BrPostData;
@@ -15,10 +16,14 @@ import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.mongo.BairongData;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.constant.Constants;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.service.IRiskPostDataService;
+import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -41,7 +46,7 @@ import static com.jzfq.rms.enums.BaiRongMapEnum.WEIGHTS;
  */
 @Service
 public class RiskPostDataServiceImpl implements IRiskPostDataService {
-
+    private static final Logger log = LoggerFactory.getLogger(RiskPostDataServiceImpl.class);
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -51,6 +56,55 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
     @Override
     public void saveData(Object data) {
         mongoTemplate.insert(data);
+    }
+
+
+    /**
+     * 构建 老rms系统 百融数据结构
+     * @param taskId
+     * @param desc
+     * @param data
+     * @param type
+     * @return
+     */
+    private BrPostData buildPostData(String taskId, String desc, String data, String type) {
+        BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
+                .desc(desc).data(data).interfaceType(type).build();
+        return dataBean;
+    }
+
+    private BairongData buildBairongData(String name, String certCardNo, String mobile, String type,String data) {
+        BairongData dataBean = new BairongData.BairongDataBuild().createTime(new Date()).name(name)
+                .certCardNo(certCardNo).mobile(mobile).type(type).data(data).build();
+        return dataBean;
+    }
+
+    @Override
+    public void saveRmsData(String taskIdStr, String result,String customerType) {
+        String traceId = TraceIDThreadLocal.getTraceID();
+        try{
+            ThreadProvider.getThreadPool().execute(()->{
+                BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", result, customerType.toString());
+                //保存rms系统数据结构
+                saveData(data);
+            });
+        }catch (Exception e){
+            log.error("traceId={} 保存rms百融数据出现异常",traceId,e);
+        }
+    }
+
+    @Override
+    public void saveRmsThirdData(RiskPersonalInfo info,String customerType, String result) {
+        String traceId = TraceIDThreadLocal.getTraceID();
+        try{
+            ThreadProvider.getThreadPool().execute(()->{
+                BairongData baiRongScore = buildBairongData(info.getName(), info.getCertCardNo(), info.getMobile(),
+                        customerType,result);
+                saveData(baiRongScore);
+            });
+        }catch (Exception e){
+            log.error("traceId={} 保存rms-third百融数据出现异常",traceId,e);
+        }
     }
 
 

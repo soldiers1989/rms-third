@@ -1,10 +1,12 @@
 package com.jzfq.rms.third.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.domain.RiskPostTask;
 import com.jzfq.rms.mongo.BrPostData;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -15,6 +17,10 @@ import java.util.List;
 public interface IRiskPostDataService {
 
     void saveData(Object data);
+
+    void saveRmsData(String taskIdStr, String result,String customerType);
+
+    void saveRmsThirdData(RiskPersonalInfo info, String customerType, String result);
     /**
      * 根据任务id 和 接口类型，查询请求的信用数据
      *

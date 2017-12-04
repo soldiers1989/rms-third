@@ -18,6 +18,7 @@ import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.persistence.dao.IPengYuanDao;
 import com.jzfq.rms.third.service.IPengYuanService;
 import com.jzfq.rms.third.service.ISendMessageService;
+import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.xfire.client.Client;
 import org.slf4j.Logger;
@@ -254,18 +255,49 @@ public class PengYuanServiceImpl implements IPengYuanService {
      */
     @Override
     public void saveCarCheckInfo(String reqId, String result, String value, Map<String, Object> carInfo, Integer status) {
-        TPyCarCheck pyCarCheck = new TPyCarCheck();
-        pyCarCheck.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        pyCarCheck.setcPengyuanId(reqId);
-        pyCarCheck.setcName(StringUtil.getStringOfObject(carInfo.get("name")));
-        pyCarCheck.setcCertcardNo(StringUtil.getStringOfObject(carInfo.get("certCardNo")));
-        pyCarCheck.setcLicenseNo(StringUtil.getStringOfObject(carInfo.get("plateNo")));
-        pyCarCheck.setcCarType(StringUtil.getStringOfObject(carInfo.get("type")));
-        pyCarCheck.setcResult(result);
-        pyCarCheck.setcValue(value);
-        pyCarCheck.setcStatus(status.toString());
-        pyCarCheck.setDtUpdateTime(new Date());
-        pengYuanDao.save(pyCarCheck);
+        String traceId = TraceIDThreadLocal.getTraceID();
+        try{
+            ThreadProvider.getThreadPool().execute(()->{
+                TPyCarCheck pyCarCheck = new TPyCarCheck();
+                pyCarCheck.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
+                pyCarCheck.setcPengyuanId(reqId);
+                pyCarCheck.setcName(StringUtil.getStringOfObject(carInfo.get("name")));
+                pyCarCheck.setcCertcardNo(StringUtil.getStringOfObject(carInfo.get("certCardNo")));
+                pyCarCheck.setcLicenseNo(StringUtil.getStringOfObject(carInfo.get("plateNo")));
+                pyCarCheck.setcCarType(StringUtil.getStringOfObject(carInfo.get("type")));
+                pyCarCheck.setcResult(result);
+                pyCarCheck.setcValue(value);
+                pyCarCheck.setcStatus(status.toString());
+                pyCarCheck.setDtUpdateTime(new Date());
+                pengYuanDao.save(pyCarCheck);
+            });
+        }catch (Exception e){
+            log.error("traceId={} 保存rms-third鹏元数据异常",traceId,e);
+        }
+    }
+
+    /**
+     * 保存rms旧系统鹏元数据
+     *
+     * @param taskId
+     * @param result
+     */
+    @Override
+    public void saveRmsDatas(Long taskId, String result, Map<String,Object> carInfo) {
+        if(taskId!=null){
+            try {
+                ThreadProvider.getThreadPool().execute(()->{
+                    JSONObject json = new JSONObject();
+                    if(StringUtils.isNotBlank(result)){
+                        json = JSONObject.parseObject(result);
+                    }
+                    PengYuan py = new PengYuan(taskId,(String) carInfo.get("certCardNo"), "",json );
+                    saveData(py);
+                });
+            }catch (Exception e){
+                log.error("taskId={} 保存数据异常",taskId,e);
+            }
+        }
     }
 
 }

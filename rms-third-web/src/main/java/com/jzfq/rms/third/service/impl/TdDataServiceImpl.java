@@ -49,6 +49,9 @@ public class TdDataServiceImpl implements ITdDataService {
     private String partner_key;
     @Value("${td.data.env}")
     private String urlEnv;
+    @Value("${td.data.bodyGuardApiUrl}")
+    private String bodyGuardApiUrl;
+
     @Value("${td.data.apiUrl}")
     private String apiUrl;
 
@@ -368,5 +371,24 @@ public class TdDataServiceImpl implements ITdDataService {
         saveTdData(data);
         log.info("traceId={} 拉取同盾规则命中详情结束", traceId);
         return result;
+    }
+
+    @Override
+    public ResponseResult getTdBodyGuard(String appName, Map<String,Object> bizParams){
+        String url = getRequestUrl(appName);
+        Map<String,Object> commonParams = new HashMap<>();
+        commonParams.put("url",url);
+        commonParams.put("targetId", SystemIdEnum.THIRD_TD.getCode());
+        commonParams.put("appId", "");
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_TD03.getCode());
+        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.TD02.getCode(),commonParams,bizParams);
+        return response;
+    }
+
+    private String getRequestUrl(String appName){
+        return new StringBuilder().append(bodyGuardApiUrl).append("?partner_code=").append(partner_code).append("&partner_key=").append(partner_key).append("&app_name=").append(appName).toString();
     }
 }

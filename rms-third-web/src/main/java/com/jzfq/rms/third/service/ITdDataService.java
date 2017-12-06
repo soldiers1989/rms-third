@@ -40,4 +40,12 @@ public interface ITdDataService {
      * @return
      */
      List<TongDunData> getTongDongData(String orderNo);
+
+    /**
+     * 获取同盾保镖数据
+     * @param appName
+     * @param bizParams
+     * @return
+     */
+    public ResponseResult getTdBodyGuard(String appName, Map<String,Object> bizParams);
 }

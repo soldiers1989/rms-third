@@ -1,16 +1,23 @@
 package com.jzfq.rms.third.web.action.handler;
 
+import com.alibaba.fastjson.JSONObject;
+import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.service.ITdDataService;
 import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 同盾预留
+ * 同盾保镖
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/16 18:19.
  **/
@@ -26,9 +33,19 @@ public class Request1009Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        String frontId = (String)params.get("frontId");
+        String orderNo = (String)params.get("orderNo");
+        String appName = (String)params.get("appName");
+        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)
+                ||StringUtils.isBlank(appName)
+                ||params.get("info")==null){
+            return false;
+        }
         return true;
     }
 
+    @Autowired
+    ITdDataService tdDataService;
     /**
      * 业务处理，交由子类实现。
      *
@@ -36,7 +53,21 @@ public class Request1009Handler extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
-        return null;
+    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+
+        return handler01(request);
+    }
+    /**
+     * 版本01 处理器
+     * @param request
+     * @return
+     */
+    private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
+        String traceId = TraceIDThreadLocal.getTraceID();
+        String orderNo = request.getParam("orderNo").toString();
+        String appName = request.getParam("appName").toString();
+        Map<String, Object> info = JSONObject.parseObject(request.getParam("info").toString(),
+                HashMap.class);
+        return tdDataService.getTdBodyGuard(appName, info);
     }
 }

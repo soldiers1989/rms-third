@@ -14,6 +14,7 @@ public enum SendMethodEnum {
 
     TD01("4","TdSendHandler"),//同盾-同盾分
     TD02("5","TdSendHandler"),//同盾-同盾规则
+    TD03("22","TdSendHandler"),//同盾-同盾规则
 
     BR01("6","BrSendHandler"),//百融-百融评分
     BR02("7","BrSendHandler"),//百融-银行卡四要素

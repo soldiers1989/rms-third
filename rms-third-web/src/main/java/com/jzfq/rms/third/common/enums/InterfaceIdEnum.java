@@ -14,6 +14,7 @@ public enum InterfaceIdEnum {
 
     THIRD_TD01("4","同盾-同盾分"),
     THIRD_TD02("5","同盾-同盾规则"),
+    THIRD_TD03("22","同盾-保镖"),
 
     THIRD_BR01("6","百融-百融评分"),
     THIRD_BR02("7","百融-银行卡四要素"),

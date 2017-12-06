@@ -6,8 +6,11 @@ import cn.fraudmetrix.riskservice.object.Environment;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.pojo.tongdun.BodyGuardApiInvoker;
+import com.jzfq.rms.third.common.pojo.tongdun.BodyGuardApiResponse;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiInvoker;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.support.send.AbstractSendHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -34,6 +37,9 @@ public class TdSendHandler extends AbstractSendHandler {
         }
         if(StringUtils.equals(InterfaceIdEnum.THIRD_TD02.getCode(),(String)this.getParams().get("interfaceId"))){
             return getTdData02();
+        }
+        if(StringUtils.equals(InterfaceIdEnum.THIRD_TD03.getCode(),(String)this.getParams().get("interfaceId"))){
+            return getTdData03();
         }
         return null;
     }
@@ -70,5 +76,19 @@ public class TdSendHandler extends AbstractSendHandler {
         RuleDetailClient client = RuleDetailClient.getInstance(partner_code, env);
         RuleDetailResult result = client.execute(partner_key, sequenceId);
         return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,result);
+    }
+
+    ResponseResult getTdData03(){
+        String apiUrl = this.getParams().get("url").toString();
+        Map<String, Object> params = this.getBizParams();
+        // 调用接口
+        BodyGuardApiInvoker invoker = new BodyGuardApiInvoker(apiUrl);
+        BodyGuardApiResponse result = null;
+        try{
+            result = invoker.invoke(params);
+        }catch (Exception e){
+            logger.error("获取同盾保镖数据异常",e);
+        }
+        return new ResponseResult(StringUtil.getStringOfObject(this.getParams().get("traceId")), ReturnCode.REQUEST_SUCCESS,result);
     }
 }

@@ -26,10 +26,15 @@ public class RmsServiceImpl implements IRmsService {
     @Value("${rms.api.query.taskid.url}")
     private String apiUrl;
     @Override
-    public String queryByOrderNo(String traceId, String orderNo) throws RuntimeException{
-        Map<String,String> params = new HashMap<>();
-        params.put("orderNo",orderNo);
-        return postData(traceId, params);
+    public String queryByOrderNo(String traceId, String orderNo) {
+        try{
+            Map<String,String> params = new HashMap<>();
+            params.put("orderNo",orderNo);
+            return postData(traceId, params);
+        }catch (Exception e){
+            log.error("根据订单号获取taskId异常",e);
+        }
+        return null;
     }
 
     public String postData(String traceId,Map<String,String> params) throws RuntimeException {

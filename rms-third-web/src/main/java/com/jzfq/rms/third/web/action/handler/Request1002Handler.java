@@ -200,11 +200,6 @@ public class Request1002Handler extends AbstractRequestHandler {
     private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
-        commonParams.put("isRpc",this.isRpc());
-        String orderNo = request.getParam("orderNo").toString();
-        String taskIdStr = rmsService.queryByOrderNo(TraceIDThreadLocal.getTraceID(), orderNo);
-        Long taskId = Long.parseLong(taskIdStr);
-        commonParams.put("taskId",taskId);
         return commonParams;
     }
     @Autowired

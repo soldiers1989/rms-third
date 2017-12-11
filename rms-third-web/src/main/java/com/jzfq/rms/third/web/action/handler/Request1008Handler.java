@@ -105,12 +105,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
         }
         String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
-        Long taskId = null;
-        if(StringUtils.isNotBlank(taskIdStr)){
-            taskId = Long.parseLong(taskIdStr);
-        }
         Map<String,Object> commonParams = getCommonParams(request);
-        commonParams.put("taskId",taskId.toString());
         ResponseResult response =null;
         try {
             response = tdDataService.queryTdDatas(commonParams);

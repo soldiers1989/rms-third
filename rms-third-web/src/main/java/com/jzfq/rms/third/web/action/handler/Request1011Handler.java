@@ -91,10 +91,6 @@ public class Request1011Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
-//        Long taskId = Long.parseLong(taskIdStr);
-//        if(taskId==null){
-//            return new ResponseResult(traceId, ReturnCode.ERROR_TASK_ID_NULL,null);
-//        }
         String customerType =(String) request.getParam("customerType");
         Integer loanType = (Integer)request.getParam("loanType");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),

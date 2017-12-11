@@ -29,10 +29,9 @@ public interface ITdDataService {
 
     /**
      * 保存同盾规则按照订单号
-     * @param taskId
      * @param orderNo
      */
-     void saveResult(String taskId, String orderNo, FraudApiResponse apiResp);
+     void saveResult( String orderNo, FraudApiResponse apiResp);
 
     /**
      * 根据订单号 获取同盾数据

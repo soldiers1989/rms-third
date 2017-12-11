@@ -18,7 +18,7 @@ public interface IRiskPostDataService {
 
     void saveData(Object data);
 
-    void saveRmsData(String taskIdStr, String result,String customerType);
+    void saveRmsData(String orderNo, String result,String customerType);
 
     void saveRmsThirdData(RiskPersonalInfo info, String customerType, String result);
     /**

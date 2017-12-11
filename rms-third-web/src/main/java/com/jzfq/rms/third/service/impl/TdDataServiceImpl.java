@@ -18,6 +18,7 @@ import com.jzfq.rms.third.common.mongo.TongDunData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.ITdDao;
+import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.service.ITdDataService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
@@ -127,23 +128,25 @@ public class TdDataServiceImpl implements ITdDataService {
         log.info("traceId={} apiUrl ={} 执行参数列表：{}", TraceIDThreadLocal.getTraceID(), apiUrl, builder.toString());
         return result;
     }
-
+    @Autowired
+    IRmsService rmsService;
     /**
      *
-     * @param taskId
      * @param orderNo
      */
     @Override
-    public void saveResult(String taskId, String orderNo, FraudApiResponse apiResp) {
+    public void saveResult(String orderNo, FraudApiResponse apiResp) {
         String traceId = TraceIDThreadLocal.getTraceID();
         try{
             ThreadProvider.getThreadPool().execute(() ->  {
+                String taskId = rmsService.queryByOrderNo(traceId, orderNo);
                 TongDunData tongDunData = new TongDunData();
                 tongDunData.setOrderNo(orderNo);
                 tongDunData.setCreateTime(new Date());
                 tongDunData.setApiResp(apiResp);
+
                 //同盾信息写入mongo
-                if(taskId!=null){
+                if(StringUtils.isNotBlank(taskId)){
                     TdHitRuleData tdHitRuleData = new TdHitRuleData(null,
                             "同盾规则命中信息", new Date());
                     tdHitRuleData.setTaskId(taskId);

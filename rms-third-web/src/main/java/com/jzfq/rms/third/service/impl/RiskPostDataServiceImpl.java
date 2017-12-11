@@ -19,6 +19,7 @@ import com.jzfq.rms.third.constant.Constants;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.service.IRiskPostDataService;
+import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang3.StringUtils;
@@ -78,12 +79,14 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
                 .certCardNo(certCardNo).mobile(mobile).type(type).data(data).build();
         return dataBean;
     }
-
+    @Autowired
+    IRmsService rmsService;
     @Override
-    public void saveRmsData(String taskIdStr, String result,String customerType) {
+    public void saveRmsData(String orderNo, String result,String customerType) {
         String traceId = TraceIDThreadLocal.getTraceID();
         try{
             ThreadProvider.getThreadPool().execute(()->{
+                String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
                 BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", result, customerType.toString());
                 //保存rms系统数据结构
                 saveData(data);

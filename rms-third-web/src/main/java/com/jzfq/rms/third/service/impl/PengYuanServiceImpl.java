@@ -17,6 +17,7 @@ import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.persistence.dao.IPengYuanDao;
 import com.jzfq.rms.third.service.IPengYuanService;
+import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.lang3.StringUtils;
@@ -276,27 +277,36 @@ public class PengYuanServiceImpl implements IPengYuanService {
         }
     }
 
+    @Autowired
+    IRmsService rmsService;
     /**
      * 保存rms旧系统鹏元数据
      *
-     * @param taskId
+     * @param orderNo
      * @param result
      */
     @Override
-    public void saveRmsDatas(Long taskId, String result, Map<String,Object> carInfo) {
-        if(taskId!=null){
-            try {
-                ThreadProvider.getThreadPool().execute(()->{
-                    JSONObject json = new JSONObject();
-                    if(StringUtils.isNotBlank(result)){
-                        json = JSONObject.parseObject(result);
-                    }
-                    PengYuan py = new PengYuan(taskId,(String) carInfo.get("certCardNo"), "",json );
-                    saveData(py);
-                });
-            }catch (Exception e){
-                log.error("taskId={} 保存数据异常",taskId,e);
-            }
+    public void saveRmsDatas(String orderNo, String result, Map<String,Object> carInfo) {
+        String traceId = TraceIDThreadLocal.getTraceID();
+        try {
+            ThreadProvider.getThreadPool().execute(()->{
+                String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
+                Long taskId = null;
+                if(StringUtils.isNotBlank(taskIdStr)){
+                    taskId = Long.parseLong(taskIdStr);
+                }
+                if(taskId == null){
+                    return;
+                }
+                JSONObject json = new JSONObject();
+                if(StringUtils.isNotBlank(result)){
+                    json = JSONObject.parseObject(result);
+                }
+                PengYuan py = new PengYuan(taskId,(String) carInfo.get("certCardNo"), "",json );
+                saveData(py);
+            });
+        }catch (Exception e){
+            log.error("orderNo={} 保存数据异常",orderNo,e);
         }
     }
 

@@ -40,9 +40,6 @@ public class Request1008Handler  extends AbstractRequestHandler {
     @Autowired
     ITdDataService tdDataService;
 
-    @Autowired
-    IRmsService rmsService;
-
     /**
      * 检查业务参数是否合法，交由子类实现。
      *
@@ -104,7 +101,6 @@ public class Request1008Handler  extends AbstractRequestHandler {
         if(!isRpc){
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
         }
-        String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
         Map<String,Object> commonParams = getCommonParams(request);
         ResponseResult response =null;
         try {
@@ -125,7 +121,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
         }
         FraudApiResponse apiResp = (FraudApiResponse)response.getData();
         response.setData(apiResp.getFinal_score());
-        tdDataService.saveResult(taskIdStr, orderNo, apiResp);
+        tdDataService.saveResult(orderNo, apiResp);
         return response;
     }
 

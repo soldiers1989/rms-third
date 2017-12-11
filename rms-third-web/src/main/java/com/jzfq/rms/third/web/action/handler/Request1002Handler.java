@@ -37,9 +37,6 @@ public class Request1002Handler extends AbstractRequestHandler {
     @Autowired
     private IPengYuanService pengYuanService;
 
-    @Autowired
-    IRmsService rmsService;
-
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
         String frontId = (String)params.get("frontId");
@@ -74,14 +71,6 @@ public class Request1002Handler extends AbstractRequestHandler {
     private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
-        String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
-        Long taskId = null;
-        if(StringUtils.isNotBlank(taskIdStr)){
-            taskId = Long.parseLong(taskIdStr);
-        }
-//        if(taskId==null){
-//            return new ResponseResult(traceId, ReturnCode.ERROR_TASK_ID_NULL,null);
-//        }
         // 根据查询数据库
         Map<String,Object> carInfo = JSONObject.parseObject(request.getParam("carInfo").toString(), HashMap.class);
         log.info("traceId="+traceId+" 鹏元车辆信息 params：【"+carInfo+"】");
@@ -90,7 +79,7 @@ public class Request1002Handler extends AbstractRequestHandler {
             TPyCarCheck carCheck = carChecksInfo.get(0);
             // 存mongodb
             String result = carCheck.getcResult();
-            pengYuanService.saveRmsDatas(taskId, result, carInfo);
+            pengYuanService.saveRmsDatas(orderNo, result, carInfo);
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,carCheck.getcValue());
         }
         Map<String,Object> commonParams = getCommonParams(request);
@@ -112,7 +101,7 @@ public class Request1002Handler extends AbstractRequestHandler {
         if(result.getCode() == ReturnCode.REQUEST_SUCCESS.code()){
             JSONObject data = (JSONObject)result.getData();
             if(data!=null){
-                pengYuanService.saveRmsDatas(taskId, data.toJSONString(), carInfo);
+                pengYuanService.saveRmsDatas(orderNo, data.toJSONString(), carInfo);
             }
             String value =  getThirdResult(data);
             pengYuanService.saveCarCheckInfo(reqId,data.toJSONString(),value,carInfo,ReturnCode.REQUEST_SUCCESS.code());

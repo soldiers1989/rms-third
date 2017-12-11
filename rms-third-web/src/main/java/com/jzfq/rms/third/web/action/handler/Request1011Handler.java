@@ -41,9 +41,6 @@ public class Request1011Handler extends AbstractRequestHandler {
     IRiskPostDataService riskPostDataService;
 
     @Autowired
-    IRmsService rmsService;
-
-    @Autowired
     ICountCache interfaceCountCache;
     /**
      * 超时时间 三天
@@ -90,7 +87,6 @@ public class Request1011Handler extends AbstractRequestHandler {
     private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
-        String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
         String customerType =(String) request.getParam("customerType");
         Integer loanType = (Integer)request.getParam("loanType");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
@@ -99,7 +95,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         // 1.搜索mongo中是否存在
         JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile(),customerType);
         if(null != jsonObject){
-            riskPostDataService.saveRmsData(taskIdStr, jsonObject.toJSONString(), customerType);
+            riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
             JSONObject resultJson = new JSONObject();
             resultJson.put("score",jsonObject.getString("scorepettycashv1"));
             if (StringUtils.isBlank(resultJson.getString("score"))){
@@ -125,7 +121,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         }
         if (StringUtil.checkNotEmpty(result)) {
             try{
-                riskPostDataService.saveRmsData(taskIdStr, result, customerType);
+                riskPostDataService.saveRmsData(orderNo, result, customerType);
                 riskPostDataService.saveRmsThirdData(info, customerType, result);
             }catch (Exception e) {
                 log.error("traceId={} 保存数据失败",traceId,e);

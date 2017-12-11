@@ -44,8 +44,8 @@ public interface IPengYuanService {
 
     /**
      * 保存rms旧系统鹏元数据
-     * @param taskId
+     * @param orderNo
      * @param result
      */
-    void saveRmsDatas(Long taskId, String result, Map<String,Object> carInfo);
+    void saveRmsDatas(String orderNo, String result, Map<String,Object> carInfo);
 }

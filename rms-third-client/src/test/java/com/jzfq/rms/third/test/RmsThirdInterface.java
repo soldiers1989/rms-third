@@ -130,7 +130,7 @@ public class RmsThirdInterface {
         map.put("loanType",(byte)2);
         Map<String ,Object> personalInfo = new HashMap<>();
         map.put("customerType","0");
-        personalInfo.put("name","王亮");
+        personalInfo.put("name","王亮11");
         personalInfo.put("certCardNo","140502198811102244");
         personalInfo.put("mobile","13986671110");
         map.put("personInfo",personalInfo);

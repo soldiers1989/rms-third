@@ -137,11 +137,11 @@ public class Request1011Handler extends AbstractRequestHandler {
             }
             JSONObject resultJson = new JSONObject();
             JSONObject tempResult = JSONObject.parseObject(result);
-            resultJson.put("score",jsonObject.getString("scorepettycashv1"));
+            resultJson.put("score",tempResult.getString("scorepettycashv1"));
             if (StringUtils.isBlank(tempResult.getString("score"))){
-                resultJson.put("score",jsonObject.getString("scoreconsoffv2"));
+                resultJson.put("score",tempResult.getString("scoreconsoffv2"));
             }
-            resultJson.put("weight",jsonObject.getString("Rule_final_weight"));
+            resultJson.put("weight",tempResult.getString("Rule_final_weight"));
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
         }
         interfaceCountCache.setFailure(isRepeatKey);

@@ -10,17 +10,16 @@ import com.jzfq.rms.enums.ProductTypeEnum;
 import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.mongo.TdHitRuleData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
-import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
-import com.jzfq.rms.third.common.enums.ReturnCode;
-import com.jzfq.rms.third.common.enums.SendMethodEnum;
-import com.jzfq.rms.third.common.enums.SystemIdEnum;
+import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.mongo.TongDunData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.ITdDao;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.service.ITdDataService;
+import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -273,6 +272,44 @@ public class TdDataServiceImpl implements ITdDataService {
     }
 
     @Autowired
+    ICache prefixCache;
+
+    /**
+     * 按照应用划分
+     * @param channelId
+     * @param financialProductId
+     * @param operationType
+     * @param clientType
+     * @return
+     */
+    private String getEventId(String channelId, String financialProductId, String operationType, String clientType){
+        StringBuilder key = new StringBuilder();
+        key.append(channelId).append("_").append(financialProductId).append("_").append(clientType).append("_").append(operationType);
+        return StringUtil.getStringOfObject(prefixCache.readConfig(key.toString()));
+    }
+
+    private String getSecretKey(String channelId, String clientType){
+        if(StringUtils.equals(channelId, ChannelIdEnum.JZFQ.getCode())){
+            if(StringUtils.equals(clientType, ClientTypeEnum.IOS.getCode())){
+                return jzfq_ios_secret_key;
+            }
+            if(StringUtils.equals(clientType, ClientTypeEnum.AND.getCode())){
+                return jzfq_android_secret_key;
+            }
+            return jzfq_h5_secret_key;
+        }
+        if(StringUtils.equals(channelId, ChannelIdEnum.CZBT.getCode())){
+            if(StringUtils.equals(clientType, ClientTypeEnum.IOS.getCode())){
+                return bt_ios_secret_key;
+            }
+            if(StringUtils.equals(clientType, ClientTypeEnum.AND.getCode())){
+                return bt_android_secret_key;
+            }
+            return "";// bt_h5_loan_event_id;
+        }
+        return "";
+    }
+    @Autowired
     ISendMessageService sendMessegeService;
 
     /**
@@ -288,8 +325,13 @@ public class TdDataServiceImpl implements ITdDataService {
         String taskId = (String)commonParams.get("taskId");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("partner_code", partner_code);       // 合作方标识
-        params.put("secret_key", getSecret2((Integer)commonParams.get("loanType"),
-                (String)commonParams.get("channel"),(String)commonParams.get("traceId"))); // app密钥
+        String channelId = (String)commonParams.get("channelId");
+        String financialProductId = (String)commonParams.get("financialProductId");
+        String operationType = (String)commonParams.get("operationType");
+        String clientType = (String)commonParams.get("clientType");
+        String eventId = getEventId(channelId, financialProductId, operationType, clientType);
+        String sceretKey = getSecretKey(channelId, clientType);
+        params.put("secret_key", sceretKey); // app密钥
         params.put("event_id", eventId); // 策略集上的事件标识
         //写个人信息的查询
         StringBuilder builder = new StringBuilder();

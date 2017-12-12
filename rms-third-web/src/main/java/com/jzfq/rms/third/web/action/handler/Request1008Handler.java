@@ -50,8 +50,14 @@ public class Request1008Handler  extends AbstractRequestHandler {
     protected boolean checkParams(Map<String, Serializable> params) {
         String frontId = (String)params.get("frontId");
         String orderNo = (String)params.get("orderNo");
+        String channelId = (String)params.get("channelId");
+        String financialProductId = (String)params.get("financialProductId");
+        String operationType = (String)params.get("operationType");
+        String clientType = (String)params.get("clientType");
         if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)
-                ||params.get("loanType")==null||params.get("personInfo")==null){
+                ||StringUtils.isBlank(channelId)||StringUtils.isBlank(financialProductId)
+                ||StringUtils.isBlank(operationType)||StringUtils.isBlank(clientType)
+                ||params.get("personInfo")==null){
             return false;
         }
         return true;
@@ -126,16 +132,24 @@ public class Request1008Handler  extends AbstractRequestHandler {
     }
 
     private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
-        Integer loanType = (Integer)request.getParam("loanType");
-        String channel = (String)request.getParam("channel");
+//        Integer loanType = (Integer)request.getParam("loanType");
+//        String channel = (String)request.getParam("channel");
+        String channelId = (String)request.getParam("channelId");
+        String financialProductId = (String)request.getParam("financialProductId");
+        String operationType = (String)request.getParam("operationType");
+        String clientType = (String)request.getParam("clientType");
         RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         commonParams.put("traceId",TraceIDThreadLocal.getTraceID());
         commonParams.put("personalInfo",personInfo);
-        commonParams.put("loanType",loanType);
-        commonParams.put("channel",channel);
+//        commonParams.put("loanType",loanType);
+//        commonParams.put("channel",channel);
+        commonParams.put("channelId",channelId);
+        commonParams.put("financialProductId",financialProductId);
+        commonParams.put("operationType",operationType);
+        commonParams.put("clientType",clientType);
         return commonParams;
     }
 

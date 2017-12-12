@@ -132,8 +132,6 @@ public class Request1008Handler  extends AbstractRequestHandler {
     }
 
     private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
-//        Integer loanType = (Integer)request.getParam("loanType");
-//        String channel = (String)request.getParam("channel");
         String channelId = (String)request.getParam("channelId");
         String financialProductId = (String)request.getParam("financialProductId");
         String operationType = (String)request.getParam("operationType");
@@ -144,8 +142,6 @@ public class Request1008Handler  extends AbstractRequestHandler {
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         commonParams.put("traceId",TraceIDThreadLocal.getTraceID());
         commonParams.put("personalInfo",personInfo);
-//        commonParams.put("loanType",loanType);
-//        commonParams.put("channel",channel);
         commonParams.put("channelId",channelId);
         commonParams.put("financialProductId",financialProductId);
         commonParams.put("operationType",operationType);

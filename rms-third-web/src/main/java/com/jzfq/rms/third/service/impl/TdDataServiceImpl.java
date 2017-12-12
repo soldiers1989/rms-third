@@ -5,8 +5,6 @@ import cn.fraudmetrix.riskservice.object.Environment;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
-import com.jzfq.rms.enums.ApplyChannelEnum;
-import com.jzfq.rms.enums.ProductTypeEnum;
 import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.mongo.TdHitRuleData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
@@ -59,6 +57,9 @@ public class TdDataServiceImpl implements ITdDataService {
     private String bt_ios_secret_key;
     @Value("${td.data.bt_android_secret_key}")
     private String bt_android_secret_key;
+    @Value("${td.data.bt_h5_secret_key}")
+    private String bt_h5_secret_key;
+
     @Value("${td.data.jzfq_ios_secret_key}")
     private String jzfq_ios_secret_key;
     @Value("${td.data.jzfq_android_secret_key}")
@@ -66,26 +67,6 @@ public class TdDataServiceImpl implements ITdDataService {
     @Value("${td.data.jzfq_h5_secret_key}")
     private String jzfq_h5_secret_key;
 
-    @Value("${td.data.loan.bt.ios.event_id}")
-    private String bt_ios_loan_event_id;
-    @Value("${td.data.trade.bt.ios.event_id}")
-    private String bt_ios_trade_event_id;
-    @Value("${td.data.loan.bt.android.event_id}")
-    private String bt_android_loan_event_id;
-    @Value("${td.data.trade.bt.android.event_id}")
-    private String bt_android_trade_event_id;
-    @Value("${td.data.loan.jzfq.ios.event_id}")
-    private String jzfq_ios_loan_event_id;
-    @Value("${td.data.trade.jzfq.ios.event_id}")
-    private String jzfq_ios_trade_event_id;
-    @Value("${td.data.loan.jzfq.android.event_id}")
-    private String jzfq_android_loan_event_id;
-    @Value("${td.data.trade.jzfq.android.event_id}")
-    private String jzfq_android_trade_event_id;
-    @Value("${td.data.loan.jzfq.h5.event_id}")
-    private String jzfq_h5_loan_event_id;
-    @Value("${td.data.trade.jzfq.h5.event_id}")
-    private String jzfq_h5_trade_event_id;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -207,70 +188,6 @@ public class TdDataServiceImpl implements ITdDataService {
         log.info("入库结束...");
     }
 
-    /**
-     * 按照应用划分
-     * @param loanType
-     * @param channel
-     * @param traceId
-     * @return
-     */
-    private String getSecret2(Integer loanType, String channel, String traceId){
-        if (Objects.equals(loanType, ProductTypeEnum.CAR_ORDER.getCode().byteValue())
-                || Objects.equals(loanType, ProductTypeEnum.CAR_QUOTA.getCode().byteValue())){
-            if (ApplyChannelEnum.APP.getCode().equals(channel) || ApplyChannelEnum.ANDROID.getCode().equals(channel) || ApplyChannelEnum.ANDROID_ENGLISH.getCode().equalsIgnoreCase(channel)){
-                if (ProductTypeEnum.CAR_ORDER.getCode().byteValue() == loanType){
-                    eventId = bt_android_trade_event_id;
-                    log.info("traceId[{}] 渠道[{}] 类型交易",traceId,ApplyChannelEnum.getName(channel));
-                }else {
-                    eventId = bt_android_loan_event_id;
-                    log.info("traceId[{}] 渠道[{}] 类型借款",traceId,ApplyChannelEnum.getName(channel));
-                }
-                return bt_android_secret_key;
-            }else {
-                if (ProductTypeEnum.CAR_ORDER.getCode().byteValue() == loanType){
-                    eventId = bt_ios_trade_event_id;
-                    log.info("traceId[{}] 渠道[{}] 类型交易",traceId,ApplyChannelEnum.getName(channel));
-                }else {
-                    log.info("traceId[{}] 渠道[{}] 类型借款",traceId,ApplyChannelEnum.getName(channel));
-                    eventId = bt_ios_loan_event_id;
-                }
-                return bt_ios_secret_key;
-            }
-        }else {
-            if (ApplyChannelEnum.APP.getCode().equals(channel) || ApplyChannelEnum.ANDROID.getCode().equals(channel) || ApplyChannelEnum.ANDROID_ENGLISH.getCode().equalsIgnoreCase(channel)){
-                if (ProductTypeEnum.FENQI_ORDER.getCode().byteValue() == loanType || ProductTypeEnum.COMMERCIAL.getCode().byteValue() == loanType){
-                    log.info("traceId["+traceId+"] 渠道["+ ApplyChannelEnum.getName(channel)+"] 类型交易");
-                    eventId = jzfq_android_trade_event_id;
-                }else {
-                    log.info("traceId["+traceId+"] 渠道["+ ApplyChannelEnum.getName(channel)+"] 类型借款");
-                    eventId = jzfq_android_loan_event_id;
-                }
-                return jzfq_android_secret_key;
-            }
-            if (ApplyChannelEnum.IOS.getCode().equalsIgnoreCase(channel)){
-                if (ProductTypeEnum.FENQI_ORDER.getCode().byteValue() == loanType || ProductTypeEnum.COMMERCIAL.getCode().byteValue() == loanType){
-                    log.info("traceId[{}] 渠道[{}] 类型交易",traceId,ApplyChannelEnum.getName(channel));
-                    eventId = jzfq_ios_trade_event_id;
-                }else {
-                    log.info("traceId[{}] 渠道[{}] 类型借款",traceId,ApplyChannelEnum.getName(channel));
-                    eventId = jzfq_ios_loan_event_id;
-                }
-                return jzfq_ios_secret_key;
-            }
-            if (ApplyChannelEnum.PC.getCode().equals(channel) || ApplyChannelEnum.H5.getCode().equals(channel)){
-                if (ProductTypeEnum.FENQI_ORDER.getCode().byteValue() == loanType || ProductTypeEnum.COMMERCIAL.getCode().byteValue() == loanType){
-                    log.info("traceId[{}] 渠道[{}] 类型交易",traceId,ApplyChannelEnum.getName(channel));
-                    eventId = jzfq_h5_trade_event_id;
-                }else {
-                    log.info("traceId[{}] 渠道[{}] 类型借款",traceId,ApplyChannelEnum.getName(channel));
-                    eventId = jzfq_h5_loan_event_id;
-                }
-                return jzfq_h5_secret_key;
-            }
-        }
-        return "";
-    }
-
     @Autowired
     ICache prefixCache;
 
@@ -305,7 +222,7 @@ public class TdDataServiceImpl implements ITdDataService {
             if(StringUtils.equals(clientType, ClientTypeEnum.AND.getCode())){
                 return bt_android_secret_key;
             }
-            return "";// bt_h5_loan_event_id;
+            return bt_h5_secret_key;
         }
         return "";
     }

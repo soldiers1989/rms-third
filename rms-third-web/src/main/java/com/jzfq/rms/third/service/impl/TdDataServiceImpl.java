@@ -67,6 +67,9 @@ public class TdDataServiceImpl implements ITdDataService {
     @Value("${td.data.jzfq_h5_secret_key}")
     private String jzfq_h5_secret_key;
 
+    @Value("${td.prefix.redis.key}")
+    private String eventRedisKey;
+
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -200,8 +203,10 @@ public class TdDataServiceImpl implements ITdDataService {
      * @return
      */
     private String getEventId(String channelId, String financialProductId, String operationType, String clientType){
-        StringBuilder key = new StringBuilder();
-        key.append(channelId).append("_").append(financialProductId).append("_").append(clientType).append("_").append(operationType);
+        StringBuilder key = new StringBuilder("dictionary_prefix_");
+        key.append(eventRedisKey).append("_");
+        key.append(channelId).append("-").append(financialProductId)
+                .append("-").append(clientType).append("-").append(operationType);
         return StringUtil.getStringOfObject(prefixCache.readConfig(key.toString()));
     }
 

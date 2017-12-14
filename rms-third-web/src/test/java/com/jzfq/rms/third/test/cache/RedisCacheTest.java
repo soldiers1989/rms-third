@@ -1,5 +1,6 @@
 package com.jzfq.rms.third.test.cache;
 
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import org.junit.Test;
@@ -21,15 +22,30 @@ public class RedisCacheTest {
     @Autowired
     ICache prefixCache;
 
+    /**
+     * 按照应用划分
+     * @param channelId
+     * @param financialProductId
+     * @param operationType
+     * @param clientType
+     * @return
+     */
+    private String getEventId(String channelId, String financialProductId, String operationType, String clientType){
+        StringBuilder key = new StringBuilder("dictionary_prefix_");
+        key.append("jd_td_event_test").append("_");
+        key.append(channelId).append("-").append(financialProductId)
+                .append("-").append(clientType).append("-").append(operationType);
+        return StringUtil.getStringOfObject(prefixCache.readConfig(key.toString()));
+    }
+
     @Test
     public void test(){
+        System.out.print(getEventId("1","1","1","5"));
 //        interfaceCountCache.setValue("debug","false");
 //        prefixCache.setConfig("debug","false");
 //        System.out.println(prefixCache.readConfig("debug"));
 //        prefixCache.setConfigByGroup("rms-third-interface","gpj_01","false");
 //        System.out.println(prefixCache.readConfigByGroup("rms-third","debug"));
-
-
 
 //        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));
 //        System.out.println(interfaceCountCache.isRequestOutInterface("test.data"));

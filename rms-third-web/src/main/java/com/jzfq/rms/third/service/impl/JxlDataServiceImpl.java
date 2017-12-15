@@ -7,6 +7,7 @@ import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.constants.RmsConstants;
 import com.jzfq.rms.mongo.JxlData;
 import com.jzfq.rms.third.common.mongo.JuXinLiData;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.persistence.dao.IJxlDao;
@@ -24,6 +25,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -213,8 +215,8 @@ public class JxlDataServiceImpl implements IJxlDataService {
 			JSONObject element = transactions.getJSONObject(i);
 			if(StringUtils.equals("jingdong",element.getString("datasource"))){
 				result.put("account",element.getJSONObject("basic").get("website_id"));
-				result.put("name",element.get("real_name"));
-				result.put("phone",element.get("cell_phone"));
+				result.put("name",element.getJSONObject("basic").get("real_name"));
+				result.put("phone",element.getJSONObject("basic").get("cell_phone"));
 				break;
 			}
 		}
@@ -325,6 +327,82 @@ public class JxlDataServiceImpl implements IJxlDataService {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * 根据电商数据返回分析数据
+	 *
+	 * @param businessDatas
+	 * @return
+	 */
+	@Override
+	public JSONObject getBusinessDataAnalysis(String businessDatas,String phone) {
+		JSONObject result = new JSONObject();
+		result.put("six_month_sum",null);
+		result.put("register_phone",null);
+		result.put("is_phone",false);
+		if(StringUtils.isNotBlank(businessDatas)){
+			return result;
+		}
+		JSONObject ebusiness = JSONObject.parseObject(businessDatas);
+		String code = ebusiness.getJSONObject("members").getString("error_code");
+		if(!StringUtils.equals("31200",code)){
+			return result;
+		}
+		JSONArray transactions = ebusiness.getJSONObject("members").getJSONArray("transactions");
+		String cellPhone = ebusiness.getJSONObject("members").getJSONObject("basic").getString("cell_phone");
+		result.put("register_phone",cellPhone);
+		result.put("is_phone",isCellPhone(cellPhone,phone));
+		for(int i=0;i<transactions.size();i++){
+			JSONObject element = transactions.getJSONObject(i);
+			if(StringUtils.equals("jingdong",element.getString("datasource"))){
+				result.put("six_month_sum",getSixMonthSum(element));
+				break;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 *
+	 * @param cellPhone
+	 * @return
+	 */
+	private boolean isCellPhone(String cellPhone,String phone){
+		if(StringUtils.isBlank(cellPhone)||StringUtils.isBlank(phone)){
+			return false;
+		}
+		if(cellPhone.trim().length()<6||phone.trim().length()<6){
+			return false;
+		}
+		// 前三位和后三位一致即一致
+		if(!StringUtils.equals(cellPhone.trim().substring(0,3),phone.trim().substring(0,3))
+				||!StringUtils.equals(cellPhone.trim().substring(cellPhone.length()-3,cellPhone.length()),
+				phone.trim().substring(phone.length()-3,phone.length()))){
+			return false;
+		}
+		return true;
+	}
+	/**
+	 *获取六个月订单数
+	 * @param element
+	 * @return
+	 */
+	private Integer getSixMonthSum(JSONObject element){
+		JSONArray transInfo = element.getJSONArray("transactions");
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -180);
+		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String sixMonthBefore = df.format(calendar.getTime());
+		Integer sum = 0;
+		for(int i=0;i<transInfo.size();i++){
+			JSONObject transaction = transInfo.getJSONObject(i);
+			String transTime = transaction.getString("trans_time");
+			if(sixMonthBefore.compareTo(StringUtil.getStringOfObject(transTime)) <= 0){
+				sum++;
+			}
+		}
+		return sum;
 	}
 
 	private Date getMinTime(Integer time){

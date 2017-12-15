@@ -86,4 +86,11 @@ public interface IJxlDataService {
 	 * @return
 	 */
 	JSONObject getJuXinLiToRmsPull(String key,JuXinLiData report);
+
+	/**
+	 * 根据电商数据返回分析数据
+	 * @param businessDatas
+	 * @return
+	 */
+	JSONObject getBusinessDataAnalysis(String businessDatas,String phone);
 }

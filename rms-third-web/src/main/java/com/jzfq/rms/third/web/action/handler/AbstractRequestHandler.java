@@ -4,7 +4,7 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -37,7 +37,7 @@ public abstract class AbstractRequestHandler {
      * @param request 请求
      * @return 实体处理器，如果request 参数为 null 或找不到合适的处理器则返回 null
      */
-    private static AbstractRequestHandler findRequestHandler(AbstractRequestAuthentication request, ServletContext context) {
+    private static AbstractRequestHandler findRequestHandler(AbstractRequest request, ServletContext context) {
         if (request == null) {
             return null;
         }
@@ -58,7 +58,7 @@ public abstract class AbstractRequestHandler {
      * @param context
      * @return
      */
-    public static ResponseResult handleRequest(AbstractRequestAuthentication request, ServletContext context)
+    public static ResponseResult handleRequest(AbstractRequest request, ServletContext context)
     throws BusinessException{
         try {
             // 验证身份
@@ -124,5 +124,5 @@ public abstract class AbstractRequestHandler {
      * @param request 请求实体
      * @return 响应
      */
-    protected abstract ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException, Exception;
+    protected abstract ResponseResult bizHandle(AbstractRequest request) throws RuntimeException, Exception;
 }

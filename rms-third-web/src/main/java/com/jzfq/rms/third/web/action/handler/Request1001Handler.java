@@ -3,12 +3,11 @@ package com.jzfq.rms.third.web.action.handler;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.StringUtil;
-import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IGongPingjiaService;
 import com.jzfq.rms.third.support.cache.ICountCache;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,7 +41,7 @@ public class Request1001Handler  extends AbstractRequestHandler{
     }
 
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+    protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
         if(StringUtils.equals("01",request.getApiVersion())){
             return handlerOfVersion01(request);
         }
@@ -58,7 +56,7 @@ public class Request1001Handler  extends AbstractRequestHandler{
      * @param request
      * @return
      */
-    private ResponseResult handlerOfVersion01(AbstractRequestAuthentication request) throws BusinessException{
+    private ResponseResult handlerOfVersion01(AbstractRequest request) throws BusinessException{
         String vin = (String)request.getParam("vin");
         String licensePlatHeader = (String)request.getParam("licensePlatHeader");
 //        String isRepeatKey = getKey(vin, licensePlatHeader);
@@ -83,7 +81,7 @@ public class Request1001Handler  extends AbstractRequestHandler{
         sb.append(plantNo);
         return sb.toString() ;
     }
-    private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
+    private Map<String,Object> getCommonParams(AbstractRequest request){
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         return commonParams;

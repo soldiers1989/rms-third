@@ -1,9 +1,5 @@
 package com.jzfq.rms.third.web.action.handler;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.jzfq.rms.constants.RmsConstants;
-import com.jzfq.rms.mongo.JxlData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.JxlDataTypeEnum;
@@ -13,14 +9,11 @@ import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IJxlDataService;
 import com.jzfq.rms.third.support.cache.ICountCache;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
-import com.sun.org.apache.regexp.internal.RE;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -74,7 +67,7 @@ public class Request1004Handler   extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+    protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
 //        if(StringUtils.equals(request.getApiVersion(),"02")){
 //            return handler02(request);
 //        }
@@ -82,7 +75,7 @@ public class Request1004Handler   extends AbstractRequestHandler {
 
     }
 
-    private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
+    private Map<String,Object> getCommonParams(AbstractRequest request){
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         return commonParams;
@@ -93,7 +86,7 @@ public class Request1004Handler   extends AbstractRequestHandler {
      * @param request
      * @return
      */
-    private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
+    private ResponseResult handler01(AbstractRequest request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String customerName = request.getParam("customerName").toString();
         String idCard = request.getParam("idCard").toString();

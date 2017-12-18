@@ -1,11 +1,10 @@
 package com.jzfq.rms.third.web.action.handler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.ITdDataService;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +52,7 @@ public class Request1009Handler extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+    protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
 
         return handler01(request);
     }
@@ -62,7 +61,7 @@ public class Request1009Handler extends AbstractRequestHandler {
      * @param request
      * @return
      */
-    private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
+    private ResponseResult handler01(AbstractRequest request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String appName = request.getParam("appName").toString();

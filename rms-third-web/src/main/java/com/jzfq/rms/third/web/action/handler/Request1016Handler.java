@@ -10,12 +10,11 @@ import com.jzfq.rms.third.common.enums.PhoneStatusEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
-import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IJieAnService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.support.cache.ICountCache;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -75,7 +74,7 @@ public class Request1016Handler extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+    protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
         if(StringUtils.equals(request.getApiVersion(),"02")){
             return handler02(request);
         }
@@ -87,7 +86,7 @@ public class Request1016Handler extends AbstractRequestHandler {
      * @return
      * @throws Exception
      */
-    private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
+    private ResponseResult handler01(AbstractRequest request) throws Exception{
         String orderNo = request.getParam("orderNo").toString();
         String taskIdStr = rmsService.queryByOrderNo(TraceIDThreadLocal.getTraceID(), orderNo);
         Long taskId = Long.parseLong(taskIdStr);
@@ -191,7 +190,7 @@ public class Request1016Handler extends AbstractRequestHandler {
      * @param request
      * @return
      */
-    private ResponseResult handler02(AbstractRequestAuthentication request){
+    private ResponseResult handler02(AbstractRequest request){
         return null;
     }
     /**

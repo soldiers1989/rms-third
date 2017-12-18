@@ -16,7 +16,7 @@ import java.util.Map;
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/10 21:46.
  **/
-public abstract class AbstractRequestAuthentication implements Serializable {
+public abstract class AbstractRequest implements Serializable {
 
     private static final String DEFAULT_APP_KEY = "com.jzfq.rms";
 
@@ -26,7 +26,7 @@ public abstract class AbstractRequestAuthentication implements Serializable {
      * @param currentApp the currentApp to set
      */
     public static void setCurrentApp(String currentApp) {
-        AbstractRequestAuthentication.currentApp = currentApp;
+        AbstractRequest.currentApp = currentApp;
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class AbstractRequestAuthentication implements Serializable {
      * @param requsetPackage
      */
     public static void setRequestPackage(String requsetPackage) {
-        AbstractRequestAuthentication.requsetPackage = requsetPackage;
+        AbstractRequest.requsetPackage = requsetPackage;
     }
 
     private String appId;
@@ -67,8 +67,8 @@ public abstract class AbstractRequestAuthentication implements Serializable {
 
     private Map<String, Serializable> params = new HashMap<String, Serializable>();
 
-    public AbstractRequestAuthentication(String appId, String apiId, long timestamp,
-                                         String token, String apiVersion) {
+    public AbstractRequest(String appId, String apiId, long timestamp,
+                           String token, String apiVersion) {
         this.appId = appId;
         this.apiId = apiId;
         this.timestamp = timestamp;
@@ -152,7 +152,7 @@ public abstract class AbstractRequestAuthentication implements Serializable {
         this.apiVersion = version;
     }
 
-    public static AbstractRequestAuthentication fromHttpRequest(JSONObject params) throws RuntimeException {
+    public static AbstractRequest fromHttpRequest(JSONObject params) throws RuntimeException {
         String apiId = params.getString(UniformInterfaceUtils.PARAM_NAME_APIID);
         String appId = params.getString(UniformInterfaceUtils.PARAM_NAME_APPID);
         String timestampStr = params.getString(UniformInterfaceUtils.PARAM_NAME_TIMESTAMP);
@@ -168,10 +168,10 @@ public abstract class AbstractRequestAuthentication implements Serializable {
         long timestamp = Long.parseLong(timestampStr);
         try {
             @SuppressWarnings("unchecked")
-            Class<? extends AbstractRequestAuthentication> clazz = (Class<? extends AbstractRequestAuthentication>)
+            Class<? extends AbstractRequest> clazz = (Class<? extends AbstractRequest>)
                     Class.forName(getRequestClassName(apiId));
-            Constructor<? extends AbstractRequestAuthentication> c = clazz.getConstructor(String.class, String.class, long.class, String.class, String.class);
-            AbstractRequestAuthentication req = c.newInstance(appId, apiId, timestamp, token, apiVersion);
+            Constructor<? extends AbstractRequest> c = clazz.getConstructor(String.class, String.class, long.class, String.class, String.class);
+            AbstractRequest req = c.newInstance(appId, apiId, timestamp, token, apiVersion);
             req.getBizParams(params);
             return req;
         } catch (Exception e) {

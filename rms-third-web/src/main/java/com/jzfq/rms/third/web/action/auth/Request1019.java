@@ -8,13 +8,13 @@ import java.util.Map;
 
 /**
  * @author 大连桔子分期科技有限公司
- * @date 2017/10/16 18:20.
+ * @date 2017/12/18 13:14.
  **/
-public class Request1008 extends AbstractRequest {
-
-    public Request1008(String appId, String apiId, long timestamp, String token, String apiVersion) {
+public class Request1019 extends AbstractRequest {
+    public Request1019(String appId, String apiId, long timestamp, String token, String apiVersion) {
         super(appId, apiId, timestamp, token, apiVersion);
     }
+
     /**
      * @param params
      */

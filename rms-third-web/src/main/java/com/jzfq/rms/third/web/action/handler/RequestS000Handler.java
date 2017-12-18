@@ -6,7 +6,7 @@ import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IDbLogService;
 import com.jzfq.rms.third.service.IMonitorService;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +42,7 @@ public class RequestS000Handler extends AbstractRequestHandler {
     }
 
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws  Exception{
+    protected ResponseResult bizHandle(AbstractRequest request) throws  Exception{
         Map<String , Object> params = new HashMap<>();
         params.put("targetId", request.getParam("targetId"));
         Map<String , Object> logParams = new HashMap<>();

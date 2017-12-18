@@ -2,23 +2,17 @@ package com.jzfq.rms.third.web.action.handler;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.web.action.auth.AbstractRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Map;
 
 /**
- * jxl 预留
  * @author 大连桔子分期科技有限公司
- * @date 2017/10/16 18:16.
+ * @date 2017/12/18 13:11.
  **/
-@Component("request1007Handler")
-public class Request1007Handler   extends AbstractRequestHandler{
-    private static final Logger log = LoggerFactory.getLogger("JXL 1007");
-
-
+@Component("request1019Handler")
+public class Request1019Handler extends AbstractRequestHandler {
     /**
      * 检查业务参数是否合法，交由子类实现。
      *
@@ -37,7 +31,7 @@ public class Request1007Handler   extends AbstractRequestHandler{
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequest request) throws RuntimeException {
+    protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
         return null;
     }
 }

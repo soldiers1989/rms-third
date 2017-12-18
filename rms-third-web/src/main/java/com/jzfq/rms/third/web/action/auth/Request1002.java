@@ -11,7 +11,7 @@ import java.util.Map;
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/15 15:32.
  **/
-public class Request1002 extends AbstractRequestAuthentication {
+public class Request1002 extends AbstractRequest {
     public Request1002(String appId, String apiId, long timestamp, String token, String apiVersion) {
         super(appId, apiId, timestamp, token, apiVersion);
     }

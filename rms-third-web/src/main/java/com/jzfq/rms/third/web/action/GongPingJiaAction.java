@@ -2,12 +2,9 @@ package com.jzfq.rms.third.web.action;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
-import com.jzfq.rms.third.common.utils.StringUtil;
-import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IGongPingjiaService;
 import com.jzfq.rms.third.support.gpj.impl.CarDetailModelObservable;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

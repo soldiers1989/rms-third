@@ -2,7 +2,6 @@ package com.jzfq.rms.third.web.action.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
-import com.jzfq.rms.mongo.TdHitRuleData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.mongo.TongDunData;
@@ -10,11 +9,9 @@ import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
-import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ITdDataService;
 import com.jzfq.rms.third.support.cache.ICountCache;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
-import org.apache.commons.beanutils.BeanUtils;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +76,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+    protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
         if(StringUtils.equals(request.getApiVersion(),"02")){
             return handler02(request);
         }
@@ -91,7 +87,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
      * @param request
      * @return
      */
-    private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
+    private ResponseResult handler01(AbstractRequest request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         // 根据orderNo查询数据库
@@ -131,7 +127,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
         return response;
     }
 
-    private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
+    private Map<String,Object> getCommonParams(AbstractRequest request){
         String channelId = (String)request.getParam("channelId");
         String financialProductId = (String)request.getParam("financialProductId");
         String operationType = (String)request.getParam("operationType");
@@ -157,7 +153,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
      * @param request
      * @return
      */
-    private ResponseResult handler02(AbstractRequestAuthentication request) throws Exception{
+    private ResponseResult handler02(AbstractRequest request) throws Exception{
         return null;
     }
 

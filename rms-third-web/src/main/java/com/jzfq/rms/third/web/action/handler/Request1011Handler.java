@@ -2,26 +2,21 @@ package com.jzfq.rms.third.web.action.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
-import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
-import com.jzfq.rms.third.common.mongo.BairongData;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IRiskPostDataService;
-import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.impl.BrPostService;
 import com.jzfq.rms.third.support.cache.ICountCache;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,7 +69,7 @@ public class Request1011Handler extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+    protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
 
         return handler01(request);
     }
@@ -84,7 +79,7 @@ public class Request1011Handler extends AbstractRequestHandler {
      * @param request
      * @return
      */
-    private ResponseResult handler01(AbstractRequestAuthentication request) throws Exception{
+    private ResponseResult handler01(AbstractRequest request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String customerType =(String) request.getParam("customerType");
@@ -158,7 +153,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         return sb.toString();
     }
 
-    private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
+    private Map<String,Object> getCommonParams(AbstractRequest request){
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         commonParams.put("isRpc",this.isRpc());

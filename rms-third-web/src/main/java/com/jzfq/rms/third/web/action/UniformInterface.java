@@ -6,7 +6,7 @@ import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.UniformInterfaceUtils;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import com.jzfq.rms.third.web.action.handler.AbstractRequestHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -37,13 +37,13 @@ public class UniformInterface {
     public void work(HttpServletRequest request, HttpServletResponse response) throws BusinessException,ServletException, IOException{
 
         JSONObject params = UniformInterfaceUtils.getParams(request);
-        AbstractRequestAuthentication bizReq = null;
+        AbstractRequest bizReq = null;
         ResponseResult bizResp = null;
         try {
             logger.debug("接收到来自[host:{}({}:{})]的请求",
                     new Object[] { request.getRemoteHost(), request.getRemoteAddr(),
                             request.getRemotePort() });
-            bizReq = AbstractRequestAuthentication.fromHttpRequest(params);
+            bizReq = AbstractRequest.fromHttpRequest(params);
         } catch (RuntimeException e) {
             if (e instanceof IllegalArgumentException) {
                 logger.warn(e.getMessage() + " \tallParams：{}", params);

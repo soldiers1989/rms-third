@@ -7,7 +7,7 @@ import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IJxlDataService;
 import com.jzfq.rms.third.support.cache.ICountCache;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +73,7 @@ public class Request1005Handler   extends AbstractRequestHandler{
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
+    protected ResponseResult bizHandle(AbstractRequest request) throws RuntimeException {
         String customerName = request.getParam("customerName").toString();
         String idCard = request.getParam("idCard").toString();
         String phone = request.getParam("phone").toString();
@@ -85,7 +85,7 @@ public class Request1005Handler   extends AbstractRequestHandler{
         return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,data);
     }
 
-    private Map<String,Object> getCommonParams(AbstractRequestAuthentication request){
+    private Map<String,Object> getCommonParams(AbstractRequest request){
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         commonParams.put("isRpc",this.isRpc());

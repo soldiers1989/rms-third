@@ -1,12 +1,8 @@
 package com.jzfq.rms.third.web.action.handler;
 
-import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
-import com.jzfq.rms.third.common.enums.ReturnCode;
-import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.service.IJxlDataService;
-import com.jzfq.rms.third.support.cache.ICountCache;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -57,7 +52,7 @@ public class Request1003Handler   extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
+    protected ResponseResult bizHandle(AbstractRequest request) throws RuntimeException {
         String customerName = request.getParam("customerName").toString();
         String idCard = request.getParam("idCard").toString();
         String phone = request.getParam("phone").toString();

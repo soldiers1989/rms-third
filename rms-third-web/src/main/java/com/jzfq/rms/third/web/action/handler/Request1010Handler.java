@@ -1,7 +1,7 @@
 package com.jzfq.rms.third.web.action.handler;
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -36,7 +36,7 @@ public class Request1010Handler extends AbstractRequestHandler{
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws RuntimeException {
+    protected ResponseResult bizHandle(AbstractRequest request) throws RuntimeException {
         return null;
     }
 }

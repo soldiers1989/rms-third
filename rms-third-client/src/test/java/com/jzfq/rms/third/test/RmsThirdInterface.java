@@ -19,7 +19,7 @@ public class RmsThirdInterface {
 //        ResponseResult dto = rmsThirdService.send("hehe","1","","1001","01",map);
 //        System.out.println(""+dto);
 
-        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/inter");
+        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/rms-third/inter");
         Map<String,Object> map = new HashMap<>();
         map.put("frontId","111111");
         Map<String ,Object> carInfo = new HashMap<>();

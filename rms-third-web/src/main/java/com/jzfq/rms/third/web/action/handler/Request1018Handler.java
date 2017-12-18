@@ -3,8 +3,7 @@ package com.jzfq.rms.third.web.action.handler;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.support.gpj.impl.CarDetailModelObservable;
-import com.jzfq.rms.third.web.action.auth.AbstractRequestAuthentication;
-import org.apache.commons.lang3.StringUtils;
+import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +38,7 @@ public class Request1018Handler extends AbstractRequestHandler {
      * @return 响应
      */
     @Override
-    protected ResponseResult bizHandle(AbstractRequestAuthentication request) throws Exception {
+    protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
         syncTask.sync();
         return new ResponseResult("doCarDetailModelTask",ReturnCode.REQUEST_SUCCESS);
     }

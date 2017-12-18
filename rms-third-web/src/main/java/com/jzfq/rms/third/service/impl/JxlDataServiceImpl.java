@@ -341,6 +341,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		result.put("six_month_sum",null);
 		result.put("register_phone",null);
 		result.put("is_phone",false);
+		result.put("register_date",null);
 		if(StringUtils.isNotBlank(businessDatas)){
 			return result;
 		}
@@ -351,7 +352,9 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		}
 		JSONArray transactions = ebusiness.getJSONObject("members").getJSONArray("transactions");
 		String cellPhone = ebusiness.getJSONObject("members").getJSONObject("basic").getString("cell_phone");
+		String registerTime = ebusiness.getJSONObject("members").getJSONObject("basic").getString("register_date");
 		result.put("register_phone",cellPhone);
+		result.put("register_date",registerTime);
 		result.put("is_phone",isCellPhone(cellPhone,phone));
 		for(int i=0;i<transactions.size();i++){
 			JSONObject element = transactions.getJSONObject(i);

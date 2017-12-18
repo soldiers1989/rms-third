@@ -178,6 +178,38 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         }
         return JSONObject.parseObject(data);
     }
+
+    /**
+     * 根据姓名和身份证号获取百融数据
+     *
+     * @param name
+     * @param certCardNo
+     * @return
+     */
+    @Override
+    public BairongData getBairongData(String name, String certCardNo) {
+        List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
+                .and("certCardNo").is(certCardNo)), BairongData.class);
+        if(!CollectionUtils.isEmpty(datas)){
+            Collections.sort(datas, (elementA, elementB) -> {
+                Date dateA = elementA.getCreateTime();
+                Date dateB = elementB.getCreateTime();
+                if(dateA!=null&&dateB!=null){
+                    return dateA.compareTo(dateB);
+                }
+                if(dateA==null&&dateB==null){
+                    return 0;
+                }
+                if(dateA==null){
+                    return -1;
+                }
+                return 1;
+            });
+            return datas.get(0);
+        }
+        return null;
+    }
+
     private Date getMinTime(Integer time){
         Calendar calendar = Calendar.getInstance();//使用默认时区和语言环境获得一个日历。
         calendar.add(Calendar.DAY_OF_MONTH, -1*time);//取当前日期的前一天.

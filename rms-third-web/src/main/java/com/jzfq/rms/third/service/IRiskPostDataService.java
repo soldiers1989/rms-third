@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.domain.RiskPostTask;
 import com.jzfq.rms.mongo.BrPostData;
+import com.jzfq.rms.third.common.mongo.BairongData;
 
 import java.util.List;
 import java.util.Map;
@@ -47,4 +48,12 @@ public interface IRiskPostDataService {
      * @return
      */
     JSONObject getBairongData(String name,String certCardNo,String mobile,String type);
+
+    /**
+     * 根据姓名和身份证号获取百融数据
+     * @param name
+     * @param certCardNo
+     * @return
+     */
+    BairongData getBairongData(String name, String certCardNo);
 }

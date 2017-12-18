@@ -19,18 +19,18 @@ public class RmsThirdInterface {
 //        ResponseResult dto = rmsThirdService.send("hehe","1","","1001","01",map);
 //        System.out.println(""+dto);
 
-        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/rms-third/inter");
-        Map<String,Object> map = new HashMap<>();
-        map.put("frontId","111111");
-        Map<String ,Object> carInfo = new HashMap<>();
-        carInfo.put("certCardNo","372922198811154775");
-        carInfo.put("name","刘士召");
-        carInfo.put("plateNo","辽BC01X7");
-        carInfo.put("type","2");
-        map.put("carInfo",carInfo);
-        map.put("orderNo","305582");
-        ResponseResult dto = rmsThirdService.send("123","1","","1002","01",map);
-        System.out.println(dto);
+//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/rms-third/inter");
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("frontId","111111");
+//        Map<String ,Object> carInfo = new HashMap<>();
+//        carInfo.put("certCardNo","372922198811154775");
+//        carInfo.put("name","刘士召");
+//        carInfo.put("plateNo","辽BC01X7");
+//        carInfo.put("type","2");
+//        map.put("carInfo",carInfo);
+//        map.put("orderNo","305582");
+//        ResponseResult dto = rmsThirdService.send("123","1","","1002","01",map);
+//        System.out.println(dto);
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/rms-third/inter");
 //        Map<String,Object> map = new HashMap<>();
@@ -182,5 +182,12 @@ public class RmsThirdInterface {
 //        logParams.put("systemIP",null);
 //        ResponseResult dto = rmsThirdService.send("HEHE","1","","S000","01",logParams);
 //        System.out.println(""+dto);
+
+        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/rms-third/inter");
+        Map<String,Object> map = new HashMap<>();
+        map.put("certCardNo","140502198811102244");
+        map.put("name","王亮11");
+        ResponseResult dto = rmsThirdService.send("123","1","","1019","01",map);
+        System.out.println(dto);
     }
 }

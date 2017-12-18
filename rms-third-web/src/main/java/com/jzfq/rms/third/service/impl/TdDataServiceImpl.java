@@ -29,6 +29,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -176,6 +177,38 @@ public class TdDataServiceImpl implements ITdDataService {
         List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo))
                 , TongDunData.class);
         return datas;
+    }
+
+    /**
+     * 根据订单号 获取同盾数据
+     *
+     * @param name
+     * @param certCardNo
+     * @return
+     */
+    @Override
+    public TongDunData getTongDongData(String name, String certCardNo) {
+        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
+                .and("certCardNo").is(certCardNo))
+                , TongDunData.class);
+        if(!CollectionUtils.isEmpty(datas)){
+            Collections.sort(datas, (elementA, elementB) -> {
+                Date dateA = elementA.getCreateTime();
+                Date dateB = elementB.getCreateTime();
+                if(dateA!=null&&dateB!=null){
+                    return dateA.compareTo(dateB);
+                }
+                if(dateA==null&&dateB==null){
+                    return 0;
+                }
+                if(dateA==null){
+                    return -1;
+                }
+                return 1;
+            });
+            return datas.get(0);
+        }
+        return null;
     }
 
     /**

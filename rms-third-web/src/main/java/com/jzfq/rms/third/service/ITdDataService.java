@@ -41,6 +41,14 @@ public interface ITdDataService {
      List<TongDunData> getTongDongData(String orderNo);
 
     /**
+     * 根据订单号 获取同盾数据
+     * @param name
+     * @param certCardNo
+     * @return
+     */
+    TongDunData getTongDongData(String name, String certCardNo);
+
+    /**
      * 获取同盾保镖数据
      * @param appName
      * @param bizParams

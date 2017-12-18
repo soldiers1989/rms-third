@@ -153,7 +153,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		// 电商
 		ResponseResult businessResponse = getAccessBusiRawData(token, customerName, idCard, phone, commonParams);
 		String ebusinessData = (String)businessResponse.getData();
-		if(rawResponse.getCode()==ReturnCode.REQUEST_SUCCESS.code()&&StringUtils.isNotBlank(ebusinessData)){
+		if(businessResponse.getCode()==ReturnCode.REQUEST_SUCCESS.code()&&StringUtils.isNotBlank(ebusinessData)){
 			saveResult(customerName,idCard,phone, JxlDataTypeEnum.JXL_DATA_TYPE_EBUSINESS,ebusinessData);
 			JSONObject ebusiness = JSONObject.parseObject(ebusinessData);
 			String code = ebusiness.getJSONObject("members").getString("error_code");

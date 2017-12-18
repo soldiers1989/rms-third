@@ -23,6 +23,36 @@ public class TongDunData {
     @Indexed
     private String orderNo;
 
+    private String name;
+
+    private String mobile;
+
+    private String certCardNo;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getCertCardNo() {
+        return certCardNo;
+    }
+
+    public void setCertCardNo(String certCardNo) {
+        this.certCardNo = certCardNo;
+    }
+
     private FraudApiResponse apiResp;
 
     private RuleDetailResult ruleDetailResult;

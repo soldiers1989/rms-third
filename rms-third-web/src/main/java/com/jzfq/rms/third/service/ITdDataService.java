@@ -31,7 +31,7 @@ public interface ITdDataService {
      * 保存同盾规则按照订单号
      * @param orderNo
      */
-     void saveResult( String orderNo, FraudApiResponse apiResp);
+     void saveResult( String orderNo, FraudApiResponse apiResp, Map<String,Object> commonParams);
 
     /**
      * 根据订单号 获取同盾数据

@@ -118,10 +118,11 @@ public class TdDataServiceImpl implements ITdDataService {
      * @param orderNo
      */
     @Override
-    public void saveResult(String orderNo, FraudApiResponse apiResp) {
+    public void saveResult(String orderNo, FraudApiResponse apiResp, Map<String,Object> commonParams) {
         String traceId = TraceIDThreadLocal.getTraceID();
         try{
             ThreadProvider.getThreadPool().execute(() ->  {
+                RiskPersonalInfo info = (RiskPersonalInfo)commonParams.get("personalInfo");
                 String taskId = rmsService.queryByOrderNo(traceId, orderNo);
                 TongDunData tongDunData = new TongDunData();
                 tongDunData.setOrderNo(orderNo);

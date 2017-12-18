@@ -127,7 +127,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
         }
         FraudApiResponse apiResp = (FraudApiResponse)response.getData();
         response.setData(apiResp.getFinal_score());
-        tdDataService.saveResult(orderNo, apiResp);
+        tdDataService.saveResult(orderNo, apiResp, commonParams);
         return response;
     }
 

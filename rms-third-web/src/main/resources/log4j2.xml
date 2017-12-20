@@ -24,8 +24,8 @@
             <PatternLayout pattern="[${PROJECT_NAME}][%p][%date{yyyy-MM-dd HH:mm:ss.SSS}][%thread]([%c:%line]) - %msg%n"/>
         </console>
 
-        <RollingFile name="RollingFileInfo" fileName="${LOG_HOME}/${sys:user.name}/${PROJECT_NAME}/${PROJECT_NAME}-${LOG_INFO_NAME}"
-                     filePattern="${LOG_HOME}/${sys:user.name}/${PROJECT_NAME}/$${date:yyyy-MM-dd}/${PROJECT_NAME}-${BACKUP_INFO_NAME}"
+        <RollingFile name="RollingFileInfo" fileName="${LOG_HOME}/${PROJECT_NAME}/${PROJECT_NAME}-${LOG_INFO_NAME}"
+                     filePattern="${LOG_HOME}/${PROJECT_NAME}/$${date:yyyy-MM-dd}/${PROJECT_NAME}-${BACKUP_INFO_NAME}"
                      bufferedIO="true"
                      bufferSize="8192"
                      immediateFlush="true"
@@ -42,8 +42,8 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="RollingFileError" fileName="${LOG_HOME}/${sys:user.name}/${PROJECT_NAME}/${PROJECT_NAME}-${LOG_ERROR_NAME}"
-                     filePattern="${LOG_HOME}/${sys:user.name}/${PROJECT_NAME}/$${date:yyyy-MM-dd}/${PROJECT_NAME}-${BACKUP_ERROR_NAME}">
+        <RollingFile name="RollingFileError" fileName="${LOG_HOME}/${PROJECT_NAME}/${PROJECT_NAME}-${LOG_ERROR_NAME}"
+                     filePattern="${LOG_HOME}/${PROJECT_NAME}/$${date:yyyy-MM-dd}/${PROJECT_NAME}-${BACKUP_ERROR_NAME}">
             <ThresholdFilter level="ERROR"/>
             <PatternLayout pattern="[${PROJECT_NAME}]%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
             <Policies>

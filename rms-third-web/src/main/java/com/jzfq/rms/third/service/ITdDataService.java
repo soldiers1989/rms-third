@@ -1,13 +1,10 @@
 package com.jzfq.rms.third.service;
 
-import com.jzfq.rms.domain.RiskPersonalInfo;
-import com.jzfq.rms.mongo.TdData;
-import com.jzfq.rms.mongo.TdHitRuleData;
+import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.mongo.TongDunData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -54,5 +51,12 @@ public interface ITdDataService {
      * @param bizParams
      * @return
      */
-    public ResponseResult getTdBodyGuard(String appName, Map<String,Object> bizParams);
+    ResponseResult getTdBodyGuard(String appName, Map<String,Object> bizParams);
+    /**
+     * 获取同盾全部数据
+     * @param commonParams
+     * @return
+     * @throws Exception
+     */
+    JSONObject queryTdAllDatas(String orderNo, Map<String, Object> commonParams)  throws Exception;
 }

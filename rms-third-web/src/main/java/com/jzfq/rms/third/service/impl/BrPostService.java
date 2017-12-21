@@ -13,8 +13,10 @@ import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.constant.Constants;
+import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
+import com.jzfq.rms.third.service.IBrPostService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -33,7 +35,7 @@ import java.util.Map;
  *
  */
 @Component("brPostService")
-public class BrPostService {
+public class BrPostService implements IBrPostService {
 
     private static final Logger log = LoggerFactory.getLogger("postLogger");
     @Value("${br.office.user}")
@@ -113,7 +115,7 @@ public class BrPostService {
         commonParams.put("targetId", SystemIdEnum.THIRD_BR.getCode());
         commonParams.put("appId", "");
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR03.getCode());
-        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
         commonParams.put("ms",ms);
         return commonParams;
@@ -185,19 +187,15 @@ public class BrPostService {
      * @param type
      * @return
      */
-    public String getApiData(RiskPersonalInfo info,int type,Integer loanType, Map<String,Object> commonParams) throws Exception{
+    @Override
+    public String getApiData(RiskPersonalInfo info,int type,Map<String,Object> commonParams) throws Exception{
         String url = "";
-        if (loanType == ProductTypeEnum.CASH_LOAN.getCode().byteValue()){
-            int customerTypeNum = type + 2;
-            url = urls.get(customerTypeNum);                //现金贷，需要换取百融分的接口
-        }else {
-            url = urls.get(type);
-        }
+        url = urls.get(type);
         commonParams.put("url","百融客户端调用方法getApiData");
         commonParams.put("targetId", SystemIdEnum.THIRD_BR.getCode());
         commonParams.put("appId", "");
 
-        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
         commonParams.put("ms",ms);
         TerBean terBean = createBean(url, info, type);
@@ -285,5 +283,69 @@ public class BrPostService {
             return this.stuApiCode;
         }
         return Constants.EMPTY_STR;
+    }
+
+    /**
+     * 根据url 和类型 查询数据
+     * @param type
+     * @return
+     */
+    public String getApiData(RiskPersonalInfo info,int type,Integer loanType, Map<String,Object> commonParams) throws Exception{
+        String url = "";
+        if (loanType == ProductTypeEnum.CASH_LOAN.getCode().byteValue()){
+            int customerTypeNum = type + 2;
+            url = urls.get(customerTypeNum);                //现金贷，需要换取百融分的接口
+        }else {
+            url = urls.get(type);
+        }
+        commonParams.put("url","百融客户端调用方法getApiData");
+        commonParams.put("targetId", SystemIdEnum.THIRD_BR.getCode());
+        commonParams.put("appId", "");
+
+        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+        commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+        commonParams.put("ms",ms);
+        TerBean terBean = createBean(url, info, type);
+        // 登陆 获取token
+        commonParams.put("bean",terBean);
+        log.info("请求百融接口参数：{}", JSONObject.toJSON(terBean));
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR03.getCode());
+        String token = getToken(type,commonParams);
+
+        //设置token
+        if(StringUtils.isNotBlank(token)){
+            terBean.setTokenid(token);
+        }
+        Map<String ,Object> bizParams = new HashMap<>();
+        bizParams.put("customerType",commonParams.get("customerType"));
+        bizParams.put("loanType",commonParams.get("loanType"));
+        bizParams.put("personInfo",commonParams.get("personInfo"));
+
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR01.getCode());
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.BR01.getCode(),commonParams,bizParams);
+        String data = (String) response.getData();
+        log.info("百融返回结果：[ "+data+" ]");
+        if (StringUtils.equals(Constants.EMPTY_STR, data)) {
+            throw new BusinessException(10,"登录失败",true);
+        }
+        String code = jsonGetKey(data, CODE_KEY);
+        if (!StringUtils.equals(RETRY_CODE, code)) {
+            return data;
+        }
+        //只重新登录一次，如果还失败，不做处理
+        reSetToken(type);
+        // 登陆 获取token
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR03.getCode());
+        token = getToken(type,commonParams);
+        //设置token
+        if(StringUtils.isNotBlank(token)){
+            terBean.setTokenid(token);
+            log.info("token失效后再次请求百融接口参数：{}", JSONObject.toJSON(terBean));
+            log.info("请求百融接口参数：{}",data);
+            commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR01.getCode());
+            response = sendMessegeService.sendByThreeChance(SendMethodEnum.BR01.getCode(),commonParams,bizParams);
+            data = (String) response.getData();
+        }
+        return data;
     }
 }

@@ -48,12 +48,9 @@ public class Request1019Handler extends AbstractRequestHandler {
         String phone = (String)params.get("phone");
         String orderNo = (String)params.get("orderNo");
         String channel = (String)params.get("channel");
-        String qq = (String)params.get("qq");
-        String email = (String)params.get("email");
-        String cardNumber = (String)params.get("cardNumber");
         if(StringUtils.isBlank(name)||StringUtils.isBlank(certCardNo)
                 ||StringUtils.isBlank(phone)||StringUtils.isBlank(orderNo)
-                ||StringUtils.isBlank(channel)||params.get("juzi")!=null){
+                ||StringUtils.isBlank(channel)||params.get("juzi")==null){
             return false;
         }
         return true;
@@ -136,7 +133,7 @@ public class Request1019Handler extends AbstractRequestHandler {
             return result;
         }
         if (StringUtil.checkNotEmpty(response)) {
-            result.put("brScore",bairongData.getData());
+            result.put("brScore",response);
             try{
                 riskPostDataService.saveRmsData(orderNo, response, OFFICE_TYPE_STR);
                 riskPostDataService.saveRmsThirdData(info, OFFICE_TYPE_STR, response);

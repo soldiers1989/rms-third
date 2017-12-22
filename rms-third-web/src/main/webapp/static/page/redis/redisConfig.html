@@ -8,6 +8,8 @@
 
     <script src="/static/plugins/jquery/jquery-3.2.1.min.js"></script>
     <script src="/static/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/page/common/md5.js"></script>
+    <script src="/static/page/common/request.js"></script>
 
     <script src="redisConfig.js"></script>
 </head>
@@ -46,7 +48,7 @@
         <br>
         <button class="btn btn-large btn-block btn-primary" type="button" onclick="updateValue()">修改</button>
         <br>
-        <button class="btn btn-large btn-block btn-primary" type="button" onclick="deleteData()">置为无效</button>
+        <button class="btn btn-large btn-block btn-primary" type="button" onclick="deleteData()" DISABLED>置为无效</button>
     </form>
 </div>
 <!-- key空值提醒 -->
@@ -94,6 +96,30 @@
             </div>
         </div>
     </div>
+</div>
+<div id='alertSuccess' class="alert alert-block alert-success hide">
+    <a href="#" class="close" data-dismiss="alert">
+        &times;
+    </a>
+    <strong>成功！</strong>很好地完成了提交。
+</div>
+<div class="alert alert-block alert-info hide">
+    <a href="#" class="close" data-dismiss="alert">
+        &times;
+    </a>
+    <strong>信息！</strong>请注意这个信息。
+</div>
+<div class="alert alert-block alert-warning hide">
+    <a href="#" class="close" data-dismiss="alert">
+        &times;
+    </a>
+    <strong>警告！</strong>请不要提交。
+</div>
+<div class="alert alert-block alert-danger hide">
+    <a href="#" class="close" data-dismiss="alert">
+        &times;
+    </a>
+    <strong>错误！</strong>请进行一些更改。
 </div>
 </body>
 </html>

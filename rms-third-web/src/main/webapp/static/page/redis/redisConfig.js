@@ -9,8 +9,24 @@ function selectValue() {
         $('#keyNullModel').modal({
             keyboard: true
         })
+        return;
     }
-
+    $("#redis-value").val('');
+    var json = {key:key,property:property,method:"select"};
+    var params = createParams('P001','01',json)
+    $.ajax({
+        url:"/inter",
+        data:params,
+        dataType:"JSON",
+        type:"POST",
+        success: function(data){
+            if(data.code == 200){
+                $("#redis-value").val(data.data);
+            } else {
+                alert(data.msg);
+            }
+        }
+    });
 }
 
 function updateValue() {
@@ -21,12 +37,29 @@ function updateValue() {
         $('#keyNullModel').modal({
             keyboard: true
         })
+        return;
     }
     if(!value||value ==''){
         $('#valueNullModel').modal({
             keyboard: true
         })
+        return;
     }
+    var json = {key:key,property:property,value:value,method:"update"};
+    var params = createParams('P001','01',json)
+    $.ajax({
+        url:"/inter",
+        data:params,
+        dataType:"JSON",
+        type:"POST",
+        success: function(data){
+            if(data){
+                alert(data.msg);
+            }else{
+                alert('相应为空');
+            }
+        }
+    });
 }
 
 function deleteData(){
@@ -36,5 +69,21 @@ function deleteData(){
         $('#keyNullModel').modal({
             keyboard: true
         })
+        return;
     }
+    var json = {key:key, property:property, method:"delete"};
+    var params = createParams('P001','01',json)
+    $.ajax({
+        url:"/inter",
+        data:params,
+        dataType:"JSON",
+        type:"POST",
+        success: function(data){
+            if(data){
+                alert(data.msg);
+            }else{
+                alert('相应为空');
+            }
+        }
+    });
 }

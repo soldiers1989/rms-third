@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.constant.ResponseCode;
 import com.jzfq.rms.third.common.utils.RequestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +54,8 @@ public class IPValidInterceptor extends HandlerInterceptorAdapter{
     private boolean isAllow(String ip) {
         //如果已经通过验证,直接返回
         if (cache.containsKey(ip)) {
+            return true;
+        } else if(StringUtils.equals("0:0:0:0:0:0:0:1",ip)){
             return true;
         } else {
             //遍历白名单,判断是否匹配

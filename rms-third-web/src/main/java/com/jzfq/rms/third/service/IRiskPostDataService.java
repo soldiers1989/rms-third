@@ -55,5 +55,5 @@ public interface IRiskPostDataService {
      * @param certCardNo
      * @return
      */
-    BairongData getBairongData(String name, String certCardNo);
+    BairongData getBairongData(String name, String certCardNo, String mobile);
 }

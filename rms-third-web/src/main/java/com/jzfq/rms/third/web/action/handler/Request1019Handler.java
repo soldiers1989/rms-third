@@ -98,13 +98,13 @@ public class Request1019Handler extends AbstractRequestHandler {
         String certCardNo = request.getParam("certCardNo").toString();
         String phone = request.getParam("phone").toString();
         String orderNo = request.getParam("orderNo").toString();
-//        String channel = request.getParam("channel").toString();
-        log.info("traceId={} 小桔汇金接口 1019 开始", TraceIDThreadLocal.getTraceID());
+        String channel = request.getParam("channel").toString();
+        log.info("traceId={} 渠道={} 小桔汇金接口 1019 百融 开始", TraceIDThreadLocal.getTraceID(), channel);
         JSONObject result = new JSONObject();
         result.put("brScore", "");
         result.put("brFlag",ReturnCode.REQUEST_SUCCESS.code());
         // 百融
-        BairongData bairongData = riskPostDataService.getBairongData(name, certCardNo);
+        BairongData bairongData = riskPostDataService.getBairongData(name, certCardNo, phone);
         if(bairongData!=null){
             result.put("brScore",bairongData.getData());
             result.put("brFlag",ReturnCode.REQUEST_SUCCESS.code());
@@ -155,7 +155,7 @@ public class Request1019Handler extends AbstractRequestHandler {
      * @return
      */
     private String getKeyPersonalInfo(RiskPersonalInfo info){
-        StringBuilder sb = new StringBuilder("rms_third_1011_");
+        StringBuilder sb = new StringBuilder("rms_third_1019_br_");
         sb.append(info.getName());
         sb.append("_");
         sb.append(info.getCertCardNo());
@@ -220,7 +220,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         return response;
     }
     private String getKeyByOrderNo(String orderNo){
-        return "rms_third_1019_"+orderNo;
+        return "rms_third_1019_td_"+orderNo;
     }
     private Map<String,Object> getCommonParams(AbstractRequest request){
         String channelId = ChannelIdEnum.JZFQ.getCode();

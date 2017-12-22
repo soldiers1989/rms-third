@@ -187,9 +187,11 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
      * @return
      */
     @Override
-    public BairongData getBairongData(String name, String certCardNo) {
+    public BairongData getBairongData(String name, String certCardNo, String mobile) {
+        Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_BR01.getCode());
         List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
-                .and("certCardNo").is(certCardNo)), BairongData.class);
+                .and("certCardNo").is(certCardNo).and("mobile").is(mobile)
+                .and("createTime").gte(getMinTime(outTime))), BairongData.class);
         if(!CollectionUtils.isEmpty(datas)){
             Collections.sort(datas, (elementA, elementB) -> {
                 Date dateA = elementA.getCreateTime();

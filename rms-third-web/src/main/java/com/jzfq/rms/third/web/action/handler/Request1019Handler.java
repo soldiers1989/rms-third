@@ -107,7 +107,6 @@ public class Request1019Handler extends AbstractRequestHandler {
         BairongData bairongData = riskPostDataService.getBairongData(name, certCardNo, phone);
         if(bairongData!=null){
             result.put("brScore",bairongData.getData());
-            result.put("brFlag",ReturnCode.REQUEST_SUCCESS.code());
             return result;
         }
 
@@ -180,7 +179,7 @@ public class Request1019Handler extends AbstractRequestHandler {
                 result.put("tdScore",tongDunData.get(0).getApiResp());
                 result.put("tdDetail",tongDunData.get(0).getRuleDetailResult());
             }else{
-                result.put("tdFlag","9");
+                result.put("tdFlag",ReturnCode.ERROR_RESPONSE_NULL.code());
             }
             log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
             return result;

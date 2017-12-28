@@ -55,11 +55,14 @@ public class BrSendHandler extends AbstractSendHandler {
      */
     private ResponseResult getBrLogin() throws Exception{
         MerchantServer ms = (MerchantServer)this.getParams().get("ms");
-        String userName = (String)getBizParams().get("userName");
-        String pwd = (String)getBizParams().get("pwd");
-        String apicode = (String)getBizParams().get("apicode");
-        String loginName = (String)getBizParams().get("loginName");
-        String loginResult = ms.login(userName, pwd,loginName, apicode);
+//        String userName = (String)getBizParams().get("userName");
+//        String pwd = (String)getBizParams().get("pwd");
+//        String apicode = (String)getBizParams().get("apicode");
+//        String loginName = (String)getBizParams().get("loginName");
+        String userName = "juziStr";
+        String pwd = "juziStr";
+        String apicode = "3002020";
+        String loginResult = ms.login(userName, pwd,"LoginApi", apicode);
         return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,loginResult);
     }
 
@@ -69,14 +72,15 @@ public class BrSendHandler extends AbstractSendHandler {
 
     private ResponseResult getBrScore() throws Exception{
         MerchantServer ms = (MerchantServer)this.getParams().get("ms");
-        String apicode = (String)getBizParams().get("apicode");
+//        String apicode = (String)getBizParams().get("apicode");
+        String apicode = "3002020";
         String data = ms.getApiData(getJsonData(), apicode);
         return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,data);
     }
 
     private String getJsonData(){
         String token = (String)getParams().get("token");
-        RiskPersonalInfo personInfo = (RiskPersonalInfo)getParams().get("personInfo");
+        RiskPersonalInfo personInfo = (RiskPersonalInfo)getBizParams().get("personInfo");
         JSONObject params = new JSONObject();
         JSONObject reqData = new JSONObject();
         JSONArray cells=new JSONArray();

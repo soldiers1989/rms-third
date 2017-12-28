@@ -61,7 +61,7 @@
         <logger name="org.apache.commons.httpclient" level="error" />
         <logger name="org.apache.zookeeper" level="error" />
 
-        <logger name="com.jzfq.rms.（*）" level="trace" >
+        <logger name="com.jzfq.rms.third.（*）" level="trace" >
             <appender-ref ref="databaseAppender"/>
         </logger>
         <root level="info">
@@ -71,7 +71,7 @@
         </root>
     </loggers>
     <JDBC name="databaseAppender" tableName="sys_log">
-        <ConnectionFactory class="com.jzfq.rms.（*）.common.utils.ConnectionFactory" method="getDatabaseConnection" />
+        <ConnectionFactory class="com.jzfq.rms.third.common.utils.ConnectionFactory" method="getDatabaseConnection" />
         <Column name="log_date" isEventTimestamp="true"/>
         <Column name="log_file" pattern="%file" />
         <Column name="log_line" pattern="%line" />

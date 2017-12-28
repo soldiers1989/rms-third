@@ -182,7 +182,7 @@ public class BrPostService {
         //设置token
         commonParams.put("token",token);
         Map<String ,Object> bizParams = new HashMap<>();
-        bizParams.put("personInfo",commonParams.get("personInfo"));
+        bizParams.put("personInfo",info);
         bizParams.put("clientType",commonParams.get("clientType"));
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR01.getCode());
         ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.BR01.getCode(),commonParams,bizParams);

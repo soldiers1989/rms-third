@@ -7,9 +7,11 @@
 				        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"
        default-autowire="byName">
 
+
     <context:property-placeholder ignore-resource-not-found="true" ignore-unresolvable="false"
                                   location="classpath:rms-third-rpc.properties,file:/data/config/rmsthirdservice/prod.properties" />
-    <!--<context:annotation-config />-->
+    <context:annotation-config />
+    <import resource="config/*.xml"/>
     <!-- 配置扫描的包 -->
     <context:component-scan base-package="com.jzfq.rms.third.rpc.*" />
 
@@ -27,5 +29,5 @@
     <!--<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>-->
     <!--&lt;!&ndash; 视图解析器 &ndash;&gt;-->
     <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" />-->
-    <import resource="config/*.xml"/>
+
 </beans>				        

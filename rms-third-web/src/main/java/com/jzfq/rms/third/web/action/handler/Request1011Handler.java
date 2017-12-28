@@ -54,7 +54,10 @@ public class Request1011Handler extends AbstractRequestHandler {
         String orderNo = (String)params.get("orderNo");
         String customerType = (String)params.get("customerType");
         Integer loanType = (Integer)params.get("loanType");
-        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)||params.get("personInfo")==null
+        String channelId = (String)params.get("channelId");
+        if(StringUtils.isBlank(frontId)
+                ||StringUtils.isBlank(orderNo)||StringUtils.isBlank(channelId)
+                ||params.get("personInfo")==null
                 || loanType==null||StringUtils.isBlank(orderNo)
                 || StringUtils.isBlank(customerType)){
             return false;

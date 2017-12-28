@@ -1,12 +1,12 @@
 package com.jzfq.rms.third.support.send.impl;
 
-import cn.fraudmetrix.riskservice.object.Environment;
 import com.bfd.facade.MerchantServer;
-import com.br.bean.MerchantBean;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.support.send.AbstractSendHandler;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
@@ -57,7 +57,8 @@ public class BrSendHandler extends AbstractSendHandler {
         String userName = (String)getBizParams().get("userName");
         String pwd = (String)getBizParams().get("pwd");
         String apicode = (String)getBizParams().get("apicode");
-        String loginResult = ms.login(userName, pwd, apicode);
+        String loginName = (String)getBizParams().get("loginName");
+        String loginResult = ms.login(userName, pwd,loginName, apicode);
         return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,loginResult);
     }
 
@@ -67,8 +68,26 @@ public class BrSendHandler extends AbstractSendHandler {
 
     private ResponseResult getBrScore() throws Exception{
         MerchantServer ms = (MerchantServer)this.getParams().get("ms");
-        MerchantBean bean = (MerchantBean)this.getParams().get("bean");
-        String data = ms.getApiData(bean);
+        String apicode = (String)getBizParams().get("apicode");
+        String data = ms.getApiData(getJsonData(), apicode);
         return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,data);
+    }
+
+    private String getJsonData(){
+        String token = (String)getBizParams().get("token");
+        JSONObject jso = new JSONObject();
+        JSONObject reqData = new JSONObject();
+        JSONArray cell=new JSONArray();
+        jso.put("apiName", "strategyApi");
+        jso.put("tokenid", token);
+        reqData.put("id","");
+        cell.add("");
+        reqData.put("cell",cell);
+        reqData.put("name","");
+        reqData.put("strategy_id", "STR0000106");
+//			reqData.put("event", "antifraud_register");
+//			reqData.put("gid", "4a88dfca3d9fac3a_871166f4271e58fa_151642eca38");
+        jso.put("reqData", reqData);
+        return jso.toString();
     }
 }

@@ -54,9 +54,9 @@ public class Request1011Handler extends AbstractRequestHandler {
         String orderNo = (String)params.get("orderNo");
         String customerType = (String)params.get("customerType");
         Integer loanType = (Integer)params.get("loanType");
-        String channelId = (String)params.get("channelId");
+        String clientType = (String)params.get("clientType");
         if(StringUtils.isBlank(frontId)
-                ||StringUtils.isBlank(orderNo)||StringUtils.isBlank(channelId)
+                ||StringUtils.isBlank(orderNo)||StringUtils.isBlank(clientType)
                 ||params.get("personInfo")==null
                 || loanType==null||StringUtils.isBlank(orderNo)
                 || StringUtils.isBlank(customerType)){
@@ -86,7 +86,8 @@ public class Request1011Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String customerType =(String) request.getParam("customerType");
-        Integer loanType = (Integer)request.getParam("loanType");
+//        Integer loanType = (Integer)request.getParam("loanType");
+        String clientType = (String)request.getParam("clientType");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
         Integer type = Integer.parseInt(customerType);
@@ -111,7 +112,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         // 3.远程拉取
         String result = null;
         try{
-            result = brPostService.getApiData(info,type,loanType,getCommonParams(request));
+            result = brPostService.getApiData(info,getCommonParams(request));
         }catch (Exception e){
             interfaceCountCache.setFailure(isRepeatKey);
             log.error("traceId={} 保存数据失败",traceId,e);
@@ -159,7 +160,7 @@ public class Request1011Handler extends AbstractRequestHandler {
     private Map<String,Object> getCommonParams(AbstractRequest request){
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
-        commonParams.put("isRpc",this.isRpc());
+        commonParams.put("clientType", StringUtil.getStringOfObject(request.getParam("clientType")));
         return commonParams;
     }
 

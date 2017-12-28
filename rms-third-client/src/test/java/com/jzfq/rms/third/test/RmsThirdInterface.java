@@ -124,29 +124,30 @@ public class RmsThirdInterface {
 //        ResponseResult dto = rmsThirdService.send("123","1","","1009","01",map);
 //        System.out.println(dto);
 
+        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+        Map<String,Object> map = new HashMap<>();
+        map.put("frontId","111111");
+        map.put("clientType","1");
+        map.put("loanType",(byte)2);
+        Map<String ,Object> personalInfo = new HashMap<>();
+        map.put("customerType","0");
+        personalInfo.put("name","王亮");
+        personalInfo.put("certCardNo","140502198811102244");
+        personalInfo.put("mobile","13986671110");
+        map.put("personInfo",personalInfo);
+        map.put("orderNo","305677");
+        ResponseResult dto = rmsThirdService.send("123","1","","1011","01",map);
+        System.out.println(dto);
+
+
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/rms-third/inter");
 //        Map<String,Object> map = new HashMap<>();
 //        map.put("frontId","111111");
-//        map.put("loanType",(byte)2);
-//        Map<String ,Object> personalInfo = new HashMap<>();
-//        map.put("customerType","0");
-//        personalInfo.put("name","王亮");
-//        personalInfo.put("certCardNo","140502198811102244");
-//        personalInfo.put("mobile","13986671110");
-//        map.put("personInfo",personalInfo);
-//        map.put("orderNo","305677");
-//        ResponseResult dto = rmsThirdService.send("123","1","","1011","01",map);
+//        map.put("idCard","452626198112023855");
+//        map.put("customerName","曾显洋");
+//        map.put("phone","15814212227");
+//        ResponseResult dto = rmsThirdService.send("123","1","","1004","01",map);
 //        System.out.println(dto);
-
-
-        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/rms-third/inter");
-        Map<String,Object> map = new HashMap<>();
-        map.put("frontId","111111");
-        map.put("idCard","452626198112023855");
-        map.put("customerName","曾显洋");
-        map.put("phone","15814212227");
-        ResponseResult dto = rmsThirdService.send("123","1","","1004","01",map);
-        System.out.println(dto);
 
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/inter");

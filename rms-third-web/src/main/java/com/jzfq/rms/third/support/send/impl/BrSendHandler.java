@@ -1,6 +1,7 @@
 package com.jzfq.rms.third.support.send.impl;
 
 import com.bfd.facade.MerchantServer;
+import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
@@ -74,20 +75,21 @@ public class BrSendHandler extends AbstractSendHandler {
     }
 
     private String getJsonData(){
-        String token = (String)getBizParams().get("token");
-        JSONObject jso = new JSONObject();
+        String token = (String)getParams().get("token");
+        RiskPersonalInfo personInfo = (RiskPersonalInfo)getParams().get("personInfo");
+        JSONObject params = new JSONObject();
         JSONObject reqData = new JSONObject();
-        JSONArray cell=new JSONArray();
-        jso.put("apiName", "strategyApi");
-        jso.put("tokenid", token);
-        reqData.put("id","");
-        cell.add("");
-        reqData.put("cell",cell);
-        reqData.put("name","");
+        JSONArray cells=new JSONArray();
+        params.put("apiName", "strategyApi");
+        params.put("tokenid", token);
+        reqData.put("id",personInfo.getCertCardNo());
+        cells.add(personInfo.getMobile());
+        reqData.put("cell",cells);
+        reqData.put("name",personInfo.getName());
         reqData.put("strategy_id", "STR0000106");
 //			reqData.put("event", "antifraud_register");
 //			reqData.put("gid", "4a88dfca3d9fac3a_871166f4271e58fa_151642eca38");
-        jso.put("reqData", reqData);
-        return jso.toString();
+        params.put("reqData", reqData);
+        return params.toString();
     }
 }

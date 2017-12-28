@@ -16,6 +16,7 @@ import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.ISendMessageService;
+import com.jzfq.rms.third.support.cache.ICache;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,34 +152,38 @@ public class BrPostService {
         return value;
     }
 
+    private final static String BR_REDIS_KEY = "jd_br_strategy";
 
-    private String getEventId( String clientType){
+    @Autowired
+    ICache prefixCache;
+
+    private String getStrategyId( String clientType){
         StringBuilder key = new StringBuilder("dictionary_prefix_");
-//        key.append(eventRedisKey).append("_");
-//        key.append(channelId).append("-").append(financialProductId)
-//                .append("-").append(clientType).append("-").append(operationType);
-        return "";
+        key.append(BR_REDIS_KEY).append("_");
+        key.append(clientType);
+        return StringUtil.getStringOfObject(prefixCache.readConfig(key.toString()));
     }
     /**
      * 根据url 和类型 查询数据
-     * @param type
      * @return
      */
-    public String getApiData(RiskPersonalInfo info,int type,Integer loanType, Map<String,Object> commonParams) throws Exception{
+    public String getApiData(RiskPersonalInfo info,Map<String,Object> commonParams) throws Exception{
         commonParams.put("url","百融客户端调用方法getApiData");
         commonParams.put("targetId", SystemIdEnum.THIRD_BR.getCode());
         commonParams.put("appId", "");
         commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
         commonParams.put("ms",ms);
+        String clientType = (String)commonParams.get("channel");
+        commonParams.put("strategyId",getStrategyId(clientType));
         // 登陆 获取token
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR03.getCode());
         String token = getTokenid(commonParams);
         //设置token
         commonParams.put("token",token);
         Map<String ,Object> bizParams = new HashMap<>();
-        bizParams.put("channel",commonParams.get("channel"));
         bizParams.put("personInfo",commonParams.get("personInfo"));
+        bizParams.put("clientType",commonParams.get("clientType"));
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR01.getCode());
         ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.BR01.getCode(),commonParams,bizParams);
         String data = (String) response.getData();

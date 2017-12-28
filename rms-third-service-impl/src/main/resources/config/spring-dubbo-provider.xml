@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 添加 DUBBO SCHEMA -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!-- 应用名 -->
+    <dubbo:application name="${dubbo.application.name}" />
+    <!-- 连接到哪个本地注册中心 -->
+    <dubbo:registry id="rms-third-zookeeper" protocol="zookeeper" address="${zookeeper.address}" />
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="${dubbo.port}" dispatcher="all" threadpool="fixed" threads="500" accepts="1000"/>
+
+    <!-- 用rest为其它平台应用提供服务， 使用外部容器tomcat，port和contextpath必须与
+    外部容器设置一样，contextpath会包含项目名 contextpath.startwith(xx) -->
+    <dubbo:protocol name="rest" port="${dubbo.tomcat.port}" contextpath="${dubbo.rest.path}" server="servlet"/>
+    <!-- 声明需要暴露的服务接口 -->
+    <!-- 客服系统 -->
+    <dubbo:service registry="rms-third-zookeeper"
+                   timeout="20000" interface="com.jzfq.rms.third.rpc.service.IXiaoJuHuiJinService"
+                   ref="xjhjService" protocol="dubbo,rest" group="${dubbo.group}"/>
+    <bean id="xjhjService" class="com.jzfq.rms.third.rpc.service.impl.XiaoJuHuiJinServiceImpl" />
+
+</beans>

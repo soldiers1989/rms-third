@@ -61,11 +61,23 @@
         <logger name="org.apache.commons.httpclient" level="error" />
         <logger name="org.apache.zookeeper" level="error" />
 
+        <logger name="com.jzfq.rms.（*）" level="trace" >
+            <appender-ref ref="databaseAppender"/>
+        </logger>
         <root level="info">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFileInfo"/>
             <appender-ref ref="RollingFileError"/>
         </root>
     </loggers>
+    <JDBC name="databaseAppender" tableName="sys_log">
+        <ConnectionFactory class="com.jzfq.rms.（*）.common.utils.ConnectionFactory" method="getDatabaseConnection" />
+        <Column name="log_date" isEventTimestamp="true"/>
+        <Column name="log_file" pattern="%file" />
+        <Column name="log_line" pattern="%line" />
+        <Column name="log_thread" pattern="%thread" />
+        <Column name="log_level" pattern="%level" />
+        <Column name="log_message" pattern="%message"/>
+    </JDBC>
 
 </configuration>

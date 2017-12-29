@@ -86,21 +86,15 @@ public class Request1011Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String customerType =(String) request.getParam("customerType");
-//        Integer loanType = (Integer)request.getParam("loanType");
-        String clientType = (String)request.getParam("clientType");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
-        Integer type = Integer.parseInt(customerType);
         // 1.搜索mongo中是否存在
         JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile(),customerType);
         if(null != jsonObject){
             riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
             JSONObject resultJson = new JSONObject();
-            resultJson.put("score",jsonObject.getString("scorepettycashv1"));
-            if (StringUtils.isBlank(resultJson.getString("score"))){
-                resultJson.put("score",jsonObject.getString("scoreconsoffv2"));
-            }
-            resultJson.put("weight",jsonObject.getString("Rule_final_weight"));
+            resultJson.put("score",resultJson.getString("rs_Score_scorebankv2"));
+            resultJson.put("weight",resultJson.getString("Rule_final_weight"));
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
         }
         // 2.判断是否远程拉取
@@ -110,7 +104,7 @@ public class Request1011Handler extends AbstractRequestHandler {
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
         }
         // 3.远程拉取
-        ResponseResult result = brPostService.getApiData(info,getCommonParams(request));
+        ResponseResult result = null;
         try{
             result = brPostService.getApiData(info,getCommonParams(request));
         }catch (Exception e){

@@ -46,11 +46,6 @@ public class BrPostService {
     @Value("${br.rule.apicode}")
     private String ruleApiCode;
 
-    //token失效
-    private static final String RETRY_CODE = "100007";
-
-    private static final String CODE_KEY = "code";
-
     @Autowired
     ISendMessageService sendMessegeService;
 

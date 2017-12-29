@@ -55,15 +55,12 @@ public class BrSendHandler extends AbstractSendHandler {
      */
     private ResponseResult getBrLogin() throws Exception{
         MerchantServer ms = (MerchantServer)this.getParams().get("ms");
-//        String userName = (String)getBizParams().get("userName");
-//        String pwd = (String)getBizParams().get("pwd");
-//        String apicode = (String)getBizParams().get("apicode");
-//        String loginName = (String)getBizParams().get("loginName");
-        String userName = "juziStr";
-        String pwd = "juziStr";
-        String apicode = "3002020";
-        String loginResult = ms.login(userName, pwd,"LoginApi", apicode);
-        return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,loginResult);
+        String userName = (String)getBizParams().get("userName");
+        String pwd = (String)getBizParams().get("pwd");
+        String apicode = (String)getBizParams().get("apicode");
+        String loginName = (String)getBizParams().get("loginName");
+        String loginResult = ms.login(userName, pwd, loginName, apicode);
+        return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS, loginResult);
     }
 
     private ResponseResult getBrFourItemsOfBank(){
@@ -72,8 +69,7 @@ public class BrSendHandler extends AbstractSendHandler {
 
     private ResponseResult getBrScore() throws Exception{
         MerchantServer ms = (MerchantServer)this.getParams().get("ms");
-//        String apicode = (String)getBizParams().get("apicode");
-        String apicode = "3002020";
+        String apicode = (String)getBizParams().get("apicode");
         String data = ms.getApiData(getJsonData(), apicode);
         return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,data);
     }
@@ -84,15 +80,13 @@ public class BrSendHandler extends AbstractSendHandler {
         JSONObject params = new JSONObject();
         JSONObject reqData = new JSONObject();
         JSONArray cells=new JSONArray();
-        params.put("apiName", "strategyApi");
+        params.put("apiName", getParams().get("apiName"));
         params.put("tokenid", token);
         reqData.put("id",personInfo.getCertCardNo());
         cells.add(personInfo.getMobile());
         reqData.put("cell",cells);
         reqData.put("name",personInfo.getName());
         reqData.put("strategy_id", "STR0000106");
-//			reqData.put("event", "antifraud_register");
-//			reqData.put("gid", "4a88dfca3d9fac3a_871166f4271e58fa_151642eca38");
         params.put("reqData", reqData);
         return params.toString();
     }

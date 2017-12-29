@@ -110,39 +110,32 @@ public class Request1011Handler extends AbstractRequestHandler {
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
         }
         // 3.远程拉取
-        String result = null;
+        ResponseResult result = brPostService.getApiData(info,getCommonParams(request));
         try{
             result = brPostService.getApiData(info,getCommonParams(request));
         }catch (Exception e){
             interfaceCountCache.setFailure(isRepeatKey);
-            log.error("traceId={} 保存数据失败",traceId,e);
+            log.error("traceId={} 获取百融分失败",traceId,e);
             throw e;
         }
-        if (StringUtil.checkNotEmpty(result)) {
+        if (result == null && result.getCode()==ReturnCode.REQUEST_SUCCESS.code()) {
+            String brResponse = (String)result.getData();
             try{
-                riskPostDataService.saveRmsData(orderNo, result, customerType);
-                riskPostDataService.saveRmsThirdData(info, customerType, result);
+                riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
+                riskPostDataService.saveRmsThirdData(info, customerType, brResponse);
             }catch (Exception e) {
                 log.error("traceId={} 保存数据失败",traceId,e);
                 interfaceCountCache.setFailure(isRepeatKey);
             }
             JSONObject resultJson = new JSONObject();
-            JSONObject tempResult = JSONObject.parseObject(result);
-            resultJson.put("score",tempResult.getString("scorepettycashv1"));
-            if (StringUtils.isBlank(tempResult.getString("score"))){
-                resultJson.put("score",tempResult.getString("scoreconsoffv2"));
-            }
+            JSONObject tempResult = JSONObject.parseObject(brResponse);
+            resultJson.put("score",tempResult.getString("rs_Score_scorebankv2"));
             resultJson.put("weight",tempResult.getString("Rule_final_weight"));
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
         }
         interfaceCountCache.setFailure(isRepeatKey);
         return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);
     }
-
-
-
-
-
     /**
      * 获取 唯一Key
      * @return

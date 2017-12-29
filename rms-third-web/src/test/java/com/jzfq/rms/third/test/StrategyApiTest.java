@@ -72,11 +72,11 @@ public class StrategyApiTest{
 			JSONArray cell=new JSONArray();
 			jso.put("apiName", "strategyApi");
 			jso.put("tokenid", StrategyApiTest.getTokenid());
-			reqData.put("id","");			
-			cell.add("");
+			reqData.put("id","219291198812129878");
+			cell.add("17645169802");
 			reqData.put("cell",cell);
-			reqData.put("name","");
-			reqData.put("strategy_id", "STR0000106");
+			reqData.put("name","李秀峰");
+			reqData.put("strategy_id", "STR0000186");
 //			reqData.put("event", "antifraud_register");
 //			reqData.put("gid", "4a88dfca3d9fac3a_871166f4271e58fa_151642eca38");
 			jso.put("reqData", reqData);

@@ -51,7 +51,15 @@
                 <SizeBasedTriggeringPolicy size="50 MB"/>
             </Policies>
         </RollingFile>
-
+        <JDBC name="databaseAppender" tableName="sys_log">
+            <ConnectionFactory class="com.jzfq.rms.third.common.utils.ConnectionFactory" method="getDatabaseConnection" />
+            <Column name="log_date" isEventTimestamp="true"/>
+            <Column name="log_file" pattern="%file" />
+            <Column name="log_line" pattern="%line" />
+            <Column name="log_thread" pattern="%thread" />
+            <Column name="log_level" pattern="%level" />
+            <Column name="log_message" pattern="%message"/>
+        </JDBC>
     </appenders>
 
     <loggers>
@@ -70,14 +78,6 @@
             <appender-ref ref="RollingFileError"/>
         </root>
     </loggers>
-    <JDBC name="databaseAppender" tableName="sys_log">
-        <ConnectionFactory class="com.jzfq.rms.third.common.utils.ConnectionFactory" method="getDatabaseConnection" />
-        <Column name="log_date" isEventTimestamp="true"/>
-        <Column name="log_file" pattern="%file" />
-        <Column name="log_line" pattern="%line" />
-        <Column name="log_thread" pattern="%thread" />
-        <Column name="log_level" pattern="%level" />
-        <Column name="log_message" pattern="%message"/>
-    </JDBC>
+
 
 </configuration>

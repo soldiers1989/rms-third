@@ -44,10 +44,9 @@ public interface IRiskPostDataService {
      * @param name
      * @param certCardNo
      * @param mobile
-     * @param type
      * @return
      */
-    JSONObject getBairongData(String name,String certCardNo,String mobile,String type);
+    JSONObject getBairongData(String name,String certCardNo,String mobile);
 
     /**
      * 根据姓名和身份证号获取百融数据

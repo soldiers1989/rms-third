@@ -160,11 +160,10 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
      * @param name
      * @param certCardNo
      * @param mobile
-     * @param type
      * @return
      */
     @Override
-    public JSONObject getBairongData(String name, String certCardNo, String mobile, String type) {
+    public JSONObject getBairongData(String name, String certCardNo, String mobile) {
         Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_BR01.getCode());
         List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
                 .and("certCardNo").is(certCardNo).and("mobile").is(mobile)

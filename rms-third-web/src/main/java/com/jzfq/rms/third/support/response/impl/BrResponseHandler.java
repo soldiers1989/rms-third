@@ -32,8 +32,44 @@ public class BrResponseHandler extends AbstractResponseHandler {
         if(StringUtils.equals(InterfaceIdEnum.THIRD_BR01.getCode(),interfaceId)){
             return getBaiRongScore();
         }
+        if(StringUtils.equals(InterfaceIdEnum.THIRD_BR03.getCode(),interfaceId)){
+            return getLoginToken();
+        }
         return (ResponseResult)params.get("response");
     }
+
+    /**
+     *
+     */
+    private ResponseResult getLoginToken(){
+
+        ResponseResult responseResult = (ResponseResult)params.get("response");
+        ResponseResult result = new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,Constants.EMPTY_STR);
+        if(responseResult==null){
+            result.setCode(ReturnCode.ERROR_RESPONSE_NULL.code());
+            result.setMsg(ReturnCode.ERROR_RESPONSE_NULL.msg());
+            return result;
+        }
+        String responseData = StringUtil.getStringOfObject(responseResult.getData());
+        if(ReturnCode.REQUEST_SUCCESS.code() != responseResult.getCode()
+                ||StringUtils.isBlank(responseData)){
+            result.setCode(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.code());
+            result.setMsg(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.msg());
+            return result;
+        }
+        JSONObject data = JSONObject.parseObject(responseData);
+        String code = StringUtil.getStringOfObject(data.get("code"));
+        if(StringUtils.equals(code,SUCCESS_CODE)||StringUtils.equals(code,NO_RESULT_CODE)){
+            result.setData(data.getString("tokenid"));
+            return result;
+        }
+        result.setCode(ReturnCode.ERROR_THIRD_RESPONSE.code());
+        result.setMsg(StringUtil.getStringOfObject(data.get("code")));
+        result.setData(responseData);
+        return result;
+    }
+
+
     private String getString(Map<String,Object> params,String key){
         Object input = params.get(key);
         if(input==null){

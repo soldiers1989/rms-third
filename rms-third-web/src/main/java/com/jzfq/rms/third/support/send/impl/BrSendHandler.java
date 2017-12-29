@@ -1,13 +1,11 @@
 package com.jzfq.rms.third.support.send.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bfd.facade.MerchantServer;
-import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.support.send.AbstractSendHandler;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
@@ -69,24 +67,21 @@ public class BrSendHandler extends AbstractSendHandler {
 
     private ResponseResult getBrScore() throws Exception{
         MerchantServer ms = (MerchantServer)this.getParams().get("ms");
-        String apicode = (String)getBizParams().get("apicode");
+        String apicode = (String)this.getParams().get("apicode");
         String data = ms.getApiData(getJsonData(), apicode);
         return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,data);
     }
 
     private String getJsonData(){
         String token = (String)getParams().get("token");
-        RiskPersonalInfo personInfo = (RiskPersonalInfo)getBizParams().get("personInfo");
+        String strategyId = (String)getParams().get("strategyId");
+        JSONObject personInfo = (JSONObject)getBizParams().get("personInfo");
         JSONObject params = new JSONObject();
         JSONObject reqData = new JSONObject();
-        JSONArray cells=new JSONArray();
         params.put("apiName", getParams().get("apiName"));
         params.put("tokenid", token);
-        reqData.put("id",personInfo.getCertCardNo());
-        cells.add(personInfo.getMobile());
-        reqData.put("cell",cells);
-        reqData.put("name",personInfo.getName());
-        reqData.put("strategy_id", "STR0000106");
+        reqData.putAll(personInfo);
+        reqData.put("strategy_id", strategyId);
         params.put("reqData", reqData);
         return params.toString();
     }

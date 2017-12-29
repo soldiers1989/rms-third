@@ -17,6 +17,7 @@ import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.support.cache.ICache;
+import net.sf.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,15 +53,15 @@ public class BrPostService {
     private String tokenid;
     private static MerchantServer ms = new MerchantServer();
 
-    public String getTokenid(Map<String,Object> commonParams){
-        tokenid = login(commonParams);
+    public String getTokenid(){
+        tokenid = login();
         return tokenid;
     }
     /**
      * 登录百融系统 传入类型
      * @return
      */
-    private String login(Map<String,Object> params) {
+    private String login() {
         Map<String,Object> commonParams = getLoginCommonParams();
         Map<String,Object> bizParams = getInterfaceInput();
         ResponseResult response = sendMessegeService
@@ -150,11 +151,12 @@ public class BrPostService {
         commonParams.put("strategyId",getStrategyId(clientType));
         // 登陆 获取token
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR03.getCode());
-        String token = getTokenid(commonParams);
+        String token = getTokenid();
         //设置token
         commonParams.put("token",token);
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR01.getCode());
         commonParams.put("apiName", "strategyApi");
+        commonParams.put("apicode",ruleApiCode);
     }
 
     /**
@@ -165,7 +167,13 @@ public class BrPostService {
      */
     private Map<String, Object> getBizParams(RiskPersonalInfo info, Map<String, Object> commonParams){
         Map<String ,Object> bizParams = new HashMap<>();
-        bizParams.put("personInfo",info);
+        JSONObject personInfo = new JSONObject();
+        JSONArray cells=new JSONArray();
+        personInfo.put("id",info.getCertCardNo());
+        cells.add(info.getMobile());
+        personInfo.put("cell",cells);
+        personInfo.put("name",info.getName());
+        bizParams.put("personInfo",personInfo);
         bizParams.put("clientType",commonParams.get("clientType"));
         return bizParams;
     }

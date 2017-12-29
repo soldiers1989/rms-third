@@ -61,7 +61,7 @@
         <logger name="org.apache.commons.httpclient" level="error" />
         <logger name="org.apache.zookeeper" level="error" />
 
-        <logger name="com.jzfq.rms.third.（*）" level="trace" >
+        <logger name="com.jzfq.rms.third" level="trace" >
             <appender-ref ref="databaseAppender"/>
         </logger>
         <root level="info">

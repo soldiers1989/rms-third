@@ -53,12 +53,11 @@ public class Request1011Handler extends AbstractRequestHandler {
         String frontId = (String)params.get("frontId");
         String orderNo = (String)params.get("orderNo");
         String customerType = (String)params.get("customerType");
-        Integer loanType = (Integer)params.get("loanType");
         String clientType = (String)params.get("clientType");
-        if(StringUtils.isBlank(frontId)
+        Object personInfo = (Object)params.get("personInfo");
+        if(StringUtils.isBlank(frontId)||personInfo == null
                 ||StringUtils.isBlank(orderNo)||StringUtils.isBlank(clientType)
-                ||params.get("personInfo")==null
-                || loanType==null||StringUtils.isBlank(orderNo)
+                ||params.get("personInfo")==null||StringUtils.isBlank(orderNo)
                 || StringUtils.isBlank(customerType)){
             return false;
         }
@@ -89,12 +88,12 @@ public class Request1011Handler extends AbstractRequestHandler {
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
         // 1.搜索mongo中是否存在
-        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile(),customerType);
+        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile());
         if(null != jsonObject){
             riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
             JSONObject resultJson = new JSONObject();
-            resultJson.put("score",resultJson.getString("rs_Score_scorebankv2"));
-            resultJson.put("weight",resultJson.getString("Rule_final_weight"));
+            resultJson.put("score",jsonObject.getString("rs_Score_scorecust"));
+            resultJson.put("weight",jsonObject.getString("Rule_final_weight"));
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
         }
         // 2.判断是否远程拉取
@@ -112,23 +111,24 @@ public class Request1011Handler extends AbstractRequestHandler {
             log.error("traceId={} 获取百融分失败",traceId,e);
             throw e;
         }
-        if (result == null && result.getCode()==ReturnCode.REQUEST_SUCCESS.code()) {
-            String brResponse = (String)result.getData();
-            try{
-                riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
-                riskPostDataService.saveRmsThirdData(info, customerType, brResponse);
-            }catch (Exception e) {
-                log.error("traceId={} 保存数据失败",traceId,e);
-                interfaceCountCache.setFailure(isRepeatKey);
-            }
-            JSONObject resultJson = new JSONObject();
-            JSONObject tempResult = JSONObject.parseObject(brResponse);
-            resultJson.put("score",tempResult.getString("rs_Score_scorebankv2"));
-            resultJson.put("weight",tempResult.getString("Rule_final_weight"));
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
+        if (result == null || result.getCode()!=ReturnCode.REQUEST_SUCCESS.code()) {
+            interfaceCountCache.setFailure(isRepeatKey);
+            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);
         }
-        interfaceCountCache.setFailure(isRepeatKey);
-        return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);
+        String brResponse = (String)result.getData();
+        try{
+            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
+            riskPostDataService.saveRmsThirdData(info, customerType, brResponse);
+        }catch (Exception e) {
+            log.error("traceId={} 保存数据失败",traceId,e);
+            interfaceCountCache.setFailure(isRepeatKey);
+        }
+        JSONObject resultJson = new JSONObject();
+        JSONObject tempResult = JSONObject.parseObject(brResponse);
+        resultJson.put("score",tempResult.getString("rs_Score_scorecust"));
+        resultJson.put("weight",tempResult.getString("Rule_final_weight"));
+        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
+
     }
     /**
      * 获取 唯一Key

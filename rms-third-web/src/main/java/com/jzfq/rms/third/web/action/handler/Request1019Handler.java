@@ -13,6 +13,7 @@ import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IBrPostService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.ITdDataService;
+import com.jzfq.rms.third.service.impl.BrPostService;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import io.jsonwebtoken.lang.Collections;
@@ -88,11 +89,11 @@ public class Request1019Handler extends AbstractRequestHandler {
     }
 
     @Autowired
-    IBrPostService brPostService;
+    BrPostService brPostService;
 
     private static final int OFFICE_TYPE = 0;
     private static final String OFFICE_TYPE_STR = "0";
-    JSONObject getBrData(AbstractRequest request){
+    JSONObject getBrData(AbstractRequest request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String name = request.getParam("name").toString();
         String certCardNo = request.getParam("certCardNo").toString();
@@ -104,7 +105,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         result.put("brScore", "");
         result.put("brFlag",ReturnCode.REQUEST_SUCCESS.code());
         // 百融
-        BairongData bairongData = riskPostDataService.getBairongData(name, certCardNo, phone);
+        BairongData bairongData = riskPostDataService.getBairongDataByOrder(name, certCardNo, phone);
         if(bairongData!=null){
             result.put("brScore",bairongData.getData());
             return result;
@@ -121,28 +122,29 @@ public class Request1019Handler extends AbstractRequestHandler {
             result.put("brFlag",ReturnCode.ACTIVE_THIRD_RPC.code());
             return result;
         }
-        String response = null;
         // 3.远程拉取
+        ResponseResult brResponse = null;
         try{
-            response = brPostService.getApiData(info,OFFICE_TYPE,getCommonParams(request));
+            brResponse = brPostService.getApiData(info,getCommonParams(request));
         }catch (Exception e){
             interfaceCountCache.setFailure(isRepeatKey);
-            log.error("traceId={} orderNo={} 保存数据失败",traceId,orderNo,e);
             result.put("brFlag",ReturnCode.ERROR_SERVER.code());
+            log.error("traceId={} 获取百融分失败",traceId,e);
+            throw e;
+        }
+        if (brResponse == null || brResponse.getCode()!=ReturnCode.REQUEST_SUCCESS.code()) {
+            interfaceCountCache.setFailure(isRepeatKey);
+            result.put("brFlag",ReturnCode.ERROR_RESPONSE_NULL.code());
             return result;
         }
-        if (StringUtil.checkNotEmpty(response)) {
-            result.put("brScore",response);
-            try{
-                riskPostDataService.saveRmsData(orderNo, response, OFFICE_TYPE_STR);
-                riskPostDataService.saveRmsThirdData(info, OFFICE_TYPE_STR, response);
-                return result;
-            }catch (Exception e) {
-                log.error("traceId={} orderNo={} ",traceId,orderNo,e);
-                interfaceCountCache.setFailure(isRepeatKey);
-                result.put("brFlag",ReturnCode.ERROR_SERVER.code());
-                return result;
-            }
+        String brResponseData = (String)brResponse.getData();
+        try{
+            riskPostDataService.saveRmsData(orderNo, brResponseData, null);
+            riskPostDataService.saveRmsThirdData(info,null, brResponseData);
+        }catch (Exception e) {
+            log.error("traceId={} 保存数据失败",traceId,e);
+            result.put("brFlag",ReturnCode.ERROR_SERVER.code());
+            interfaceCountCache.setFailure(isRepeatKey);
         }
         interfaceCountCache.setFailure(isRepeatKey);
         result.put("brFlag",ReturnCode.ERROR_RESPONSE_NULL.code());

@@ -15,6 +15,7 @@ import com.jzfq.rms.third.constant.Constants;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
+import com.jzfq.rms.third.service.IBrPostService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.support.cache.ICache;
 import net.sf.json.JSONArray;

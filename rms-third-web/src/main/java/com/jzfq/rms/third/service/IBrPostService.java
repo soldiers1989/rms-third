@@ -1,8 +1,6 @@
 package com.jzfq.rms.third.service;
 
 import com.jzfq.rms.domain.RiskPersonalInfo;
-import com.jzfq.rms.mongo.BrPostData;
-
 import java.util.Map;
 
 /**
@@ -11,5 +9,5 @@ import java.util.Map;
  **/
 public interface IBrPostService {
 
-    String getApiData(RiskPersonalInfo info, int type, Map<String, Object> commonParams) throws Exception;
+    String getApiData(RiskPersonalInfo info, Map<String, Object> commonParams) throws Exception;
 }

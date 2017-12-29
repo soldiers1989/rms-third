@@ -53,9 +53,11 @@ public class Request1011Handler extends AbstractRequestHandler {
         String frontId = (String)params.get("frontId");
         String orderNo = (String)params.get("orderNo");
         String customerType = (String)params.get("customerType");
-        Integer loanType = (Integer)params.get("loanType");
-        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)||params.get("personInfo")==null
-                || loanType==null||StringUtils.isBlank(orderNo)
+        String clientType = (String)params.get("clientType");
+        Object personInfo = (Object)params.get("personInfo");
+        if(StringUtils.isBlank(frontId)||personInfo == null
+                ||StringUtils.isBlank(orderNo)||StringUtils.isBlank(clientType)
+                ||params.get("personInfo")==null||StringUtils.isBlank(orderNo)
                 || StringUtils.isBlank(customerType)){
             return false;
         }
@@ -83,19 +85,14 @@ public class Request1011Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String customerType =(String) request.getParam("customerType");
-        Integer loanType = (Integer)request.getParam("loanType");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
-        Integer type = Integer.parseInt(customerType);
         // 1.搜索mongo中是否存在
-        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile(),customerType);
+        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile());
         if(null != jsonObject){
             riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
             JSONObject resultJson = new JSONObject();
-            resultJson.put("score",jsonObject.getString("scorepettycashv1"));
-            if (StringUtils.isBlank(resultJson.getString("score"))){
-                resultJson.put("score",jsonObject.getString("scoreconsoffv2"));
-            }
+            resultJson.put("score",jsonObject.getString("rs_Score_scorecust"));
             resultJson.put("weight",jsonObject.getString("Rule_final_weight"));
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
         }
@@ -106,39 +103,33 @@ public class Request1011Handler extends AbstractRequestHandler {
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
         }
         // 3.远程拉取
-        String result = null;
+        ResponseResult result = null;
         try{
-            result = brPostService.getApiData(info,type,loanType,getCommonParams(request));
+            result = brPostService.getApiData(info,getCommonParams(request));
         }catch (Exception e){
             interfaceCountCache.setFailure(isRepeatKey);
-            log.error("traceId={} 保存数据失败",traceId,e);
+            log.error("traceId={} 获取百融分失败",traceId,e);
             throw e;
         }
-        if (StringUtil.checkNotEmpty(result)) {
-            try{
-                riskPostDataService.saveRmsData(orderNo, result, customerType);
-                riskPostDataService.saveRmsThirdData(info, customerType, result);
-            }catch (Exception e) {
-                log.error("traceId={} 保存数据失败",traceId,e);
-                interfaceCountCache.setFailure(isRepeatKey);
-            }
-            JSONObject resultJson = new JSONObject();
-            JSONObject tempResult = JSONObject.parseObject(result);
-            resultJson.put("score",tempResult.getString("scorepettycashv1"));
-            if (StringUtils.isBlank(tempResult.getString("score"))){
-                resultJson.put("score",tempResult.getString("scoreconsoffv2"));
-            }
-            resultJson.put("weight",tempResult.getString("Rule_final_weight"));
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
+        if (result == null || result.getCode()!=ReturnCode.REQUEST_SUCCESS.code()) {
+            interfaceCountCache.setFailure(isRepeatKey);
+            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);
         }
-        interfaceCountCache.setFailure(isRepeatKey);
-        return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,result);
+        String brResponse = (String)result.getData();
+        try{
+            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
+            riskPostDataService.saveRmsThirdData(info, customerType, brResponse);
+        }catch (Exception e) {
+            log.error("traceId={} 保存数据失败",traceId,e);
+            interfaceCountCache.setFailure(isRepeatKey);
+        }
+        JSONObject resultJson = new JSONObject();
+        JSONObject tempResult = JSONObject.parseObject(brResponse);
+        resultJson.put("score",tempResult.getString("rs_Score_scorecust"));
+        resultJson.put("weight",tempResult.getString("Rule_final_weight"));
+        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
+
     }
-
-
-
-
-
     /**
      * 获取 唯一Key
      * @return
@@ -156,7 +147,7 @@ public class Request1011Handler extends AbstractRequestHandler {
     private Map<String,Object> getCommonParams(AbstractRequest request){
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
-        commonParams.put("isRpc",this.isRpc());
+        commonParams.put("clientType", StringUtil.getStringOfObject(request.getParam("clientType")));
         return commonParams;
     }
 

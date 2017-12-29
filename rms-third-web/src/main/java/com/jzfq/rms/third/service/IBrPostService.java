@@ -1,6 +1,7 @@
 package com.jzfq.rms.third.service;
 
-import com.jzfq.rms.mongo.BrPostData;
+import com.jzfq.rms.domain.RiskPersonalInfo;
+import java.util.Map;
 
 /**
  * @author 大连桔子分期科技有限公司
@@ -8,5 +9,5 @@ import com.jzfq.rms.mongo.BrPostData;
  **/
 public interface IBrPostService {
 
-    BrPostData getBrData();
+    String getApiData(RiskPersonalInfo info, Map<String, Object> commonParams) throws Exception;
 }

@@ -12,6 +12,7 @@ import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.mongo.TongDunData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.ITdDao;
 import com.jzfq.rms.third.service.IRmsService;
@@ -323,7 +324,7 @@ public class TdDataServiceImpl implements ITdDataService {
         commonParams.put("targetId", SystemIdEnum.THIRD_TD.getCode());
         commonParams.put("appId", "");
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_TD01.getCode());
-        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 
         commonParams.put("taskId", taskId);
@@ -347,7 +348,7 @@ public class TdDataServiceImpl implements ITdDataService {
         commonParams.put("targetId", SystemIdEnum.THIRD_TD.getCode());
         commonParams.put("appId", "");
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_TD02.getCode());
-        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         commonParams.put("traceId", traceId);
 
         commonParams.put("partner_code", partner_code);
@@ -382,7 +383,7 @@ public class TdDataServiceImpl implements ITdDataService {
         commonParams.put("targetId", SystemIdEnum.THIRD_TD.getCode());
         commonParams.put("appId", "");
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_TD03.getCode());
-        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 
         ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.TD02.getCode(),commonParams,bizParams);
@@ -391,5 +392,129 @@ public class TdDataServiceImpl implements ITdDataService {
 
     private String getRequestUrl(String appName){
         return new StringBuilder().append(bodyGuardApiUrl).append("?partner_code=").append(partner_code).append("&partner_key=").append(partner_key).append("&app_name=").append(appName).toString();
+    }
+
+
+    /**
+     * 获取同盾全部数据
+     * @param commonParams
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public JSONObject queryTdAllDatas(String orderNo, Map<String, Object> commonParams)  throws Exception  {
+        RiskPersonalInfo info = (RiskPersonalInfo)commonParams.get("personalInfo");
+        String traceId = TraceIDThreadLocal.getTraceID();
+        String taskId = (String)commonParams.get("taskId");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("partner_code", partner_code);       // 合作方标识
+        String channelId = (String)commonParams.get("channelId");
+        String financialProductId = (String)commonParams.get("financialProductId");
+        String operationType = (String)commonParams.get("operationType");
+        String clientType = (String)commonParams.get("clientType");
+        String eventId = getEventId(channelId, financialProductId, operationType, clientType);
+        String sceretKey = getSecretKey(channelId, clientType);
+        params.put("secret_key", sceretKey); // app密钥
+        params.put("event_id", eventId); // 策略集上的事件标识
+        //写个人信息的查询
+        StringBuilder builder = new StringBuilder();
+        builder.append("param [");
+        if (info.getName() != null){
+            params.put("account_name", info.getName());                     //  姓名
+            builder.append(" account_name = " + info.getName() + " ");
+        }
+        if (info.getCertCardNo() != null){
+            params.put("id_number", info.getCertCardNo());                  //  身份证号
+            builder.append(" id_number = " + info.getCertCardNo() + " ");
+        }
+        if (info.getMobile() != null){
+            params.put("account_mobile", info.getMobile());                  //  手机号
+            builder.append(" account_mobile = " + info.getMobile() + " ");
+        }
+        if (info.getBankNo() != null){
+            params.put("card_number", info.getBankNo());                    //  银行卡号
+            builder.append(" card_number = " + info.getBankNo() + " ");
+        }
+        if (info.getEmail() != null){
+            params.put("account_email", info.getEmail());                   //  邮箱
+            builder.append(" account_email = " + info.getEmail() + " ");
+        }
+        if (info.getQq() != null){
+            params.put("qq_number", info.getQq());                          //  qq
+            builder.append(" qq_number = " + info.getQq() + " ");
+        }
+        builder.append(" ]");
+        log.info("apiUrl = {} 执行参数列表：{} " ,apiUrl,builder.toString());
+        //公共参数
+        commonParams.put("url",apiUrl);
+        commonParams.put("targetId", SystemIdEnum.THIRD_TD.getCode());
+        commonParams.put("appId", "");
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_TD01.getCode());
+        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+        commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+
+        commonParams.put("taskId", taskId);
+
+        log.info("traceId={} 参数列表：{} " ,traceId,  builder.toString());
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.TD01.getCode(),commonParams,params);
+        JSONObject result = new JSONObject();
+        result.put("tdScore","");
+        result.put("tdDetail","");
+        result.put("tdFlag","200");
+        if (response == null){
+            log.info("traceId={} 同盾拉取无效：false ",commonParams.get("traceId"));     //失败
+            result.put("tdFlag",ReturnCode.ERROR_RESPONSE_NULL.code());
+            return result;
+        }
+        if(response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+            result.put("tdFlag",response.getCode());
+            return result;
+        }
+        FraudApiResponse apiResp = (FraudApiResponse)response.getData();
+        result.put("tdScore",response.getData());
+        result.put("tdDetail",getTdDetail(orderNo, apiResp, commonParams));
+        getTdDetail(orderNo, apiResp, commonParams);
+        return result;
+    }
+
+    private RuleDetailResult getTdDetail(String orderNo, FraudApiResponse apiResp, Map<String, Object> commonParams){
+        String traceId = TraceIDThreadLocal.getTraceID();
+        RiskPersonalInfo info = (RiskPersonalInfo)commonParams.get("personalInfo");
+        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+        TongDunData tongDunData = new TongDunData();
+        tongDunData.setOrderNo(orderNo);
+        tongDunData.setCreateTime(new Date());
+        tongDunData.setApiResp(apiResp);
+        //同盾信息写入mongo
+        if(StringUtils.isNotBlank(taskId)){
+            TdHitRuleData tdHitRuleData = new TdHitRuleData(null,
+                    "同盾规则命中信息", new Date());
+            tdHitRuleData.setTaskId(taskId);
+            if(apiResp.getDevice_info()!=null && apiResp.getDevice_info().get("deviceId")!=null){
+                tdHitRuleData.setData(apiResp.getDevice_info().get("deviceId").toString());
+            }
+            log.info("traceId= {} 同盾拉取结果：{} --同盾分= {} 拉取结果:{}"
+                    ,traceId,apiResp.getSuccess(),apiResp.getFinal_score(),apiResp.toString());     //是否成功
+            try{
+                BeanUtils.copyProperties(tdHitRuleData, apiResp);
+            }catch (Exception e){
+                log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
+            }
+            if (tdHitRuleData==null){
+                log.info("保存数据 订单号为{}获取同盾是返回的结果为null",orderNo);
+                return null;
+            }
+            mongoTemplate.insert(tdHitRuleData);
+        }
+        String sequenceId = apiResp.getSeq_id();
+        if (StringUtils.isBlank(sequenceId)){
+            log.info("保存数据 订单号为{}获取同盾是返回的结果seq_id为空",orderNo);
+            return null;
+        }
+        //通过seqid 查询 同盾规则详情，保存到mongo
+        RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId);
+        tongDunData.setRuleDetailResult(ruleDetailResult);
+        mongoTemplate.insert(tongDunData);
+        return ruleDetailResult;
     }
 }

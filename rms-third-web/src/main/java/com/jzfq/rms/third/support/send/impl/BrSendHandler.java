@@ -1,8 +1,7 @@
 package com.jzfq.rms.third.support.send.impl;
 
-import cn.fraudmetrix.riskservice.object.Environment;
+import com.alibaba.fastjson.JSONObject;
 import com.bfd.facade.MerchantServer;
-import com.br.bean.MerchantBean;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
@@ -57,8 +56,9 @@ public class BrSendHandler extends AbstractSendHandler {
         String userName = (String)getBizParams().get("userName");
         String pwd = (String)getBizParams().get("pwd");
         String apicode = (String)getBizParams().get("apicode");
-        String loginResult = ms.login(userName, pwd, apicode);
-        return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,loginResult);
+        String loginName = (String)getBizParams().get("loginName");
+        String loginResult = ms.login(userName, pwd, loginName, apicode);
+        return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS, loginResult);
     }
 
     private ResponseResult getBrFourItemsOfBank(){
@@ -67,8 +67,22 @@ public class BrSendHandler extends AbstractSendHandler {
 
     private ResponseResult getBrScore() throws Exception{
         MerchantServer ms = (MerchantServer)this.getParams().get("ms");
-        MerchantBean bean = (MerchantBean)this.getParams().get("bean");
-        String data = ms.getApiData(bean);
+        String apicode = (String)this.getParams().get("apicode");
+        String data = ms.getApiData(getJsonData(), apicode);
         return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,data);
+    }
+
+    private String getJsonData(){
+        String token = (String)getParams().get("token");
+        String strategyId = (String)getParams().get("strategyId");
+        JSONObject personInfo = (JSONObject)getBizParams().get("personInfo");
+        JSONObject params = new JSONObject();
+        JSONObject reqData = new JSONObject();
+        params.put("apiName", getParams().get("apiName"));
+        params.put("tokenid", token);
+        reqData.putAll(personInfo);
+        reqData.put("strategy_id", strategyId);
+        params.put("reqData", reqData);
+        return params.toString();
     }
 }

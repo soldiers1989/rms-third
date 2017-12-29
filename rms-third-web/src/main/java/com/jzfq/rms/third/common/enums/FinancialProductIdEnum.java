@@ -4,24 +4,19 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author 大连桔子分期科技有限公司
- * @date 2017/10/22 14:29.
+ * @date 2017/12/21 18:24.
  **/
-public enum SystemIdEnum {
-    RMS_PULL("33","rms-pull"),
-    THIRD_GPJ("17","公平价"),
-    THIRD_JIEAN("18","捷安"),
-    THIRD_TD("13","同盾"),
-    THIRD_JXL("15","聚信立"),
-    THIRD_PY("35","鹏元"),
-    THIRD_BR("14","百融"),
-    THIRD_RSLL("16","融360"),
-    RMS_THIRD("23","rms-third"),
-    JZFQ_XJHJ("36","小桔汇金");
+public enum FinancialProductIdEnum {
+
+    XYQB("1","信用钱包"),
+    XJD("2","现金贷"),
+    DBSH("3","单笔商户"),
+    XEXJD_SLP("4","小额现金（十露盘）");
 
     private String code;
     private String name;
 
-    SystemIdEnum(String code, String name){
+    FinancialProductIdEnum(String code, String name){
         this.code = code;
         this.name = name;
     }
@@ -43,7 +38,7 @@ public enum SystemIdEnum {
     }
 
     public static String getName(String code){
-        for(SystemIdEnum c: SystemIdEnum.values()){
+        for(FinancialProductIdEnum c: FinancialProductIdEnum.values()){
             if(StringUtils.equals(code,c.getCode())){
                 return c.getName();
             }

@@ -48,10 +48,15 @@ public class Request1019Handler extends AbstractRequestHandler {
         String certCardNo = (String)params.get("certCardNo");
         String phone = (String)params.get("phone");
         String orderNo = (String)params.get("orderNo");
+        String serialNo = (String)params.get("serialNo");
         String channel = (String)params.get("channel");
+        boolean juzi = (boolean)params.get("juzi");
         if(StringUtils.isBlank(name)||StringUtils.isBlank(certCardNo)
-                ||StringUtils.isBlank(phone)||StringUtils.isBlank(orderNo)
-                ||StringUtils.isBlank(channel)||params.get("juzi")==null){
+                ||StringUtils.isBlank(phone)
+                ||StringUtils.isBlank(channel)||StringUtils.isBlank(serialNo)
+                ||params.get("juzi")==null
+                ||(juzi&&StringUtils.isBlank(orderNo))
+                ){
             return false;
         }
         return true;
@@ -98,7 +103,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         String name = request.getParam("name").toString();
         String certCardNo = request.getParam("certCardNo").toString();
         String phone = request.getParam("phone").toString();
-        String orderNo = request.getParam("orderNo").toString();
+        String serialNo = request.getParam("serialNo").toString();
         String channel = request.getParam("channel").toString();
         log.info("traceId={} 渠道={} 小桔汇金接口 1019 百融 开始", TraceIDThreadLocal.getTraceID(), channel);
         JSONObject result = new JSONObject();
@@ -129,7 +134,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         }catch (Exception e){
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("brFlag",ReturnCode.ERROR_SERVER.code());
-            log.error("traceId={} 获取百融分失败",traceId,e);
+            log.error("traceId={} serialNo={} 获取百融分失败",traceId,serialNo,e);
             throw e;
         }
         if (brResponse == null || brResponse.getCode()!=ReturnCode.REQUEST_SUCCESS.code()) {
@@ -139,7 +144,6 @@ public class Request1019Handler extends AbstractRequestHandler {
         }
         String brResponseData = (String)brResponse.getData();
         try{
-            riskPostDataService.saveRmsData(orderNo, brResponseData, null);
             riskPostDataService.saveRmsThirdData(info,null, brResponseData);
         }catch (Exception e) {
             log.error("traceId={} 保存数据失败",traceId,e);
@@ -167,7 +171,7 @@ public class Request1019Handler extends AbstractRequestHandler {
 
 
     JSONObject getTdData(AbstractRequest request) throws Exception{
-        String orderNo = request.getParam("orderNo").toString();
+        String serialNo = request.getParam("serialNo").toString();
         boolean juzi = (boolean)request.getParam("juzi");
         String traceId = TraceIDThreadLocal.getTraceID();
         JSONObject result = new JSONObject();
@@ -176,6 +180,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         result.put("tdFlag",ReturnCode.REQUEST_SUCCESS.code());
         // 同盾
         if(juzi){
+            String orderNo = request.getParam("orderNo").toString();
             List<TongDunData> tongDunData = tdDataService.getTongDongData(orderNo);
             if(Collections.isEmpty(tongDunData)){
                 result.put("tdScore",tongDunData.get(0).getApiResp());
@@ -183,45 +188,52 @@ public class Request1019Handler extends AbstractRequestHandler {
             }else{
                 result.put("tdFlag",ReturnCode.ERROR_RESPONSE_NULL.code());
             }
-            log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
             return result;
         }
-        String isRepeatKey = getKeyByOrderNo(orderNo);
+        List<TongDunData> tongDunData = tdDataService.getTongDongDataBySerialNo(serialNo);
+        if(Collections.isEmpty(tongDunData)){
+            result.put("tdScore",tongDunData.get(0).getApiResp());
+            result.put("tdDetail",tongDunData.get(0).getRuleDetailResult());
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
+            return result;
+        }
+        String isRepeatKey = getKeyBySerialNo(serialNo);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
             result.put("tdFlag",ReturnCode.ACTIVE_THIRD_RPC.code());
-            log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
             return result;
         }
         Map<String,Object> commonParams = getCommonParams(request);
         JSONObject response =null;
         try {
-            response = tdDataService.queryTdAllDatas(orderNo, commonParams);
+            response = tdDataService.queryTdAllDatas(serialNo, commonParams);
         }catch (Exception e){
             log.info("traceId={} 同盾拉取无效：false ",commonParams.get("traceId"));     //失败
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("tdFlag",ReturnCode.ERROR_SERVER.code());
-            log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
             return result;
         }
         if(response == null){
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("tdFlag",ReturnCode.ERROR_RESPONSE_NULL.code());
-            log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
             return result;
         }
         if(response.getInteger("tdFlag") != ReturnCode.REQUEST_SUCCESS.code()){
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("tdFlag",ReturnCode.ERROR_THIRD_RESPONSE.code());
-            log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
             return result;
         }
         result.putAll(response);
-        log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+        log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
         return response;
     }
-    private String getKeyByOrderNo(String orderNo){
-        return "rms_third_1019_td_"+orderNo;
+    private String getKeyBySerialNo(String serialNo){
+        return "rms_third_1019_td_"+serialNo;
     }
     private Map<String,Object> getCommonParams(AbstractRequest request){
         String channelId = ChannelIdEnum.JZFQ.getCode();

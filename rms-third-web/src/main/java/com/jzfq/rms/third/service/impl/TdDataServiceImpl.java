@@ -181,6 +181,19 @@ public class TdDataServiceImpl implements ITdDataService {
     }
 
     /**
+     * 根据流水号 获取同盾数据
+     *
+     * @param serialNo
+     * @return
+     */
+    @Override
+    public List<TongDunData> getTongDongDataBySerialNo(String serialNo) {
+        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("serialNo").is(serialNo))
+                , TongDunData.class);
+        return datas;
+    }
+
+    /**
      * 根据订单号 获取同盾数据
      *
      * @param name
@@ -402,7 +415,7 @@ public class TdDataServiceImpl implements ITdDataService {
      * @throws Exception
      */
     @Override
-    public JSONObject queryTdAllDatas(String orderNo, Map<String, Object> commonParams)  throws Exception  {
+    public JSONObject queryTdAllDatas(String serialNo, Map<String, Object> commonParams)  throws Exception  {
         RiskPersonalInfo info = (RiskPersonalInfo)commonParams.get("personalInfo");
         String traceId = TraceIDThreadLocal.getTraceID();
         String taskId = (String)commonParams.get("taskId");
@@ -472,14 +485,12 @@ public class TdDataServiceImpl implements ITdDataService {
         }
         FraudApiResponse apiResp = (FraudApiResponse)response.getData();
         result.put("tdScore",response.getData());
-        result.put("tdDetail",getTdDetail(orderNo, apiResp, commonParams));
-        getTdDetail(orderNo, apiResp, commonParams);
+        result.put("tdDetail",getTdDetailBySerialNo(serialNo, apiResp));
         return result;
     }
 
     private RuleDetailResult getTdDetail(String orderNo, FraudApiResponse apiResp, Map<String, Object> commonParams){
         String traceId = TraceIDThreadLocal.getTraceID();
-        RiskPersonalInfo info = (RiskPersonalInfo)commonParams.get("personalInfo");
         String taskId = rmsService.queryByOrderNo(traceId, orderNo);
         TongDunData tongDunData = new TongDunData();
         tongDunData.setOrderNo(orderNo);
@@ -516,5 +527,62 @@ public class TdDataServiceImpl implements ITdDataService {
         tongDunData.setRuleDetailResult(ruleDetailResult);
         mongoTemplate.insert(tongDunData);
         return ruleDetailResult;
+    }
+
+    private RuleDetailResult getTdDetailBySerialNo(String serialNo, FraudApiResponse apiResp){
+        String traceId = TraceIDThreadLocal.getTraceID();
+        TongDunData tongDunData = new TongDunData();
+        tongDunData.setSerialNo(serialNo);
+        tongDunData.setCreateTime(new Date());
+        tongDunData.setApiResp(apiResp);
+        String sequenceId = apiResp.getSeq_id();
+        if (StringUtils.isBlank(sequenceId)){
+            log.info("保存数据 流水号为{}获取同盾是返回的结果seq_id为空",serialNo);
+            return null;
+        }
+        //通过seqid 查询 同盾规则详情，保存到mongo
+        RuleDetailResult ruleDetailResult = getTdRuleData(sequenceId,  traceId);
+        tongDunData.setRuleDetailResult(ruleDetailResult);
+        mongoTemplate.insert(tongDunData);
+        return ruleDetailResult;
+    }
+
+
+    private RuleDetailResult getTdRuleData(String sequenceId,String traceId){
+        Environment env = null;
+        // Environment.PRODUCT表示调用生产环境, 测试环境请修改为Environment.SANDBOX
+        if (Objects.equals(urlEnv, "prd")){
+            env = Environment.PRODUCT;
+        }else {
+            env = Environment.SANDBOX;
+        }
+        Map<String,Object> commonParams = new HashMap<>();
+        commonParams.put("url",env.getRuleDetailUrl());
+        commonParams.put("targetId", SystemIdEnum.THIRD_TD.getCode());
+        commonParams.put("appId", "");
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_TD02.getCode());
+        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+        commonParams.put("traceId", traceId);
+
+        commonParams.put("partner_code", partner_code);
+        commonParams.put("partner_key", partner_key);
+        commonParams.put("env", env);
+
+        Map<String,Object> bizParams = new HashMap<>();
+        bizParams.put("sequenceId",sequenceId);
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.TD02.getCode(),commonParams,bizParams);
+        log.info("traceId={} 拉取同盾规则",traceId );         //是否成功
+        if (response == null||response.getData()==null||response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()) {
+            log.info("traceId={} 拉取同盾规则命中详情结束：返回为空", traceId);
+            return null;
+        }
+        RuleDetailResult result = (RuleDetailResult)response.getData();
+        if (result.getSuccess() != true){
+            log.info("traceId={} 拉取同盾规则失败：result={}", traceId , JSONObject.toJSON(result));
+            return null;//是否成功
+        }
+        String json= JSON.toJSONString(result);
+        log.info("traceId={} 拉取同盾规则命中详情结束", traceId);
+        return result;
     }
 }

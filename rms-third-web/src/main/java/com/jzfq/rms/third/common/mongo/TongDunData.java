@@ -21,6 +21,9 @@ public class TongDunData {
     protected ObjectId id;
 
     @Indexed
+    private String serialNo;
+
+    @Indexed
     private String orderNo;
 
     private String name;
@@ -28,6 +31,14 @@ public class TongDunData {
     private String mobile;
 
     private String certCardNo;
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
+    }
 
     public String getName() {
         return name;

@@ -37,6 +37,14 @@ public interface ITdDataService {
      */
      List<TongDunData> getTongDongData(String orderNo);
 
+
+    /**
+     * 根据流水号 获取同盾数据
+     * @param serialNo
+     * @return
+     */
+    List<TongDunData> getTongDongDataBySerialNo(String serialNo);
+
     /**
      * 根据订单号 获取同盾数据
      * @param name
@@ -58,5 +66,5 @@ public interface ITdDataService {
      * @return
      * @throws Exception
      */
-    JSONObject queryTdAllDatas(String orderNo, Map<String, Object> commonParams)  throws Exception;
+    JSONObject queryTdAllDatas(String serialNo, Map<String, Object> commonParams)  throws Exception;
 }

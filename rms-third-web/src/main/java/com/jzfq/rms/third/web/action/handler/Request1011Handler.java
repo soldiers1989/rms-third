@@ -50,15 +50,18 @@ public class Request1011Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+
         String frontId = (String)params.get("frontId");
         String orderNo = (String)params.get("orderNo");
-        String customerType = (String)params.get("customerType");
+        String channelId = (String)params.get("channelId");
+        String financialProductId = (String)params.get("financialProductId");
+        String operationType = (String)params.get("operationType");
         String clientType = (String)params.get("clientType");
-        Object personInfo = (Object)params.get("personInfo");
-        if(StringUtils.isBlank(frontId)||personInfo == null
-                ||StringUtils.isBlank(orderNo)||StringUtils.isBlank(clientType)
-                ||params.get("personInfo")==null||StringUtils.isBlank(orderNo)
-                || StringUtils.isBlank(customerType)){
+        String customerType = (String)params.get("customerType");
+        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)
+                ||StringUtils.isBlank(channelId)||StringUtils.isBlank(financialProductId)
+                ||StringUtils.isBlank(operationType)||StringUtils.isBlank(clientType)
+                ||params.get("personInfo")==null|| StringUtils.isBlank(customerType)){
             return false;
         }
         return true;
@@ -145,9 +148,20 @@ public class Request1011Handler extends AbstractRequestHandler {
     }
 
     private Map<String,Object> getCommonParams(AbstractRequest request){
+        String channelId = (String)request.getParam("channelId");
+        String financialProductId = (String)request.getParam("financialProductId");
+        String operationType = (String)request.getParam("operationType");
+        String clientType = (String)request.getParam("clientType");
+        RiskPersonalInfo personInfo = JSONObject.parseObject(request.getParam("personInfo").toString(),
+                RiskPersonalInfo.class);
         Map<String,Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
-        commonParams.put("clientType", StringUtil.getStringOfObject(request.getParam("clientType")));
+        commonParams.put("traceId",TraceIDThreadLocal.getTraceID());
+        commonParams.put("personalInfo",personInfo);
+        commonParams.put("channelId",channelId);
+        commonParams.put("financialProductId",financialProductId);
+        commonParams.put("operationType",operationType);
+        commonParams.put("clientType",clientType);
         return commonParams;
     }
 

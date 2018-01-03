@@ -1,5 +1,6 @@
 package com.jzfq.rms.third.web.action.handler;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
@@ -44,16 +45,35 @@ public class Request1019Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        // 公共必填参数
+        String traceId = TraceIDThreadLocal.getTraceID();
         String name = (String)params.get("name");
         String certCardNo = (String)params.get("certCardNo");
         String phone = (String)params.get("phone");
         String orderNo = (String)params.get("orderNo");
-        String channel = (String)params.get("channel");
-        if(StringUtils.isBlank(name)||StringUtils.isBlank(certCardNo)
-                ||StringUtils.isBlank(phone)||StringUtils.isBlank(orderNo)
-                ||StringUtils.isBlank(channel)||params.get("juzi")==null){
+        String serialNo = (String)params.get("serialNo");
+        JSONArray apiBox = (JSONArray)params.get("apiBox");
+        boolean juzi = (boolean)params.get("juzi");
+        if(StringUtils.isBlank(traceId)||StringUtils.isBlank(name)
+                ||StringUtils.isBlank(certCardNo)
+                ||StringUtils.isBlank(phone) ||apiBox==null
+                ||StringUtils.isBlank(serialNo)
+                ||params.get("juzi")==null
+                ||(juzi&&StringUtils.isBlank(orderNo))){
             return false;
         }
+        // 接口参数
+        String channelId = (String)params.get("channelId");
+        String financialProductId = (String)params.get("financialProductId");
+        String operationType = (String)params.get("operationType");
+        String clientType = (String)params.get("clientType");
+        if(StringUtils.isBlank(channelId)||StringUtils.isBlank(financialProductId)
+                ||StringUtils.isBlank(operationType) ||StringUtils.isBlank(clientType)){
+            return false;
+        }
+//        if(!apiBox.contains("bairong")&&!apiBox.contains("tongdun")){
+//            return false;
+//        }
         return true;
     }
     @Autowired
@@ -66,6 +86,10 @@ public class Request1019Handler extends AbstractRequestHandler {
      * 超时时间 三天
      */
     private static final Long time = 3*24*60*60L;
+
+    private static final String STR_BR_CODE = "1";
+
+    private static final String STR_TD_CODE = "2";
     /**
      * 业务处理，交由子类实现。
      *
@@ -75,32 +99,37 @@ public class Request1019Handler extends AbstractRequestHandler {
     @Override
     protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
         log.info("traceId={} 小桔汇金接口 1019 开始", TraceIDThreadLocal.getTraceID());
-        JSONObject brData = getBrData(request);
-        JSONObject tdData = getTdData(request);
+        JSONArray apiBox = (JSONArray)request.getParam("apiBox");
         JSONObject result = new JSONObject();
-        result.putAll(brData);
-        result.putAll(tdData);
-        if(StringUtils.equals(brData.getString("brFlag"),"200")
-                ||StringUtils.equals(brData.getString("tdFlag"),"200")){
-            log.info("traceId={} 小桔汇金接口 1019 结束", TraceIDThreadLocal.getTraceID());
-            return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS, result);
+        // 百融
+        if(apiBox.contains(STR_BR_CODE)){
+            JSONObject brData = getBrData(request);
+            result.putAll(brData);
         }
-        return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ERROR_RESPONSE_NULL, request);
+        // 同盾
+        if(apiBox.contains(STR_TD_CODE)){
+            JSONObject tdData = getTdData(request);
+            result.putAll(tdData);
+        }
+        return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS, result);
     }
 
     @Autowired
     BrPostService brPostService;
 
-    private static final int OFFICE_TYPE = 0;
-    private static final String OFFICE_TYPE_STR = "0";
+    /**
+     * 获取百融数据
+     * @param request
+     * @return
+     * @throws Exception
+     */
     JSONObject getBrData(AbstractRequest request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String name = request.getParam("name").toString();
         String certCardNo = request.getParam("certCardNo").toString();
         String phone = request.getParam("phone").toString();
-        String orderNo = request.getParam("orderNo").toString();
-        String channel = request.getParam("channel").toString();
-        log.info("traceId={} 渠道={} 小桔汇金接口 1019 百融 开始", TraceIDThreadLocal.getTraceID(), channel);
+        String serialNo = request.getParam("serialNo").toString();
+        log.info("traceId={} serialNo={} 小桔汇金接口 1019 百融 开始", TraceIDThreadLocal.getTraceID(), serialNo);
         JSONObject result = new JSONObject();
         result.put("brScore", "");
         result.put("brFlag",ReturnCode.REQUEST_SUCCESS.code());
@@ -110,7 +139,6 @@ public class Request1019Handler extends AbstractRequestHandler {
             result.put("brScore",bairongData.getData());
             return result;
         }
-
         RiskPersonalInfo info = new RiskPersonalInfo();
         info.setCertCardNo(certCardNo);
         info.setName(name);
@@ -126,21 +154,28 @@ public class Request1019Handler extends AbstractRequestHandler {
         ResponseResult brResponse = null;
         try{
             brResponse = brPostService.getApiData(info,getCommonParams(request));
+
         }catch (Exception e){
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("brFlag",ReturnCode.ERROR_SERVER.code());
-            log.error("traceId={} 获取百融分失败",traceId,e);
+            log.error("traceId={} serialNo={} 获取百融分失败",traceId,serialNo,e);
             throw e;
         }
-        if (brResponse == null || brResponse.getCode()!=ReturnCode.REQUEST_SUCCESS.code()) {
+        if (brResponse == null) {
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("brFlag",ReturnCode.ERROR_RESPONSE_NULL.code());
             return result;
         }
+        if (brResponse.getCode()!=ReturnCode.REQUEST_SUCCESS.code()) {
+            interfaceCountCache.setFailure(isRepeatKey);
+            result.put("brFlag",brResponse.getCode());
+            return result;
+        }
         String brResponseData = (String)brResponse.getData();
         try{
-            riskPostDataService.saveRmsData(orderNo, brResponseData, null);
             riskPostDataService.saveRmsThirdData(info,null, brResponseData);
+            result.put("brScore",brResponse.getData());
+            return result;
         }catch (Exception e) {
             log.error("traceId={} 保存数据失败",traceId,e);
             result.put("brFlag",ReturnCode.ERROR_SERVER.code());
@@ -165,9 +200,14 @@ public class Request1019Handler extends AbstractRequestHandler {
         return sb.toString();
     }
 
-
+    /**
+     * 获取同盾数据
+     * @param request
+     * @return
+     * @throws Exception
+     */
     JSONObject getTdData(AbstractRequest request) throws Exception{
-        String orderNo = request.getParam("orderNo").toString();
+        String serialNo = request.getParam("serialNo").toString();
         boolean juzi = (boolean)request.getParam("juzi");
         String traceId = TraceIDThreadLocal.getTraceID();
         JSONObject result = new JSONObject();
@@ -176,6 +216,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         result.put("tdFlag",ReturnCode.REQUEST_SUCCESS.code());
         // 同盾
         if(juzi){
+            String orderNo = request.getParam("orderNo").toString();
             List<TongDunData> tongDunData = tdDataService.getTongDongData(orderNo);
             if(Collections.isEmpty(tongDunData)){
                 result.put("tdScore",tongDunData.get(0).getApiResp());
@@ -183,51 +224,58 @@ public class Request1019Handler extends AbstractRequestHandler {
             }else{
                 result.put("tdFlag",ReturnCode.ERROR_RESPONSE_NULL.code());
             }
-            log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
             return result;
         }
-        String isRepeatKey = getKeyByOrderNo(orderNo);
+        List<TongDunData> tongDunData = tdDataService.getTongDongDataBySerialNo(serialNo);
+        if(!Collections.isEmpty(tongDunData)){
+            result.put("tdScore",tongDunData.get(0).getApiResp());
+            result.put("tdDetail",tongDunData.get(0).getRuleDetailResult());
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
+            return result;
+        }
+        String isRepeatKey = getKeyBySerialNo(serialNo);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
             result.put("tdFlag",ReturnCode.ACTIVE_THIRD_RPC.code());
-            log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
             return result;
         }
         Map<String,Object> commonParams = getCommonParams(request);
         JSONObject response =null;
         try {
-            response = tdDataService.queryTdAllDatas(orderNo, commonParams);
+            response = tdDataService.queryTdAllDatas(serialNo, commonParams);
         }catch (Exception e){
             log.info("traceId={} 同盾拉取无效：false ",commonParams.get("traceId"));     //失败
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("tdFlag",ReturnCode.ERROR_SERVER.code());
-            log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
             return result;
         }
         if(response == null){
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("tdFlag",ReturnCode.ERROR_RESPONSE_NULL.code());
-            log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
             return result;
         }
         if(response.getInteger("tdFlag") != ReturnCode.REQUEST_SUCCESS.code()){
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("tdFlag",ReturnCode.ERROR_THIRD_RESPONSE.code());
-            log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+            log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
             return result;
         }
         result.putAll(response);
-        log.info("1019 traceId={} orderNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
+        log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
         return response;
     }
-    private String getKeyByOrderNo(String orderNo){
-        return "rms_third_1019_td_"+orderNo;
+    private String getKeyBySerialNo(String serialNo){
+        return "rms_third_1019_td_"+serialNo;
     }
     private Map<String,Object> getCommonParams(AbstractRequest request){
-        String channelId = ChannelIdEnum.JZFQ.getCode();
-        String financialProductId = FinancialProductIdEnum.XYQB.getCode();//信用钱包
-        String operationType = OperationTypeEnum.RZ.getCode();//认证
-        String clientType = ClientTypeEnum.AND.getCode();
+//        String channelId = ChannelIdEnum.JZFQ.getCode();
+//        String financialProductId = FinancialProductIdEnum.XYQB.getCode();//信用钱包
+//        String operationType = OperationTypeEnum.RZ.getCode();//认证
+//        String clientType = ClientTypeEnum.AND.getCode();
         String name = request.getParam("name").toString();
         String certCardNo = request.getParam("certCardNo").toString();
         String phone = request.getParam("phone").toString();
@@ -245,10 +293,10 @@ public class Request1019Handler extends AbstractRequestHandler {
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         commonParams.put("traceId",TraceIDThreadLocal.getTraceID());
         commonParams.put("personalInfo",personInfo);
-        commonParams.put("channelId",channelId);
-        commonParams.put("financialProductId",financialProductId);
-        commonParams.put("operationType",operationType);
-        commonParams.put("clientType",clientType);
+        commonParams.put("channelId",request.getParam("channelId"));
+        commonParams.put("financialProductId",request.getParam("financialProductId"));
+        commonParams.put("operationType",request.getParam("operationType"));
+        commonParams.put("clientType",request.getParam("clientType"));
         return commonParams;
     }
 }

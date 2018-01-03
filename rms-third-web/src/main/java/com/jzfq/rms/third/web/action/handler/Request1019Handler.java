@@ -80,24 +80,21 @@ public class Request1019Handler extends AbstractRequestHandler {
     @Override
     protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
         log.info("traceId={} 小桔汇金接口 1019 开始", TraceIDThreadLocal.getTraceID());
-        JSONObject brData = getBrData(request);
-        JSONObject tdData = getTdData(request);
         JSONObject result = new JSONObject();
+        // 百融
+        JSONObject brData = getBrData(request);
         result.putAll(brData);
+
+        // 同盾
+        JSONObject tdData = getTdData(request);
         result.putAll(tdData);
-        if(StringUtils.equals(brData.getString("brFlag"),"200")
-                ||StringUtils.equals(brData.getString("tdFlag"),"200")){
-            log.info("traceId={} 小桔汇金接口 1019 结束", TraceIDThreadLocal.getTraceID());
-            return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS, result);
-        }
-        return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ERROR_RESPONSE_NULL, request);
+
+        return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS, result);
     }
 
     @Autowired
     BrPostService brPostService;
 
-    private static final int OFFICE_TYPE = 0;
-    private static final String OFFICE_TYPE_STR = "0";
     JSONObject getBrData(AbstractRequest request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String name = request.getParam("name").toString();

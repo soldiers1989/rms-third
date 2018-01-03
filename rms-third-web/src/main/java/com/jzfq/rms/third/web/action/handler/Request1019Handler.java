@@ -1,5 +1,6 @@
 package com.jzfq.rms.third.web.action.handler;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
@@ -44,19 +45,34 @@ public class Request1019Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        // 公共必填参数
+        String traceId = TraceIDThreadLocal.getTraceID();
         String name = (String)params.get("name");
         String certCardNo = (String)params.get("certCardNo");
         String phone = (String)params.get("phone");
         String orderNo = (String)params.get("orderNo");
         String serialNo = (String)params.get("serialNo");
-        String channel = (String)params.get("channel");
+        String apiBox = (String)params.get("apiBox");
         boolean juzi = (boolean)params.get("juzi");
-        if(StringUtils.isBlank(name)||StringUtils.isBlank(certCardNo)
-                ||StringUtils.isBlank(phone)
-                ||StringUtils.isBlank(channel)||StringUtils.isBlank(serialNo)
+        if(StringUtils.isBlank(traceId)||StringUtils.isBlank(name)
+                ||StringUtils.isBlank(certCardNo)
+                ||StringUtils.isBlank(phone) ||StringUtils.isBlank(apiBox)
+                ||StringUtils.isBlank(serialNo)
                 ||params.get("juzi")==null
-                ||(juzi&&StringUtils.isBlank(orderNo))
-                ){
+                ||(juzi&&StringUtils.isBlank(orderNo))){
+            return false;
+        }
+        // 接口参数
+        String channelId = (String)params.get("channelId");
+        String financialProductId = (String)params.get("financialProductId");
+        String operationType = (String)params.get("operationType");
+        String clientType = (String)params.get("clientType");
+        if(StringUtils.isBlank(channelId)||StringUtils.isBlank(financialProductId)
+                ||StringUtils.isBlank(operationType) ||StringUtils.isBlank(clientType)){
+            return false;
+        }
+        JSONArray apis = JSONArray.parseArray(apiBox);
+        if(!apis.contains("bairong")||!apis.contains("tongdun")){
             return false;
         }
         return true;
@@ -80,29 +96,38 @@ public class Request1019Handler extends AbstractRequestHandler {
     @Override
     protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
         log.info("traceId={} 小桔汇金接口 1019 开始", TraceIDThreadLocal.getTraceID());
+        String apiBox = (String)request.getParam("apiBox");
+        JSONArray apis = JSONArray.parseArray(apiBox);
         JSONObject result = new JSONObject();
         // 百融
-        JSONObject brData = getBrData(request);
-        result.putAll(brData);
-
+        if(apis.contains("bairong")){
+            JSONObject brData = getBrData(request);
+            result.putAll(brData);
+        }
         // 同盾
-        JSONObject tdData = getTdData(request);
-        result.putAll(tdData);
-
+        if(apis.contains("tongdun")){
+            JSONObject tdData = getTdData(request);
+            result.putAll(tdData);
+        }
         return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS, result);
     }
 
     @Autowired
     BrPostService brPostService;
 
+    /**
+     * 获取百融数据
+     * @param request
+     * @return
+     * @throws Exception
+     */
     JSONObject getBrData(AbstractRequest request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String name = request.getParam("name").toString();
         String certCardNo = request.getParam("certCardNo").toString();
         String phone = request.getParam("phone").toString();
         String serialNo = request.getParam("serialNo").toString();
-        String channel = request.getParam("channel").toString();
-        log.info("traceId={} 渠道={} 小桔汇金接口 1019 百融 开始", TraceIDThreadLocal.getTraceID(), channel);
+        log.info("traceId={} serialNo={} 小桔汇金接口 1019 百融 开始", TraceIDThreadLocal.getTraceID(), serialNo);
         JSONObject result = new JSONObject();
         result.put("brScore", "");
         result.put("brFlag",ReturnCode.REQUEST_SUCCESS.code());
@@ -112,7 +137,6 @@ public class Request1019Handler extends AbstractRequestHandler {
             result.put("brScore",bairongData.getData());
             return result;
         }
-
         RiskPersonalInfo info = new RiskPersonalInfo();
         info.setCertCardNo(certCardNo);
         info.setName(name);
@@ -166,7 +190,12 @@ public class Request1019Handler extends AbstractRequestHandler {
         return sb.toString();
     }
 
-
+    /**
+     * 获取同盾数据
+     * @param request
+     * @return
+     * @throws Exception
+     */
     JSONObject getTdData(AbstractRequest request) throws Exception{
         String serialNo = request.getParam("serialNo").toString();
         boolean juzi = (boolean)request.getParam("juzi");

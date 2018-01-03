@@ -118,10 +118,11 @@ public class BrPostService {
      * @param clientType
      * @return
      */
-    private String getStrategyId( String clientType){
+    private String getStrategyId(String channelId, String financialProductId, String operationType, String clientType){
         StringBuilder key = new StringBuilder("dictionary_prefix_");
         key.append(STR_BR_REDIS_KEY).append("_");
-        key.append(clientType);
+        key.append(channelId).append("-").append(financialProductId)
+                .append("-").append(clientType).append("-").append(operationType);
         return StringUtil.getStringOfObject(prefixCache.readConfig(key.toString()));
     }
     /**
@@ -148,10 +149,13 @@ public class BrPostService {
         commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
         commonParams.put("ms",ms);
+        String channelId = (String)commonParams.get("channelId");
+        String financialProductId = (String)commonParams.get("financialProductId");
+        String operationType = (String)commonParams.get("operationType");
         String clientType = (String)commonParams.get("clientType");
-        commonParams.put("strategyId",getStrategyId(clientType));
+        String strategyId = getStrategyId(channelId, financialProductId, operationType, clientType);
+        commonParams.put("strategyId",strategyId);
         // 登陆 获取token
-        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR03.getCode());
         String token = getTokenid();
         //设置token
         commonParams.put("token",token);

@@ -124,20 +124,20 @@ public class HandleResponseTester {
 //        ResponseResult dto = rmsThirdService.send("123","1","","1009","01",map);
 //        System.out.println(dto);
 
-        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
-        Map<String,Object> map = new HashMap<>();
-        map.put("frontId","111111");
-        map.put("clientType","1");
-        map.put("loanType",(byte)2);
-        Map<String ,Object> personalInfo = new HashMap<>();
-        map.put("customerType","0");
-        personalInfo.put("name","王亮亮");
-        personalInfo.put("certCardNo","140502198811102244");
-        personalInfo.put("mobile","13986671110");
-        map.put("personInfo",personalInfo);
-        map.put("orderNo","305677");
-        ResponseResult dto = rmsThirdService.sendAndHandleRespose("123","1","","1011","01",map);
-        System.out.println(dto);
+//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("frontId","111111");
+//        map.put("clientType","1");
+//        map.put("loanType",(byte)2);
+//        Map<String ,Object> personalInfo = new HashMap<>();
+//        map.put("customerType","0");
+//        personalInfo.put("name","王亮亮");
+//        personalInfo.put("certCardNo","140502198811102244");
+//        personalInfo.put("mobile","13986671110");
+//        map.put("personInfo",personalInfo);
+//        map.put("orderNo","305677");
+//        ResponseResult dto = rmsThirdService.sendAndHandleRespose("123","1","","1011","01",map);
+//        System.out.println(dto);
 
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/rms-third/inter");
@@ -194,15 +194,15 @@ public class HandleResponseTester {
 //        ResponseResult dto = rmsThirdService.send("HEHE","1","","S000","01",logParams);
 //        System.out.println(""+dto);
 
-//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("certCardNo","140502198811102244");
-//        map.put("name","王亮11299D2");
-//        map.put("phone","13986671110");
-//        map.put("orderNo","305582D");
-//        map.put("juzi",false);
-//        map.put("channel","1");
-//        ResponseResult dto = rmsThirdService.send("123","36","","1019","01",map);
-//        System.out.println(dto);
+        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+        Map<String,Object> map = new HashMap<>();
+        map.put("certCardNo","140502198811102244");
+        map.put("name","王亮11299D2");
+        map.put("phone","13986671110");
+        map.put("orderNo","305582D");
+        map.put("juzi",false);
+        map.put("channel","1");
+        ResponseResult dto = rmsThirdService.sendAndHandleRespose("123","36","","1019","01",map);
+        System.out.println(dto);
     }
 }

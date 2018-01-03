@@ -156,9 +156,14 @@ public class Request1019Handler extends AbstractRequestHandler {
             log.error("traceId={} serialNo={} 获取百融分失败",traceId,serialNo,e);
             throw e;
         }
-        if (brResponse == null || brResponse.getCode()!=ReturnCode.REQUEST_SUCCESS.code()) {
+        if (brResponse == null) {
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("brFlag",ReturnCode.ERROR_RESPONSE_NULL.code());
+            return result;
+        }
+        if (brResponse.getCode()!=ReturnCode.REQUEST_SUCCESS.code()) {
+            interfaceCountCache.setFailure(isRepeatKey);
+            result.put("brFlag",brResponse.getCode());
             return result;
         }
         String brResponseData = (String)brResponse.getData();

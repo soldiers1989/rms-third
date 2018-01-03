@@ -52,11 +52,11 @@ public class Request1019Handler extends AbstractRequestHandler {
         String phone = (String)params.get("phone");
         String orderNo = (String)params.get("orderNo");
         String serialNo = (String)params.get("serialNo");
-        String apiBox = (String)params.get("apiBox");
+        JSONArray apiBox = (JSONArray)params.get("apiBox");
         boolean juzi = (boolean)params.get("juzi");
         if(StringUtils.isBlank(traceId)||StringUtils.isBlank(name)
                 ||StringUtils.isBlank(certCardNo)
-                ||StringUtils.isBlank(phone) ||StringUtils.isBlank(apiBox)
+                ||StringUtils.isBlank(phone) ||apiBox==null
                 ||StringUtils.isBlank(serialNo)
                 ||params.get("juzi")==null
                 ||(juzi&&StringUtils.isBlank(orderNo))){
@@ -71,10 +71,9 @@ public class Request1019Handler extends AbstractRequestHandler {
                 ||StringUtils.isBlank(operationType) ||StringUtils.isBlank(clientType)){
             return false;
         }
-        JSONArray apis = JSONArray.parseArray(apiBox);
-        if(!apis.contains("bairong")||!apis.contains("tongdun")){
-            return false;
-        }
+//        if(!apiBox.contains("bairong")&&!apiBox.contains("tongdun")){
+//            return false;
+//        }
         return true;
     }
     @Autowired
@@ -96,16 +95,15 @@ public class Request1019Handler extends AbstractRequestHandler {
     @Override
     protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
         log.info("traceId={} 小桔汇金接口 1019 开始", TraceIDThreadLocal.getTraceID());
-        String apiBox = (String)request.getParam("apiBox");
-        JSONArray apis = JSONArray.parseArray(apiBox);
+        JSONArray apiBox = (JSONArray)request.getParam("apiBox");
         JSONObject result = new JSONObject();
         // 百融
-        if(apis.contains("bairong")){
+        if(apiBox.contains("bairong")){
             JSONObject brData = getBrData(request);
             result.putAll(brData);
         }
         // 同盾
-        if(apis.contains("tongdun")){
+        if(apiBox.contains("tongdun")){
             JSONObject tdData = getTdData(request);
             result.putAll(tdData);
         }
@@ -218,7 +216,7 @@ public class Request1019Handler extends AbstractRequestHandler {
             return result;
         }
         List<TongDunData> tongDunData = tdDataService.getTongDongDataBySerialNo(serialNo);
-        if(Collections.isEmpty(tongDunData)){
+        if(!Collections.isEmpty(tongDunData)){
             result.put("tdScore",tongDunData.get(0).getApiResp());
             result.put("tdDetail",tongDunData.get(0).getRuleDetailResult());
             log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));

@@ -3,7 +3,9 @@ package com.jzfq.rms.third.test;
 import com.jzfq.rms.third.client.RmsThirdService;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -201,7 +203,15 @@ public class HandleResponseTester {
         map.put("phone","13986671110");
         map.put("orderNo","305582D");
         map.put("juzi",false);
-        map.put("channel","1");
+        map.put("channelId","1");
+        map.put("operationType","1");
+        map.put("clientType","1");
+        map.put("financialProductId","1");
+        map.put("serialNo","123");
+        List apis = new ArrayList<String>();
+//        apis.add("bairong");
+//        apis.add("tongdun");
+        map.put("apiBox",apis);
         ResponseResult dto = rmsThirdService.sendAndHandleRespose("123","36","","1019","01",map);
         System.out.println(dto);
     }

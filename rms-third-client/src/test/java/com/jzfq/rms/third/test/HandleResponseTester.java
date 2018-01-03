@@ -199,18 +199,20 @@ public class HandleResponseTester {
         RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
         Map<String,Object> map = new HashMap<>();
         map.put("certCardNo","140502198811102244");
-        map.put("name","王亮222dccc");
+        map.put("name","王亮222dre");
         map.put("phone","13986671110");
         map.put("orderNo","305582D");
         map.put("juzi",false);
         map.put("channelId","1");
         map.put("operationType","1");
-        map.put("clientType","1");
+        map.put("clientType","2");
         map.put("financialProductId","1");
         map.put("serialNo","1234");
         List apis = new ArrayList<String>();
-//        apis.add("bairong");
-        apis.add("tongdun");
+        // bairong
+        apis.add("1");
+//         tongdun
+//        apis.add("2");
         map.put("apiBox",apis);
         ResponseResult dto = rmsThirdService.sendAndHandleRespose("1234","36","","1019","01",map);
         System.out.println(dto);

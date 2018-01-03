@@ -86,6 +86,10 @@ public class Request1019Handler extends AbstractRequestHandler {
      * 超时时间 三天
      */
     private static final Long time = 3*24*60*60L;
+
+    private static final String STR_BR_CODE = "1";
+
+    private static final String STR_TD_CODE = "2";
     /**
      * 业务处理，交由子类实现。
      *
@@ -98,12 +102,12 @@ public class Request1019Handler extends AbstractRequestHandler {
         JSONArray apiBox = (JSONArray)request.getParam("apiBox");
         JSONObject result = new JSONObject();
         // 百融
-        if(apiBox.contains("bairong")){
+        if(apiBox.contains(STR_BR_CODE)){
             JSONObject brData = getBrData(request);
             result.putAll(brData);
         }
         // 同盾
-        if(apiBox.contains("tongdun")){
+        if(apiBox.contains(STR_TD_CODE)){
             JSONObject tdData = getTdData(request);
             result.putAll(tdData);
         }
@@ -150,6 +154,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         ResponseResult brResponse = null;
         try{
             brResponse = brPostService.getApiData(info,getCommonParams(request));
+
         }catch (Exception e){
             interfaceCountCache.setFailure(isRepeatKey);
             result.put("brFlag",ReturnCode.ERROR_SERVER.code());
@@ -169,6 +174,8 @@ public class Request1019Handler extends AbstractRequestHandler {
         String brResponseData = (String)brResponse.getData();
         try{
             riskPostDataService.saveRmsThirdData(info,null, brResponseData);
+            result.put("brScore",brResponse.getData());
+            return result;
         }catch (Exception e) {
             log.error("traceId={} 保存数据失败",traceId,e);
             result.put("brFlag",ReturnCode.ERROR_SERVER.code());
@@ -265,10 +272,10 @@ public class Request1019Handler extends AbstractRequestHandler {
         return "rms_third_1019_td_"+serialNo;
     }
     private Map<String,Object> getCommonParams(AbstractRequest request){
-        String channelId = ChannelIdEnum.JZFQ.getCode();
-        String financialProductId = FinancialProductIdEnum.XYQB.getCode();//信用钱包
-        String operationType = OperationTypeEnum.RZ.getCode();//认证
-        String clientType = ClientTypeEnum.AND.getCode();
+//        String channelId = ChannelIdEnum.JZFQ.getCode();
+//        String financialProductId = FinancialProductIdEnum.XYQB.getCode();//信用钱包
+//        String operationType = OperationTypeEnum.RZ.getCode();//认证
+//        String clientType = ClientTypeEnum.AND.getCode();
         String name = request.getParam("name").toString();
         String certCardNo = request.getParam("certCardNo").toString();
         String phone = request.getParam("phone").toString();
@@ -286,10 +293,10 @@ public class Request1019Handler extends AbstractRequestHandler {
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         commonParams.put("traceId",TraceIDThreadLocal.getTraceID());
         commonParams.put("personalInfo",personInfo);
-        commonParams.put("channelId",channelId);
-        commonParams.put("financialProductId",financialProductId);
-        commonParams.put("operationType",operationType);
-        commonParams.put("clientType",clientType);
+        commonParams.put("channelId",request.getParam("channelId"));
+        commonParams.put("financialProductId",request.getParam("financialProductId"));
+        commonParams.put("operationType",request.getParam("operationType"));
+        commonParams.put("clientType",request.getParam("clientType"));
         return commonParams;
     }
 }

@@ -22,9 +22,8 @@
                 <zookeeper.address>127.0.0.1:2181</zookeeper.address>
 
                 <dubbo.application.name>rms-third-provider</dubbo.application.name>
-                <!--<dubbo.group>rms-third-service</dubbo.group>-->
-                <dubbo.group>rms-third-service-test</dubbo.group>
-                <dubbo.port>20880</dubbo.port>
+                <dubbo.group>rms-third-service</dubbo.group>
+                <dubbo.port>20881</dubbo.port>
             </properties>
         </profile>
     </profiles>
@@ -70,6 +69,17 @@
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
             <version>3.4.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>${spring.version}</version>
         </dependency>
     </dependencies>
 

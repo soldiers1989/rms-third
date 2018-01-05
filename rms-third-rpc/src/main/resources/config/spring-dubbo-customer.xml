@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 添加 DUBBO SCHEMA -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo
-        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+       >
     <!-- 应用名 -->
     <dubbo:application name="${dubbo.application.name}"/>
     <!-- 连接到哪个本地注册中心 -->
-    <dubbo:registry id="rms-third-zookeeper" protocol="zookeeper" address="${zookeeper.address}" />
+    <dubbo:registry protocol="zookeeper" address="${zookeeper.address}" group="${dubbo.group}" />
     <!-- 小桔汇金 -->
-    <dubbo:reference id="xjhjService" interface="com.jzfq.rms.third.rpc.service.IXiaoJuHuiJinService" protocol="dubbo" group="dubbo"/>
+    <dubbo:reference id="xjhjService" interface="com.jzfq.rms.third.rpc.service.IXiaoJuHuiJinService" protocol="dubbo" />
 </beans>
+
+

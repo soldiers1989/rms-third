@@ -12,7 +12,6 @@
     <artifactId>rms-third-common</artifactId>
 
     <dependencies>
-
         <!--jwt-->
         <dependency>
             <groupId>com.auth0</groupId>

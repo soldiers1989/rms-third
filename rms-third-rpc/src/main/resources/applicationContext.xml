@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -10,24 +11,8 @@
 
     <context:property-placeholder ignore-resource-not-found="true" ignore-unresolvable="false"
                                   location="classpath:rms-third-rpc.properties,file:/data/config/rmsthirdservice/prod.properties" />
-    <context:annotation-config />
-    <import resource="config/*.xml"/>
     <!-- 配置扫描的包 -->
     <context:component-scan base-package="com.jzfq.rms.third.rpc.*" />
-
-    <!-- 注册HandlerMapper、HandlerAdapter两个映射类 -->
     <mvc:annotation-driven />
-    <!--<context:annotation-config/>-->
-    <!--&lt;!&ndash; 访问静态资源 &ndash;&gt;-->
-    <!--<mvc:default-servlet-handler />-->
-
-    <!--&lt;!&ndash; 处理器映射器 &ndash;&gt;-->
-    <!--&lt;!&ndash;<bean name="/0101" class="com.jzfq.rms.third.rpc.web.xjhjConsumer"></bean>&ndash;&gt;-->
-    <!--&lt;!&ndash; 处理器映射器 &ndash;&gt;-->
-    <!--<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"></bean>-->
-    <!--&lt;!&ndash; 处理器适配器 &ndash;&gt;-->
-    <!--<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>-->
-    <!--&lt;!&ndash; 视图解析器 &ndash;&gt;-->
-    <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" />-->
-
-</beans>				        
+    <!--<import resource="config/spring-dubbo-customer.xml"/>-->
+</beans>

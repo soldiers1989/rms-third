@@ -1,9 +1,11 @@
 package com.jzfq.rms.third.rpc.web;
 
 import com.jzfq.rms.third.rpc.service.IXiaoJuHuiJinService;
+import com.jzfq.rms.third.test.DemoService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 public class xjhjConsumer {
     @Resource
     IXiaoJuHuiJinService xjhjService;
+
     @RequestMapping( method= {RequestMethod.GET,RequestMethod.POST})
     public void isRpc(){
         xjhjService.getTdAndBrData(new HashMap<>());

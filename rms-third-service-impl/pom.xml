@@ -10,23 +10,21 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
     <artifactId>rms-third-service-impl</artifactId>
-    <properties>
-        <jdk-source.version>1.8</jdk-source.version>
-        <jdk-target.version>1.8</jdk-target.version>
-        <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
-    </properties>
+
     <profiles>
         <!-- 本地开发配置 -->
         <profile>
             <id>local</id>
             <properties>
+                <servlet.version>3.1.0</servlet.version>
+                <spring.version>4.3.10.RELEASE</spring.version>
+
                 <zookeeper.address>127.0.0.1:2181</zookeeper.address>
 
                 <dubbo.application.name>rms-third-provider</dubbo.application.name>
-                <dubbo.group>rms-third-provider</dubbo.group>
+                <!--<dubbo.group>rms-third-service</dubbo.group>-->
+                <dubbo.group>rms-third-service-test</dubbo.group>
                 <dubbo.port>20880</dubbo.port>
-                <dubbo.tomcat.port>8811</dubbo.tomcat.port>
-                <dubbo.rest.path>rest</dubbo.rest.path>
             </properties>
         </profile>
     </profiles>
@@ -76,7 +74,18 @@
     </dependencies>
 
     <build>
-        <!--<finalName>rms-third-service</finalName>-->
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/bin</directory>
+                <targetPath>/bin</targetPath>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -86,17 +95,6 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
                 <version>${maven-compiler-plugin.version}</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -110,36 +108,36 @@
                             <maxIdleTime>30000</maxIdleTime>
                         </connector>
                     </connectors>
-                    <webAppSourceDirectory>${project.build.directory}/${pom.artifactId}-${pom.version}</webAppSourceDirectory>
+                    <webAppSourceDirectory>${project.build.directory}/${project.artifactId}-${project.version}</webAppSourceDirectory>
                     <contextPath>/</contextPath>
                 </configuration>
             </plugin>
             <!--<plugin>-->
-                <!--<groupId>org.eclipse.jetty</groupId>-->
-                <!--<artifactId>jetty-maven-plugin</artifactId>-->
-                <!--<version>9.3.0.M2</version>-->
-                <!--<configuration>-->
-                    <!--<webAppConfig>-->
-                        <!--<contextPath>/</contextPath>-->
-                    <!--</webAppConfig>-->
-                    <!--<httpConnector>-->
-                        <!--<port>8808</port>-->
-                        <!--<idleTimeout>10000</idleTimeout>-->
-                    <!--</httpConnector>-->
-                <!--</configuration>-->
+            <!--<groupId>org.eclipse.jetty</groupId>-->
+            <!--<artifactId>jetty-maven-plugin</artifactId>-->
+            <!--<version>9.3.0.M2</version>-->
+            <!--<configuration>-->
+            <!--<webAppConfig>-->
+            <!--<contextPath>/</contextPath>-->
+            <!--</webAppConfig>-->
+            <!--<httpConnector>-->
+            <!--<port>8808</port>-->
+            <!--<idleTimeout>10000</idleTimeout>-->
+            <!--</httpConnector>-->
+            <!--</configuration>-->
             <!--</plugin>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-war-plugin</artifactId>-->
-                <!--<version>2.6</version>-->
-                <!--<configuration>-->
-                    <!--<webResources>-->
-                        <!--<resource>-->
-                            <!--<directory>src/main/webapp/WEB-INF</directory>-->
-                        <!--</resource>-->
-                    <!--</webResources>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp/WEB-INF</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

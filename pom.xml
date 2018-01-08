@@ -8,13 +8,13 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
+        <module>rms-third-common</module>
+        <module>rms-third-context</module>
         <module>rms-third-web</module>
         <module>rms-third-client</module>
         <module>rms-third-service</module>
-        <module>rms-third-common</module>
         <module>rms-third-rpc</module>
         <module>rms-third-service-impl</module>
-        <module>rms-third-test</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

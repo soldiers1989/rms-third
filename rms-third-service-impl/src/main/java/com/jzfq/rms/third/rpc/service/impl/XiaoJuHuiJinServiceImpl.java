@@ -4,6 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.client.RmsThirdService;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.rpc.service.IXiaoJuHuiJinService;
+import com.jzfq.rms.third.support.cache.ICache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -16,18 +20,23 @@ import java.util.Map;
  * @date 2017/12/26 19:08.
  **/
 public class XiaoJuHuiJinServiceImpl implements IXiaoJuHuiJinService{
+    private static final Logger logger = LoggerFactory.getLogger(XiaoJuHuiJinServiceImpl.class);
 
+    @Autowired
+    ICache prefixCache;
     @Override
     public ResponseResult getTdAndBrData(Map<String, Object> requestParams) {
+
         try {
-            RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+            String url = (String)prefixCache.readConfigByGroup("rms-third-interface-url","rms-third-interface");
+            logger.info("小桔汇金获取third数据 参数:{} url:{}",requestParams,url);
+            RmsThirdService rmsThirdService = new RmsThirdService(url);
             ResponseResult dto = rmsThirdService.sendAndHandleRespose((String)requestParams.get("serialNo"),"36","","1019","01", requestParams);
             return dto;
         }catch (Exception e){
-            System.out.println(e);
+            logger.error("小桔汇金获取third数据异常：{} 参数 {}",e,requestParams);
         }
         return null;
-
     }
 
     /**
@@ -38,6 +47,13 @@ public class XiaoJuHuiJinServiceImpl implements IXiaoJuHuiJinService{
      */
     @Override
     public ResponseResult getTdAndBrData(JSONObject requestParams) {
+        try {
+            RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+            ResponseResult dto = rmsThirdService.sendAndHandleRespose((String) requestParams.get("serialNo"), "36", "", "1019", "01", requestParams);
+            return dto;
+        } catch (Exception e) {
+            logger.error("小桔汇金获取third数据异常：{} 参数 {}", e, requestParams);
+        }
         return null;
     }
 }

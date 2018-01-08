@@ -1,6 +1,9 @@
 package com.jzfq.rms.third.rpc.web;
 
+import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.rpc.service.IXiaoJuHuiJinService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/inter")
 public class xjhjConsumer {
+    private static final Logger logger = LoggerFactory.getLogger(xjhjConsumer.class);
     @Resource
     IXiaoJuHuiJinService xjhjService;
 
@@ -43,6 +47,7 @@ public class xjhjConsumer {
 //         tongdun
 //        apis.add("2");
         map.put("apiBox",apis);
-        xjhjService.getTdAndBrData(map);
+        ResponseResult result = xjhjService.getTdAndBrData(map);
+        logger.info("结果：{}",result);
     }
 }

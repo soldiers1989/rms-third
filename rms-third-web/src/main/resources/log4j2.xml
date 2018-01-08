@@ -59,6 +59,10 @@
             <Column name="log_thread" pattern="%thread" />
             <Column name="log_level" pattern="%level" />
             <Column name="log_message" pattern="%message"/>
+            <Column name="traceId" pattern="%X{taceId}"/>
+            <Column name="messageTypeID" pattern="%{messageTypeID}"/>
+            <Column name="syori_flag" pattern="0"/>
+            <Column name="systemID" pattern="23"/>
         </JDBC>
     </appenders>
 

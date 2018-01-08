@@ -12,6 +12,10 @@
     <artifactId>rms-third-client</artifactId>
     <version>1.1-SNAPSHOT</version>
     <dependencies>
-
+        <dependency>
+            <groupId>com.jzfq.rms</groupId>
+            <artifactId>rms-third-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

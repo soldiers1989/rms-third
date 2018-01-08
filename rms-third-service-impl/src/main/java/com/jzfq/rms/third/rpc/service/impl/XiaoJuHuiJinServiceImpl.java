@@ -1,9 +1,14 @@
 package com.jzfq.rms.third.rpc.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.jzfq.rms.third.client.RmsThirdService;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.rpc.service.IXiaoJuHuiJinService;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,7 +19,25 @@ public class XiaoJuHuiJinServiceImpl implements IXiaoJuHuiJinService{
 
     @Override
     public ResponseResult getTdAndBrData(Map<String, Object> requestParams) {
-        System.out.println("hehe ,成功啦！！！！！！！！！！！！");
+        try {
+            RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+            ResponseResult dto = rmsThirdService.sendAndHandleRespose((String)requestParams.get("serialNo"),"36","","1019","01", requestParams);
+            return dto;
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
+
+    }
+
+    /**
+     * 获取同盾百融数据
+     *
+     * @param requestParams
+     * @return
+     */
+    @Override
+    public ResponseResult getTdAndBrData(JSONObject requestParams) {
         return null;
     }
 }

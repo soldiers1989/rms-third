@@ -48,8 +48,10 @@ public class XiaoJuHuiJinServiceImpl implements IXiaoJuHuiJinService{
     @Override
     public ResponseResult getTdAndBrData(JSONObject requestParams) {
         try {
-            RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
-            ResponseResult dto = rmsThirdService.sendAndHandleRespose((String) requestParams.get("serialNo"), "36", "", "1019", "01", requestParams);
+            String url = (String)prefixCache.readConfigByGroup("rms-third-interface-url","rms-third-interface");
+            logger.info("小桔汇金获取third数据 参数:{} url:{}",requestParams,url);
+            RmsThirdService rmsThirdService = new RmsThirdService(url);
+            ResponseResult dto = rmsThirdService.sendAndHandleRespose(requestParams.getString("serialNo"), "36", "", "1019", "01", requestParams);
             return dto;
         } catch (Exception e) {
             logger.error("小桔汇金获取third数据异常：{} 参数 {}", e, requestParams);

@@ -65,7 +65,8 @@ public class MonitorServiceImpl implements IMonitorService {
     TRsllTransferLogMapper rsllTransferLogMapper;
     @Autowired
     TTdTransferLogMapper tdTransferLogMapper;
-
+    @Autowired
+    TThirdTransferLogMapper tThirdTransferLogMapper;
 
     @Override
     public void sendLogToMonitor(String traceId, Map<String, Object> params) {
@@ -198,6 +199,15 @@ public class MonitorServiceImpl implements IMonitorService {
                 jxlTransferLogMapper.insert(log);
             }
         });
+    }
+
+    @Override
+    public void sendSysLogToDB(String traceId, String systemId, String apiId, Map<String, Object> params) {
+        TThirdTransferLog record = new TThirdTransferLog();
+        record.setcInterfaceKey(apiId);
+        record.setcThirdKey(systemId);
+        record.setcParams(toJSONString(params));
+        tThirdTransferLogMapper.insert(record);
     }
 
 

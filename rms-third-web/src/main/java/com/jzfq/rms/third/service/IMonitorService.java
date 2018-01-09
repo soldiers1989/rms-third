@@ -15,4 +15,13 @@ public interface IMonitorService {
     void sendLogToMonitor(String traceId, Map<String, Object> params);
 
     void sendLogToDB(String traceId, Map<String, Object> params);
+
+    /**
+     * 记录rms-third的被调用记录
+     * @param traceId
+     * @param systemId
+     * @param apiId
+     * @param params
+     */
+    void sendSysLogToDB(String traceId, String systemId, String apiId,  Map<String, Object> params);
 }

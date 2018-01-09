@@ -22,4 +22,10 @@ public interface IXiaoJuHuiJinService {
      * @return
      */
     ResponseResult getTdAndBrData(JSONObject requestParams);
+    /**
+     * 获取同盾百融数据
+     * @param requestParams
+     * @return
+     */
+    ResponseResult getTdAndBrData(String traceId, String systemId,String appId,String apiId,String version,Map<String, Object> requestParams);
 }

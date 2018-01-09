@@ -58,4 +58,28 @@ public class XiaoJuHuiJinServiceImpl implements IXiaoJuHuiJinService{
         }
         return null;
     }
+
+    /**
+     * 获取同盾百融数据
+     *
+     * @param traceId
+     * @param systemId
+     * @param appId
+     * @param apiId
+     * @param version
+     * @param requestParams @return
+     */
+    @Override
+    public ResponseResult getTdAndBrData(String traceId, String systemId, String appId, String apiId, String version, Map<String, Object> requestParams) {
+        try {
+            String url = (String)prefixCache.readConfigByGroup("rms-third-interface-url","rms-third-interface");
+            logger.info("小桔汇金获取third数据 参数:{} url:{}",requestParams,url);
+            RmsThirdService rmsThirdService = new RmsThirdService(url);
+            ResponseResult dto = rmsThirdService.sendAndHandleRespose(traceId,systemId,appId,apiId,version, requestParams);
+            return dto;
+        }catch (Exception e){
+            logger.error("小桔汇金获取third数据异常：{} 参数 {}",e,requestParams);
+        }
+        return null;
+    }
 }

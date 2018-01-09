@@ -122,6 +122,7 @@ public class TdDataServiceImpl implements ITdDataService {
     @Override
     public void saveResult(String orderNo, FraudApiResponse apiResp, Map<String,Object> commonParams) {
         String traceId = TraceIDThreadLocal.getTraceID();
+        String systemID = CallSystemIDThreadLocal.getCallSystemID();
         try{
             ThreadProvider.getThreadPool().execute(() ->  {
                 RiskPersonalInfo info = (RiskPersonalInfo)commonParams.get("personalInfo");
@@ -158,7 +159,7 @@ public class TdDataServiceImpl implements ITdDataService {
                     return ;
                 }
                 //通过seqid 查询 同盾规则详情，保存到mongo
-                RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId);
+                RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId, systemID);
                 tongDunData.setRuleDetailResult(ruleDetailResult);
                 mongoTemplate.insert(tongDunData);
             });
@@ -348,7 +349,7 @@ public class TdDataServiceImpl implements ITdDataService {
     }
 
 
-    private RuleDetailResult getTdRuleData(String taskId,String sequenceId,String traceId){
+    private RuleDetailResult getTdRuleData(String taskId,String sequenceId,String traceId, String systemID){
         Environment env = null;
         // Environment.PRODUCT表示调用生产环境, 测试环境请修改为Environment.SANDBOX
         if (Objects.equals(urlEnv, "prd")){
@@ -361,7 +362,7 @@ public class TdDataServiceImpl implements ITdDataService {
         commonParams.put("targetId", SystemIdEnum.THIRD_TD.getCode());
         commonParams.put("appId", "");
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_TD02.getCode());
-        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+        commonParams.put("systemId", systemID);
         commonParams.put("traceId", traceId);
 
         commonParams.put("partner_code", partner_code);
@@ -523,7 +524,7 @@ public class TdDataServiceImpl implements ITdDataService {
             return null;
         }
         //通过seqid 查询 同盾规则详情，保存到mongo
-        RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId);
+        RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId, CallSystemIDThreadLocal.getCallSystemID());
         tongDunData.setRuleDetailResult(ruleDetailResult);
         mongoTemplate.insert(tongDunData);
         return ruleDetailResult;

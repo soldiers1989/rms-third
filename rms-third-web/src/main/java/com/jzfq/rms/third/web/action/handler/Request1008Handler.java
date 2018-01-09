@@ -99,32 +99,33 @@ public class Request1008Handler  extends AbstractRequestHandler {
             return responseResult;
         }
         String isRepeatKey = getKeyByOrderNo(orderNo);
-        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
-        if(!isRpc){
-            return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
-        }
-        Map<String,Object> commonParams = getCommonParams(request);
-        ResponseResult response =null;
         try {
+            boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
+            if(!isRpc){
+                return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
+            }
+            Map<String,Object> commonParams = getCommonParams(request);
+            ResponseResult response =null;
             response = tdDataService.queryTdDatas(commonParams);
+            if (response == null){
+                log.info("traceId={} 同盾拉取无效：false ",commonParams.get("traceId"));     //失败
+                interfaceCountCache.setFailure(isRepeatKey);
+                new BusinessException("traceId={} 同盾拉取无效：false",true);
+            }
+            if(response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+                interfaceCountCache.setFailure(isRepeatKey);
+                return response;
+            }
+            FraudApiResponse apiResp = (FraudApiResponse)response.getData();
+            response.setData(apiResp.getFinal_score());
+            tdDataService.saveResult(orderNo, apiResp, commonParams);
+            return response;
         }catch (Exception e){
-            log.info("traceId={} 同盾拉取无效：false ",commonParams.get("traceId"));     //失败
+            log.info("traceId={} 同盾拉取无效：false ",TraceIDThreadLocal.getTraceID());     //失败
             interfaceCountCache.setFailure(isRepeatKey);
             throw e;
         }
-        if (response == null){
-            log.info("traceId={} 同盾拉取无效：false ",commonParams.get("traceId"));     //失败
-            interfaceCountCache.setFailure(isRepeatKey);
-            new BusinessException("traceId={} 同盾拉取无效：false",true);
-        }
-        if(response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
-            interfaceCountCache.setFailure(isRepeatKey);
-            return response;
-        }
-        FraudApiResponse apiResp = (FraudApiResponse)response.getData();
-        response.setData(apiResp.getFinal_score());
-        tdDataService.saveResult(orderNo, apiResp, commonParams);
-        return response;
+
     }
 
     private Map<String,Object> getCommonParams(AbstractRequest request){

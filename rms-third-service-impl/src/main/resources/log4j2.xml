@@ -6,7 +6,7 @@
         <!-- 日志根路径 -->
         <property name="LOG_HOME">/data/log</property>
         <!-- 项目名称 -->
-        <property name="PROJECT_NAME">rms-third-serviceimpl</property>
+        <property name="PROJECT_NAME">rms-third-service-impl</property>
         <!-- INFO级别日志名称 -->
         <property name="LOG_INFO_NAME">info.log</property>
         <!-- INFO级别备份日志名称 -->

@@ -4,16 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<!-- 加载配置文件 -->
-	<!--<bean-->
-		<!--class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
-		<!--<property name="locations">-->
-			<!--<list>-->
-				<!--<value>classpath:rms-third.properties</value>-->
-				<!--<value>file:/data/config/rms-third/config.properties</value>-->
-			<!--</list>-->
-		<!--</property>-->
-	<!--</bean>-->
 
 	<import resource="classpath:spring/applicationContext-servlet.xml"/>
 	<import resource="classpath:spring/applicationContext-redis.xml"/>

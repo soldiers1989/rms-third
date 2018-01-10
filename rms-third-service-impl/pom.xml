@@ -11,18 +11,30 @@
     <packaging>war</packaging>
     <artifactId>rms-third-service-impl</artifactId>
 
+    <properties>
+        <servlet.version>3.1.0</servlet.version>
+        <spring.version>4.3.10.RELEASE</spring.version>
+    </properties>
     <profiles>
         <!-- 本地开发配置 -->
         <profile>
             <id>local</id>
             <properties>
-                <servlet.version>3.1.0</servlet.version>
-                <spring.version>4.3.10.RELEASE</spring.version>
-
                 <zookeeper.address>127.0.0.1:2181</zookeeper.address>
 
                 <dubbo.application.name>rms-third-provider</dubbo.application.name>
                 <dubbo.group>rms-third-service</dubbo.group>
+                <dubbo.port>20881</dubbo.port>
+            </properties>
+        </profile>
+        <!-- 本地开发配置 -->
+        <profile>
+            <id>test</id>
+            <properties>
+                <zookeeper.address>192.168.2.125:2181</zookeeper.address>
+
+                <dubbo.application.name>rms-third-provider-test</dubbo.application.name>
+                <dubbo.group>rms-third-service-test</dubbo.group>
                 <dubbo.port>20881</dubbo.port>
             </properties>
         </profile>

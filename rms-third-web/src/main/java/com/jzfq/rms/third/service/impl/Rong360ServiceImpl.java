@@ -11,6 +11,7 @@ import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.common.mongo.JuXinLiData;
 import com.jzfq.rms.third.common.mongo.Rong360Data;
+import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.service.IRiskPostDataService;
@@ -250,7 +251,7 @@ public class Rong360ServiceImpl implements IRong360Service {
 		commonParams.put("appRongId", appId);
 		commonParams.put("appId", appId);
 		commonParams.put("interfaceId", interfaceType.getCode());
-		commonParams.put("systemId", SystemIdEnum.THIRD_RSLL.getCode());
+		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
 		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 		commonParams.put("callbackAddress", callback_Address);
 		commonParams.put("privateKey", privateKey);

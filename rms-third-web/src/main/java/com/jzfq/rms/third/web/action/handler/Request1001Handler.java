@@ -7,6 +7,9 @@ import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IGongPingjiaService;
 import com.jzfq.rms.third.support.cache.ICountCache;
+import com.jzfq.rms.third.support.log.ILogger;
+import com.jzfq.rms.third.support.log.impl.RmsLogger;
+import com.jzfq.rms.third.web.action.GongPingJiaAction;
 import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,7 +27,7 @@ import java.util.Map;
  **/
 @Component("request1001Handler")
 public class Request1001Handler  extends AbstractRequestHandler{
-    private static final Logger log = LoggerFactory.getLogger(Request1001Handler.class);
+    final protected static ILogger log = RmsLogger.getFactory(GongPingJiaAction.class);
     @Autowired
     private IGongPingjiaService gongPingjiaService;
 
@@ -68,7 +71,7 @@ public class Request1001Handler  extends AbstractRequestHandler{
         if(StringUtils.isNotBlank(price)){
             return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,price);
         }
-        log.info("traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】",TraceIDThreadLocal.getTraceID());
+        log.info(TraceIDThreadLocal.getTraceID(),"third-1001","traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");
         Map<String,Object> commonParams = getCommonParams(request);
         ResponseResult result = gongPingjiaService.getGpjDataAndCalculateEvaluations( vin, licensePlatHeader.toUpperCase(),commonParams);
         log.info("traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束 {}",TraceIDThreadLocal.getTraceID(),result.getMsg());

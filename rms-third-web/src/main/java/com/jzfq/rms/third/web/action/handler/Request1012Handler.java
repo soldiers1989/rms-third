@@ -83,11 +83,6 @@ public class Request1012Handler extends AbstractRequestHandler {
     private ResponseResult handler01(AbstractRequest request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
-
-//        Long taskId = Long.parseLong(taskIdStr);
-//        if(taskId==null){
-//            return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.ERROR_TASK_ID_NULL,null);
-//        }
         // 数据库查询
         String name = request.getParam("name").toString();
         String idNumber = request.getParam("idNumber").toString();
@@ -109,11 +104,12 @@ public class Request1012Handler extends AbstractRequestHandler {
         String isRepeatKey = getRpcControlKey(bizData);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
-            return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ACTIVE_THIRD_RPC,null);
+            return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
         }
         try {
             //手机三要素
             ResponseResult responseResult = rong360Service.getMobilecheck3item(bizData);
+            responseResult.setTraceID(traceId);
             if(responseResult.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
                 interfaceCountCache.setFailure(isRepeatKey);
                 return responseResult;

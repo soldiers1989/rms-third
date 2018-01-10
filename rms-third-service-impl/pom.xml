@@ -22,8 +22,8 @@
             <properties>
                 <zookeeper.address>127.0.0.1:2181</zookeeper.address>
 
-                <dubbo.application.name>rms-third-provider</dubbo.application.name>
-                <dubbo.group>rms-third-service</dubbo.group>
+                <dubbo.application.name>rms-third-provider-${local.name}</dubbo.application.name>
+                <dubbo.group>rms-third-service-${local.name}</dubbo.group>
                 <dubbo.port>20881</dubbo.port>
             </properties>
         </profile>

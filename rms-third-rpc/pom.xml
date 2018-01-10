@@ -11,17 +11,19 @@
     <packaging>war</packaging>
     <artifactId>rms-third-rpc</artifactId>
 
+    <properties>
+        <servlet.version>3.1.0</servlet.version>
+        <spring.version>4.3.10.RELEASE</spring.version>
+    </properties>
+
     <profiles>
         <!-- 本地开发配置 -->
         <profile>
             <id>local</id>
             <properties>
-                <servlet.version>3.1.0</servlet.version>
-                <spring.version>4.3.10.RELEASE</spring.version>
-
                 <zookeeper.address>127.0.0.1:2181</zookeeper.address>
-                <dubbo.application.name>rms-third-rpc</dubbo.application.name>
-                <dubbo.group>rms-third-service</dubbo.group>
+                <dubbo.application.name>rms-third-rpc-${local.name}</dubbo.application.name>
+                <dubbo.group>rms-third-service-${local.name}</dubbo.group>
                 <dubbo.port>20880</dubbo.port>
             </properties>
         </profile>
@@ -30,21 +32,15 @@
         <profile>
             <id>test</id>
             <properties>
-                <servlet.version>3.1.0</servlet.version>
-                <spring.version>4.3.10.RELEASE</spring.version>
-
-                <zookeeper.address>127.0.0.1:2181</zookeeper.address>
-                <dubbo.application.name>rms-third-rpc</dubbo.application.name>
-                <dubbo.group>rms-third-service</dubbo.group>
+                <zookeeper.address>47.95.116.4:2181</zookeeper.address>
+                <dubbo.application.name>rms-third-rpc-test</dubbo.application.name>
+                <dubbo.group>rms-third-service-test</dubbo.group>
                 <dubbo.port>20880</dubbo.port>
             </properties>
         </profile>
     </profiles>
 
-
     <dependencies>
-
-
         <!-- dubbo -->
         <dependency>
             <groupId>com.alibaba</groupId>

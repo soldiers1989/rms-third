@@ -38,6 +38,20 @@
         <junit.version>4.12</junit.version>
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
     </properties>
+
+    <profiles>
+        <!-- 本地开发配置 -->
+        <profile>
+            <id>test</id>
+            <properties>
+                <zookeeper.address>192.168.2.125:2181</zookeeper.address>
+                <dubbo.application.name>rms-third-rpc-test</dubbo.application.name>
+                <dubbo.group>rms-third-service-test</dubbo.group>
+                <dubbo.port>20880</dubbo.port>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <!-- commons -->
         <dependency>

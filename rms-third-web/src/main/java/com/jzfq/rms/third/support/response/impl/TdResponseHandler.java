@@ -51,6 +51,9 @@ public class TdResponseHandler extends AbstractResponseHandler {
         if(apiResp == null){
             return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RRSPONSE_NULL,apiResp);
         }
+        if(!apiResp.getSuccess()){
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,apiResp.getReason_code());
+        }
         return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,apiResp);
     }
 
@@ -66,7 +69,7 @@ public class TdResponseHandler extends AbstractResponseHandler {
         if(result==null){
             return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RRSPONSE_NULL,result);
         }
-        if (result.getSuccess() != true){
+        if (!result.getSuccess()){
             logger.info("traceId={} 拉取同盾规则失败,result={}", traceId , JSONObject.toJSON(result));
             return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,result);
         }

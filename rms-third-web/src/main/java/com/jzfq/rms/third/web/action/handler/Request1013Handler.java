@@ -116,6 +116,7 @@ public class Request1013Handler extends AbstractRequestHandler {
         try {
             //手机在网时长
             ResponseResult responseResult = rong360Service.getPhoneNetworkLength(bizData);
+            responseResult.setTraceID(traceId);
             if(responseResult.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
                 interfaceCountCache.setFailure(isRepeatKey);
                 return responseResult;

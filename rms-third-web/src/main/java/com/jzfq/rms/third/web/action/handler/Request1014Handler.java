@@ -115,6 +115,7 @@ public class Request1014Handler extends AbstractRequestHandler {
         try {
             //手机在网状态
             ResponseResult responseResult = rong360Service.getPhonestatus(bizData);
+            responseResult.setTraceID(traceId);
             if(responseResult.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
                 interfaceCountCache.setFailure(isRepeatKey);
                 return responseResult;

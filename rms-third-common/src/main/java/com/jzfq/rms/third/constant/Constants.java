@@ -136,5 +136,10 @@ public class Constants
      */
     public final static String IS_DELETE_YES ="1";
     public final static String IS_DELETE_NO ="0";
+
+
+
+
+    public final static String STR_DIC_HEADER = "dictionary_prefix_";
      
 }

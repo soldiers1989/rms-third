@@ -101,7 +101,7 @@ public class HandleResponseTester {
 //        ResponseResult dto = rmsThirdService.send("123","1","","1017","01",map);
 //        System.out.println(dto);
 
-        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/inter");
         Map<String,Object> map = new HashMap<>();
         map.put("frontId","49");
         map.put("channelId","1");

@@ -28,12 +28,17 @@ public enum SendMethodEnum {
     RSLL01("13","Rong360SendHandler"),//融360-手机在网时长
     RSLL02("14","Rong360SendHandler"),//融360-手机在网状态
     RSLL03("15","Rong360SendHandler"),//融360-手机三要素
+    RSLL04("23","Rong360SendHandler"),//融360-手机在网时长-token
+    RSLL05("24","Rong360SendHandler"),//融360-手机在网状态-token
+    RSLL06("25","Rong360SendHandler"),//融360-手机三要素-token
 
     JIEAN01("16","JieanSendHandler"),//捷安-手机在网时长
     JIEAN02("17","JieanSendHandler"),//捷安-手机在网状态
     JIEAN03("18","JieanSendHandler"),//捷安-运营商实名
 
     BR03("21","BrSendHandler");//百融登陆事件
+
+
 
     private String code;
     private String name;

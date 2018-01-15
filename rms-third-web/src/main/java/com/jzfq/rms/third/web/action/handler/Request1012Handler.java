@@ -12,6 +12,7 @@ import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IRong360Service;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequest;
+import com.jzfq.rms.third.web.action.parser.Rong360Parser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,13 +44,14 @@ public class Request1012Handler extends AbstractRequestHandler {
     protected boolean checkParams(Map<String, Serializable> params) {
         String frontId = (String)params.get("frontId");
         String orderNo = (String)params.get("orderNo");
+        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)){
+            return false;
+        }
         String name = (String)params.get("name");
         String idNumber = (String)params.get("idNumber");
         String phone = (String)params.get("phone");
-        String custumType = (String)params.get("custumType");
-        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)||StringUtils.isBlank(name)
-                ||StringUtils.isBlank(idNumber)||StringUtils.isBlank(phone)
-                ||StringUtils.isBlank(custumType)){
+        if(StringUtils.isBlank(name)||StringUtils.isBlank(idNumber)
+                ||StringUtils.isBlank(phone)){
             return false;
         }
         return true;
@@ -81,6 +83,17 @@ public class Request1012Handler extends AbstractRequestHandler {
      * @throws Exception
      */
     private ResponseResult handler01(AbstractRequest request) throws Exception{
+        return getDataByThreeItems(request);
+    }
+
+
+    /**
+     * 根据三要素获取 手机实名制
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    private ResponseResult getDataByThreeItems(AbstractRequest request) throws Exception {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         // 数据库查询
@@ -101,7 +114,7 @@ public class Request1012Handler extends AbstractRequestHandler {
             return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb);
         }
         //远程调用
-        String isRepeatKey = getRpcControlKey(bizData);
+        String isRepeatKey = Rong360Parser.getRpcControlKey(bizData);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
@@ -116,7 +129,7 @@ public class Request1012Handler extends AbstractRequestHandler {
             }
             JSONObject resultJson = (JSONObject)responseResult.getData();
             // 转换rms-pull需要的值
-            String value = getValueOfRmsPull(resultJson);
+            String value = Rong360Parser.getValueOfRmsPull(resultJson);
             // 保存数据
             rong360Service.saveDatas(orderNo, PhoneDataTypeEnum.THREE_ITEM, value, resultJson, bizData);
             responseResult.setData(value);
@@ -127,41 +140,4 @@ public class Request1012Handler extends AbstractRequestHandler {
             throw e;
         }
     }
-
-    private String getValueOfRmsPull(JSONObject json){
-        JSONArray jsonObject0 = json.getJSONArray("tianji_api_jiao_mobilecheck3item_response");
-        JSONObject jsonObject1 = jsonObject0.getJSONObject(0);
-        JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
-        JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-        JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
-        JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
-        String jsonRsult0=jsonObject6.getString("code");
-        String jsonRsult="";
-        if("0".equals(jsonRsult0)){
-            jsonRsult = PhoneThreeItemEnum.AGREE.getCode();
-        }else if(StringUtils.equals("1",jsonRsult0)||
-                StringUtils.equals("4",jsonRsult0)||
-                StringUtils.equals("5",jsonRsult0)) {
-            jsonRsult = PhoneThreeItemEnum.UNAGREE.getCode();
-        }else{
-            jsonRsult = PhoneThreeItemEnum.OTHER.getCode();
-        }
-        return jsonRsult;
-    }
-
-    /**
-     * 远程调用key
-     * @param bizData
-     * @return
-     */
-    private String getRpcControlKey(Map<String, Object> bizData){
-        StringBuilder sb = new StringBuilder("rms_third_1012_");
-        sb.append(StringUtil.getStringOfObject(bizData.get("name")));
-        sb.append("_");
-        sb.append(StringUtil.getStringOfObject(bizData.get("idNumber")));
-        sb.append("_");
-        sb.append(StringUtil.getStringOfObject(bizData.get("phone")));
-        return sb.toString() ;
-    }
-
 }

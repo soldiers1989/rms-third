@@ -292,6 +292,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_JXL02.getCode());
 		TJxlTokenExample example = new TJxlTokenExample();
 		TJxlTokenExample.Criteria criteria = example.createCriteria();
+		example.setOrderByClause("dt_create_time desc");
 		criteria.andCIdNumberEqualTo(idNumber).andCTypeEqualTo(type).andDtCreateTimeGreaterThanOrEqualTo(getMinTime(outTime));
 		List<TJxlToken> list = tJxlTokenMapper.selectByExample(example);
 		if(CollectionUtils.isEmpty(list)){
@@ -599,6 +600,17 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		Map<String, Object> params = buildRequestParam(accessToken, token);
 		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL09.getCode(),commonParams,params);
 		return response;
+	}
+
+	@Override
+	public void insertToken(String idNumber, String token, String type) {
+		TJxlToken tJxlToken = new TJxlToken();
+		tJxlToken.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
+		tJxlToken.setcIdNumber(idNumber);
+		tJxlToken.setcToken(token);
+		tJxlToken.setcType(type);
+		tJxlToken.setDtCreateTime(new Date());
+		tJxlTokenMapper.insert(tJxlToken);
 	}
 
 	private Map<String, Object> buildRequestParam(String accessToken, String token) {

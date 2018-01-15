@@ -118,4 +118,7 @@ public interface IJxlDataService {
 	 * @return
 	 */
 	ResponseResult queryStatus(String token);
+
+
+	void insertToken(String idNumber, String token, String type);
 }

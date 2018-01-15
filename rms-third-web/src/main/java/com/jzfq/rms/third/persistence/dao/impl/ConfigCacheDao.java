@@ -58,6 +58,10 @@ public class ConfigCacheDao implements IConfigDao {
             put(InterfaceIdEnum.THIRD_JXL02.getCode(), "7");
             put(InterfaceIdEnum.THIRD_JXL03.getCode(), "7");
             put(InterfaceIdEnum.THIRD_JXL04.getCode(), "7");
+
+            put(InterfaceIdEnum.THIRD_JXL06.getCode(), "7");
+            put(InterfaceIdEnum.THIRD_JXL07.getCode(), "7");
+            put(InterfaceIdEnum.THIRD_JXL08.getCode(), "7");
         }
     };
     /**

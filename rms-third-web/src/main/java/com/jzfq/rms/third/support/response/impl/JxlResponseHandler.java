@@ -45,6 +45,19 @@ public class JxlResponseHandler extends AbstractResponseHandler {
         if(StringUtils.equals(InterfaceIdEnum.THIRD_JXL05.getCode(),interfaceId)){
             return handle05();
         }
+
+        if(StringUtils.equals(InterfaceIdEnum.THIRD_JXL06.getCode(),interfaceId)){
+            return handle06();
+        }
+        if(StringUtils.equals(InterfaceIdEnum.THIRD_JXL07.getCode(),interfaceId)){
+            return handle07();
+        }
+        if(StringUtils.equals(InterfaceIdEnum.THIRD_JXL08.getCode(),interfaceId)){
+            return handle08();
+        }
+        if(StringUtils.equals(InterfaceIdEnum.THIRD_JXL09.getCode(),interfaceId)){
+            return handle09();
+        }
         return (ResponseResult)params.get("response");
     }
 
@@ -186,7 +199,115 @@ public class JxlResponseHandler extends AbstractResponseHandler {
         }
         String data = jsonResult.getString("access_token");
         return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,data);
+    }
+
+
+
+    private ResponseResult handle09(){
+        Map<String ,Object> commonParams = (Map<String ,Object> )this.params.get("params");
+        String traceId = (String)commonParams.get("traceId");
+        ResponseResult response = (ResponseResult)params.get("response");
+        logger.info("traceId={} 获取聚信立报告状态{}",traceId,response);
+        if(null==response){
+            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,null);
+        }
+        if(response.getCode()!= ReturnCode.REQUEST_SUCCESS.code()){
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,response.getData());
+        }
+        String result = (String)response.getData();
+        JSONObject jsonResult= JSON.parseObject(result);
+        if(null==jsonResult){
+            return new ResponseResult(traceId, ReturnCode.REQUEST_THIRD_GETING,response.getData());
+        }
+        if(!jsonResult.getString("success").equalsIgnoreCase("true")){
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,jsonResult.getString("code"));
+        }
+
+        if(!StringUtils.equals(jsonResult.getString("code"), "30015")){
+
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE.code(),jsonResult.getString("code"),jsonResult.getString("code"));
+        }
+
+        JSONObject data= jsonResult.getJSONObject("data");
+//        if(StringUtils.equals(data.getString("status"),"抓取中")){
+//            return new ResponseResult(traceId, ReturnCode.REQUEST_THIRD_GETING,null);
+//        }
+        JSONArray details=data.getJSONArray("details");
+        if (details.size() != 0) {
+            for(int i = 0;i<details.size(); i++){
+                JSONObject json = details.getJSONObject(i);
+                String status = json.getString("websiteStatus");
+                if(StringUtils.endsWithIgnoreCase(status,"SUCCESS")){
+                    return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,details);
+                }
+            }
+
+        }
+        return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,response.getData());
 
     }
 
+    private ResponseResult handle06(){
+        Map<String ,Object> commonParams = (Map<String ,Object> )this.params.get("params");
+        String traceId = (String)commonParams.get("traceId");
+        ResponseResult response = (ResponseResult)params.get("response");
+        if(null==response){
+            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,null);
+        }
+        if(response.getCode()!= ReturnCode.REQUEST_SUCCESS.code()){
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,response.getData());
+        }
+        String result = (String)response.getData();
+        JSONObject jsonResult= JSON.parseObject(result);
+        if(null!=jsonResult && jsonResult.getString("success").equalsIgnoreCase("true")
+                && StringUtils.isNotBlank(jsonResult.getString("report_data"))){
+            String reportData=jsonResult.getString("report_data");
+            logger.info("成功获取用户报告, 长度[ "+reportData.length()+" ]");
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,reportData);
+        }
+        return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,response.getData());
+    }
+
+    private ResponseResult handle08(){
+        Map<String ,Object> commonParams = (Map<String ,Object> )this.params.get("params");
+        String traceId = (String)commonParams.get("traceId");
+        ResponseResult response = (ResponseResult)params.get("response");
+        if(null==response){
+            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,null);
+        }
+        if(response.getCode()!= ReturnCode.REQUEST_SUCCESS.code()){
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,response.getData());
+        }
+        String result = (String)response.getData();
+        JSONObject jsonResult= JSON.parseObject(result);
+        if(null!=jsonResult && jsonResult.getString("success").equalsIgnoreCase("true")
+                && StringUtils.isNotBlank(jsonResult.getString("raw_data"))){
+
+            String rawData=jsonResult.getString("raw_data");
+            logger.info("成功获取移动运营商数据, 长度[ "+rawData.length()+" ]");
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,rawData);
+        }
+        return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,response.getData());
+    }
+
+    private ResponseResult handle07(){
+        Map<String ,Object> commonParams = (Map<String ,Object> )this.params.get("params");
+        String traceId = (String)commonParams.get("traceId");
+        ResponseResult response = (ResponseResult)params.get("response");
+        if(null==response){
+            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,null);
+        }
+        if(response.getCode()!= ReturnCode.REQUEST_SUCCESS.code()){
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,response.getData());
+        }
+        String result = (String)response.getData();
+        JSONObject jsonResult= JSON.parseObject(result);
+        if(null!=jsonResult && jsonResult.getString("success").equalsIgnoreCase("true")
+                && StringUtils.isNotBlank(jsonResult.getString("raw_data"))){
+            String rawData=jsonResult.getString("raw_data");
+            logger.info("成功获取电商数据");
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,rawData);
+        }
+        return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE,response.getData());
+    }
 }

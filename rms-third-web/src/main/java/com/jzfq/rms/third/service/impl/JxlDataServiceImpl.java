@@ -2,15 +2,19 @@ package com.jzfq.rms.third.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jzfq.rms.third.common.domain.TJxlToken;
+import com.jzfq.rms.third.common.domain.example.TJxlTokenExample;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.constants.RmsConstants;
 import com.jzfq.rms.mongo.JxlData;
 import com.jzfq.rms.third.common.mongo.JuXinLiData;
 import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.persistence.dao.IJxlDao;
+import com.jzfq.rms.third.persistence.mapper.TJxlTokenMapper;
 import com.jzfq.rms.third.service.IJxlDataService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
@@ -48,6 +52,9 @@ public class JxlDataServiceImpl implements IJxlDataService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+	private TJxlTokenMapper tJxlTokenMapper;
 
 	@Override
 	public JSONObject queryJxlData(String customerName, String idCard, String phone,Map<String,Object> commonParams) {
@@ -108,7 +115,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
 		commonParams.put("appId", "");
 		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL01.getCode());
-		commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
 		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 		Map<String, Object> params = buildRequestParam(token, customerName, idCard, phone, category, "false");
 		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL01.getCode(),commonParams,params);
@@ -162,47 +169,6 @@ public class JxlDataServiceImpl implements IJxlDataService {
 				result.putAll(getJingDongInfo(ebusiness.getJSONObject("members").getJSONArray("transactions")));
 			}
 		}
-//		boolean mobile = false;
-//		boolean eBusiness = false;
-//		for(int i=0;i<details.size();i++){
-//			String status = details.getJSONObject(i).getString("websiteStatus");
-//			String category = details.getJSONObject(i).getString("category");
-//			if(!StringUtils.endsWithIgnoreCase(status,"SUCCESS")){
-//				continue;
-//			}
-//			if(StringUtils.equals(category,"mobile")&&!mobile){
-//				// 运营商
-//				mobile = true;
-//				ResponseResult rawResponse = getAccessRawData(token, customerName, idCard, phone, commonParams);
-//				if(rawResponse.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
-//					return statusResponse;
-//				}
-//				String rawData = (String)rawResponse.getData();
-//				if(StringUtils.isBlank(rawData)){
-//					continue;
-//				}
-//				saveResult(customerName,idCard,phone, JxlDataTypeEnum.JXL_DATA_TYPE_MOBILE,rawData);
-//			}
-//			if(StringUtils.equals(category,"e_business")&&!eBusiness){
-//				// 电商
-//				eBusiness = true;
-//				ResponseResult businessResponse = getAccessBusiRawData(token, customerName, idCard, phone, commonParams);
-//				if(businessResponse.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
-//					return statusResponse;
-//				}
-//				String ebusinessData = (String)businessResponse.getData();
-//				if(StringUtils.isBlank(ebusinessData)){
-//					continue;
-//				}
-//				saveResult(customerName,idCard,phone, JxlDataTypeEnum.JXL_DATA_TYPE_EBUSINESS,ebusinessData);
-//				JSONObject ebusiness = JSONObject.parseObject(ebusinessData);
-//				String code = ebusiness.getJSONObject("members").getString("error_code");
-//				if(StringUtils.equals("31200",code)){
-//					ebusiness.getJSONObject("members").getJSONObject("basic");
-//					result.putAll(getJingDongInfo(ebusiness.getJSONObject("members").getJSONArray("transactions")));
-//				}
-//			}
-//		}
 		response.setData(result);
 		saveResult(customerName,idCard,phone, JxlDataTypeEnum.JXL_DATA_TYPE_REPORT,reportData);
 		return response;
@@ -282,6 +248,23 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		}
 	}
 
+	/**
+	 * 保存结果
+	 * @param token
+	 * @param type
+	 * @param result
+	 */
+	@Override
+	public void saveResultByToken(String token, JxlDataTypeEnum type, String result) {
+		String traceId = TraceIDThreadLocal.getTraceID();
+		try {
+			ThreadProvider.getThreadPool().execute(()->{
+				saveJxlData(new JuXinLiData(token,type.code(),type.msg(), result));
+			});
+		}catch (Exception e){
+			jxlLog.error("traceId={} 保存数据 聚信立 异常",traceId, e);
+		}
+	}
 	@Autowired
 	IConfigDao configCacheDao;
 	/**
@@ -297,6 +280,24 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		List<JuXinLiData> report = mongoTemplate.find(new Query(Criteria.where("key").is(key)
 				.and("type").is(type).and("createTime").gte(getMinTime(outTime))), JuXinLiData.class);
 		return report;
+	}
+
+	/**
+	 * @param idNumber
+	 * @param type
+	 * @return
+	 */
+	@Override
+	public String getTokenByIdNumber(String idNumber, String type) {
+		Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_JXL02.getCode());
+		TJxlTokenExample example = new TJxlTokenExample();
+		TJxlTokenExample.Criteria criteria = example.createCriteria();
+		criteria.andCIdNumberEqualTo(idNumber).andCTypeEqualTo(type).andDtCreateTimeGreaterThanOrEqualTo(getMinTime(outTime));
+		List<TJxlToken> list = tJxlTokenMapper.selectByExample(example);
+		if(CollectionUtils.isEmpty(list)){
+			return null;
+		}
+		return list.get(0).getcToken();
 	}
 
 	/**
@@ -428,7 +429,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
 		commonParams.put("appId", "");
 		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL02.getCode());
-		commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
 		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL02.getCode(),commonParams,bizParams);
 		return  response;
@@ -442,7 +443,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
 		commonParams.put("appId", "");
 		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL03.getCode());
-		commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
 		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 		jxlLog.info("开始获取移动运营商数据, [ "+ name +" ], [ "+ phone +" ], [ "+ idCard +" ]");
 		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL03.getCode(),commonParams,bizParams);
@@ -461,7 +462,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
 		commonParams.put("appId", "");
 		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL04.getCode());
-		commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
 		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 		jxlLog.info("开始获取电商数据, [ "+ name +" ], [ "+ phone +" ], [ "+ idCard +" ]");
 		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL04.getCode(),commonParams,bizParams);
@@ -484,7 +485,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
 		commonParams.put("appId", "");
 		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL05.getCode());
-		commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
 		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL05.getCode(),commonParams,params);
 		if(response!=null&&response.getCode()== ReturnCode.REQUEST_SUCCESS.code()){
@@ -525,4 +526,148 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		jxlLog.info("入库结束...");
 	}
 
+	@Override
+	public ResponseResult queryAccessReportData(Map<String, Object> commonParams, String token, String type) {
+		ResponseResult statusResponse = queryStatus(token);
+		jxlLog.info("traceId={} 聚信立获取用户报告状态",TraceIDThreadLocal.getTraceID(),statusResponse);
+		if(statusResponse.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+			return statusResponse;
+		}
+
+		String accessToken = getAccessToken();
+		if(StringUtils.isBlank(token)){
+			return null;
+		}
+		//用户报告
+		ResponseResult response = getAccessReportData(accessToken, token, commonParams);
+		if(response.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+			return response;
+		}
+		// 保存数据
+		String reportData = (String)response.getData();
+		if(reportData==null){
+			return response;
+		}
+		JSONObject report = JSONObject.parseObject(reportData);
+		JSONObject result = new JSONObject();
+		result.put("contact_list",report.get("contact_list"));
+		result.put("application_check",report.get("application_check"));
+		result.put("contact_region",report.get("contact_region"));
+		if(StringUtils.equals(type,"3")){
+			// 运营商
+			ResponseResult rawResponse = getAccessRawData(accessToken, token, commonParams);
+			String rawData = (String)rawResponse.getData();
+			if(rawResponse.getCode()==ReturnCode.REQUEST_SUCCESS.code()&&StringUtils.isNotBlank(rawData)){
+				saveResultByToken(token, JxlDataTypeEnum.JXL_DATA_TYPE_MOBILE,rawData);
+			}
+		}
+		if(StringUtils.equals(type,"2")){
+			// 电商
+			ResponseResult businessResponse = getAccessBusiRawData(accessToken, token, commonParams);
+			String ebusinessData = (String)businessResponse.getData();
+			if(businessResponse.getCode()==ReturnCode.REQUEST_SUCCESS.code()&&StringUtils.isNotBlank(ebusinessData)){
+				saveResultByToken(token, JxlDataTypeEnum.JXL_DATA_TYPE_EBUSINESS,ebusinessData);
+				JSONObject ebusiness = JSONObject.parseObject(ebusinessData);
+				String code = ebusiness.getJSONObject("members").getString("error_code");
+				if(StringUtils.equals("31200",code)){
+					ebusiness.getJSONObject("members").getJSONObject("basic");
+					result.putAll(getJingDongInfo(ebusiness.getJSONObject("members").getJSONArray("transactions")));
+				}
+			}
+		}
+		response.setData(result);
+		saveResultByToken(token, JxlDataTypeEnum.JXL_DATA_TYPE_REPORT,reportData);
+		return response;
+	}
+
+	@Override
+	public ResponseResult queryStatus(String token) {
+
+		String url = jxlDao.getAccessReportStatusByTokenUrl();
+		String accessToken = getAccessToken();
+		if(StringUtils.isBlank(token)){
+			return null;
+		}
+
+		Map<String, Object> commonParams = new HashMap<>();
+		commonParams.put("url",url);
+		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+		commonParams.put("appId", "");
+		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL09.getCode());
+		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+		Map<String, Object> params = buildRequestParam(accessToken, token);
+		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL09.getCode(),commonParams,params);
+		return response;
+	}
+
+	private Map<String, Object> buildRequestParam(String accessToken, String token) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("access_token", accessToken);
+		params.put("client_secret", clientSecret);
+		params.put("token", token);
+		return params;
+	}
+
+	/**
+	 * 获取用户报告 token
+	 * @param accessToken
+	 * @param token
+	 * @param commonParams
+	 * @return
+	 */
+	private ResponseResult getAccessReportData(String accessToken, String token,Map<String,Object>commonParams){
+		String url=jxlDao.getAccessReportDataByTokenUrl();
+		Map<String, Object> bizParams = buildRequestParam(accessToken, token);
+		commonParams.put("url",url);
+		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+		commonParams.put("appId", "");
+		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL06.getCode());
+		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL06.getCode(),commonParams,bizParams);
+		return  response;
+	}
+
+	/**
+	 * 运营商数据 token
+	 * @param accessToken
+	 * @param token
+	 * @param commonParams
+	 * @return
+	 */
+	private ResponseResult getAccessRawData(String accessToken, String token,Map<String,Object>commonParams){
+		String url=jxlDao.getAccessRawDataByTokenUrl();
+		Map<String, Object> bizParams = buildRequestParam(accessToken, token);
+		commonParams.put("url",url);
+		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+		commonParams.put("appId", "");
+		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL08.getCode());
+		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+		jxlLog.info("开始获取移动运营商数据 token:{}",token);
+		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL08.getCode(),commonParams,bizParams);
+		return response;
+	}
+
+	/**
+	 * 电商数据 token
+	 * @param accessToken
+	 * @param token
+	 * @param commonParams
+	 * @return
+	 */
+	private ResponseResult getAccessBusiRawData(String accessToken, String token,Map<String,Object>commonParams){
+		String url=jxlDao.getAccessBusiRawDataByTokenUrl();
+		Map<String, Object> bizParams = buildRequestParam(accessToken, token);
+		commonParams.put("url",url);
+		commonParams.put("targetId", SystemIdEnum.THIRD_JXL.getCode());
+		commonParams.put("appId", "");
+		commonParams.put("interfaceId", InterfaceIdEnum.THIRD_JXL07.getCode());
+		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+		jxlLog.info("开始获取电商数据,token{}",token);
+		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL07.getCode(),commonParams,bizParams);
+		return response;
+	}
 }

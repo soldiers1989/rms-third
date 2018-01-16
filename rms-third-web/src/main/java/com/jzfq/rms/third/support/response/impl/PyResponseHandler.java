@@ -63,7 +63,8 @@ public class PyResponseHandler extends AbstractResponseHandler {
         JSONObject checkInfo = data.getJSONObject("carCheckInfo");
         if (checkInfo.containsKey("errorCode")) {
             result = new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE,data);
-            result.setMsg(checkInfo.getString("errorCode"));
+            result.setMsg(checkInfo.getString("errorCode")
+                    + ":" + checkInfo.getString("errorMessage"));
             return result;
         }
         return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,data);
@@ -128,14 +129,12 @@ public class PyResponseHandler extends AbstractResponseHandler {
                 if(!StringUtils.equals(node.getNodeName(),"carCheckInfo")){
                     continue;
                 }
-                System.out.println(i + ":" + node.getNodeType());
                 if (node.getNodeType() != Node.ELEMENT_NODE) {
                     continue;
                 }
                 if (node.hasAttributes()) { //判断该节点是否有属性
                     NamedNodeMap nnmap = node.getAttributes();//获取属性
                     Node treatResult = nnmap.getNamedItem("treatResult");
-                    System.out.println(i + ":" + treatResult.getNodeValue());
                     return treatResult.getNodeValue();
                 }
             }

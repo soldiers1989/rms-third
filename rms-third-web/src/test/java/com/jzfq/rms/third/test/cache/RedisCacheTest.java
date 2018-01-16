@@ -1,6 +1,8 @@
 package com.jzfq.rms.third.test.cache;
 
+import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import org.junit.Test;
@@ -37,10 +39,13 @@ public class RedisCacheTest {
                 .append("-").append(clientType).append("-").append(operationType);
         return StringUtil.getStringOfObject(prefixCache.readConfig(key.toString()));
     }
-
+    @Autowired
+    IConfigDao configCacheDao;
     @Test
     public void test(){
-        System.out.print(getEventId("1","1","1","5"));
+        Object gpj = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
+        System.out.println(gpj);
+//        System.out.print(getEventId("1","1","1","5"));
 //        interfaceCountCache.setValue("debug","false");
 //        prefixCache.setConfig("debug","false");
 //        System.out.println(prefixCache.readConfig("debug"));

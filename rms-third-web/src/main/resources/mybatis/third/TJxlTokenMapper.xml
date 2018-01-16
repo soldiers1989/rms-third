@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TJxlTokenMapper">
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TJxlToken">
+    <id column="c_id" jdbcType="VARCHAR" property="cId" />
+    <result column="c_id_number" jdbcType="VARCHAR" property="cIdNumber" />
+    <result column="c_type" jdbcType="CHAR" property="cType" />
+    <result column="c_token" jdbcType="CHAR" property="cToken" />
+    <result column="dt_create_time" jdbcType="TIMESTAMP" property="dtCreateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    c_id, c_id_number, c_type, c_token, dt_create_time
+  </sql>
+  <select id="selectByExample" parameterType="com.jzfq.rms.third.common.domain.example.TJxlTokenExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_jxl_token
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_jxl_token
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_jxl_token
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TJxlTokenExample">
+    delete from t_jxl_token
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TJxlToken">
+    insert into t_jxl_token (c_id, c_id_number, c_type, 
+      c_token, dt_create_time)
+    values (#{cId,jdbcType=VARCHAR}, #{cIdNumber,jdbcType=VARCHAR}, #{cType,jdbcType=CHAR}, 
+      #{cToken,jdbcType=CHAR}, #{dtCreateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TJxlToken">
+    insert into t_jxl_token
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        c_id,
+      </if>
+      <if test="cIdNumber != null">
+        c_id_number,
+      </if>
+      <if test="cType != null">
+        c_type,
+      </if>
+      <if test="cToken != null">
+        c_token,
+      </if>
+      <if test="dtCreateTime != null">
+        dt_create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdNumber != null">
+        #{cIdNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cType != null">
+        #{cType,jdbcType=CHAR},
+      </if>
+      <if test="cToken != null">
+        #{cToken,jdbcType=CHAR},
+      </if>
+      <if test="dtCreateTime != null">
+        #{dtCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TJxlTokenExample" resultType="java.lang.Long">
+    select count(*) from t_jxl_token
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_jxl_token
+    <set>
+      <if test="record.cId != null">
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIdNumber != null">
+        c_id_number = #{record.cIdNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cType != null">
+        c_type = #{record.cType,jdbcType=CHAR},
+      </if>
+      <if test="record.cToken != null">
+        c_token = #{record.cToken,jdbcType=CHAR},
+      </if>
+      <if test="record.dtCreateTime != null">
+        dt_create_time = #{record.dtCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_jxl_token
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_id_number = #{record.cIdNumber,jdbcType=VARCHAR},
+      c_type = #{record.cType,jdbcType=CHAR},
+      c_token = #{record.cToken,jdbcType=CHAR},
+      dt_create_time = #{record.dtCreateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TJxlToken">
+    update t_jxl_token
+    <set>
+      <if test="cIdNumber != null">
+        c_id_number = #{cIdNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cType != null">
+        c_type = #{cType,jdbcType=CHAR},
+      </if>
+      <if test="cToken != null">
+        c_token = #{cToken,jdbcType=CHAR},
+      </if>
+      <if test="dtCreateTime != null">
+        dt_create_time = #{dtCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TJxlToken">
+    update t_jxl_token
+    set c_id_number = #{cIdNumber,jdbcType=VARCHAR},
+      c_type = #{cType,jdbcType=CHAR},
+      c_token = #{cToken,jdbcType=CHAR},
+      dt_create_time = #{dtCreateTime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

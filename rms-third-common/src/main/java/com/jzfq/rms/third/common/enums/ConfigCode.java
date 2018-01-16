@@ -11,6 +11,12 @@ public enum ConfigCode {
     THIRD_URL_JXL_ACCESSREPORTDATA("com.jzfq.rms.third.url.jxl.accessreportdata", "用户报告数据接口"),
     THIRD_URL_JXL_ACCESSRAWDATA("com.jzfq.rms.third.url.jxl.accessrawdata", "移动运营商数据数据接口"),
     THIRD_URL_JXL_ACCESSBUSIRAWDATA("com.jzfq.rms.third.url.jxl.accessbusirawdata", "电商数据接口"),
+
+    THIRD_URL_JXL_ACCESSREPORTSTATUS_TOKEN("com.jzfq.rms.third.url.jxl.reportstatusbytoken", "用户报告状态接口"),
+    THIRD_URL_JXL_ACCESSREPORTDATA_TOKEN("com.jzfq.rms.third.url.jxl.reportdatabytoken", "用户报告数据接口"),
+    THIRD_URL_JXL_ACCESSRAWDATA_TOKEN("com.jzfq.rms.third.url.jxl.rawdatabytoken", "移动运营商数据数据接口"),
+    THIRD_URL_JXL_ACCESSBUSIRAWDATA_TOKEN("com.jzfq.rms.third.url.jxl.busirawdatabytoken", "电商数据接口"),
+
     THIRD_URL_TD_LOGINTDSCORE("com.jzfq.rms.third.url.td.logintdscore", "同盾登录决策分接口"),
     THIRD_URL_TD_ADDTDFRAUDBLACK("com.jzfq.rms.third.url.td.addtdfraudblack", "添加反欺诈黑明代"),
     THIRD_URL_GPJ_UPDATE_CAR_MODEL("gongpingjia.detail.model.apiUrl", "公平价更新车型库接口"),

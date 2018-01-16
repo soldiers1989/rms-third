@@ -24,6 +24,10 @@ public enum InterfaceIdEnum {
     THIRD_JXL03("10","聚信立-移动运营商数据"),
     THIRD_JXL04("11","聚信立-电商数据"),
     THIRD_JXL05("12","聚信立-Token获取"),
+    THIRD_JXL06("23","聚信立-用户报告-token"),//聚信立-用户报告-token
+    THIRD_JXL07("24","聚信立-电商数据-token"),//聚信立-电商数据-token
+    THIRD_JXL08("25","聚信立-移动运营商数据-token"),//聚信立-运营商数据-token
+    THIRD_JXL09("26","聚信立-用户状态-token"),//聚信立-用户状态-token
 
     THIRD_RSLL01("13","融360-手机在网时长"),
     THIRD_RSLL02("14","融360-手机在网状态"),

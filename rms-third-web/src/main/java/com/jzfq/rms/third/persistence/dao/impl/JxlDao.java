@@ -28,92 +28,80 @@ public class JxlDao implements IJxlDao{
     private static String accessReportDataUrl ;
     private static String accessRawDataUrl ;
 
+    private static String accessReportStatusByTokenUrl ;
+    private static String accessBusiRawDataByTokenUrl ;
+    private static String accessReportDataByTokenUrl ;
+    private static String accessRawDataByTokenUrl ;
+
     @Autowired
     TSysConfigMapper tSysConfigMapper;
 
     @Override
     public String getAccessTokenUrl() {
-        if(StringUtils.isBlank(accessTokenUrl)){
-            TSysConfigExample example = new TSysConfigExample();
-            TSysConfigExample.Criteria Criteria=example.createCriteria();
-            Criteria.andCKeyEqualTo(THIRD_URL_JXL_ACCESSTOKEN.code()).andCLevelEqualTo(SYSTEM_CONFIG.code())
-                    .andCDelEqualTo(IS_DELETE_NO);
-            List<TSysConfig> tSysConfig = tSysConfigMapper.selectByExample(example);
-            if(CollectionUtils.isEmpty(tSysConfig)){
-                return null;
-            }
-            accessTokenUrl = tSysConfig.get(0).getcValue();
-            return accessTokenUrl;
-        }
+        accessTokenUrl = getPrefix(accessTokenUrl, THIRD_URL_JXL_ACCESSTOKEN.code());
         return accessTokenUrl;
     }
 
     @Override
     public String getAccessReportStatusUrl() {
-        if(StringUtils.isBlank(accessReportStatusUrl)){
-            TSysConfigExample example = new TSysConfigExample();
-            TSysConfigExample.Criteria Criteria=example.createCriteria();
-            Criteria.andCKeyEqualTo(THIRD_URL_JXL_ACCESSREPORTSTATUS.code()).andCLevelEqualTo(SYSTEM_CONFIG.code())
-                    .andCDelEqualTo(IS_DELETE_NO);
-            List<TSysConfig> tSysConfig = tSysConfigMapper.selectByExample(example);
-            if(CollectionUtils.isEmpty(tSysConfig)){
-                return null;
-            }
-            accessReportStatusUrl = tSysConfig.get(0).getcValue();
-            return accessReportStatusUrl;
-        }
+        accessReportStatusUrl = getPrefix(accessReportStatusUrl, THIRD_URL_JXL_ACCESSREPORTSTATUS.code());
         return accessReportStatusUrl;
     }
 
     @Override
     public String getAccessReportDataUrl() {
-        if(StringUtils.isBlank(accessReportDataUrl)){
-            TSysConfigExample example = new TSysConfigExample();
-            TSysConfigExample.Criteria Criteria=example.createCriteria();
-            Criteria.andCKeyEqualTo(THIRD_URL_JXL_ACCESSREPORTDATA.code()).andCLevelEqualTo(SYSTEM_CONFIG.code())
-                    .andCDelEqualTo(IS_DELETE_NO);
-            List<TSysConfig> tSysConfig = tSysConfigMapper.selectByExample(example);
-            if(CollectionUtils.isEmpty(tSysConfig)){
-                return null;
-            }
-            accessReportDataUrl = tSysConfig.get(0).getcValue();
-            return accessReportDataUrl;
-        }
+        accessReportDataUrl = getPrefix(accessReportDataUrl, THIRD_URL_JXL_ACCESSREPORTDATA.code());
         return accessReportDataUrl;
     }
 
     @Override
     public String getAccessRawDataUrl() {
-        if(StringUtils.isBlank(accessRawDataUrl)){
-            TSysConfigExample example = new TSysConfigExample();
-            TSysConfigExample.Criteria Criteria=example.createCriteria();
-            Criteria.andCKeyEqualTo(THIRD_URL_JXL_ACCESSRAWDATA.code()).andCLevelEqualTo(SYSTEM_CONFIG.code())
-                    .andCDelEqualTo(IS_DELETE_NO);
-            List<TSysConfig> tSysConfig = tSysConfigMapper.selectByExample(example);
-            if(CollectionUtils.isEmpty(tSysConfig)){
-                return null;
-            }
-            accessRawDataUrl = tSysConfig.get(0).getcValue();
-            return accessRawDataUrl;
-        }
+        accessRawDataUrl = getPrefix(accessRawDataUrl, THIRD_URL_JXL_ACCESSRAWDATA.code());
         return accessRawDataUrl;
     }
 
     @Override
     public String getAccessBusiRawDataUrl() {
-        if(StringUtils.isBlank(accessBusiRawDataUrl)){
+        accessBusiRawDataUrl = getPrefix(accessBusiRawDataUrl, THIRD_URL_JXL_ACCESSBUSIRAWDATA.code());
+        return accessBusiRawDataUrl;
+    }
+
+    @Override
+    public String getAccessReportStatusByTokenUrl() {
+        accessReportStatusByTokenUrl = getPrefix(accessReportStatusByTokenUrl, THIRD_URL_JXL_ACCESSREPORTSTATUS_TOKEN.code());
+        return accessReportStatusByTokenUrl;
+    }
+
+    @Override
+    public String getAccessReportDataByTokenUrl() {
+        accessReportDataByTokenUrl = getPrefix(accessReportDataByTokenUrl, THIRD_URL_JXL_ACCESSREPORTDATA_TOKEN.code());
+        return accessReportDataByTokenUrl;
+    }
+
+    @Override
+    public String getAccessRawDataByTokenUrl() {
+        accessRawDataByTokenUrl = getPrefix(accessRawDataByTokenUrl, THIRD_URL_JXL_ACCESSRAWDATA_TOKEN.code());
+        return accessRawDataByTokenUrl;
+    }
+
+    @Override
+    public String getAccessBusiRawDataByTokenUrl() {
+        accessBusiRawDataByTokenUrl = getPrefix(accessBusiRawDataByTokenUrl, THIRD_URL_JXL_ACCESSBUSIRAWDATA_TOKEN.code());
+        return accessBusiRawDataByTokenUrl;
+    }
+
+    private String getPrefix(String cache, String key){
+        if(StringUtils.isBlank(cache)){
             TSysConfigExample example = new TSysConfigExample();
             TSysConfigExample.Criteria Criteria=example.createCriteria();
-            Criteria.andCKeyEqualTo(THIRD_URL_JXL_ACCESSBUSIRAWDATA.code()).andCLevelEqualTo(SYSTEM_CONFIG.code())
+            Criteria.andCKeyEqualTo(key).andCLevelEqualTo(SYSTEM_CONFIG.code())
                     .andCDelEqualTo(IS_DELETE_NO);
             List<TSysConfig> tSysConfig = tSysConfigMapper.selectByExample(example);
             if(CollectionUtils.isEmpty(tSysConfig)){
                 return null;
             }
-            accessBusiRawDataUrl = tSysConfig.get(0).getcValue();
-            return accessBusiRawDataUrl;
+            return tSysConfig.get(0).getcValue();
         }
-        return accessBusiRawDataUrl;
+        return cache;
     }
-
 }

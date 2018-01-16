@@ -14,4 +14,12 @@ public interface IJxlDao {
     String getAccessRawDataUrl();
 
     String getAccessBusiRawDataUrl();
+
+    String getAccessReportStatusByTokenUrl();
+
+    String getAccessReportDataByTokenUrl();
+
+    String getAccessRawDataByTokenUrl();
+
+    String getAccessBusiRawDataByTokenUrl();
 }

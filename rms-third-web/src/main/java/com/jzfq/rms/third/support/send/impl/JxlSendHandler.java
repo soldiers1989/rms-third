@@ -38,6 +38,18 @@ public class JxlSendHandler extends AbstractSendHandler {
         if(StringUtils.equals(InterfaceIdEnum.THIRD_JXL05.getCode(),(String)this.getParams().get("interfaceId"))){
             return getJXLData05();
         }
+        if(StringUtils.equals(InterfaceIdEnum.THIRD_JXL06.getCode(),(String)this.getParams().get("interfaceId"))){
+            return getJXLData06();
+        }
+        if(StringUtils.equals(InterfaceIdEnum.THIRD_JXL07.getCode(),(String)this.getParams().get("interfaceId"))){
+            return getJXLData07();
+        }
+        if(StringUtils.equals(InterfaceIdEnum.THIRD_JXL08.getCode(),(String)this.getParams().get("interfaceId"))){
+            return getJXLData08();
+        }
+        if(StringUtils.equals(InterfaceIdEnum.THIRD_JXL09.getCode(),(String)this.getParams().get("interfaceId"))){
+            return getJXLData09();
+        }
 
         return null;
     }
@@ -59,7 +71,7 @@ public class JxlSendHandler extends AbstractSendHandler {
         String apiUrl = this.getParams().get("url").toString();
         long start=System.currentTimeMillis();
         ResponseResult response= HttpConnectionManager.doGet(apiUrl, getBizParams());
-        logger.info("jxl 状态获取 执行结束, 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
+        logger.info("jxl 状态获取 执行结束, 耗时[{}]ms", System.currentTimeMillis()-start);
         return response;
     }
 
@@ -67,7 +79,7 @@ public class JxlSendHandler extends AbstractSendHandler {
         long start=System.currentTimeMillis();
         String apiUrl = this.getParams().get("url").toString();
         ResponseResult response=HttpConnectionManager.doGet(apiUrl, getBizParams());
-        logger.info("jxl 用户报告 执行结束, 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
+        logger.info("jxl 用户报告 执行结束, 耗时[{}]ms", System.currentTimeMillis()-start);
         return response;
     }
 
@@ -75,7 +87,7 @@ public class JxlSendHandler extends AbstractSendHandler {
         long start=System.currentTimeMillis();
         String apiUrl = this.getParams().get("url").toString();
         ResponseResult response=HttpConnectionManager.doGet(apiUrl, getBizParams());
-        logger.info("jxl 移动运营商数据 执行结束, 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
+        logger.info("jxl 移动运营商数据 执行结束, 耗时[{}]ms", System.currentTimeMillis()-start);
         return response;
     }
 
@@ -83,7 +95,7 @@ public class JxlSendHandler extends AbstractSendHandler {
         long start=System.currentTimeMillis();
         String apiUrl = this.getParams().get("url").toString();
         ResponseResult response=HttpConnectionManager.doGet(apiUrl, getBizParams());
-        logger.info("jxl 电商数据 执行结束, 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
+        logger.info("jxl 电商数据 执行结束, 耗时[{}]ms",System.currentTimeMillis()-start);
         return response;
     }
 
@@ -92,7 +104,40 @@ public class JxlSendHandler extends AbstractSendHandler {
         String apiUrl = this.getParams().get("url").toString();
         logger.info("开始获取Token...");
         ResponseResult response=HttpConnectionManager.doGet(apiUrl, getBizParams());
-        logger.info("执行结束 获取Token 返回[ "+response+" ], 耗时[ "+(System.currentTimeMillis()-start)+" ]ms");
+        logger.info("执行结束 获取Token 返回[{}], 耗时[{}]ms", response, System.currentTimeMillis()-start);
         return  response;
+    }
+
+
+    private ResponseResult getJXLData06(){
+        long start=System.currentTimeMillis();
+        String apiUrl = this.getParams().get("url").toString();
+        ResponseResult response=HttpConnectionManager.doGet(apiUrl, getBizParams());
+        logger.info("jxl 用户报告 执行结束, 耗时[{}]ms", System.currentTimeMillis()-start);
+        return response;
+    }
+
+    private ResponseResult getJXLData08(){
+        long start=System.currentTimeMillis();
+        String apiUrl = this.getParams().get("url").toString();
+        ResponseResult response=HttpConnectionManager.doGet(apiUrl, getBizParams());
+        logger.info("jxl 移动运营商数据 执行结束, 耗时[{}]ms", System.currentTimeMillis()-start);
+        return response;
+    }
+
+    private ResponseResult getJXLData07(){
+        long start=System.currentTimeMillis();
+        String apiUrl = this.getParams().get("url").toString();
+        ResponseResult response=HttpConnectionManager.doGet(apiUrl, getBizParams());
+        logger.info("jxl 电商数据 执行结束, 耗时[{}]ms", System.currentTimeMillis()-start);
+        return response;
+    }
+
+    private ResponseResult getJXLData09(){
+        String apiUrl = this.getParams().get("url").toString();
+        long start=System.currentTimeMillis();
+        ResponseResult response= HttpConnectionManager.doGet(apiUrl, getBizParams());
+        logger.info("jxl 状态获取 执行结束, 耗时[{}]ms",System.currentTimeMillis()-start);
+        return response;
     }
 }

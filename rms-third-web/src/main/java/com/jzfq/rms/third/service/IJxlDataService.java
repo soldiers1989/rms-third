@@ -52,7 +52,7 @@ public interface IJxlDataService {
 	 * @param commonParams
 	 * @return
 	 */
-	ResponseResult queryAccessRawData(String customerName, String idCard, String phone , Map<String,Object> commonParams );
+	ResponseResult queryAccessRawData(String customerName, String idCard, String phone , Map<String,Object> commonParams);
 	/**
 	 * 获取电商数据
 	 * @param customerName
@@ -72,6 +72,8 @@ public interface IJxlDataService {
 	 */
 	void saveResult(String name, String idCard, String phone, JxlDataTypeEnum type, String result);
 
+	void saveResultByToken(String token, JxlDataTypeEnum type, String result);
+
 	/**
 	 * 根据key和数据类型获取聚信立数据
 	 * @param key
@@ -79,6 +81,13 @@ public interface IJxlDataService {
 	 * @return
 	 */
 	List<JuXinLiData> getJuXinLiDatas(String key, String type, String interfaceId);
+
+	/**
+	 *
+	 * @param idNumber
+	 * @return
+	 */
+	String getTokenByIdNumber(String idNumber, String type);
 
 	/**
 	 * 根据key和用户报告返回rms-pull所需数据
@@ -93,4 +102,23 @@ public interface IJxlDataService {
 	 * @return
 	 */
 	JSONObject getBusinessDataAnalysis(String businessDatas,String phone);
+
+	/**
+	 * 获取用户状态数据 电商
+	 * @param commonParams
+	 * @param token
+	 * @param type
+	 * @return
+	 */
+	ResponseResult queryAccessReportData(Map<String, Object> commonParams, String token, String type);
+
+	/**
+	 * 获取报告状态
+	 * @param token
+	 * @return
+	 */
+	ResponseResult queryStatus(String token);
+
+
+	void insertToken(String idNumber, String token, String type);
 }

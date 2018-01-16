@@ -119,7 +119,7 @@ public class BrPostService {
      * @return
      */
     private String getStrategyId(String channelId, String financialProductId, String operationType, String clientType){
-        StringBuilder key = new StringBuilder("dictionary_prefix_");
+        StringBuilder key = new StringBuilder(Constants.STR_DIC_HEADER);
         key.append(STR_BR_REDIS_KEY).append("_");
         key.append(channelId).append("-").append(financialProductId)
                 .append("-").append(clientType).append("-").append(operationType);

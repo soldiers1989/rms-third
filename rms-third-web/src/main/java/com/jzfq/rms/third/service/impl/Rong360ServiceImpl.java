@@ -41,7 +41,7 @@ import java.util.*;
 @Service
 public class Rong360ServiceImpl implements IRong360Service {
 
-	private static final Logger log = LoggerFactory.getLogger(JieAnServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(Rong360ServiceImpl.class);
 	/**
 	 * 为机构分配的appid，通常是7位数字
 	 */

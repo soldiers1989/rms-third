@@ -24,6 +24,10 @@ public enum SendMethodEnum {
     JXL03("10","JxlSendHandler"),//聚信立-移动运营商数据
     JXL04("11","JxlSendHandler"),//聚信立-电商数据
     JXL05("12","JxlSendHandler"),//聚信立-Token获取
+    JXL06("23","JxlSendHandler"),//聚信立-用户报告-token
+    JXL07("24","JxlSendHandler"),//聚信立-电商数据-token
+    JXL08("25","JxlSendHandler"),//聚信立-运营商数据-token
+    JXL09("26","JxlSendHandler"),//聚信立-用户状态-token
 
     RSLL01("13","Rong360SendHandler"),//融360-手机在网时长
     RSLL02("14","Rong360SendHandler"),//融360-手机在网状态
@@ -34,6 +38,8 @@ public enum SendMethodEnum {
     JIEAN03("18","JieanSendHandler"),//捷安-运营商实名
 
     BR03("21","BrSendHandler");//百融登陆事件
+
+
 
     private String code;
     private String name;

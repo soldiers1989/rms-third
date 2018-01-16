@@ -6,9 +6,11 @@ import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.Base64;
 import com.jzfq.rms.third.common.utils.CompressStringUtil;
 import com.jzfq.rms.third.support.response.AbstractResponseHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -32,10 +34,7 @@ public class PyResponseHandler extends AbstractResponseHandler {
     @Override
     public ResponseResult getResult() {
         Map<String ,Object> commonParams = (Map<String ,Object> )this.params.get("params");
-        Map<String ,Object> bizParams = (Map<String ,Object> )this.params.get("bizParams");
         String traceId = (String)commonParams.get("traceId");
-        Long taskId = (Long)commonParams.get("taskId");
-
         ResponseResult response = (ResponseResult)params.get("response");
         if(response == null){
             return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL,null);
@@ -64,7 +63,7 @@ public class PyResponseHandler extends AbstractResponseHandler {
         JSONObject checkInfo = data.getJSONObject("carCheckInfo");
         if (checkInfo.containsKey("errorCode")) {
             result = new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE,data);
-            result.setMsg(checkInfo.getString("errorCode")+checkInfo.getString("errorMessage"));
+            result.setMsg(checkInfo.getString("errorCode"));
             return result;
         }
         return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,data);
@@ -87,28 +86,23 @@ public class PyResponseHandler extends AbstractResponseHandler {
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document document = db.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
-//            Document document = db.parse(new ByteArrayInputStream(xml.getBytes("GBK)));
             Node node = document.getFirstChild();
             String nodeName = node.getNodeName();
             if ("cisReports".equals(nodeName)) {
                 //1、个人车辆信息核查
                 JSONObject carCheckInfo = listNode(document, "carCheckInfo");
-                if(carCheckInfo.size() == 0){
+                String treatResult = getTreatResult(document);
+                if(StringUtils.isNotBlank(treatResult)&&!StringUtils.equals(treatResult, "1")){
+                    JSONObject arr = new JSONObject();
+                    arr.put("errorCode", treatResult);
+                    data.put("carCheckInfo", arr);
+                }else if(carCheckInfo.size() == 0){
                     JSONObject arr = new JSONObject();
                     arr.put("errorCode", "100001");
-                    arr.put("nameCheckResult","远程返回的结果为空");
-                    arr.put("documentNoCheckResult","远程返回的结果为空");
-                    arr.put("licenseNoCheckResult","远程返回的结果为空");
-                    arr.put("carTypeCheckResult","远程返回的结果为空");
                     data.put("carCheckInfo", arr);
                 }else{
                     data.put("carCheckInfo", carCheckInfo);
                 }
-
-//                JSONObject carStatusInfo = listNode(document,"carStatusInfo");
-//                data.put("carStatusInfo", carStatusInfo);
-//                JSONObject carInfo = listNode(document,"carInfo");
-//                data.put("carInfo", carInfo);
             } else {
                 data = listNode(document,"result");
             }
@@ -117,6 +111,36 @@ public class PyResponseHandler extends AbstractResponseHandler {
             logger.error("获取鹏元信息异常：",e);
         }
         return data;
+    }
+
+    /**
+     * 获取返回结果 代码
+     * @param document
+     * @return
+     */
+    private String getTreatResult(Document document) {
+        NodeList list = document.getElementsByTagName("cisReport");
+        if(list != null && list.getLength() > 0){
+            Node temp = list.item(0);
+            NodeList cisReport = temp.getChildNodes();
+            for(int i=0;i<cisReport.getLength();i++) {
+                Node node = cisReport.item(i);
+                if(!StringUtils.equals(node.getNodeName(),"carCheckInfo")){
+                    continue;
+                }
+                System.out.println(i + ":" + node.getNodeType());
+                if (node.getNodeType() != Node.ELEMENT_NODE) {
+                    continue;
+                }
+                if (node.hasAttributes()) { //判断该节点是否有属性
+                    NamedNodeMap nnmap = node.getAttributes();//获取属性
+                    Node treatResult = nnmap.getNamedItem("treatResult");
+                    System.out.println(i + ":" + treatResult.getNodeValue());
+                    return treatResult.getNodeValue();
+                }
+            }
+        }
+        return "";
     }
     private JSONObject listNode(Document document, String node) {
         NodeList list = document.getElementsByTagName(node);

@@ -175,4 +175,11 @@ public class RmsLogger implements ILogger {
         setMDC(traceID, messageTypeID);
         logger.warn(var1, var2);
     }
+
+    @Override
+    public boolean isInfoEnabled() {
+        return logger.isInfoEnabled();
+    }
+
+
 }

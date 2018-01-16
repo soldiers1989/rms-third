@@ -61,4 +61,6 @@ public interface ILogger {
     void warn(String traceID, String messageTypeID,String var1, Throwable var2) ;
 
     void warn(String traceID, String messageTypeID,String var1, Object... var2);
+
+    boolean isInfoEnabled();
 }

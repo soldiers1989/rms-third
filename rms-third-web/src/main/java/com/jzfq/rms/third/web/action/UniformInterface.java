@@ -43,23 +43,23 @@ public class UniformInterface {
         AbstractRequest bizReq = null;
         ResponseResult bizResp = null;
         try {
-            logger.debug(TraceIDThreadLocal.getTraceID(), CallSystemIDThreadLocal.getCallSystemID(),"接收到来自[host:{}({}:{})]的请求",
+            logger.debug(TraceIDThreadLocal.getTraceID(), "uniform","接收到来自[host:{}({}:{})]的请求",
                     new Object[] { request.getRemoteHost(), request.getRemoteAddr(),
                             request.getRemotePort() });
             bizReq = AbstractRequest.fromHttpRequest(params);
         } catch (RuntimeException e) {
             if (e instanceof IllegalArgumentException) {
-                logger.warn(TraceIDThreadLocal.getTraceID(), CallSystemIDThreadLocal.getCallSystemID(),e.getMessage() + " \tallParams：{}", params);
+                logger.warn(TraceIDThreadLocal.getTraceID(), "uniform",e.getMessage() + " \tallParams：{}", params);
             } else {
-                logger.warn(TraceIDThreadLocal.getTraceID(), CallSystemIDThreadLocal.getCallSystemID(),"请求参数不合法，无法构建完整请求！allParams：{}", params, e);
+                logger.warn(TraceIDThreadLocal.getTraceID(), "uniform","请求参数不合法，无法构建完整请求！allParams：{}", params, e);
             }
             bizResp = new ResponseResult("",ReturnCode.ERROR_PARAMS);
         }
         if (bizReq != null) {
-            logger.debug(TraceIDThreadLocal.getTraceID(), CallSystemIDThreadLocal.getCallSystemID(),"解析到请求：{}", bizReq);
+            logger.debug(TraceIDThreadLocal.getTraceID(), "uniform","解析到请求：{}", bizReq);
             bizResp = AbstractRequestHandler.handleRequest(bizReq, request.getServletContext());
         }
-        logger.debug(TraceIDThreadLocal.getTraceID(), CallSystemIDThreadLocal.getCallSystemID(),"响应：{}", bizResp);
+        logger.debug(TraceIDThreadLocal.getTraceID(), "uniform","响应：{}", bizResp);
 
         Serializable data = (bizResp==null||bizResp.getData()==null)?null:(Serializable)bizResp.getData();
         if (data instanceof File) {
@@ -85,7 +85,7 @@ public class UniformInterface {
             out.flush();
             out.close();
         }
-        logger.debug(TraceIDThreadLocal.getTraceID(), CallSystemIDThreadLocal.getCallSystemID(),"响应完成。");
+        logger.debug(TraceIDThreadLocal.getTraceID(), "uniform","响应完成。");
     }
 
     private void responseDataStreamAndClose(HttpServletResponse response,

@@ -14,25 +14,26 @@ import java.util.Map;
  **/
 public class HandleResponseTester {
     public static void main(String[] argc){
-//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/rms-third/inter");
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("licensePlatHeader","京A");
-//        map.put("vin","LE4GF4HB8DL254936");
-//        ResponseResult dto = rmsThirdService.send("hehe","1","","1001","01",map);
-//        System.out.println(""+dto);
-
         RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
         Map<String,Object> map = new HashMap<>();
         map.put("frontId","111111");
-        Map<String ,Object> carInfo = new HashMap<>();
-        carInfo.put("certCardNo","372922198811154775");
-        carInfo.put("name","刘玉");
-        carInfo.put("plateNo","辽BC01X7");
-        carInfo.put("type","2");
-        map.put("carInfo",carInfo);
-        map.put("orderNo","305582");
-        ResponseResult dto = rmsThirdService.send("123","1","","1002","01",map);
-        System.out.println(dto);
+        map.put("licensePlatHeader","京A");
+        map.put("vin","LE4GF4HB8DL254936");
+        ResponseResult dto = rmsThirdService.send("hehe","1","","1001","01",map);
+        System.out.println(""+dto);
+
+//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("frontId","111111");
+//        Map<String ,Object> carInfo = new HashMap<>();
+//        carInfo.put("certCardNo","372922198811154775");
+//        carInfo.put("name","刘玉");
+//        carInfo.put("plateNo","辽BC01X7");
+//        carInfo.put("type","2");
+//        map.put("carInfo",carInfo);
+//        map.put("orderNo","305582");
+//        ResponseResult dto = rmsThirdService.send("123","1","","1002","01",map);
+//        System.out.println(dto);
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/inter");
 //        Map<String,Object> map = new HashMap<>();

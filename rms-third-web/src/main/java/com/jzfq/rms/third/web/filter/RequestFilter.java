@@ -1,6 +1,9 @@
 package com.jzfq.rms.third.web.filter;
 
 import com.jzfq.rms.third.common.utils.RequestUtils;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.support.log.ILogger;
+import com.jzfq.rms.third.support.log.impl.RmsLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +17,7 @@ import java.io.IOException;
  */
 public class RequestFilter implements Filter {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(RequestFilter.class);
+    private final static ILogger LOGGER = RmsLogger.getFactory(RequestFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -29,13 +32,13 @@ public class RequestFilter implements Filter {
         String requestURI = request.getRequestURI();
         //记录请求参数
         if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("requestURI:[{}], requestData:[{}]", requestURI, RequestUtils.getRequestData(request));
+            LOGGER.info(TraceIDThreadLocal.getTraceID(), "filter","requestURI:[{}], requestData:[{}]", requestURI, RequestUtils.getRequestData(request));
         }
 
         chain.doFilter(servletRequest, servletResponse);
         //记录请求执行时长
         if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("requestURI:[{}], requestExecuteTime:[{}]ms", requestURI, (System.currentTimeMillis() - beginTime));
+            LOGGER.info(TraceIDThreadLocal.getTraceID(), "filter", "requestURI:[{}], requestExecuteTime:[{}]ms", requestURI, (System.currentTimeMillis() - beginTime));
         }
     }
 

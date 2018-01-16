@@ -71,10 +71,10 @@ public class Request1001Handler  extends AbstractRequestHandler{
         if(StringUtils.isNotBlank(price)){
             return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,price);
         }
-        log.info(TraceIDThreadLocal.getTraceID(),"third-1001","traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");
+        log.info(TraceIDThreadLocal.getTraceID(),"third1001","traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");
         Map<String,Object> commonParams = getCommonParams(request);
         ResponseResult result = gongPingjiaService.getGpjDataAndCalculateEvaluations( vin, licensePlatHeader.toUpperCase(),commonParams);
-        log.info("traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束 {}",TraceIDThreadLocal.getTraceID(),result.getMsg());
+        log.info(TraceIDThreadLocal.getTraceID(),"third1001","traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束 {}",TraceIDThreadLocal.getTraceID(),result.getMsg());
         return result;
     }
     private String getKey(String vin, String plantNo){

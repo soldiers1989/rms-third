@@ -21,73 +21,67 @@ public class RmsLogger implements ILogger {
         return new RmsLogger(clazz);
     }
 
-    @Override
-    public void trace(String traceID, String messageTypeID, String var1) {
+    private void setMDC(String traceID, String messageTypeID){
         MDC.put("traceId",traceID);
         MDC.put("messageTypeID",messageTypeID);
+    }
+    @Override
+    public void trace(String traceID, String messageTypeID, String var1) {
+        setMDC(traceID, messageTypeID);
         logger.trace(var1);
     }
 
     @Override
     public void trace(String traceID, String messageTypeID, String var1, Object var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.trace(var1, var2);
     }
 
     @Override
     public void trace(String traceID, String messageTypeID, String var1, Object var2, Object var3) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.trace(var1, var2, var3);
     }
 
     @Override
     public void trace(String traceID, String messageTypeID, String var1, Throwable var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.trace(var1, var2);
     }
 
     @Override
     public void trace(String traceID, String messageTypeID, String var1, Object... var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.trace(var1, var2);
     }
 
     @Override
     public void info(String traceID, String messageTypeID, String var1) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.info(var1);
     }
 
     @Override
     public void info(String traceID, String messageTypeID, String var1, Object var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.info(var1, var2);
     }
 
     @Override
     public void info(String traceID, String messageTypeID, String var1, Object var2, Object var3) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.info(var1, var2, var3);
     }
 
     @Override
     public void info(String traceID, String messageTypeID, String var1, Throwable var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.info(var1, var2);
     }
 
     @Override
     public void info(String traceID, String messageTypeID, String var1, Object... var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.info(var1, var2);
     }
 
@@ -100,99 +94,85 @@ public class RmsLogger implements ILogger {
 
     @Override
     public void debug(String traceID, String messageTypeID, String var1, Object var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.debug(var1, var2);
     }
 
     @Override
     public void debug(String traceID, String messageTypeID, String var1, Object var2, Object var3) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.debug(var1, var2, var3);
     }
 
     @Override
     public void debug(String traceID, String messageTypeID, String var1, Throwable var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.debug(var1, var2);
     }
 
     @Override
     public void debug(String traceID, String messageTypeID, String var1, Object... var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.debug(var1, var2);
     }
 
     @Override
     public void error(String traceID, String messageTypeID, String var1) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.error(var1);
     }
 
     @Override
     public void error(String traceID, String messageTypeID, String var1, Object var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.error(var1, var2);
     }
 
     @Override
     public void error(String traceID, String messageTypeID, String var1, Object var2, Object var3) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.error(var1, var2, var3);
     }
 
     @Override
     public void error(String traceID, String messageTypeID, String var1, Throwable var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.error(var1, var2);
     }
 
     @Override
     public void error(String traceID, String messageTypeID, String var1, Object... var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.error(var1, var2);
     }
 
     @Override
     public void warn(String traceID, String messageTypeID, String var1) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.warn(var1);
     }
 
     @Override
     public void warn(String traceID, String messageTypeID, String var1, Object var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.warn(var1, var2);
     }
 
     @Override
     public void warn(String traceID, String messageTypeID, String var1, Object var2, Object var3) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.warn(var1, var2, var3);
     }
 
     @Override
     public void warn(String traceID, String messageTypeID, String var1, Throwable var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.warn(var1, var2);
     }
 
     @Override
     public void warn(String traceID, String messageTypeID, String var1, Object... var2) {
-        MDC.put("traceId",traceID);
-        MDC.put("messageTypeID",messageTypeID);
+        setMDC(traceID, messageTypeID);
         logger.warn(var1, var2);
     }
 }

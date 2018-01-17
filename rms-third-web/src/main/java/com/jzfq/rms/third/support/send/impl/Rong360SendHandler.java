@@ -46,8 +46,7 @@ public class Rong360SendHandler extends AbstractSendHandler {
         String traceId = (String)this.getParams().get("traceId");
         String method = (String)this.getParams().get("method");
         String appId = (String)this.getParams().get("appRongId");
-        String callbackAddress = (String)this.getParams().get("callbackAddress");
-        Map<String, Object> sysParams = getSysParams(appId, callbackAddress);
+        Map<String, Object> sysParams = getSysParams(appId);
         String ret = doOpenApiRequest(method, appId, sysParams, this.getBizParams());
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, ret);
     }
@@ -60,8 +59,7 @@ public class Rong360SendHandler extends AbstractSendHandler {
         String traceId = (String)this.getParams().get("traceId");
         String method = (String)this.getParams().get("method");
         String appId = (String)this.getParams().get("appRongId");
-        String callbackAddress = (String)this.getParams().get("callbackAddress");
-        Map<String, Object> sysParams = getSysParams(appId, callbackAddress);
+        Map<String, Object> sysParams = getSysParams(appId);
         String ret = doOpenApiRequest(method, appId, sysParams, this.getBizParams());
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, ret);
     }
@@ -74,8 +72,7 @@ public class Rong360SendHandler extends AbstractSendHandler {
         String traceId = (String)this.getParams().get("traceId");
         String method = (String)this.getParams().get("method");
         String appId = (String)this.getParams().get("appRongId");
-        String callbackAddress = (String)this.getParams().get("callbackAddress");
-        Map<String, Object> sysParams = getSysParams(appId, callbackAddress);
+        Map<String, Object> sysParams = getSysParams(appId);
         String ret = doOpenApiRequest(method, appId, sysParams, this.getBizParams());
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, ret);
     }
@@ -116,6 +113,16 @@ public class Rong360SendHandler extends AbstractSendHandler {
         sysParams.put("platform", "iOS"); //APP平台
         sysParams.put("user_id", TraceIDThreadLocal.getTraceID()); //重要，用户ID，本次抓取的唯一标识
         sysParams.put("notice_url", callbackAddress); // 后台回调地址
+        return sysParams;
+    }
+
+    private Map<String, Object> getSysParams(String appId) throws IOException {
+        Map<String, Object> sysParams = new HashMap<>();
+        sysParams.put("merchant_id", appId); //设置merchant_id与appid一致
+        sysParams.put("app_name", "test_app"); //APP名称
+        sysParams.put("app_version", "1.0"); // APP版本
+        sysParams.put("platform", "iOS"); //APP平台
+        sysParams.put("user_id", TraceIDThreadLocal.getTraceID()); //重要，用户ID，本次抓取的唯一标识
         return sysParams;
     }
 }

@@ -62,8 +62,7 @@ public class Rong360ServiceImpl implements IRong360Service {
 
 	@Value("${rong360.method.phoneStatus}")
 	private String method_phoneStatus;
-	@Value("${rong360.callback.address}")
-	private String callback_Address;
+
 
 	/**
 	 * 机构的私钥，需要是pkcs8格式的
@@ -253,7 +252,6 @@ public class Rong360ServiceImpl implements IRong360Service {
 		commonParams.put("interfaceId", interfaceType.getCode());
 		commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
 		commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
-		commonParams.put("callbackAddress", callback_Address);
 		commonParams.put("privateKey", privateKey);
 		return commonParams;
 	}

@@ -8,6 +8,8 @@ import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.support.response.AbstractResponseHandler;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -16,8 +18,9 @@ import java.util.Map;
  * @date 2017/10/25 15:43.
  **/
 public class Rong360ResponseHandler extends AbstractResponseHandler {
+    private static final Logger logger = LoggerFactory.getLogger(PyResponseHandler.class);
     /**
-     * 发送
+     * 解析
      *
      * @return
      */
@@ -54,11 +57,16 @@ public class Rong360ResponseHandler extends AbstractResponseHandler {
         if (jsonRet == null) {
             return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RRSPONSE_NON_JSON, null);
         }
+        String errorCode = jsonRet.getString("error");
+        if(StringUtils.isBlank(errorCode)||!StringUtils.equals(errorCode,"200")){
+            logger.info("traceId={} 手机在网时长{} {}", traceId,ReturnCode.ERROR_THIRD_RESPONSE.msg(), jsonRet);
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE, errorCode);
+        }
         result.setData(jsonRet);
         return result;
     }
     /**
-     * 手机在网时长
+     * 手机在网状态
      * @return
      * @throws Exception
      */
@@ -75,11 +83,16 @@ public class Rong360ResponseHandler extends AbstractResponseHandler {
         if (jsonRet == null) {
             return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RRSPONSE_NON_JSON, null);
         }
+        String errorCode = jsonRet.getString("error");
+        if(StringUtils.isBlank(errorCode)||!StringUtils.equals(errorCode,"200")){
+            logger.info("traceId={} 手机在网时长{} {}", traceId,ReturnCode.ERROR_THIRD_RESPONSE.msg(), jsonRet);
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE, errorCode);
+        }
         result.setData(jsonRet);
         return result;
     }
     /**
-     * 手机在网时长
+     * 手机三要素
      * @return
      * @throws Exception
      */
@@ -95,6 +108,11 @@ public class Rong360ResponseHandler extends AbstractResponseHandler {
         JSONObject jsonRet = JSONObject.parseObject(data);
         if (jsonRet == null) {
             return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RRSPONSE_NON_JSON, null);
+        }
+        String errorCode = jsonRet.getString("error");
+        if(StringUtils.isBlank(errorCode)||!StringUtils.equals(errorCode,"200")){
+            logger.info("traceId={} 手机三要素{} {}", traceId,ReturnCode.ERROR_THIRD_RESPONSE.msg(), jsonRet);
+            return new ResponseResult(traceId, ReturnCode.ERROR_THIRD_RESPONSE, errorCode);
         }
         result.setData(jsonRet);
         return result;

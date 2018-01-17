@@ -1,5 +1,7 @@
 package com.jzfq.rms.third.service;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.Map;
 
 /**
@@ -9,4 +11,9 @@ import java.util.Map;
 public interface IDbLogService {
 
     void writeLogToDB(String traceId, Map<String, Object> params,Map<String,Object> logParams);
+
+    /**
+     *
+     */
+    void recodeRequest(JSONObject params);
 }

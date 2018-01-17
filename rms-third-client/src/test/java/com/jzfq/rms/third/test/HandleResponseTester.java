@@ -14,13 +14,13 @@ import java.util.Map;
  **/
 public class HandleResponseTester {
     public static void main(String[] argc){
-//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("frontId","111111");
-//        map.put("licensePlatHeader","京A");
-//        map.put("vin","LE4GF4HB8DL254936");
-//        ResponseResult dto = rmsThirdService.send("hehe","1","","1001","01",map);
-//        System.out.println(""+dto);
+        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+        Map<String,Object> map = new HashMap<>();
+        map.put("frontId","111111");
+        map.put("licensePlatHeader","蒙E");
+        map.put("vin","LVSHFFAL39N039327");
+        ResponseResult dto = rmsThirdService.send("hehe","1","","1001","01",map);
+        System.out.println(""+dto);
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
 //        Map<String,Object> map = new HashMap<>();
@@ -35,16 +35,16 @@ public class HandleResponseTester {
 //        ResponseResult dto = rmsThirdService.send("123","1","","1002","01",map);
 //        System.out.println(dto);
 
-        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
-        Map<String,Object> map = new HashMap<>();
-        map.put("frontId","123");
-        map.put("custumType","1");
-        map.put("idNumber","440804199303041822");
-        map.put("name","高仁鹏");
-        map.put("phone","13132233224");
-        map.put("orderNo","zhengyy910");
-        ResponseResult dto = rmsThirdService.send("test33320180110152907","33","","1012","01",map);
-        System.out.println(dto);
+//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("frontId","123");
+//        map.put("custumType","1");
+//        map.put("idNumber","440804199303041822");
+//        map.put("name","高仁鹏");
+//        map.put("phone","13132233224");
+//        map.put("orderNo","zhengyy910");
+//        ResponseResult dto = rmsThirdService.send("test33320180110152907","33","","1012","01",map);
+//        System.out.println(dto);
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/inter");
 //        Map<String,Object> map = new HashMap<>();

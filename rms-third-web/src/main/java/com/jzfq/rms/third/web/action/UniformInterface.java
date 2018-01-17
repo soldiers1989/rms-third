@@ -7,8 +7,10 @@ import com.jzfq.rms.third.common.utils.UniformInterfaceUtils;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
+import com.jzfq.rms.third.service.IDbLogService;
 import com.jzfq.rms.third.support.log.ILogger;
 import com.jzfq.rms.third.support.log.impl.RmsLogger;
+import com.jzfq.rms.third.support.pool.ThreadProvider;
 import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import com.jzfq.rms.third.web.action.handler.AbstractRequestHandler;
 import org.apache.commons.io.FileUtils;
@@ -16,6 +18,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Action;
 import java.io.*;
 import java.net.URLEncoder;
 
@@ -36,10 +40,14 @@ public class UniformInterface {
 
     final protected static ILogger logger = RmsLogger.getFactory(UniformInterface.class);
 
+    @Autowired
+    IDbLogService dbLogService;
+
     @RequestMapping( method= {RequestMethod.GET,RequestMethod.POST})
     public void work(HttpServletRequest request, HttpServletResponse response) throws BusinessException,ServletException, IOException{
 
         JSONObject params = UniformInterfaceUtils.getParams(request);
+        dbLogService.recodeRequest(params);
         AbstractRequest bizReq = null;
         ResponseResult bizResp = null;
         try {
@@ -110,5 +118,11 @@ public class UniformInterface {
         } finally {
             IOUtils.closeQuietly(in);
         }
+    }
+
+    private void recodeRequest(){
+        ThreadProvider.getThreadPool().execute(()->{
+
+        });
     }
 }

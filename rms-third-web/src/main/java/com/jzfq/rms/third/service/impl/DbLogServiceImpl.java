@@ -1,12 +1,15 @@
 package com.jzfq.rms.third.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jzfq.rms.third.common.domain.*;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
+import com.jzfq.rms.third.common.mongo.ThirdRequestLog;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.persistence.mapper.*;
 import com.jzfq.rms.third.service.IDbLogService;
+import com.jzfq.rms.third.service.IRiskPostDataService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -42,6 +45,10 @@ public class DbLogServiceImpl implements IDbLogService {
     TRsllTransferLogMapper rsllTransferLogMapper;
     @Autowired
     TTdTransferLogMapper tdTransferLogMapper;
+    @Autowired
+    TThirdTransferLogMapper tThirdTransferLogMapper;
+    @Autowired
+    IRiskPostDataService riskPostDataService;
     @Override
     public void writeLogToDB(String traceId, Map<String, Object> params, Map<String, Object> logParams) {
         String targetId = getString(params,"targetId");
@@ -80,6 +87,30 @@ public class DbLogServiceImpl implements IDbLogService {
             jxlTransferLogMapper.insert(log);
         }
     }
+
+    /**
+     * @param params
+     */
+    @Override
+    public void recodeRequest(JSONObject params) {
+        try{
+            ThirdRequestLog record = new ThirdRequestLog();
+            String traceID = params.getString("traceID");
+            String callSystemID = params.getString("callSystemID");
+            if(StringUtils.isBlank(traceID)||StringUtils.isBlank(callSystemID)){
+                logger.info("记录访问日志：流水号或系统编号为空 参数：{}", params);
+            }
+            record.setAppId(params.getString("apiId"));
+            record.setCallSystemId(callSystemID);
+            record.setTraceId(traceID);
+            record.setData(params);
+            record.setCreateTime(new Date());
+            riskPostDataService.saveData(record);
+        }catch (Exception e){
+            logger.error("记录访问日志异常：{} 参数：{}", e, params);
+        }
+    }
+
     private TPyTransferLog createNewPyRecord(Map<String, Object> params){
         TPyTransferLog record = new TPyTransferLog();
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -239,4 +270,6 @@ public class DbLogServiceImpl implements IDbLogService {
         String json = JSON.toJSONString(ob, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteMapNullValue);
         return json;
     }
+
+
 }

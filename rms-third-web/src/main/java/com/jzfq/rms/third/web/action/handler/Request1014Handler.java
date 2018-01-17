@@ -13,6 +13,7 @@ import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.IRong360Service;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequest;
+import com.jzfq.rms.third.web.action.parser.Rong360Parser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ import java.util.Map;
  **/
 @Component("request1014Handler")
 public class Request1014Handler extends AbstractRequestHandler {
-    private static final Logger log = LoggerFactory.getLogger("Rong360 1014");
+    private static final Logger log = LoggerFactory.getLogger(Request1014Handler.class);
     @Autowired
     IRong360Service rong360Service;
 
@@ -107,7 +108,7 @@ public class Request1014Handler extends AbstractRequestHandler {
             return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb);
         }
         //远程调用
-        String isRepeatKey = getRpcControlKey(bizData);
+        String isRepeatKey = Rong360Parser.getRpcKeyOfStatus(bizData);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
             return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ACTIVE_THIRD_RPC,null);
@@ -122,7 +123,7 @@ public class Request1014Handler extends AbstractRequestHandler {
             }
             JSONObject resultJson = (JSONObject)responseResult.getData();
             // 转换rms-pull需要的值
-            String value = getValueOfRmsPull(resultJson);
+            String value = Rong360Parser.getStatusOfRmsPull(resultJson);
             // 保存数据
             rong360Service.saveDatas(orderNo, PhoneDataTypeEnum.NETWORK_STATUS, value, resultJson, bizData);
             responseResult.setData(value);
@@ -132,47 +133,5 @@ public class Request1014Handler extends AbstractRequestHandler {
             log.error("traceId={} 手机在网状态异常",traceId,e);
             throw e;
         }
-    }
-
-    /**
-     * 远程调用key
-     * @param bizData
-     * @return
-     */
-    private String getRpcControlKey(Map<String, Object> bizData){
-        StringBuilder sb = new StringBuilder("rms_third_1014_");
-        sb.append(StringUtil.getStringOfObject(bizData.get("name")));
-        sb.append("_");
-        sb.append(StringUtil.getStringOfObject(bizData.get("idNumber")));
-        sb.append("_");
-        sb.append(StringUtil.getStringOfObject(bizData.get("phone")));
-        return sb.toString() ;
-    }
-
-    private String getValueOfRmsPull(JSONObject json){
-        JSONArray jsonObject0 = json.getJSONArray("tianji_api_jiao_phonestatus_response");
-        JSONObject jsonObject1 = jsonObject0.getJSONObject(0);
-        JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
-        JSONObject jsonObject3 = jsonObject2.getJSONObject("ISPNUM");
-        JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-        JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
-        JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
-        String jsonRsult=jsonObject6.getString("code");
-        if("0".equals(jsonRsult)){
-            return PhoneStatusEnum.NORMAL.getCode();
-        }
-        if("1".equals(jsonRsult)){
-            return PhoneStatusEnum.UNNORMAL.getCode();
-        }
-        if("2".equals(jsonRsult)){
-            return PhoneStatusEnum.UNNORMAL.getCode();
-        }
-        if("3".equals(jsonRsult)){
-            return PhoneStatusEnum.UNNORMAL.getCode();
-        }
-        if("4".equals(jsonRsult)){
-            return PhoneStatusEnum.UNNORMAL.getCode();
-        }
-        return PhoneStatusEnum.OTHER.getCode();
     }
 }

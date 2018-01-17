@@ -30,7 +30,7 @@ import java.util.Map;
  **/
 @Component("request1012Handler")
 public class Request1012Handler extends AbstractRequestHandler {
-    private static final Logger log = LoggerFactory.getLogger("Rong360 1012");
+    private static final Logger log = LoggerFactory.getLogger(Request1012Handler.class);
     @Autowired
     IRong360Service rong360Service;
 

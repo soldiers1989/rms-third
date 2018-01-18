@@ -119,10 +119,4 @@ public class UniformInterface {
             IOUtils.closeQuietly(in);
         }
     }
-
-    private void recodeRequest(){
-        ThreadProvider.getThreadPool().execute(()->{
-
-        });
-    }
 }

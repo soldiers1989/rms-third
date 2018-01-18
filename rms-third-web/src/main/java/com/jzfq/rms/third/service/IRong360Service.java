@@ -24,5 +24,9 @@ public interface IRong360Service {
 
     void saveDatas(String orderNo, PhoneDataTypeEnum type, String value, JSONObject result, Map<String, Object> bizData);
 
-    String getValueByDB( String interfaceId, PhoneDataTypeEnum type,Map<String, Object> bizData);
+    void saveRmsDatas(String orderNo, PhoneDataTypeEnum type, JSONObject resultJson, Map<String, Object> bizData);
+
+    String getValueByDB(String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData);
+
+    String getValueByDBAndSave(String orderNo, String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData);
 }

@@ -122,7 +122,7 @@ public class Rong360ServiceImpl implements IRong360Service {
 	public void saveDatas(String orderNo, PhoneDataTypeEnum type, String value, JSONObject resultJson, Map<String, Object> bizData) {
 		String traceId = TraceIDThreadLocal.getTraceID();
 		ThreadProvider.getThreadPool().execute(()->{
-			String taskId = rmsService.queryByOrderNo(TraceIDThreadLocal.getTraceID(), orderNo);
+			String taskId = rmsService.queryByOrderNo(traceId, orderNo);
 			try{
 				// 保存数据 Rong360Data
 				saveData(new Rong360Data((String)bizData.get("name"),(String)bizData.get("idNumber")
@@ -148,6 +148,37 @@ public class Rong360ServiceImpl implements IRong360Service {
 		});
 
 	}
+
+	@Override
+	public void saveRmsDatas(String orderNo, PhoneDataTypeEnum type, JSONObject resultJson, Map<String, Object> bizData) {
+		String traceId = TraceIDThreadLocal.getTraceID();
+		try {
+			ThreadProvider.getThreadPool().execute(()->{
+				String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+				try{
+					if(StringUtils.isBlank(taskId)){
+						return;
+					}
+					// 保存rms数据
+					String result = "";
+					if(StringUtils.equals(type.getCode(),PhoneDataTypeEnum.THREE_ITEM.getCode())){
+						result = changeBairongPhone3rdinfo(resultJson);
+					}
+					if(StringUtils.equals(type.getCode(),PhoneDataTypeEnum.NETWORK_LENGTH.getCode())){
+						result = changeBairongPhoneNetworkLength(resultJson);
+					}
+					if(StringUtils.equals(type.getCode(),PhoneDataTypeEnum.NETWORK_STATUS.getCode())){
+						result = changeBairongPhonestatus(resultJson);
+					}
+					savePostData(taskId, type.getName(), result,(String)bizData.get("custumType"));
+				}catch (Exception e){
+					log.error("traceId={} rms保存{}异常", traceId,type.getName(), e);
+				}
+			});
+		}catch (Exception e){
+			log.error("traceId={} rms保存{}异常", traceId,type.getName(), e);
+		}
+	}
 	@Autowired
 	IConfigDao configCacheDao;
 	@Override
@@ -160,6 +191,20 @@ public class Rong360ServiceImpl implements IRong360Service {
 		if(CollectionUtils.isEmpty(report)){
 			return null;
 		}
+		return report.get(0).getValue();
+	}
+
+	@Override
+	public String getValueByDBAndSave(String orderNo, String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData) {
+		Integer outTime = configCacheDao.getOutTimeUnit(interfaceId);
+		List<Rong360Data> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
+				.and("name").is(bizData.get("name")).and("idCard")
+				.is(bizData.get("idNumber")).and("phone")
+				.is(bizData.get("phone")).and("createTime").gte(getMinTime(outTime))), Rong360Data.class);
+		if(CollectionUtils.isEmpty(report)){
+			return null;
+		}
+		saveRmsDatas(orderNo, type, report.get(0).getData(), bizData);
 		return report.get(0).getValue();
 	}
 

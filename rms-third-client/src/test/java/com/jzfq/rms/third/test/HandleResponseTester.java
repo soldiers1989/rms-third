@@ -14,37 +14,37 @@ import java.util.Map;
  **/
 public class HandleResponseTester {
     public static void main(String[] argc){
-        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
-        Map<String,Object> map = new HashMap<>();
-        map.put("frontId","111111");
-        map.put("licensePlatHeader","蒙E");
-        map.put("vin","LVSHFFAL39N039327");
-        ResponseResult dto = rmsThirdService.send("hehe","1","","1001","01",map);
-        System.out.println(""+dto);
-
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
 //        Map<String,Object> map = new HashMap<>();
 //        map.put("frontId","111111");
+//        map.put("licensePlatHeader","蒙E");
+//        map.put("vin","LVSHFFAL39N039327");
+//        ResponseResult dto = rmsThirdService.send("hehe","1","","1001","01",map);
+//        System.out.println(""+dto);
+
+//        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/inter");
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("frontId","111111");
 //        Map<String ,Object> carInfo = new HashMap<>();
-//        carInfo.put("certCardNo","412721199003203444");
-//        carInfo.put("name","刘玉");
-//        carInfo.put("plateNo","蒙E76258");
-//        carInfo.put("type","99");
+//        carInfo.put("certCardNo","440804199303041822");
+//        carInfo.put("name","郑土月");
+//        carInfo.put("plateNo","桂JDM186");
+//        carInfo.put("type","2");
 //        map.put("carInfo",carInfo);
 //        map.put("orderNo","305582");
-//        ResponseResult dto = rmsThirdService.send("123","1","","1002","01",map);
+//        ResponseResult dto = rmsThirdService.sendAndHandleRespose("123","1","","1002","01",map);
 //        System.out.println(dto);
 
-//        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("frontId","123");
-//        map.put("custumType","1");
-//        map.put("idNumber","440804199303041822");
-//        map.put("name","高仁鹏");
-//        map.put("phone","13132233224");
-//        map.put("orderNo","zhengyy910");
-//        ResponseResult dto = rmsThirdService.send("test33320180110152907","33","","1012","01",map);
-//        System.out.println(dto);
+        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+        Map<String,Object> map = new HashMap<>();
+        map.put("frontId","123");
+        map.put("custumType","1");
+        map.put("idNumber","440804199303041822");
+        map.put("name","丽丽");
+        map.put("phone","13132233226");
+        map.put("orderNo","zhengyy910");
+        ResponseResult dto = rmsThirdService.send("test33320180110152907","33","","1013","01",map);
+        System.out.println(dto);
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/inter");
 //        Map<String,Object> map = new HashMap<>();

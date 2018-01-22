@@ -7,9 +7,14 @@ import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.logging.log4j.util.PropertiesUtil;
 
 import javax.sql.DataSource;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
 
 /**
  * log4j2 ConnectionFactory
@@ -25,7 +30,7 @@ public class ConnectionFactory {
     private final DataSource dataSource;
 
     private ConnectionFactory() {
-        PropertiesUtil logProperties = new PropertiesUtil("rms-third.properties");
+        PropertiesUtil logProperties = getUtilObject();
         try {
             String driver = logProperties.getStringProperty("log.db.driver");
             Class.forName(driver);
@@ -53,5 +58,19 @@ public class ConnectionFactory {
 
     public static Connection getDatabaseConnection() throws SQLException {
         return Singleton.INSTANCE.dataSource.getConnection();
+    }
+
+
+    private PropertiesUtil getUtilObject(){
+        Properties configProperties = new Properties();
+        try (FileInputStream in = new FileInputStream("/data/config/rms-third/prod.properties")) {
+            configProperties.load(in);
+            return new PropertiesUtil(configProperties);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return new PropertiesUtil("rms-third.properties");
     }
 }

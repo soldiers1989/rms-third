@@ -43,7 +43,7 @@ public class HandleResponseTester {
         map.put("name","丽丽");
         map.put("phone","13132233226");
         map.put("orderNo","zhengyy910");
-        ResponseResult dto = rmsThirdService.send("test33320180110152907","33","","1013","01",map);
+        ResponseResult dto = rmsThirdService.send("test33320180110152907","33","","1012","01",map);
         System.out.println(dto);
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/inter");

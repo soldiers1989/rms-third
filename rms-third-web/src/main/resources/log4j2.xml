@@ -52,7 +52,7 @@
             </Policies>
         </RollingFile>
         <JDBC name="databaseAppender" tableName="sys_log">
-            <ConnectionFactory class="com.jzfq.rms.third.common.utils.ConnectionFactory" method="getDatabaseConnection" />
+            <ConnectionFactory class="com.jzfq.rms.third.support.pool.factory.ConnectionFactory" method="getDatabaseConnection" />
             <Column name="log_date" isEventTimestamp="true"/>
             <Column name="log_file" pattern="%file" />
             <Column name="log_line" pattern="%line" />

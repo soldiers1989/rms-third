@@ -1,16 +1,15 @@
-package com.jzfq.rms.third.common.utils;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Properties;
-
-import javax.sql.DataSource;
+package com.jzfq.rms.third.support.pool.factory;
 
 import org.apache.commons.dbcp.DriverManagerConnectionFactory;
-import org.apache.commons.dbcp.PoolableConnection;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.apache.logging.log4j.util.PropertiesUtil;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * log4j2 ConnectionFactory
@@ -26,20 +25,24 @@ public class ConnectionFactory {
     private final DataSource dataSource;
 
     private ConnectionFactory() {
+        PropertiesUtil logProperties = new PropertiesUtil("rms-third.properties");
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            String driver = logProperties.getStringProperty("log.db.driver");
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(0);
         }
-
         Properties properties = new Properties();
-        properties.setProperty("user", "fengkongtest");
-        properties.setProperty("password", "9ACqGkPU2DoM6g"); //or get properties from some configuration file
+        String user = logProperties.getStringProperty("log.db.username");
+        properties.setProperty("user", user);
+        String password = logProperties.getStringProperty("log.db.password");
+        properties.setProperty("password", password);
 
         GenericObjectPool pool = new GenericObjectPool();
+        String url = logProperties.getStringProperty("log.db.url");
         DriverManagerConnectionFactory connectionFactory = new DriverManagerConnectionFactory(
-                "jdbc:mysql://47.93.43.48:3307/rms_auxiliary",properties
+                url,properties
         );
         new PoolableConnectionFactory(
                 connectionFactory, pool, null,"SELECT 1", 3, false, false, Connection.TRANSACTION_READ_COMMITTED

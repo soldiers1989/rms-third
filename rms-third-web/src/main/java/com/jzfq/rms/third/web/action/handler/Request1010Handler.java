@@ -16,7 +16,7 @@ import java.util.Map;
  **/
 @Component("request1010Handler")
 public class Request1010Handler extends AbstractRequestHandler{
-    private static final Logger log = LoggerFactory.getLogger("TongDun 1010");
+    private static final Logger log = LoggerFactory.getLogger(Request1010Handler.class);
 
     /**
      * 检查业务参数是否合法，交由子类实现。

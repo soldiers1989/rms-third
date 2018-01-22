@@ -31,7 +31,7 @@ import java.util.Map;
  **/
 @Component("request1008Handler")
 public class Request1008Handler  extends AbstractRequestHandler {
-    private static final Logger log = LoggerFactory.getLogger("TongDun");
+    private static final Logger log = LoggerFactory.getLogger(Request1008Handler.class);
 
     @Autowired
     ITdDataService tdDataService;

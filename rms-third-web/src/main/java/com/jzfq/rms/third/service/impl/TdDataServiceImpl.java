@@ -20,10 +20,10 @@ import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.service.ITdDataService;
 import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -151,7 +151,7 @@ public class TdDataServiceImpl implements ITdDataService {
                         log.info("保存数据 订单号为{}获取同盾是返回的结果为null",orderNo);
                         return ;
                     }
-                    mongoTemplate.insert(tdHitRuleData);
+//                    mongoTemplate.insert(tdHitRuleData);
                 }
                 String sequenceId = apiResp.getSeq_id();
                 if (StringUtils.isBlank(sequenceId)){
@@ -383,8 +383,8 @@ public class TdDataServiceImpl implements ITdDataService {
             return null;//是否成功
         }
         String json= JSON.toJSONString(result);
-        TdData data = new TdData(taskId, json, "同盾规则命中列表", new Date());
-        saveTdData(data);
+//        TdData data = new TdData(taskId, json, "同盾规则命中列表", new Date());
+//        saveTdData(data);
         log.info("traceId={} 拉取同盾规则命中详情结束", traceId);
         return result;
     }

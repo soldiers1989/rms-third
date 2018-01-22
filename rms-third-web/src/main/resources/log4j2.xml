@@ -62,7 +62,7 @@
             <Column name="traceId" pattern="%X{traceId}"/>
             <Column name="messageTypeID" pattern="%X{messageTypeID}"/>
             <Column name="syori_flag" pattern="0"/>
-            <Column name="systemID" pattern="999"/>
+            <Column name="systemID" pattern="23"/>
         </JDBC>
     </appenders>
 

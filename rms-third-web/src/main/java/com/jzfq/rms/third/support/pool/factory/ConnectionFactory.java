@@ -14,8 +14,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
-
 /**
  * log4j2 ConnectionFactory
  *

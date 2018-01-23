@@ -27,7 +27,7 @@ import java.util.Map;
  **/
 @Component("request1001Handler")
 public class Request1001Handler  extends AbstractRequestHandler{
-    final protected static ILogger log = RmsLogger.getFactory(GongPingJiaAction.class);
+    final protected static ILogger log = RmsLogger.getFactory(LoggerFactory.getLogger(GongPingJiaAction.class));
     @Autowired
     private IGongPingjiaService gongPingjiaService;
 

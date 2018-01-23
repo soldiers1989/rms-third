@@ -27,7 +27,7 @@ import java.util.Map;
 @RequestMapping(value = "/carDetailModel")
 public class GongPingJiaAction {
 
-    final protected static ILogger log = RmsLogger.getFactory(GongPingJiaAction.class);
+    final protected static ILogger log = RmsLogger.getFactory(LoggerFactory.getLogger(GongPingJiaAction.class));
     @Autowired
     private IGongPingjiaService gongPingjiaService;
 

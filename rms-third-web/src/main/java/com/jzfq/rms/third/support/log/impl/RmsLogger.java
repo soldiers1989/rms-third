@@ -21,6 +21,14 @@ public class RmsLogger implements ILogger {
         return new RmsLogger(clazz);
     }
 
+    private RmsLogger(Logger logger){
+        this.logger =  logger;
+    }
+
+    public static RmsLogger getFactory(Logger logger){
+        return new RmsLogger(logger);
+    }
+
     private void setMDC(String traceID, String messageTypeID){
         MDC.put("traceId",traceID);
         MDC.put("messageTypeID",messageTypeID);

@@ -12,6 +12,7 @@ import com.jzfq.rms.third.common.enums.SystemIdEnum;
 import com.jzfq.rms.third.common.utils.Base64;
 import com.jzfq.rms.third.common.utils.CompressStringUtil;
 import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
@@ -214,7 +215,7 @@ public class PengYuanServiceImpl implements IPengYuanService {
         commonParams.put("targetId", SystemIdEnum.THIRD_PY.getCode());
         commonParams.put("appId", "");
         commonParams.put("interfaceId", InterfaceIdEnum.THIRD_PY01.getCode());
-        commonParams.put("systemId", SystemIdEnum.RMS_THIRD.getCode());
+        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
 
         commonParams.put("userName", userName);

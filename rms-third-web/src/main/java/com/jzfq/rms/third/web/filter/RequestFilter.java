@@ -4,6 +4,7 @@ import com.jzfq.rms.third.common.utils.RequestUtils;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.support.log.ILogger;
 import com.jzfq.rms.third.support.log.impl.RmsLogger;
+import com.jzfq.rms.third.web.action.GongPingJiaAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ import java.io.IOException;
  */
 public class RequestFilter implements Filter {
 
-    private final static ILogger LOGGER = RmsLogger.getFactory(RequestFilter.class);
+    private final static ILogger LOGGER = RmsLogger.getFactory(LoggerFactory.getLogger(RequestFilter.class));
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

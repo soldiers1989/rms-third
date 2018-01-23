@@ -13,6 +13,7 @@ import com.jzfq.rms.third.support.log.impl.RmsLogger;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import com.jzfq.rms.third.web.action.handler.AbstractRequestHandler;
+import com.jzfq.rms.third.web.filter.RequestFilter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,8 +39,7 @@ import java.net.URLEncoder;
 @RequestMapping(value = "/inter")
 public class UniformInterface {
 
-    final protected static ILogger logger = RmsLogger.getFactory(UniformInterface.class);
-
+    final protected static ILogger logger = RmsLogger.getFactory(LoggerFactory.getLogger(UniformInterface.class));
     @Autowired
     IDbLogService dbLogService;
 

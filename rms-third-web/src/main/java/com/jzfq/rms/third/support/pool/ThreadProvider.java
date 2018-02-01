@@ -17,9 +17,11 @@ public class ThreadProvider {
     private static final ExecutorService executor;
 
     private static final Integer queueSize = 1000;
+
+    private static final Integer threadCount = 20;
     static {
-        int threadCount = Runtime.getRuntime().availableProcessors() - 1;
-        threadCount = threadCount > 20 ? 20 : threadCount;
+//        int threadCount = Runtime.getRuntime().availableProcessors() - 1;
+//        threadCount = threadCount > 20 ? 20 : threadCount;
         LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(queueSize);
         executor = new ThreadPoolExecutor(threadCount, threadCount, 0L, TimeUnit.MILLISECONDS,
                 workQueue,new CustomThreadFactory(),new CustomHandler());

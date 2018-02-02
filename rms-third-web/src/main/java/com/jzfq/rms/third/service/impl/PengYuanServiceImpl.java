@@ -3,14 +3,11 @@ package com.jzfq.rms.third.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.mongo.PengYuan;
 import com.jzfq.rms.third.common.domain.TPyCarCheck;
-import com.jzfq.rms.third.common.domain.example.TPyCarCheckExample;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
-import com.jzfq.rms.third.common.utils.Base64;
-import com.jzfq.rms.third.common.utils.CompressStringUtil;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
@@ -22,24 +19,17 @@ import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.xfire.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.ByteArrayInputStream;
-import java.net.URL;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  *
@@ -67,117 +57,6 @@ public class PengYuanServiceImpl implements IPengYuanService {
 
     @Autowired
     IConfigDao configCacheDao;
-
-    private JSONObject parseXml2Json(String xml) {
-        JSONObject data = new JSONObject();
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        try {
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document document = db.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
-//            Document document = db.parse(new ByteArrayInputStream(xml.getBytes("GBK)));
-            Node node = document.getFirstChild();
-            String nodeName = node.getNodeName();
-            if ("cisReports".equals(nodeName)) {
-                //1、个人车辆信息核查
-                JSONObject carCheckInfo = listNode(document, "carCheckInfo");
-                if(carCheckInfo.size() == 0){
-                    JSONObject arr = new JSONObject();
-                    arr.put("errorCode", "100001");
-                    arr.put("nameCheckResult","远程返回的结果为空");
-                    arr.put("documentNoCheckResult","远程返回的结果为空");
-                    arr.put("licenseNoCheckResult","远程返回的结果为空");
-                    arr.put("carTypeCheckResult","远程返回的结果为空");
-                    data.put("carCheckInfo", arr);
-                }else{
-                    data.put("carCheckInfo", carCheckInfo);
-                }
-            } else {
-                data = listNode(document,"result");
-            }
-            log.info(data.toJSONString());
-        } catch (Exception e) {
-            log.error("获取鹏元信息异常：",e);
-        }
-        return data;
-    }
-
-    private JSONObject listNode(Document document, String node) {
-        NodeList list = document.getElementsByTagName(node);
-        JSONObject json = new JSONObject();
-        if ("carStatusInfo".equals(node) || "result".equals(node)) {
-            for(int i=0;i<list.getLength();i++) {
-                NodeList items = list.item(i).getChildNodes();
-                for(int k=0;k<items.getLength();k++) {
-                    short nodeType = items.item(k).getNodeType();
-                    if (nodeType == Node.ELEMENT_NODE) {
-                        String nodeName = items.item(k).getNodeName();
-                        String nodeValue = items.item(k).getTextContent();
-                        json.put(nodeName, nodeValue);
-                    }
-                }
-            }
-        } else {
-            for(int i=0;i<list.getLength();i++) {
-                NodeList items = list.item(i).getChildNodes();
-                for(int j=0;j<items.getLength();j++) {
-                    NodeList childs = items.item(j).getChildNodes();
-                    for(int k=0;k<childs.getLength();k++) {
-                        short nodeType = childs.item(k).getNodeType();
-                        if (nodeType == Node.ELEMENT_NODE) {
-                            String nodeName = childs.item(k).getNodeName();
-                            String nodeValue = childs.item(k).getTextContent();
-                            json.put(nodeName, nodeValue);
-                        }
-                    }
-                }
-            }
-        }
-        return json;
-    }
-
-
-    private String reqData(Map<String,Object> carInfo) {
-        String type = carInfo.get("type").toString();
-        if (Integer.parseInt(type) <= 9) {
-            type = String.format("%02d", Integer.parseInt(type));
-        }
-        StringBuffer sb = new StringBuffer();
-        sb.append("<?xml version=\"1.0\" encoding=\"GBK\"?>");
-        sb.append("<conditions>");
-        sb.append("<condition queryType=\"25200\">");
-        sb.append("<item>");
-        sb.append("<name>name</name>");
-        sb.append("<value>"+carInfo.get("name")+"</value>");
-        sb.append("</item>");
-        sb.append("<item>");
-        sb.append("<name>documentNo</name>");
-        sb.append("<value>"+carInfo.get("certCardNo")+"</value>");
-        sb.append("</item>");
-        sb.append("<item>");
-        sb.append("<name>licenseNo</name>");
-        sb.append("<value>"+carInfo.get("plateNo")+"</value>");
-        sb.append("</item>");
-        sb.append("<item>");
-        sb.append("<name>carType</name>");
-        sb.append("<value>"+type+"</value>");
-        sb.append("</item>");
-        sb.append("<item>");
-        sb.append("<name>queryReasonID</name>");
-        sb.append("<value>101</value>");
-        sb.append("</item>");
-        sb.append("<item>");
-        sb.append("<name>subreportIDs</name>");
-        sb.append("<value>13812</value>");//13816：全国个人车辆信息核查 13813：车辆状态查询，根据权限和需要进行提交  13814：机动车信息查询，根据权限和需要进行提交
-        sb.append("</item>");
-        sb.append("<item>");
-        sb.append("<name>refID</name>");
-        sb.append("<value></value>");
-        sb.append("</item>");
-        sb.append("</condition>");
-        sb.append("</conditions>");
-
-        return sb.toString();
-    }
 
     private void saveData(PengYuan pengYuan) {
         log.info("鹏元数据开始入库......");

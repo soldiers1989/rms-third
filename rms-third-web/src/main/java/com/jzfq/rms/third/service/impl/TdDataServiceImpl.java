@@ -120,7 +120,7 @@ public class TdDataServiceImpl implements ITdDataService {
      * @param orderNo
      */
     @Override
-    public void saveResult(String orderNo, FraudApiResponse apiResp, Map<String,Object> commonParams) {
+    public void saveResult(String orderNo, String eventId, FraudApiResponse apiResp, Map<String,Object> commonParams) {
         String traceId = TraceIDThreadLocal.getTraceID();
         String systemID = CallSystemIDThreadLocal.getCallSystemID();
         try{
@@ -161,6 +161,7 @@ public class TdDataServiceImpl implements ITdDataService {
                 //通过seqid 查询 同盾规则详情，保存到mongo
                 RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId, systemID);
                 tongDunData.setRuleDetailResult(ruleDetailResult);
+                tongDunData.setEventId(eventId);
                 mongoTemplate.insert(tongDunData);
             });
         }catch (Exception e){
@@ -177,6 +178,20 @@ public class TdDataServiceImpl implements ITdDataService {
     @Override
     public List<TongDunData> getTongDongData(String orderNo) {
         List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo))
+                , TongDunData.class);
+        return datas;
+    }
+
+    /**
+     * 根据订单号 获取同盾数据
+     *
+     * @param orderNo
+     * @param eventId
+     * @return
+     */
+    @Override
+    public List<TongDunData> getDataByEvent(String orderNo, String eventId) {
+        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo).and("eventId").is(eventId))
                 , TongDunData.class);
         return datas;
     }
@@ -251,7 +266,8 @@ public class TdDataServiceImpl implements ITdDataService {
      * @param clientType
      * @return
      */
-    private String getEventId(String channelId, String financialProductId, String operationType, String clientType){
+    @Override
+    public String getEventId(String channelId, String financialProductId, String operationType, String clientType){
         StringBuilder key = new StringBuilder("dictionary_prefix_");
         key.append(eventRedisKey).append("_");
         key.append(channelId).append("-").append(financialProductId)

@@ -27,6 +27,16 @@ public class BairongData {
     private String certCardNo;
     @Indexed
     private String mobile;
+    @Indexed
+    private String strategyId;
+
+    public String getStrategyId() {
+        return strategyId;
+    }
+
+    public void setStrategyId(String strategyId) {
+        this.strategyId = strategyId;
+    }
 
     private Date createTime;
 

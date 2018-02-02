@@ -26,6 +26,17 @@ public class TongDunData {
     @Indexed
     private String orderNo;
 
+    @Indexed
+    private String eventId;
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
     private String name;
 
     private String mobile;

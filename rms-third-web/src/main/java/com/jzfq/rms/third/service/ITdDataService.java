@@ -17,6 +17,16 @@ import java.util.Map;
 public interface ITdDataService {
 
     /**
+     * 获取 eventId
+     * @param channelId
+     * @param financialProductId
+     * @param operationType
+     * @param clientType
+     * @return
+     */
+    String getEventId(String channelId, String financialProductId, String operationType, String clientType);
+
+    /**
      * 抓取同盾数据
      * @param params
      * @return
@@ -28,7 +38,7 @@ public interface ITdDataService {
      * 保存同盾规则按照订单号
      * @param orderNo
      */
-     void saveResult( String orderNo, FraudApiResponse apiResp, Map<String,Object> commonParams);
+     void saveResult( String orderNo, String eventId, FraudApiResponse apiResp, Map<String,Object> commonParams);
 
     /**
      * 根据订单号 获取同盾数据
@@ -36,7 +46,12 @@ public interface ITdDataService {
      * @return
      */
      List<TongDunData> getTongDongData(String orderNo);
-
+    /**
+     * 根据订单号 获取同盾数据
+     * @param orderNo
+     * @return
+     */
+    List<TongDunData> getDataByEvent(String orderNo, String eventId);
 
     /**
      * 根据流水号 获取同盾数据

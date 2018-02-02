@@ -167,7 +167,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_BR01.getCode());
         List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
                 .and("certCardNo").is(certCardNo).and("mobile").is(mobile)
-        .and("createTime").gte(getMinTime(outTime))), BairongData.class);
+                .and("createTime").gte(getMinTime(outTime))), BairongData.class);
         if(CollectionUtils.isEmpty(datas)){
             return null;
         }
@@ -209,6 +209,27 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
             return datas.get(0);
         }
         return null;
+    }
+    /**
+     * @param name
+     * @param certCardNo
+     * @param mobile
+     * @return
+     */
+    @Override
+    public JSONObject getBairongData(String name, String certCardNo, String mobile, String strategyId) {
+        Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_BR01.getCode());
+        List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
+                .and("certCardNo").is(certCardNo).and("mobile").is(mobile).and("strategyId").is(strategyId)
+                .and("createTime").gte(getMinTime(outTime))), BairongData.class);
+        if(CollectionUtils.isEmpty(datas)){
+            return null;
+        }
+        String data = datas.get(0).getData();
+        if(StringUtils.isBlank(data)){
+            return null;
+        }
+        return JSONObject.parseObject(data);
     }
 
     private Date getMinTime(Integer time){

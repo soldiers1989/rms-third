@@ -102,22 +102,22 @@ public class HandleResponseTester {
 //        ResponseResult dto = rmsThirdService.send("123","1","","1017","01",map);
 //        System.out.println(dto);
 
-//        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/inter");
-//        Map<String,Object> map = new HashMap<>();
-//        map.put("frontId","49");
-//        map.put("channelId","1");
-//        map.put("operationType","2");
-//        map.put("clientType","1");
-//        map.put("financialProductId","2");
-//        Map<String ,Object> personalInfo = new HashMap<>();
-//        personalInfo.put("mobile","15398461910");
-//        personalInfo.put("name","严秋俊");
-//        personalInfo.put("bankNo","6217003860024844738");
-//        personalInfo.put("certCardNo","530323199506231910");
-//        map.put("personInfo",personalInfo);
-//        map.put("orderNo","test330");//test22055444
-//        ResponseResult dto = rmsThirdService.sendAndHandleRespose("test33020180111172732","1","","1008","01",map);
-//        System.out.println(dto);
+        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
+        Map<String,Object> map = new HashMap<>();
+        map.put("frontId","49");
+        map.put("channelId","2");
+        map.put("operationType","2");
+        map.put("clientType","6");
+        map.put("financialProductId","4");
+        Map<String ,Object> personalInfo = new HashMap<>();
+        personalInfo.put("mobile","15398461910");
+        personalInfo.put("name","严秋俊");
+        personalInfo.put("bankNo","6217003860024844738");
+        personalInfo.put("certCardNo","530323199506231910");
+        map.put("personInfo",personalInfo);
+        map.put("orderNo","test3301");//test22055444
+        ResponseResult dto = rmsThirdService.sendAndHandleRespose("test33020180111172732","1","","1008","01",map);
+        System.out.println(dto);
 
 //        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/rms-third/inter");
 //        Map<String,Object> map = new HashMap<>();

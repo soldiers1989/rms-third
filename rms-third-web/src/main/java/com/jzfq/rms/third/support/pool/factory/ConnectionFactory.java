@@ -1,12 +1,19 @@
 package com.jzfq.rms.third.support.pool.factory;
 
+import com.jzfq.rms.third.support.log.ILogger;
+import com.jzfq.rms.third.support.log.impl.RmsLogger;
+import com.jzfq.rms.third.web.action.GongPingJiaAction;
+import com.jzfq.rms.third.web.action.handler.Request1004Handler;
 import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.logging.log4j.util.PropertiesUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,6 +28,12 @@ import java.util.Properties;
  * @date 2017-12-27.
  */
 public class ConnectionFactory {
+    private static final Logger log = LoggerFactory.getLogger(Request1004Handler.class);
+
+    private final String serverUrl = "/data/config/rms-third/prod.properties";
+
+    private final String projectUrl = "rms-third.properties";
+
     private static interface Singleton {
         final ConnectionFactory INSTANCE = new ConnectionFactory();
     }
@@ -61,14 +74,17 @@ public class ConnectionFactory {
 
     private PropertiesUtil getUtilObject(){
         Properties configProperties = new Properties();
-        try (FileInputStream in = new FileInputStream("/data/config/rms-third/prod.properties")) {
-            configProperties.load(in);
-            return new PropertiesUtil(configProperties);
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
+        File file = new File(serverUrl);
+        if(file.exists()){
+            System.out.println(serverUrl);
+            try (FileInputStream in = new FileInputStream(file) ){
+                configProperties.load(in);
+                return new PropertiesUtil(configProperties);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
-        return new PropertiesUtil("rms-third.properties");
+        System.out.println(projectUrl);
+        return new PropertiesUtil(projectUrl);
     }
 }

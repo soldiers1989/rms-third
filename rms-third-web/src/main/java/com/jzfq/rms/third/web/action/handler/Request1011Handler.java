@@ -91,7 +91,11 @@ public class Request1011Handler extends AbstractRequestHandler {
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
         // 1.搜索mongo中是否存在
-        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile());
+        String strategyId = getStrategyId(request);
+        if(StringUtils.isBlank(strategyId)){
+            return new ResponseResult(traceId,ReturnCode.ERROR_NOT_FOUNT_STRATEGE_ID,null);
+        }
+        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile(), strategyId);
         if(null != jsonObject){
 //            riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
             JSONObject resultJson = new JSONObject();
@@ -100,7 +104,7 @@ public class Request1011Handler extends AbstractRequestHandler {
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
         }
         // 2.判断是否远程拉取
-        String isRepeatKey = getKeyPersonalInfo(info);
+        String isRepeatKey = getKeyPersonalInfo(info, strategyId);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
@@ -121,7 +125,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         String brResponse = (String)result.getData();
         try{
 //            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
-            riskPostDataService.saveRmsThirdData(info, customerType, brResponse);
+            riskPostDataService.saveRmsThirdData(info, customerType, strategyId, brResponse);
         }catch (Exception e) {
             log.error("traceId={} 保存数据失败",traceId,e);
             interfaceCountCache.setFailure(isRepeatKey);
@@ -133,12 +137,22 @@ public class Request1011Handler extends AbstractRequestHandler {
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
 
     }
+
+    String getStrategyId(AbstractRequest request){
+        String channelId = (String)request.getParam("channelId");
+        String financialProductId = (String)request.getParam("financialProductId");
+        String operationType = (String)request.getParam("operationType");
+        String clientType = (String)request.getParam("clientType");
+        return brPostService.getStrategyId(channelId, financialProductId, operationType, clientType);
+    }
     /**
      * 获取 唯一Key
      * @return
      */
-    private String getKeyPersonalInfo(RiskPersonalInfo info){
+    private String getKeyPersonalInfo(RiskPersonalInfo info, String strategyId){
         StringBuilder sb = new StringBuilder("rms_third_1011_");
+        sb.append(strategyId);
+        sb.append("_");
         sb.append(info.getName());
         sb.append("_");
         sb.append(info.getCertCardNo());

@@ -27,6 +27,16 @@ public class BairongData {
     private String certCardNo;
     @Indexed
     private String mobile;
+    @Indexed
+    private String strategyId;
+
+    public String getStrategyId() {
+        return strategyId;
+    }
+
+    public void setStrategyId(String strategyId) {
+        this.strategyId = strategyId;
+    }
 
     private Date createTime;
 
@@ -67,11 +77,12 @@ public class BairongData {
     public BairongData() {
     }
 
-    public BairongData(String type, String name, String certCardNo, String mobile, String data, Date createTime) {
+    public BairongData(String type, String name, String certCardNo, String mobile, String strategyId, String data, Date createTime) {
         this.type = type;
         this.name = name;
         this.certCardNo = certCardNo;
         this.mobile = mobile;
+        this.strategyId = strategyId;
         this.data = data;
         this.createTime = createTime;
     }
@@ -108,6 +119,12 @@ public class BairongData {
         private String mobile;
         private String data;
         private Date createTime;
+        private String strategyId;
+
+        public BairongDataBuild strategyId(String strategyId) {
+            this.strategyId = strategyId;
+            return this;
+        }
 
         public BairongDataBuild createTime(Date createTime) {
             this.createTime = createTime;
@@ -140,7 +157,7 @@ public class BairongData {
         }
 
         public BairongData build() {
-            return new BairongData(type, name, certCardNo, mobile, data, createTime);
+            return new BairongData(type, name, certCardNo, mobile, strategyId, data, createTime);
         }
     }
 }

@@ -26,6 +26,8 @@ public enum ReturnCode {
     ERROR_THIRD_RRSPONSE_NULL(11,"第三方返回为空"),
     ERROR_THIRD_RRSPONSE_NON_JSON(12,"d第三方返回一个空的json"),
     ERROR_TASK_ID_NULL(13,"根据订单号获取taskId失败"),
+    ERROR_NOT_FOUNT_EVENT_ID(14,"获取不到eventId"),
+    ERROR_NOT_FOUNT_STRATEGE_ID(15,"获取不到strategyId"),
     ACTIVE_THIRD_RPC(100,"远程调用接口中"),
     REQUEST_THIRD_GETING(150,"数据抓取中"),
     REQUEST_SAME_EXCUTING(199,"有相同的请求正在执行"),

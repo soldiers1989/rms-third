@@ -133,10 +133,16 @@ public class Request1019Handler extends AbstractRequestHandler {
         JSONObject result = new JSONObject();
         result.put("brScore", "");
         result.put("brFlag",ReturnCode.REQUEST_SUCCESS.code());
+        String strategyId = getStrategyId(request);
+        if(StringUtils.isBlank(strategyId)){
+            result.put("brFlag",ReturnCode.ERROR_NOT_FOUNT_STRATEGE_ID.code());
+            return result;
+        }
+        JSONObject jsonObject = riskPostDataService.getBairongData(name, certCardNo, phone, strategyId);
         // 百融
-        BairongData bairongData = riskPostDataService.getBairongDataByOrder(name, certCardNo, phone);
-        if(bairongData!=null){
-            result.put("brScore",bairongData.getData());
+//        BairongData bairongData = riskPostDataService.getBairongDataByOrder(name, certCardNo, phone);
+        if(jsonObject!=null){
+            result.put("brScore",jsonObject.toJSONString());
             return result;
         }
         RiskPersonalInfo info = new RiskPersonalInfo();
@@ -173,7 +179,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         }
         String brResponseData = (String)brResponse.getData();
         try{
-            riskPostDataService.saveRmsThirdData(info,null, brResponseData);
+            riskPostDataService.saveRmsThirdData(info,null, strategyId, brResponseData);
             result.put("brScore",brResponse.getData());
             return result;
         }catch (Exception e) {
@@ -200,6 +206,28 @@ public class Request1019Handler extends AbstractRequestHandler {
         return sb.toString();
     }
 
+    String getStrategyId(AbstractRequest request){
+        String channelId = (String)request.getParam("channelId");
+        String financialProductId = (String)request.getParam("financialProductId");
+        String operationType = (String)request.getParam("operationType");
+        String clientType = (String)request.getParam("clientType");
+        return brPostService.getStrategyId(channelId, financialProductId, operationType, clientType);
+    }
+    /**
+     * 获取 唯一Key
+     * @return
+     */
+    private String getKeyPersonalInfo(RiskPersonalInfo info, String strategyId){
+        StringBuilder sb = new StringBuilder("rms_third_1019_br_");
+        sb.append(strategyId);
+        sb.append("_");
+        sb.append(info.getName());
+        sb.append("_");
+        sb.append(info.getCertCardNo());
+        sb.append("_");
+        sb.append(info.getMobile());
+        return sb.toString();
+    }
     /**
      * 获取同盾数据
      * @param request
@@ -214,10 +242,15 @@ public class Request1019Handler extends AbstractRequestHandler {
         result.put("tdScore","");
         result.put("tdDetail","");
         result.put("tdFlag",ReturnCode.REQUEST_SUCCESS.code());
+        String eventId = getEventId(request);
+        if(StringUtils.isBlank(eventId)){
+            result.put("tdFlag",ReturnCode.ERROR_NOT_FOUNT_EVENT_ID.code());
+            return result;
+        }
         // 同盾
         if(juzi){
             String orderNo = request.getParam("orderNo").toString();
-            List<TongDunData> tongDunData = tdDataService.getTongDongData(orderNo);
+            List<TongDunData> tongDunData = tdDataService.getDataByEvent(orderNo, eventId);
             if(Collections.isEmpty(tongDunData)){
                 result.put("tdScore",tongDunData.get(0).getApiResp());
                 result.put("tdDetail",tongDunData.get(0).getRuleDetailResult());
@@ -234,7 +267,7 @@ public class Request1019Handler extends AbstractRequestHandler {
             log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
             return result;
         }
-        String isRepeatKey = getKeyBySerialNo(serialNo);
+        String isRepeatKey = getKeyBySerialNo(serialNo, eventId);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
             result.put("tdFlag",ReturnCode.ACTIVE_THIRD_RPC.code());
@@ -268,14 +301,22 @@ public class Request1019Handler extends AbstractRequestHandler {
         log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,serialNo,result.get("tdFlag"));
         return response;
     }
-    private String getKeyBySerialNo(String serialNo){
-        return "rms_third_1019_td_"+serialNo;
+    private String getKeyBySerialNo(String serialNo, String eventId){
+        StringBuilder key = new StringBuilder("rms_third_1019_td_");
+        key.append(serialNo).append("_");
+        key.append(eventId);
+        return key.toString();
     }
+
+    private String getEventId(AbstractRequest request){
+        String channelId = (String)request.getParam("channelId");
+        String financialProductId = (String)request.getParam("financialProductId");
+        String operationType = (String)request.getParam("operationType");
+        String clientType = (String)request.getParam("clientType");
+        return tdDataService.getEventId(channelId, financialProductId, operationType, clientType);
+    }
+
     private Map<String,Object> getCommonParams(AbstractRequest request){
-//        String channelId = ChannelIdEnum.JZFQ.getCode();
-//        String financialProductId = FinancialProductIdEnum.XYQB.getCode();//信用钱包
-//        String operationType = OperationTypeEnum.RZ.getCode();//认证
-//        String clientType = ClientTypeEnum.AND.getCode();
         String name = request.getParam("name").toString();
         String certCardNo = request.getParam("certCardNo").toString();
         String phone = request.getParam("phone").toString();

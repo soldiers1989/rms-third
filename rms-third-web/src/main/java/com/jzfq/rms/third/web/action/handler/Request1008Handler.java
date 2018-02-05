@@ -90,21 +90,25 @@ public class Request1008Handler  extends AbstractRequestHandler {
     private ResponseResult handler01(AbstractRequest request) throws Exception{
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
+        Map<String,Object> commonParams = getCommonParams(request);
         // 根据orderNo查询数据库
-        List<TongDunData> datas = tdDataService.getTongDongData(orderNo);
+        String eventId = getEventId(request);
+        if(StringUtils.isBlank(eventId)){
+            return new ResponseResult(traceId,ReturnCode.ERROR_NOT_FOUNT_EVENT_ID,null);
+        }
+        List<TongDunData> datas = tdDataService.getDataByEvent(orderNo, eventId);
         if(!CollectionUtils.isEmpty(datas)){
             ResponseResult responseResult = new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,null);
             TongDunData data = datas.get(0);
             responseResult.setData(data.getApiResp().getFinal_score());
             return responseResult;
         }
-        String isRepeatKey = getKeyByOrderNo(orderNo);
+        String isRepeatKey = getKeyByOrderNo(orderNo, eventId);
         try {
             boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
             if(!isRpc){
                 return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
             }
-            Map<String,Object> commonParams = getCommonParams(request);
             ResponseResult response =null;
             response = tdDataService.queryTdDatas(commonParams);
             if (response == null){
@@ -118,7 +122,7 @@ public class Request1008Handler  extends AbstractRequestHandler {
             }
             FraudApiResponse apiResp = (FraudApiResponse)response.getData();
             response.setData(apiResp.getFinal_score());
-            tdDataService.saveResult(orderNo, apiResp, commonParams);
+            tdDataService.saveResult(orderNo,eventId, apiResp, commonParams);
             return response;
         }catch (Exception e){
             log.info("traceId={} 同盾拉取无效：false ",TraceIDThreadLocal.getTraceID());     //失败
@@ -128,6 +132,13 @@ public class Request1008Handler  extends AbstractRequestHandler {
 
     }
 
+    private String getEventId(AbstractRequest request){
+        String channelId = (String)request.getParam("channelId");
+        String financialProductId = (String)request.getParam("financialProductId");
+        String operationType = (String)request.getParam("operationType");
+        String clientType = (String)request.getParam("clientType");
+        return tdDataService.getEventId(channelId, financialProductId, operationType, clientType);
+    }
     private Map<String,Object> getCommonParams(AbstractRequest request){
         String channelId = (String)request.getParam("channelId");
         String financialProductId = (String)request.getParam("financialProductId");
@@ -146,8 +157,11 @@ public class Request1008Handler  extends AbstractRequestHandler {
         return commonParams;
     }
 
-    private String getKeyByOrderNo(String orderNo){
-        return "rms_third_1008_"+orderNo;
+    private String getKeyByOrderNo(String orderNo, String eventId){
+        StringBuilder key = new StringBuilder("rms_third_1008_");
+        key.append(orderNo).append("_");
+        key.append(eventId);
+        return key.toString();
     }
     /**
      * 版本02 处理器

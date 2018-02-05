@@ -125,7 +125,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         String brResponse = (String)result.getData();
         try{
 //            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
-            riskPostDataService.saveRmsThirdData(info, customerType, brResponse);
+            riskPostDataService.saveRmsThirdData(info, customerType, strategyId, brResponse);
         }catch (Exception e) {
             log.error("traceId={} 保存数据失败",traceId,e);
             interfaceCountCache.setFailure(isRepeatKey);

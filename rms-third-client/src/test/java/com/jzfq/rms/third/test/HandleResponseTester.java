@@ -132,7 +132,7 @@ public class HandleResponseTester {
 //        ResponseResult dto = rmsThirdService.send("123","1","","1009","01",map);
 //        System.out.println(dto);
 
-        RmsThirdService rmsThirdService = new RmsThirdService("http://dev2.rms.third.juzifenqi.com/inter");
+        RmsThirdService rmsThirdService = new RmsThirdService("http://192.168.162.27:8099/inter");
         Map<String,Object> map = new HashMap<>();
         map.put("frontId","111111");
         map.put("channelId","1");
@@ -143,7 +143,7 @@ public class HandleResponseTester {
         map.put("customerType","0");
         personalInfo.put("name","严秋俊");
         personalInfo.put("certCardNo","140502198811102244");
-        personalInfo.put("mobile","15398461910");
+        personalInfo.put("mobile","15398461912");
         map.put("personInfo",personalInfo);
         map.put("orderNo","305677");
         ResponseResult dto = rmsThirdService.sendAndHandleRespose("123","1","","1011","01",map);

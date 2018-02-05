@@ -79,6 +79,12 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
                 .certCardNo(certCardNo).mobile(mobile).type(type).data(data).build();
         return dataBean;
     }
+
+    private BairongData buildBairongData(String name, String certCardNo, String mobile, String strategyId, String type,String data) {
+        BairongData dataBean = new BairongData.BairongDataBuild().createTime(new Date()).name(name)
+                .certCardNo(certCardNo).mobile(mobile).strategyId(strategyId).type(type).data(data).build();
+        return dataBean;
+    }
     @Autowired
     IRmsService rmsService;
     @Override
@@ -102,6 +108,20 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         try{
             ThreadProvider.getThreadPool().execute(()->{
                 BairongData baiRongScore = buildBairongData(info.getName(), info.getCertCardNo(), info.getMobile(),
+                        customerType,result);
+                saveData(baiRongScore);
+            });
+        }catch (Exception e){
+            log.error("traceId={} 保存rms-third百融数据出现异常",traceId,e);
+        }
+    }
+
+    @Override
+    public void saveRmsThirdData(RiskPersonalInfo info,String customerType, String strategyId, String result) {
+        String traceId = TraceIDThreadLocal.getTraceID();
+        try{
+            ThreadProvider.getThreadPool().execute(()->{
+                BairongData baiRongScore = buildBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), strategyId,
                         customerType,result);
                 saveData(baiRongScore);
             });

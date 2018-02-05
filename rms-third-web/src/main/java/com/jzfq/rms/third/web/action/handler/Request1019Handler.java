@@ -133,10 +133,16 @@ public class Request1019Handler extends AbstractRequestHandler {
         JSONObject result = new JSONObject();
         result.put("brScore", "");
         result.put("brFlag",ReturnCode.REQUEST_SUCCESS.code());
+        String strategyId = getStrategyId(request);
+        if(StringUtils.isBlank(strategyId)){
+            result.put("brFlag",ReturnCode.ERROR_NOT_FOUNT_STRATEGE_ID.code());
+            return result;
+        }
+        JSONObject jsonObject = riskPostDataService.getBairongData(name, certCardNo, phone, strategyId);
         // 百融
-        BairongData bairongData = riskPostDataService.getBairongDataByOrder(name, certCardNo, phone);
-        if(bairongData!=null){
-            result.put("brScore",bairongData.getData());
+//        BairongData bairongData = riskPostDataService.getBairongDataByOrder(name, certCardNo, phone);
+        if(jsonObject!=null){
+            result.put("brScore",jsonObject.toJSONString());
             return result;
         }
         RiskPersonalInfo info = new RiskPersonalInfo();
@@ -173,7 +179,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         }
         String brResponseData = (String)brResponse.getData();
         try{
-            riskPostDataService.saveRmsThirdData(info,null, brResponseData);
+            riskPostDataService.saveRmsThirdData(info,null, strategyId, brResponseData);
             result.put("brScore",brResponse.getData());
             return result;
         }catch (Exception e) {
@@ -200,6 +206,28 @@ public class Request1019Handler extends AbstractRequestHandler {
         return sb.toString();
     }
 
+    String getStrategyId(AbstractRequest request){
+        String channelId = (String)request.getParam("channelId");
+        String financialProductId = (String)request.getParam("financialProductId");
+        String operationType = (String)request.getParam("operationType");
+        String clientType = (String)request.getParam("clientType");
+        return brPostService.getStrategyId(channelId, financialProductId, operationType, clientType);
+    }
+    /**
+     * 获取 唯一Key
+     * @return
+     */
+    private String getKeyPersonalInfo(RiskPersonalInfo info, String strategyId){
+        StringBuilder sb = new StringBuilder("rms_third_1019_br_");
+        sb.append(strategyId);
+        sb.append("_");
+        sb.append(info.getName());
+        sb.append("_");
+        sb.append(info.getCertCardNo());
+        sb.append("_");
+        sb.append(info.getMobile());
+        return sb.toString();
+    }
     /**
      * 获取同盾数据
      * @param request

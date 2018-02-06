@@ -21,9 +21,6 @@ public class RmsConstants {
 
     public static final String CHILD_ICONCLS = "right-icon x-fa fa-file-text-o";//二级菜单
 
-    /**添加用户初始密码**/
-    public static final String PASSWORD_DEFAUL = "jzfq@123456";
-
     /**字典TYPE**/
     public static final String DICTIONARY_TYPE = "juzi_interface_api";
     public static final String CLOSE_ORDER_DAY_TYPE = "close_order_day";

@@ -177,38 +177,27 @@ public class PageInterceptor implements Interceptor
         // 通过connection建立一个countSql对应的PreparedStatement对象。
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        try
-        {
+        try {
             pstmt = connection.prepareStatement(totalRowSql);
             // 通过parameterHandler给PreparedStatement对象设置参数
             parameterHandler.setParameters(pstmt);
             // 之后就是执行获取总记录数的Sql语句和获取结果了。
             rs = pstmt.executeQuery();
-            if (rs.next())
-            {
+            if (rs.next()) {
                 int rowTotal = rs.getInt(1);// 返回总数
                 page.setDataTotal(rowTotal);// 设置总记录数
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             log.error("set total row error", e);
-        }
-        finally
-        {
-            try
-            {
-                if (pstmt != null)
-                {
+        } finally {
+            try{
+                if (pstmt != null) {
                     pstmt.close();
                 }
-                if (rs != null)
-                {
+                if (rs != null) {
                     rs.close();
                 }
-            }
-            catch (SQLException e)
-            {
+            } catch (SQLException e) {
                 log.error("set total row error", e);
             }
         }

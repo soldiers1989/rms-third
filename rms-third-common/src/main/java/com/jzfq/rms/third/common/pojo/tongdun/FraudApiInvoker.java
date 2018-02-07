@@ -160,23 +160,23 @@ public class FraudApiInvoker {
     }
 
     public static void heartbeat() {
-        String url = "https://apitest.tongdun.cn/riskService";
-        final com.jzfq.rms.mongo.FraudApiInvoker invoker = new com.jzfq.rms.mongo.FraudApiInvoker(url);
-        final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("partner_code", "bestfenqi");
-        params.put("secret_key", "heartbeat");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        invoker.invoke(params);
-                        Thread.sleep(60000);
-                    } catch (InterruptedException | IOException e) {
-                        break;
-                    }
-                }
-            }
-        }, "FraudApiInvoker Heartbeat Thread").start();
+//        String url = "https://apitest.tongdun.cn/riskService";
+//        final com.jzfq.rms.mongo.FraudApiInvoker invoker = new com.jzfq.rms.mongo.FraudApiInvoker(url);
+//        final Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("partner_code", "bestfenqi");
+//        params.put("secret_key", "heartbeat");
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    try {
+//                        invoker.invoke(params);
+//                        Thread.sleep(60000);
+//                    } catch (InterruptedException | IOException e) {
+//                        break;
+//                    }
+//                }
+//            }
+//        }, "FraudApiInvoker Heartbeat Thread").start();
     }
 }

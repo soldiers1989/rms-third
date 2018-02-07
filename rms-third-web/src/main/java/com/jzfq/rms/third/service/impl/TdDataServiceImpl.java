@@ -151,7 +151,7 @@ public class TdDataServiceImpl implements ITdDataService {
                         log.info("保存数据 订单号为{}获取同盾是返回的结果为null",orderNo);
                         return ;
                     }
-//                    mongoTemplate.insert(tdHitRuleData);
+                    mongoTemplate.insert(tdHitRuleData);
                 }
                 String sequenceId = apiResp.getSeq_id();
                 if (StringUtils.isBlank(sequenceId)){

@@ -97,7 +97,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         }
         JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(),info.getMobile(), strategyId);
         if(null != jsonObject){
-//            riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
+            riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
             JSONObject resultJson = new JSONObject();
             resultJson.put("score",jsonObject.getString("rs_Score_scorecust"));
             resultJson.put("weight",jsonObject.getString("Rule_final_weight"));
@@ -124,7 +124,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         }
         String brResponse = (String)result.getData();
         try{
-//            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
+            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
             riskPostDataService.saveRmsThirdData(info, customerType, strategyId, brResponse);
         }catch (Exception e) {
             log.error("traceId={} 保存数据失败",traceId,e);

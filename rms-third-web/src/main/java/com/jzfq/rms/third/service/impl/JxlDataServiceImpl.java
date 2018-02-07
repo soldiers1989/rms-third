@@ -240,7 +240,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		String traceId = TraceIDThreadLocal.getTraceID();
 		try {
 			ThreadProvider.getThreadPool().execute(()->{
-//				saveJxlData(new JxlData(Byte.parseByte(type.code()), name, idCard, phone, type.msg(), result));
+				saveJxlData(new JxlData(Byte.parseByte(type.code()), name, idCard, phone, type.msg(), result));
 				saveJxlData(new JuXinLiData(name+"_"+idCard+"_"+phone,type.code(),type.msg(), result));
 			});
 		}catch (Exception e){
@@ -450,7 +450,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL03.getCode(),commonParams,bizParams);
 		String rawData = (String)response.getData();
 		if(rawData!=null){
-//			saveJxlData(new JxlData(RmsConstants.JXL_RAW_INTERFACE, name, idCard, phone, "移动运营商数据", rawData));
+			saveJxlData(new JxlData(RmsConstants.JXL_RAW_INTERFACE, name, idCard, phone, "移动运营商数据", rawData));
 		}
 		return response;
 	}
@@ -469,7 +469,7 @@ public class JxlDataServiceImpl implements IJxlDataService {
 		ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.JXL04.getCode(),commonParams,bizParams);
 		String rawData = (String)response.getData();
 		if(rawData!=null){
-//			saveJxlData(new JxlData(RmsConstants.JXL_BUSI_RAW_INTERFACE, name, idCard, phone, "电商数据", rawData));
+			saveJxlData(new JxlData(RmsConstants.JXL_BUSI_RAW_INTERFACE, name, idCard, phone, "电商数据", rawData));
 		}
 		return response;
 	}

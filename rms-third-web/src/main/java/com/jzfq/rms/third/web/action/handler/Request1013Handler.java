@@ -104,8 +104,8 @@ public class Request1013Handler extends AbstractRequestHandler {
         bizData.put("custumType",custumType);
         bizData.put("frontId",frontId);
         // 数据库
-        String valueDb = rong360Service.getValueByDB( InterfaceIdEnum.THIRD_RSLL01.getCode(),PhoneDataTypeEnum.NETWORK_LENGTH,bizData);
-//        String valueDb = rong360Service.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL01.getCode(),PhoneDataTypeEnum.NETWORK_LENGTH,bizData);
+//        String valueDb = rong360Service.getValueByDB( InterfaceIdEnum.THIRD_RSLL01.getCode(),PhoneDataTypeEnum.NETWORK_LENGTH,bizData);
+        String valueDb = rong360Service.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL01.getCode(),PhoneDataTypeEnum.NETWORK_LENGTH,bizData);
         if(StringUtils.isNotBlank(valueDb)){
             return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb);
         }

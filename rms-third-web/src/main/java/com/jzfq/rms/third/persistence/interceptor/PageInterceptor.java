@@ -191,12 +191,13 @@ public class PageInterceptor implements Interceptor
             log.error("set total row error", e);
         } finally {
             try{
-                if (pstmt != null) {
-                    pstmt.close();
-                }
                 if (rs != null) {
                     rs.close();
                 }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+
             } catch (SQLException e) {
                 log.error("set total row error", e);
             }

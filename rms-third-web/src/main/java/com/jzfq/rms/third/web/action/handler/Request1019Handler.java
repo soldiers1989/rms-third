@@ -150,7 +150,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         info.setName(name);
         info.setMobile(phone);
         // 2.判断是否远程拉取
-        String isRepeatKey = getKeyPersonalInfo(info);
+        String isRepeatKey = getKeyPersonalInfo(info, strategyId);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
         if(!isRpc){
             result.put("brFlag",ReturnCode.ACTIVE_THIRD_RPC.code());
@@ -190,20 +190,6 @@ public class Request1019Handler extends AbstractRequestHandler {
         interfaceCountCache.setFailure(isRepeatKey);
         result.put("brFlag",ReturnCode.ERROR_RESPONSE_NULL.code());
         return result;
-    }
-
-    /**
-     * 获取 唯一Key
-     * @return
-     */
-    private String getKeyPersonalInfo(RiskPersonalInfo info){
-        StringBuilder sb = new StringBuilder("rms_third_1019_br_");
-        sb.append(info.getName());
-        sb.append("_");
-        sb.append(info.getCertCardNo());
-        sb.append("_");
-        sb.append(info.getMobile());
-        return sb.toString();
     }
 
     String getStrategyId(AbstractRequest request){

@@ -92,8 +92,10 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         String traceId = TraceIDThreadLocal.getTraceID();
         try{
             ThreadProvider.getThreadPool().execute(()->{
+                JSONObject json = JSONObject.parseObject(result);
+                json.put("scorepettycashv1", json.getString("rs_Score_scorecust"));
                 String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
-                BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", result, customerType.toString());
+                BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", json.toJSONString(), customerType.toString());
                 //保存rms系统数据结构
                 saveData(data);
             });

@@ -21,9 +21,18 @@ public class RedisAction {
     ICache prefixCache;
     private static String STR_REDIS_DEL_SECRET = "redisClearCount";
     @RequestMapping(value="del.json", method= RequestMethod.GET)
-    public ResponseResult getDetailModelEvaluation(String secret) throws BusinessException {
+    public ResponseResult deleteAll(String secret) throws BusinessException {
         if(StringUtils.equals(STR_REDIS_DEL_SECRET,secret)){
             prefixCache.batchDel("rms_third_10");
+            return new ResponseResult("", ReturnCode.REQUEST_SUCCESS,null);
+        }
+        return new ResponseResult("", ReturnCode.ERROR_INVALID_ARGS,null);
+    }
+
+    @RequestMapping(value="deleteByKey.json", method= RequestMethod.GET)
+    public ResponseResult deleteByKey(String secret, String key) throws BusinessException {
+        if(StringUtils.equals(STR_REDIS_DEL_SECRET,secret)){
+            prefixCache.batchDel("rms_third_10"+key);
             return new ResponseResult("", ReturnCode.REQUEST_SUCCESS,null);
         }
         return new ResponseResult("", ReturnCode.ERROR_INVALID_ARGS,null);

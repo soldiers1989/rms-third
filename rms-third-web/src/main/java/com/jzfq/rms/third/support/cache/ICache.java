@@ -18,4 +18,6 @@ public interface ICache {
     Long getCount(String key);
 
     Long getCountByGroup(String group,String key);
+
+    void batchDel(String... pattern);
 }

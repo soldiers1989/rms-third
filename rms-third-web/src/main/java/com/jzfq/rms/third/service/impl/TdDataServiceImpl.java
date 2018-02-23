@@ -149,9 +149,9 @@ public class TdDataServiceImpl implements ITdDataService {
                     }
                     if (tdHitRuleData==null){
                         log.info("保存数据 订单号为{}获取同盾时返回的结果为null",orderNo);
-                        return ;
+                    }else{
+                        mongoTemplate.insert(tdHitRuleData);
                     }
-                    mongoTemplate.insert(tdHitRuleData);
                 }
                 String sequenceId = apiResp.getSeq_id();
                 if (StringUtils.isBlank(sequenceId)){

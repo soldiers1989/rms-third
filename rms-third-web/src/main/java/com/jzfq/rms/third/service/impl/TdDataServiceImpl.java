@@ -148,14 +148,14 @@ public class TdDataServiceImpl implements ITdDataService {
                         log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
                     }
                     if (tdHitRuleData==null){
-                        log.info("保存数据 订单号为{}获取同盾是返回的结果为null",orderNo);
+                        log.info("保存数据 订单号为{}获取同盾时返回的结果为null",orderNo);
                         return ;
                     }
                     mongoTemplate.insert(tdHitRuleData);
                 }
                 String sequenceId = apiResp.getSeq_id();
                 if (StringUtils.isBlank(sequenceId)){
-                    log.info("保存数据 订单号为{}获取同盾是返回的结果seq_id为空",orderNo);
+                    log.info("保存数据 订单号为{}获取同盾时返回的结果seq_id为空",orderNo);
                     mongoTemplate.insert(tongDunData);
                     return ;
                 }
@@ -514,7 +514,7 @@ public class TdDataServiceImpl implements ITdDataService {
         tongDunData.setApiResp(apiResp);
         String sequenceId = apiResp.getSeq_id();
         if (StringUtils.isBlank(sequenceId)){
-            log.info("保存数据 流水号为{}获取同盾是返回的结果seq_id为空",serialNo);
+            log.info("保存数据 流水号为{}获取同盾时返回的结果seq_id为空",serialNo);
             mongoTemplate.insert(tongDunData);
             return null;
         }

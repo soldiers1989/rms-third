@@ -131,7 +131,7 @@ public class TdDataServiceImpl implements ITdDataService {
                 tongDunData.setOrderNo(orderNo);
                 tongDunData.setCreateTime(new Date());
                 tongDunData.setApiResp(apiResp);
-
+                tongDunData.setEventId(eventId);
                 //同盾信息写入mongo
                 if(StringUtils.isNotBlank(taskId)){
                     TdHitRuleData tdHitRuleData = new TdHitRuleData(null,
@@ -162,7 +162,6 @@ public class TdDataServiceImpl implements ITdDataService {
                 //通过seqid 查询 同盾规则详情，保存到mongo
                 RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId, systemID);
                 tongDunData.setRuleDetailResult(ruleDetailResult);
-                tongDunData.setEventId(eventId);
                 mongoTemplate.insert(tongDunData);
             });
         }catch (Exception e){

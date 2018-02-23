@@ -1,6 +1,8 @@
 package com.jzfq.rms.third.common.utils;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jzfq.rms.third.constant.Constants;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -629,5 +631,13 @@ public static final int DEFAULT_HASH_LENGTH=32;
 			return "N/A";
 		}
 		return input.toString().trim();
+	}
+
+	public static String toJSONString(Object ob){
+		if(ob==null){
+			return "";
+		}
+		String json = JSON.toJSONString(ob, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteMapNullValue);
+		return json;
 	}
 }

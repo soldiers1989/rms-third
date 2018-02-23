@@ -134,24 +134,31 @@ public class TdDataServiceImpl implements ITdDataService {
                 tongDunData.setEventId(eventId);
                 //同盾信息写入mongo
                 if(StringUtils.isNotBlank(taskId)){
-                    TdHitRuleData tdHitRuleData = new TdHitRuleData(null,
+                    TdHitRuleData tdHitRuleData = new TdHitRuleData(taskId,
                             "同盾规则命中信息", new Date());
-                    tdHitRuleData.setTaskId(taskId);
                     if(apiResp.getDevice_info()!=null && apiResp.getDevice_info().get("deviceId")!=null){
                         tdHitRuleData.setData(apiResp.getDevice_info().get("deviceId").toString());
                     }
                     log.info("traceId= {} 同盾拉取结果：{} --同盾分= {} 拉取结果:{}"
                             ,traceId,apiResp.getSuccess(),apiResp.getFinal_score(),apiResp.toString());     //是否成功
-                    try{
-                        BeanUtils.copyProperties(tdHitRuleData, apiResp);
-                    }catch (Exception e){
-                        log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
-                    }
-                    if (tdHitRuleData==null){
-                        log.info("保存数据 订单号为{}获取同盾时返回的结果为null",orderNo);
-                    }else{
-                        mongoTemplate.insert(tdHitRuleData);
-                    }
+//                    try{
+//                        BeanUtils.copyProperties(tdHitRuleData, apiResp);
+//                    }catch (Exception e){
+//                        log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
+//                    }
+                    tdHitRuleData.setDevice_info(StringUtil.toJSONString(apiResp.getDevice_info()));
+                    tdHitRuleData.setFinal_score(apiResp.getFinal_score());
+                    tdHitRuleData.setHit_rules(StringUtil.toJSONString(apiResp.getHit_rules()));
+                    tdHitRuleData.setPolicy_set(StringUtil.toJSONString(apiResp.getPolicy_set()));
+                    tdHitRuleData.setPolicy_set_name(apiResp.getPolicy_set_name());
+                    tdHitRuleData.setSeq_id(apiResp.getSeq_id());
+//                    if (tdHitRuleData==null){
+//                        log.info("保存数据 订单号为{}获取同盾时返回的结果为null",orderNo);
+//                    }else{
+//                        mongoTemplate.insert(tdHitRuleData);
+//                    }
+                    log.info("保存数据 订单号为{}rms老结构结果为:{}",orderNo,tdHitRuleData);
+                    mongoTemplate.insert(tdHitRuleData);
                 }
                 String sequenceId = apiResp.getSeq_id();
                 if (StringUtils.isBlank(sequenceId)){

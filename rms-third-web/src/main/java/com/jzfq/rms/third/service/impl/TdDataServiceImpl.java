@@ -155,7 +155,7 @@ public class TdDataServiceImpl implements ITdDataService {
                 }
                 String sequenceId = apiResp.getSeq_id();
                 if (StringUtils.isBlank(sequenceId)){
-                    log.info("保存数据 订单号为{}获取同盾时返回的结果seq_id为空",orderNo);
+                    log.info("保存数据 订单号为{}获取同盾时返回的结果seq_id为空：{}",orderNo, apiResp.toString());
                     mongoTemplate.insert(tongDunData);
                     return ;
                 }

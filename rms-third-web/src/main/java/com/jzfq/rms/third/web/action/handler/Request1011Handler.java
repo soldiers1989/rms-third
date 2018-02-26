@@ -99,7 +99,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         if(null != jsonObject){
             riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
             JSONObject resultJson = new JSONObject();
-            resultJson.put("score",jsonObject.getString("rs_Score_scorecust"));
+            resultJson.put("score", riskPostDataService.getScoreByJson(jsonObject));
             resultJson.put("weight",jsonObject.getString("Rule_final_weight"));
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
         }
@@ -132,7 +132,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         }
         JSONObject resultJson = new JSONObject();
         JSONObject tempResult = JSONObject.parseObject(brResponse);
-        resultJson.put("score",tempResult.getString("rs_Score_scorecust"));
+        resultJson.put("score",riskPostDataService.getScoreByJson(tempResult));
         resultJson.put("weight",tempResult.getString("Rule_final_weight"));
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,resultJson);
 

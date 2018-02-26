@@ -232,6 +232,22 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         }
         return null;
     }
+
+    /**
+     * 从json中读取百融评分
+     *
+     * @param json
+     * @return
+     */
+    @Override
+    public String getScoreByJson(JSONObject json) {
+        String score = json.getString("rs_Score_scorecust");
+        if(StringUtils.isBlank(score)){
+            score = json.getString("rs_Score_scorelargecashv2");
+        }
+        return score;
+    }
+
     /**
      * @param name
      * @param certCardNo

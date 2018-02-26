@@ -93,7 +93,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         try{
             ThreadProvider.getThreadPool().execute(()->{
                 JSONObject json = JSONObject.parseObject(result);
-                json.put("scorepettycashv1", json.getString("rs_Score_scorecust"));
+                json.put("scorepettycashv1", getScoreByJson(json));
                 String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
                 BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", json.toJSONString(), customerType.toString());
                 //保存rms系统数据结构
@@ -242,6 +242,9 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
     @Override
     public String getScoreByJson(JSONObject json) {
         String score = json.getString("rs_Score_scorecust");
+        if(StringUtils.isBlank(score)){
+            score = json.getString("rs_Score_scorelargecashv1");
+        }
         if(StringUtils.isBlank(score)){
             score = json.getString("rs_Score_scorelargecashv2");
         }

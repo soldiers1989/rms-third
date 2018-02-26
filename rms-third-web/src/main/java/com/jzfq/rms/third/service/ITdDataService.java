@@ -2,7 +2,7 @@ package com.jzfq.rms.third.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
-import com.jzfq.rms.third.common.mongo.TongDunData;
+import com.jzfq.rms.third.common.mongo.TongDunStringData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 
 import java.util.List;
@@ -45,20 +45,20 @@ public interface ITdDataService {
      * @param orderNo
      * @return
      */
-     List<TongDunData> getTongDongData(String orderNo);
+     List<TongDunStringData> getTongDongData(String orderNo);
     /**
      * 根据订单号 获取同盾数据
      * @param orderNo
      * @return
      */
-    List<TongDunData> getDataByEvent(String orderNo, String eventId);
+    List<TongDunStringData> getDataByEvent(String orderNo, String eventId);
 
     /**
      * 根据流水号 获取同盾数据
      * @param serialNo
      * @return
      */
-    List<TongDunData> getTongDongDataBySerialNo(String serialNo);
+    List<TongDunStringData> getTongDongDataBySerialNo(String serialNo);
 
     /**
      * 根据订单号 获取同盾数据
@@ -66,7 +66,7 @@ public interface ITdDataService {
      * @param certCardNo
      * @return
      */
-    TongDunData getTongDongData(String name, String certCardNo);
+    TongDunStringData getTongDongData(String name, String certCardNo);
 
     /**
      * 获取同盾保镖数据

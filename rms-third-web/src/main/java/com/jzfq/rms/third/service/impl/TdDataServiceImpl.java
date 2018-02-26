@@ -9,7 +9,7 @@ import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.mongo.TdHitRuleData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
-import com.jzfq.rms.third.common.mongo.TongDunData;
+import com.jzfq.rms.third.common.mongo.TongDunStringData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
@@ -127,10 +127,11 @@ public class TdDataServiceImpl implements ITdDataService {
             ThreadProvider.getThreadPool().execute(() ->  {
                 RiskPersonalInfo info = (RiskPersonalInfo)commonParams.get("personalInfo");
                 String taskId = rmsService.queryByOrderNo(traceId, orderNo);
-                TongDunData tongDunData = new TongDunData();
+                TongDunStringData tongDunData = new TongDunStringData();
                 tongDunData.setOrderNo(orderNo);
                 tongDunData.setCreateTime(new Date());
-                tongDunData.setApiResp(apiResp);
+                tongDunData.setApiResp(StringUtil.toJSONString(apiResp));
+                tongDunData.setValue(apiResp.getFinal_score());
                 tongDunData.setEventId(eventId);
                 //同盾信息写入mongo
                 if(StringUtils.isNotBlank(taskId)){
@@ -168,7 +169,7 @@ public class TdDataServiceImpl implements ITdDataService {
                 }
                 //通过seqid 查询 同盾规则详情，保存到mongo
                 RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId, systemID);
-                tongDunData.setRuleDetailResult(ruleDetailResult);
+                tongDunData.setRuleDetailResult(StringUtil.toJSONString(ruleDetailResult));
                 mongoTemplate.insert(tongDunData);
             });
         }catch (Exception e){
@@ -183,9 +184,9 @@ public class TdDataServiceImpl implements ITdDataService {
      * @return
      */
     @Override
-    public List<TongDunData> getTongDongData(String orderNo) {
-        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo))
-                , TongDunData.class);
+    public List<TongDunStringData> getTongDongData(String orderNo) {
+        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo))
+                , TongDunStringData.class);
         return datas;
     }
 
@@ -197,9 +198,9 @@ public class TdDataServiceImpl implements ITdDataService {
      * @return
      */
     @Override
-    public List<TongDunData> getDataByEvent(String orderNo, String eventId) {
-        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo).and("eventId").is(eventId))
-                , TongDunData.class);
+    public List<TongDunStringData> getDataByEvent(String orderNo, String eventId) {
+        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo).and("eventId").is(eventId))
+                , TongDunStringData.class);
         return datas;
     }
 
@@ -210,9 +211,9 @@ public class TdDataServiceImpl implements ITdDataService {
      * @return
      */
     @Override
-    public List<TongDunData> getTongDongDataBySerialNo(String serialNo) {
-        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("serialNo").is(serialNo))
-                , TongDunData.class);
+    public List<TongDunStringData> getTongDongDataBySerialNo(String serialNo) {
+        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("serialNo").is(serialNo))
+                , TongDunStringData.class);
         return datas;
     }
 
@@ -224,10 +225,10 @@ public class TdDataServiceImpl implements ITdDataService {
      * @return
      */
     @Override
-    public TongDunData getTongDongData(String name, String certCardNo) {
-        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
+    public TongDunStringData getTongDongData(String name, String certCardNo) {
+        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
                 .and("certCardNo").is(certCardNo))
-                , TongDunData.class);
+                , TongDunStringData.class);
         if(!CollectionUtils.isEmpty(datas)){
             Collections.sort(datas, (elementA, elementB) -> {
                 Date dateA = elementA.getCreateTime();
@@ -515,10 +516,11 @@ public class TdDataServiceImpl implements ITdDataService {
 
     private RuleDetailResult getTdDetailBySerialNo(String serialNo, FraudApiResponse apiResp){
         String traceId = TraceIDThreadLocal.getTraceID();
-        TongDunData tongDunData = new TongDunData();
+        TongDunStringData tongDunData = new TongDunStringData();
         tongDunData.setSerialNo(serialNo);
         tongDunData.setCreateTime(new Date());
-        tongDunData.setApiResp(apiResp);
+        tongDunData.setValue(apiResp.getFinal_score());
+        tongDunData.setApiResp(StringUtil.toJSONString(apiResp));
         String sequenceId = apiResp.getSeq_id();
         if (StringUtils.isBlank(sequenceId)){
             log.info("保存数据 流水号为{}获取同盾时返回的结果seq_id为空",serialNo);
@@ -527,7 +529,7 @@ public class TdDataServiceImpl implements ITdDataService {
         }
         //通过seqid 查询 同盾规则详情，保存到mongo
         RuleDetailResult ruleDetailResult = getTdRuleData(sequenceId,  traceId);
-        tongDunData.setRuleDetailResult(ruleDetailResult);
+        tongDunData.setRuleDetailResult(StringUtil.toJSONString(ruleDetailResult));
         mongoTemplate.insert(tongDunData);
         return ruleDetailResult;
     }

@@ -6,7 +6,7 @@ import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.mongo.BairongData;
-import com.jzfq.rms.third.common.mongo.TongDunData;
+import com.jzfq.rms.third.common.mongo.TongDunStringData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
@@ -236,7 +236,7 @@ public class Request1019Handler extends AbstractRequestHandler {
         // 同盾
         if(juzi){
             String orderNo = request.getParam("orderNo").toString();
-            List<TongDunData> tongDunData = tdDataService.getDataByEvent(orderNo, eventId);
+            List<TongDunStringData> tongDunData = tdDataService.getDataByEvent(orderNo, eventId);
             if(Collections.isEmpty(tongDunData)){
                 result.put("tdScore",tongDunData.get(0).getApiResp());
                 result.put("tdDetail",tongDunData.get(0).getRuleDetailResult());
@@ -246,7 +246,7 @@ public class Request1019Handler extends AbstractRequestHandler {
             log.info("1019 traceId={} serialNo={}获取同盾标识:{}",traceId,orderNo,result.get("tdFlag"));
             return result;
         }
-        List<TongDunData> tongDunData = tdDataService.getTongDongDataBySerialNo(serialNo);
+        List<TongDunStringData> tongDunData = tdDataService.getTongDongDataBySerialNo(serialNo);
         if(!Collections.isEmpty(tongDunData)){
             result.put("tdScore",tongDunData.get(0).getApiResp());
             result.put("tdDetail",tongDunData.get(0).getRuleDetailResult());

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
-import com.jzfq.rms.third.common.mongo.TongDunData;
+import com.jzfq.rms.third.common.mongo.TongDunStringData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
@@ -96,11 +96,11 @@ public class Request1008Handler  extends AbstractRequestHandler {
         if(StringUtils.isBlank(eventId)){
             return new ResponseResult(traceId,ReturnCode.ERROR_NOT_FOUNT_EVENT_ID,null);
         }
-        List<TongDunData> datas = tdDataService.getDataByEvent(orderNo, eventId);
+        List<TongDunStringData> datas = tdDataService.getDataByEvent(orderNo, eventId);
         if(!CollectionUtils.isEmpty(datas)){
             ResponseResult responseResult = new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,null);
-            TongDunData data = datas.get(0);
-            responseResult.setData(data.getApiResp().getFinal_score());
+            TongDunStringData data = datas.get(0);
+            responseResult.setData(data.getValue());
             return responseResult;
         }
         String isRepeatKey = getKeyByOrderNo(orderNo, eventId);

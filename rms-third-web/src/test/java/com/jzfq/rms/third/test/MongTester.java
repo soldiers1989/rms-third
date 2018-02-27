@@ -38,9 +38,11 @@ public class MongTester {
     private MongoTemplate mongoTemplate;
     @Test
     public void test(){
-        List<TongDunData> list = getDataByEvent("11066337", "Loan_ios_20170509");
+        List<TongDunStringData> list = getDataByEvent("11071781", "Loan_android_20170509");
         if(!Collections.isEmpty(list)){
+            JSONObject json01 = JSONObject.parseObject(list.get(0).getApiResp());
             System.out.println(StringUtil.toJSONString(list.get(0).getApiResp()));
+            JSONObject json02 = JSONObject.parseObject(list.get(0).getRuleDetailResult());
             System.out.println(StringUtil.toJSONString(list.get(0).getRuleDetailResult()));
         }
 //        TBrTransferLog log = new TBrTransferLog();
@@ -63,9 +65,9 @@ public class MongTester {
 //        return calendar.getTime();
 //    }
 
-    public List<TongDunData> getDataByEvent(String orderNo, String eventId) {
-        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo).and("eventId").is(eventId))
-                , TongDunData.class);
+    public List<TongDunStringData> getDataByEvent(String orderNo, String eventId) {
+        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo).and("eventId").is(eventId))
+                , TongDunStringData.class);
         return datas;
     }
 }

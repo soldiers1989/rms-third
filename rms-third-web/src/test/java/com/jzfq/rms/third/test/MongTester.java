@@ -1,5 +1,6 @@
 package com.jzfq.rms.third.test;
 
+import cn.fraudmetrix.riskservice.RuleDetailResult;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.domain.TBrTransferLog;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
@@ -7,6 +8,7 @@ import com.jzfq.rms.third.common.mongo.BairongData;
 import com.jzfq.rms.third.common.mongo.MongoTest;
 import com.jzfq.rms.third.common.mongo.TongDunData;
 import com.jzfq.rms.third.common.mongo.TongDunStringData;
+import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import io.jsonwebtoken.lang.Collections;
@@ -40,9 +42,9 @@ public class MongTester {
     public void test(){
         List<TongDunStringData> list = getDataByEvent("11071781", "Loan_android_20170509");
         if(!Collections.isEmpty(list)){
-            JSONObject json01 = JSONObject.parseObject(list.get(0).getApiResp());
+            FraudApiResponse json01 = JSONObject.parseObject(list.get(0).getApiResp(), FraudApiResponse.class);
             System.out.println(StringUtil.toJSONString(list.get(0).getApiResp()));
-            JSONObject json02 = JSONObject.parseObject(list.get(0).getRuleDetailResult());
+            RuleDetailResult json02 = JSONObject.parseObject(list.get(0).getRuleDetailResult(), RuleDetailResult.class);
             System.out.println(StringUtil.toJSONString(list.get(0).getRuleDetailResult()));
         }
 //        TBrTransferLog log = new TBrTransferLog();

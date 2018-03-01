@@ -117,9 +117,9 @@ public class Request1012Handler extends AbstractRequestHandler {
         //远程调用
         String isRepeatKey = Rong360Parser.getRpcControlKey(bizData);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
-        if(!isRpc){
+        /*if(!isRpc){
             return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
-        }
+        }*/
         try {
             //手机三要素
             ResponseResult responseResult = rong360Service.getMobilecheck3item(bizData);

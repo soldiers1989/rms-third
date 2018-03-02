@@ -170,7 +170,7 @@ public class Rong360ServiceImpl implements IRong360Service {
 					if(StringUtils.equals(type.getCode(),PhoneDataTypeEnum.NETWORK_STATUS.getCode())){
 						result = changeBairongPhonestatus(resultJson);
 					}
-//					savePostData(taskId, type.getName(), result,(String)bizData.get("custumType"));
+					savePostData(taskId, type.getName(), result,(String)bizData.get("custumType"));
 				}catch (Exception e){
 					log.error("traceId={} rms保存{}异常", traceId,type.getName(), e);
 				}

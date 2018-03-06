@@ -37,7 +37,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/test")
 public class TestAction {
-    private static final String url = "127.0.0.1:8080/inter";
+    private static final String url = "http://192.168.3.36:8780/inter";
     final protected static ILogger logger = RmsLogger.getFactory(LoggerFactory.getLogger(TestAction.class));
     @Autowired
     IDbLogService dbLogService;

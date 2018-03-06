@@ -129,13 +129,13 @@ public class Request1011Handler extends AbstractRequestHandler {
             return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result);
         }
         String brResponse = (String) result.getData();
-        try {
-            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
-            riskPostDataService.saveRmsThirdData(info, customerType, strategyId, brResponse);
-        } catch (Exception e) {
-            log.error("traceId={} 保存数据失败", traceId, e);
-            interfaceCountCache.setFailure(isRepeatKey);
-        }
+//        try {
+//            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
+//            riskPostDataService.saveRmsThirdData(info, customerType, strategyId, brResponse);
+//        } catch (Exception e) {
+//            log.error("traceId={} 保存数据失败", traceId, e);
+//            interfaceCountCache.setFailure(isRepeatKey);
+//        }
         JSONObject resultJson = new JSONObject();
         JSONObject tempResult = JSONObject.parseObject(brResponse);
         resultJson.put("score", riskPostDataService.getScoreByJson(tempResult));

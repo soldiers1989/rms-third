@@ -100,6 +100,7 @@ public class Request1008Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         Map<String, Object> commonParams = getCommonParams(request);
+        log.info("封装请求参数为:",commonParams);
         String mobile = ((RiskPersonalInfo) commonParams.get("personInfo")).getMobile();
         // 根据orderNo查询数据库
         String eventId = getEventId(request);

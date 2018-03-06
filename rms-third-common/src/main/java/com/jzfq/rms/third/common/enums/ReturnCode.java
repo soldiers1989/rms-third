@@ -41,6 +41,7 @@ public enum ReturnCode {
     ERROR_PARAMS_FORMAT(500, "参数格式错误"),
     ERROR_SERVER(503, "系统异常"),
     ERROR_USER_TYPE_ERROR(1111, "用户类型参数错误"),
+    ERROR_RSLL_PARAMS_ERROR(2222, "调用融360接口，返回参数发生错误"),
     ERROR_UNKOWN_ERROR(9999, "未知错误,响应数据为null");
 	private int code;
 	

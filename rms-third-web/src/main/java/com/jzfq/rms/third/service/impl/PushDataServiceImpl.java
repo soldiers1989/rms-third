@@ -55,9 +55,9 @@ public class PushDataServiceImpl implements IPushDataService {
 
         JSONObject jsonParams = new JSONObject();
         jsonParams.put("pushkey", thirdToCustomer);
-        jsonParams.put("sourceID", 1);
-        jsonParams.put("targetID", 7);
-        jsonParams.put("sendtype", 2);
+        jsonParams.put("sourceID", 1);//风控rms
+        jsonParams.put("targetID", 7);//third
+        jsonParams.put("sendtype", 2);//http
         jsonParams.put("sendparam", jsonData.toString());
         Map<String, String> map = new HashMap<String, String>();
         map.put("params", jsonParams.toString());
@@ -68,7 +68,7 @@ public class PushDataServiceImpl implements IPushDataService {
 
     public String postData(String traceId, Map<String, String> params) throws RuntimeException {
         log.info("traceId:" + traceId + " 推送push url" + apiUrl + " 推送数据：" + params);
-        ResponseResult dto = HttpConnectionManager.post(apiUrl, params);
+        ResponseResult dto = HttpConnectionManager.doPost(apiUrl, params);
         Object respose = dto.getData();
         log.info("推送push返回結果：", respose.toString());
         ResponseDTO responseDTO = JSONObject.parseObject((String) respose, ResponseDTO.class);

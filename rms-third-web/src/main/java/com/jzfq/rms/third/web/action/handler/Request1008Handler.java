@@ -48,6 +48,7 @@ public class Request1008Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
+        log.info("checkParams请求参数"+params.toString());
         String frontId = (String) params.get("frontId");
         String orderNo = (String) params.get("orderNo");
         String channelId = (String) params.get("channelId");

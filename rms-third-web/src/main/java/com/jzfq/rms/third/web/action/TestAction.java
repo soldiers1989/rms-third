@@ -76,10 +76,10 @@ public class TestAction {
         map.put("orderNo","305677");
 
         Map<String, Object> params = new HashMap<>();
-        params.put("traceID", "test33020180111172732");
+        params.put("traceID", "123");
         params.put("callSystemID", "1");
         params.put("appId", "1");
-        params.put("apiId", "1008");
+        params.put("apiId", "1011");
         params.put("v", "1");
         Long timestamp = System.currentTimeMillis();
 
@@ -87,11 +87,6 @@ public class TestAction {
         params.put("timestamp", timestamp);
         String json = JSONObject.toJSONString(map);
         params.put("params", json);
-
-
-
-
-
 
 
 

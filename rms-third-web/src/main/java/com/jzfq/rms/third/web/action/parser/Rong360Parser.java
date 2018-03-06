@@ -3,7 +3,9 @@ package com.jzfq.rms.third.web.action.parser;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
+
 import com.jzfq.rms.third.common.enums.*;
+
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.web.action.handler.Request1012Handler;
@@ -88,6 +90,7 @@ public class Rong360Parser {
      * @return
      */
     public static String getNetworkLengthOfRmsPull(JSONObject json) throws Exception {
+
         String jsonRsult = "";
         try {
             logger.info("手机在网时长接口返回数据rong360data：" + json.toJSONString());

@@ -40,6 +40,7 @@ public class UniformInterfaceUtils {
         }
         try {
             String string = IOUtils.toString(request.getInputStream(), "UTF-8");
+            logger.info("解析后的参数为：",string);
             params = JSON.parseObject(string);
         } catch (IOException e) {
             logger.error("读取客户端参数失败", e);

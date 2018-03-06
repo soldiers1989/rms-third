@@ -27,9 +27,9 @@ public class PushDataServiceImpl implements IPushDataService {
     private String thirdToCustomer;
 
     @Override
-    public void pushData(String traceId,String type,  String score, String mobile,String orderNo) {
+    public void pushData(String traceId, String type, String score, String mobile, String orderNo) {
 
-        pushDataToRmsPush(traceId,type, score, mobile,orderNo);
+        pushDataToRmsPush(traceId, type, score, mobile, orderNo);
 
 
     }
@@ -37,21 +37,21 @@ public class PushDataServiceImpl implements IPushDataService {
 
     //推百融/同盾数据到push系统
 
-    public void pushDataToRmsPush(String traceId,String type, String result, String mobile,String orderNo) {
+    public void pushDataToRmsPush(String traceId, String type, String result, String mobile, String orderNo) {
         ThreadProvider.getThreadPool().execute(() -> {
-            requestPushParams(traceId,result, mobile,orderNo);
+            requestPushParams(traceId, result, mobile, orderNo);
         });
 
     }
 
 
-    public void requestPushParams(String traceId,String result, String mobile,String orderNo) {
+    public void requestPushParams(String traceId, String result, String mobile, String orderNo) {
 
-        log.info("推送push系統流水號：", traceId);
+        log.info("推送push系统流水号：", traceId);
         JSONObject jsonData = new JSONObject();
         jsonData.put("brscore", result);
         jsonData.put("mobile", mobile);
-        jsonData.put("orderNo",orderNo);
+        jsonData.put("orderNo", orderNo);
 
         JSONObject jsonParams = new JSONObject();
         jsonParams.put("pushkey", thirdToCustomer);
@@ -67,7 +67,7 @@ public class PushDataServiceImpl implements IPushDataService {
 
 
     public String postData(String traceId, Map<String, String> params) throws RuntimeException {
-        log.info("traceId:" + traceId + "推送push url" + apiUrl + " 推送數據：" + params);
+        log.info("traceId:" + traceId + " 推送push url" + apiUrl + " 推送数据：" + params);
         ResponseResult dto = HttpConnectionManager.post(apiUrl, params);
         Object respose = dto.getData();
         log.info("推送push返回結果：", respose.toString());

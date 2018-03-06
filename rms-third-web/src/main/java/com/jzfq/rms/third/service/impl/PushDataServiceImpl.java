@@ -6,7 +6,6 @@ import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.service.IPushDataService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
-import com.jzfq.rms.third.web.action.thread.ThreadInterface;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

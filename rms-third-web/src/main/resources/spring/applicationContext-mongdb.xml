@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="  
-            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
-            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
-	<!-- 这里可以指定实际要操作的DB --> 
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-	    <constructor-arg name="mongo" ref="mongo"/>
-	    <constructor-arg name="databaseName" value="${mongo.database.name}"/>
-	</bean>
-	
 	<!-- 这里需要指定一个Mongo URI来连接数据库，需要的信息可以从阿里云控制台上获取，连接是帐号密码要跟帐号所在的数据库对应起来，否则无法通过认证，默认创建的root帐号是admin数据库下的-->
 	
 	<bean class="com.mongodb.MongoURI" id="mongoURI">
@@ -22,6 +12,30 @@
 	
 	<bean class="com.mongodb.Mongo" id="mongo">
 	    <constructor-arg ref="mongoURI" />
-	</bean> 
+	</bean>
 
+	<!-- 默认Mongodb类型映射 -->
+	<bean id="defaultMongoTypeMapper" class="org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper">
+		<constructor-arg name="typeKey">
+			<null /><!-- 这里设置为空,可以把 spring data mongodb 多余保存的_class字段去掉 -->
+		</constructor-arg>
+	</bean>
+
+	<!--&lt;!&ndash; 转换器：1、去掉write的_class字段 2、TimestampConverter &ndash;&gt;-->
+	<mongo:mapping-converter id="mongoConverter" type-mapper-ref="defaultMongoTypeMapper">
+		<mongo:custom-converters>
+			<mongo:converter>
+				<bean class="com.jzfq.rms.third.support.mongo.TimestampConverter" />
+			</mongo:converter>
+		</mongo:custom-converters>
+	</mongo:mapping-converter>
+
+	<mongo:db-factory dbname="${mongo.database.name}" mongo-ref="mongo" />
+	<!-- 这里可以指定实际要操作的DB -->
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<!--<constructor-arg name="mongo" ref="mongo"/>-->
+		<!--<constructor-arg name="databaseName" value="${mongo.database.name}"/>-->
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+		<constructor-arg name="mongoConverter" ref="mongoConverter" />
+	</bean>
 </beans>

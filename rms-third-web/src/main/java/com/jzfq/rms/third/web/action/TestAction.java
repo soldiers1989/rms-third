@@ -42,7 +42,7 @@ public class TestAction {
     @Autowired
     IDbLogService dbLogService;
 
-    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "/test1")
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "/test1.json")
     public void test1(HttpServletRequest request, HttpServletResponse response) throws BusinessException, ServletException, IOException {
 
 

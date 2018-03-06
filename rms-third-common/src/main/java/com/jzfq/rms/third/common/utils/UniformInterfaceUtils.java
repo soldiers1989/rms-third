@@ -39,6 +39,7 @@ public class UniformInterfaceUtils {
             return getMutipartParams(request);
         }
         try {
+            logger.info("request请求流信息",request.getInputStream().toString());
             String string = IOUtils.toString(request.getInputStream(), "UTF-8");
             logger.info("解析后的参数为：",string);
             params = JSON.parseObject(string);

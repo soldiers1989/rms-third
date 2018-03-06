@@ -101,20 +101,20 @@ public class Request1011Handler extends AbstractRequestHandler {
         if (StringUtils.isBlank(strategyId)) {
             return new ResponseResult(traceId, ReturnCode.ERROR_NOT_FOUNT_STRATEGE_ID, null);
         }
-        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), strategyId);
-        if (null != jsonObject) {
-            riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
-            JSONObject resultJson = new JSONObject();
-            resultJson.put("score", riskPostDataService.getScoreByJson(jsonObject));
-            resultJson.put("weight", jsonObject.getString("Rule_final_weight"));
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
-        }
-        // 2.判断是否远程拉取
+//        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), strategyId);
+//        if (null != jsonObject) {
+//            riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
+//            JSONObject resultJson = new JSONObject();
+//            resultJson.put("score", riskPostDataService.getScoreByJson(jsonObject));
+//            resultJson.put("weight", jsonObject.getString("Rule_final_weight"));
+//            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
+//        }
+//        // 2.判断是否远程拉取
         String isRepeatKey = getKeyPersonalInfo(info, strategyId);
-        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
-        if (!isRpc) {
-            return new ResponseResult(traceId, ReturnCode.ACTIVE_THIRD_RPC, null);
-        }
+//        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
+//        if (!isRpc) {
+//            return new ResponseResult(traceId, ReturnCode.ACTIVE_THIRD_RPC, null);
+//        }
         // 3.远程拉取
         ResponseResult result = null;
         try {

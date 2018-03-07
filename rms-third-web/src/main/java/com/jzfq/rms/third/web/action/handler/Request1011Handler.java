@@ -124,10 +124,10 @@ public class Request1011Handler extends AbstractRequestHandler {
             log.error("traceId={} 获取百融分失败", traceId, e);
             throw e;
         }
-        if (result == null || result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
-//            interfaceCountCache.setFailure(isRepeatKey);
-            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result);
-        }
+//        if (result == null || result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
+////            interfaceCountCache.setFailure(isRepeatKey);
+//            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result);
+//        }
         String brResponse = (String) result.getData();
 //        try {
 //            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);

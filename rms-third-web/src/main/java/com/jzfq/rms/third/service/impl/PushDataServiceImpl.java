@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
+import com.jzfq.rms.third.common.httpclient.HttpPushsConnectionManager;
 import com.jzfq.rms.third.service.IPushDataService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.lang3.StringUtils;
@@ -93,12 +94,9 @@ public class PushDataServiceImpl implements IPushDataService {
     public void doPostData(String traceId, Map<String, String> params) throws RuntimeException {
         log.info("traceId:" + traceId + " 推送push系统apiUrl" + apiUrl + "，推送数据：" + params);
         try {
-            ResponseResult dto = HttpConnectionManager.doPost(apiUrl, params);
-            log.info("返回结果：",dto);
-            Object respose = dto.getData();
-            ResponseDTO responseDTO = JSONObject.parseObject((String) respose, ResponseDTO.class);
-            if (null != responseDTO) {
-                log.info("推送push系统返回結果通知：", responseDTO);
+            ResponseDTO dto = HttpPushsConnectionManager.doPost(apiUrl, params);
+            if (null != dto) {
+                log.info("推送push系统返回結果通知：", dto);
             }
         }catch (Exception e) {
             log.info("推送push系统发生异常：",e.getMessage());

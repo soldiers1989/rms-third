@@ -92,7 +92,7 @@ public class TestAction {
 
         ResponseResult result = HttpConnectionManager.doPost(url, params);
 
-        ResponseResult data = JSONObject.parseObject((String) result.getData(), ResponseResult.class);
+//        ResponseResult data = JSONObject.parseObject((String) result.getData(), ResponseResult.class);
 
 
     }

@@ -40,10 +40,8 @@ import java.util.regex.Pattern;
 import static com.jzfq.rms.enums.BaiRongMapEnum.WEIGHTS;
 
 /**
- *
- * @description 拉取数据服务实现
  * @author 大连桔子分期科技有限公司
- *
+ * @description 拉取数据服务实现
  */
 @Service
 public class RiskPostDataServiceImpl implements IRiskPostDataService {
@@ -62,6 +60,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
 
     /**
      * 构建 老rms系统 百融数据结构
+     *
      * @param taskId
      * @param desc
      * @param data
@@ -74,24 +73,26 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         return dataBean;
     }
 
-    private BairongData buildBairongData(String name, String certCardNo, String mobile, String type,String data) {
+    private BairongData buildBairongData(String name, String certCardNo, String mobile, String type, String data) {
         BairongData dataBean = new BairongData.BairongDataBuild().createTime(new Date()).name(name)
                 .certCardNo(certCardNo).mobile(mobile).type(type).data(data).build();
         return dataBean;
     }
 
-    private BairongData buildBairongData(String name, String certCardNo, String mobile, String strategyId, String type,String data) {
+    private BairongData buildBairongData(String name, String certCardNo, String mobile, String strategyId, String type, String data) {
         BairongData dataBean = new BairongData.BairongDataBuild().createTime(new Date()).name(name)
                 .certCardNo(certCardNo).mobile(mobile).strategyId(strategyId).type(type).data(data).build();
         return dataBean;
     }
+
     @Autowired
     IRmsService rmsService;
+
     @Override
-    public void saveRmsData(String orderNo, String result,String customerType) {
+    public void saveRmsData(String orderNo, String result, String customerType) {
         String traceId = TraceIDThreadLocal.getTraceID();
-        try{
-            ThreadProvider.getThreadPool().execute(()->{
+        try {
+            ThreadProvider.getThreadPool().execute(() -> {
                 JSONObject json = JSONObject.parseObject(result);
                 json.put("scorepettycashv1", getScoreByJson(json));
                 String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
@@ -99,54 +100,54 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
                 //保存rms系统数据结构
                 saveData(data);
             });
-        }catch (Exception e){
-            log.error("traceId={} 保存rms百融数据出现异常",traceId,e);
+        } catch (Exception e) {
+            log.error("traceId={} 保存rms百融数据出现异常", traceId, e);
         }
     }
 
     @Override
-    public void saveRmsThirdData(RiskPersonalInfo info,String customerType, String result) {
+    public void saveRmsThirdData(RiskPersonalInfo info, String customerType, String result) {
         String traceId = TraceIDThreadLocal.getTraceID();
-        try{
-            ThreadProvider.getThreadPool().execute(()->{
+        try {
+            ThreadProvider.getThreadPool().execute(() -> {
                 BairongData baiRongScore = buildBairongData(info.getName(), info.getCertCardNo(), info.getMobile(),
-                        customerType,result);
+                        customerType, result);
                 saveData(baiRongScore);
             });
-        }catch (Exception e){
-            log.error("traceId={} 保存rms-third百融数据出现异常",traceId,e);
+        } catch (Exception e) {
+            log.error("traceId={} 保存rms-third百融数据出现异常", traceId, e);
         }
     }
 
     @Override
-    public void saveRmsThirdData(RiskPersonalInfo info,String customerType, String strategyId, String result) {
+    public void saveRmsThirdData(RiskPersonalInfo info, String customerType, String strategyId, String result) {
         String traceId = TraceIDThreadLocal.getTraceID();
-        try{
-            ThreadProvider.getThreadPool().execute(()->{
+        try {
+            ThreadProvider.getThreadPool().execute(() -> {
                 BairongData baiRongScore = buildBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), strategyId,
-                        customerType,result);
+                        customerType, result);
                 saveData(baiRongScore);
             });
-        }catch (Exception e){
-            log.error("traceId={} 保存rms-third百融数据出现异常",traceId,e);
+        } catch (Exception e) {
+            log.error("traceId={} 保存rms-third百融数据出现异常", traceId, e);
         }
     }
 
 
     @Override
     public Object queryData(long taskId, int type) {
-        if (type == CustomerTypeEnum.CUSTOMERTYPE_CAR.getCode()){
+        if (type == CustomerTypeEnum.CUSTOMERTYPE_CAR.getCode()) {
             type = CustomerTypeEnum.CUSTOMERTYPE_WHITE_COLLAR.getCode();
         }
         List<BrPostData> datas = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId + "")
                 .and("interfaceType").is(type + "")), BrPostData.class);
         JSONObject jsonObject = new JSONObject();
         for (BrPostData data : datas) {
-            if (data.getDesc().equals("手机三要素") || data.getDesc().equals("手机在网时长")){
+            if (data.getDesc().equals("手机三要素") || data.getDesc().equals("手机在网时长")) {
                 continue;
             }
-            if (!StringUtils.isEmpty(data.getData())){
-                String str = data.getData().replace("dc_scorejzfq_cash","scoreconsoffv2");      //现金贷的白领  字段转换
+            if (!StringUtils.isEmpty(data.getData())) {
+                String str = data.getData().replace("dc_scorejzfq_cash", "scoreconsoffv2");      //现金贷的白领  字段转换
                 jsonObject.putAll(JSON.parseObject(str));
             }
         }
@@ -190,11 +191,11 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
                 .and("certCardNo").is(certCardNo).and("mobile").is(mobile)
                 .and("createTime").gte(getMinTime(outTime))), BairongData.class);
-        if(CollectionUtils.isEmpty(datas)){
+        if (CollectionUtils.isEmpty(datas)) {
             return null;
         }
         String data = datas.get(0).getData();
-        if(StringUtils.isBlank(data)){
+        if (StringUtils.isBlank(data)) {
             return null;
         }
         return JSONObject.parseObject(data);
@@ -213,17 +214,17 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
                 .and("certCardNo").is(certCardNo).and("mobile").is(mobile)
                 .and("createTime").gte(getMinTime(outTime))), BairongData.class);
-        if(!CollectionUtils.isEmpty(datas)){
+        if (!CollectionUtils.isEmpty(datas)) {
             Collections.sort(datas, (elementA, elementB) -> {
                 Date dateA = elementA.getCreateTime();
                 Date dateB = elementB.getCreateTime();
-                if(dateA!=null&&dateB!=null){
+                if (dateA != null && dateB != null) {
                     return dateA.compareTo(dateB);
                 }
-                if(dateA==null&&dateB==null){
+                if (dateA == null && dateB == null) {
                     return 0;
                 }
-                if(dateA==null){
+                if (dateA == null) {
                     return -1;
                 }
                 return 1;
@@ -241,15 +242,13 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
      */
     @Override
     public String getScoreByJson(JSONObject json) {
-//        String score = json.getString("rs_Score_scorecust");
-////            if(StringUtils.isBlank(score)){
-////            score = json.getString("rs_Score_scorelargecashv1");
-////        }
-////        if(StringUtils.isBlank(score)){
-////            score = json.getString("rs_Score_scorelargecashv2");
-////        }
-        //百融策略调整，只获取key为rs_Score_scorelargecashv1的评分值
-        String  score = json.getString("rs_Score_scorelargecashv1");
+        String score = json.getString("rs_Score_scorecust");
+        if (StringUtils.isBlank(score)) {
+            score = json.getString("rs_Score_scorelargecashv1");
+        }
+        if (StringUtils.isBlank(score)) {
+            score = json.getString("rs_Score_scorelargecashv2");
+        }
         return score;
     }
 
@@ -265,19 +264,19 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
                 .and("certCardNo").is(certCardNo).and("mobile").is(mobile).and("strategyId").is(strategyId)
                 .and("createTime").gte(getMinTime(outTime))), BairongData.class);
-        if(CollectionUtils.isEmpty(datas)){
+        if (CollectionUtils.isEmpty(datas)) {
             return null;
         }
         String data = datas.get(0).getData();
-        if(StringUtils.isBlank(data)){
+        if (StringUtils.isBlank(data)) {
             return null;
         }
         return JSONObject.parseObject(data);
     }
 
-    private Date getMinTime(Integer time){
+    private Date getMinTime(Integer time) {
         Calendar calendar = Calendar.getInstance();//使用默认时区和语言环境获得一个日历。
-        calendar.add(Calendar.DAY_OF_MONTH, -1*time);//取当前日期的前一天.
+        calendar.add(Calendar.DAY_OF_MONTH, -1 * time);//取当前日期的前一天.
         return calendar.getTime();
     }
 
@@ -317,7 +316,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
 
         //转译 银行信息码
         JSONObject bankObj = (JSONObject) json.get("product");
-        if (bankObj!=null&&!bankObj.isEmpty()) {
+        if (bankObj != null && !bankObj.isEmpty()) {
             bankObj.put("respCode", BaiRongMapEnum.CODES.get(bankObj.get("respCode")));
         }
 

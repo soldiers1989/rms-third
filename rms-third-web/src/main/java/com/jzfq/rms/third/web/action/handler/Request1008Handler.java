@@ -48,7 +48,7 @@ public class Request1008Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-        log.info("checkParams请求参数"+params.toString());
+        log.info("checkParams请求参数" + params.toString());
         String frontId = (String) params.get("frontId");
         String orderNo = (String) params.get("orderNo");
         String channelId = (String) params.get("channelId");
@@ -100,8 +100,12 @@ public class Request1008Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         Map<String, Object> commonParams = getCommonParams(request);
-        log.info("封装请求参数为:",commonParams);
-        String mobile = ((RiskPersonalInfo) commonParams.get("personInfo")).getMobile();
+        RiskPersonalInfo personInfo = JSONObject.parseObject(commonParams.get("personInfo").toString(),
+                RiskPersonalInfo.class);
+        String mobile = "";
+        if (null != personInfo) {
+            mobile = personInfo.getMobile();
+        }
         // 根据orderNo查询数据库
         String eventId = getEventId(request);
         if (StringUtils.isBlank(eventId)) {
@@ -135,7 +139,7 @@ public class Request1008Handler extends AbstractRequestHandler {
             response.setData(apiResp.getFinal_score());
             tdDataService.saveResult(orderNo, eventId, apiResp, commonParams);
             //push推送
-            pushDataService.pushData("", "", String.valueOf(apiResp.getFinal_score()), mobile, orderNo);
+            pushDataService.pushData(traceId, String.valueOf(apiResp.getFinal_score()), mobile, orderNo);
             return response;
         } catch (Exception e) {
             log.info("traceId={} 同盾拉取无效：false ", TraceIDThreadLocal.getTraceID());     //失败

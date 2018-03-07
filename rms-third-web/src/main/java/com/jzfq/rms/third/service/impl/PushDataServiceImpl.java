@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author 大连桔子分期科技有限公司
+ * @description 推送同盾/百融数据服务接口实现
+ */
 @Service
 public class PushDataServiceImpl implements IPushDataService {
 
@@ -26,33 +30,48 @@ public class PushDataServiceImpl implements IPushDataService {
     @Value("${thirdToCustomer}")
     private String thirdToCustomer;
 
+    /**
+     * 将参数推送到push内部系统
+     *
+     * @param traceId
+     * @param type
+     * @param score
+     * @param mobile
+     * @param orderNo
+     * @return
+     */
+
     @Override
-    public void pushData(String traceId, String type, String score, String mobile, String orderNo) {
-
-        pushDataToRmsPush(traceId, type, score, mobile, orderNo);
-
-
+    public void pushData(String traceId, String score, String mobile, String orderNo) {
+        pushDataToRmsPush(traceId, score, mobile, orderNo);
     }
 
 
-    //推百融/同盾数据到push系统
+    /**
+     * 将推送请求放到线程池中统一管理
+     *
+     * @return
+     */
 
-    public void pushDataToRmsPush(String traceId, String type, String result, String mobile, String orderNo) {
+    public void pushDataToRmsPush(String traceId, String result, String mobile, String orderNo) {
         ThreadProvider.getThreadPool().execute(() -> {
             requestPushParams(traceId, result, mobile, orderNo);
         });
 
     }
 
-
+    /**
+     * 封装参数
+     *
+     * @return
+     */
     public void requestPushParams(String traceId, String result, String mobile, String orderNo) {
-
-        log.info("推送push系统流水号：", traceId);
+        //封装推送数据
+        log.info("开始推送数据到push系统流水号traceID：", traceId);
         JSONObject jsonData = new JSONObject();
         jsonData.put("brscore", result);
         jsonData.put("mobile", mobile);
         jsonData.put("orderNo", orderNo);
-
         JSONObject jsonParams = new JSONObject();
         jsonParams.put("pushkey", thirdToCustomer);
         jsonParams.put("sourceID", 1);//风控rms
@@ -61,23 +80,26 @@ public class PushDataServiceImpl implements IPushDataService {
         jsonParams.put("sendparam", jsonData.toString());
         Map<String, String> map = new HashMap<String, String>();
         map.put("params", jsonParams.toString());
+        log.info("推送push系统数据参数封装完成：", map.toString());
         //開始推送
-        postData(traceId, map);
+        doPostData(traceId, map);
     }
 
-
-    public String postData(String traceId, Map<String, String> params) throws RuntimeException {
-        log.info("traceId:" + traceId + " 推送push url" + apiUrl + " 推送数据：" + params);
-        ResponseResult dto = HttpConnectionManager.doPost(apiUrl, params);
-        Object respose = dto.getData();
-        log.info("推送push返回結果：", respose.toString());
-        ResponseDTO responseDTO = JSONObject.parseObject((String) respose, ResponseDTO.class);
-        String taskId = (String) responseDTO.getAttach();
-        if (StringUtils.isBlank(taskId)) {
-            throw new RuntimeException("traceId:" + traceId + " 根据订单号查询taskId 返回结果为null");
+    /**
+     * 发起请求
+     *
+     * @return
+     */
+    public void doPostData(String traceId, Map<String, String> params) throws RuntimeException {
+        log.info("traceId:" + traceId + " 推送push系统apiUrl" + apiUrl + "，推送数据：" + params);
+        try {
+            ResponseResult dto = HttpConnectionManager.doPost(apiUrl, params);
+            if (null != dto) {
+                log.info("推送push系统返回結果通知：", dto.toString());
+            }
+        }catch (Exception e) {
+            log.info("推送push系统发生异常：",e.getMessage());
         }
-        log.info("traceId:" + traceId + " rms返回结果：" + dto);
-        return taskId;
     }
 
 

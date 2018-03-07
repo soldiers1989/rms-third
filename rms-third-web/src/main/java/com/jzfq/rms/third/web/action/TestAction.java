@@ -61,6 +61,10 @@ public class TestAction {
 //        map.put("orderNo", "1106633711234");//test2205544
 
 
+
+
+
+
         Map<String,Object> map = new HashMap<>();
         map.put("frontId","111111");
         map.put("channelId","1");
@@ -80,7 +84,7 @@ public class TestAction {
         params.put("callSystemID", "1");
         params.put("appId", "1");
         params.put("apiId", "1011");
-        params.put("v", "1");
+        params.put("v", "01");
         Long timestamp = System.currentTimeMillis();
 
         params.put("token", UniformInterfaceUtils.getToken("1", "1011", "93dd7a6468807ade", timestamp));

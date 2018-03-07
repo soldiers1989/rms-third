@@ -61,6 +61,7 @@ public class TestAction {
 //        map.put("orderNo", "1106633711234");//test2205544
 
 
+
         Map<String,Object> map = new HashMap<>();
         map.put("frontId","49");
         map.put("channelId","1");
@@ -95,7 +96,7 @@ public class TestAction {
         Map<String, Object> params = new HashMap<>();
         params.put("traceID", "test33020180111172732");
         params.put("callSystemID", "1");
-        params.put("appId", "1");
+        params.put("appId", "");
         params.put("apiId", "1008");
         params.put("v", "01");
         Long timestamp = System.currentTimeMillis();

@@ -94,6 +94,7 @@ public class PushDataServiceImpl implements IPushDataService {
         log.info("traceId:" + traceId + " 推送push系统apiUrl" + apiUrl + "，推送数据：" + params);
         try {
             ResponseResult dto = HttpConnectionManager.doPost(apiUrl, params);
+            log.info("返回结果：",dto);
             Object respose = dto.getData();
             ResponseDTO responseDTO = JSONObject.parseObject((String) respose, ResponseDTO.class);
             if (null != responseDTO) {

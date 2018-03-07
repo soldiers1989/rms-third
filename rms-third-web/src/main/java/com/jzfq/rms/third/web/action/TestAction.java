@@ -96,12 +96,12 @@ public class TestAction {
         Map<String, Object> params = new HashMap<>();
         params.put("traceID", "test33020180111172732");
         params.put("callSystemID", "1");
-        params.put("appId", "");
+        params.put("appId", null);
         params.put("apiId", "1008");
         params.put("v", "01");
         Long timestamp = System.currentTimeMillis();
 
-        params.put("token", UniformInterfaceUtils.getToken("1", "1008", "93dd7a6468807ade", timestamp));
+        params.put("token", UniformInterfaceUtils.getToken(null, "1008", "93dd7a6468807ade", timestamp));
         params.put("timestamp", timestamp);
         String json = JSONObject.toJSONString(map);
         params.put("params", json);

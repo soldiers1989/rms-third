@@ -13,7 +13,6 @@ public interface IPushDataService {
      * 将参数推送到push内部系统
      *
      * @param traceId
-     * @param type
      * @param score
      * @param mobile
      * @param orderNo

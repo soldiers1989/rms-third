@@ -107,43 +107,47 @@ public class Request1008Handler extends AbstractRequestHandler {
             mobile = personInfo.getMobile();
         }
 //        // 根据orderNo查询数据库
-//        String eventId = getEventId(request);
-//        if (StringUtils.isBlank(eventId)) {
-//            return new ResponseResult(traceId, ReturnCode.ERROR_NOT_FOUNT_EVENT_ID, null);
-//        }
-//        List<TongDunStringData> datas = tdDataService.getDataByEvent(orderNo, eventId);
-//        if (!CollectionUtils.isEmpty(datas)) {
-//            ResponseResult responseResult = new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
-//            TongDunStringData data = datas.get(0);
-//            responseResult.setData(data.getValue());
-//            return responseResult;
-//        }
-//        String isRepeatKey = getKeyByOrderNo(orderNo, eventId);
+        String eventId = getEventId(request);
+        if (StringUtils.isBlank(eventId)) {
+            return new ResponseResult(traceId, ReturnCode.ERROR_NOT_FOUNT_EVENT_ID, null);
+        }
+        List<TongDunStringData> datas = tdDataService.getDataByEvent(orderNo, eventId);
+        if (!CollectionUtils.isEmpty(datas)) {
+            ResponseResult responseResult = new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
+            TongDunStringData data = datas.get(0);
+            responseResult.setData(data.getValue());
+            return responseResult;
+        }
+        String isRepeatKey = getKeyByOrderNo(orderNo, eventId);
         try {
-//            boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
-//            if (!isRpc) {
-//                return new ResponseResult(traceId, ReturnCode.ACTIVE_THIRD_RPC, null);
-//            }
-//            ResponseResult response = null;
-//            response = tdDataService.queryTdDatas(commonParams);
-//            if (response == null) {
-//                log.info("traceId={} 同盾拉取无效：false ", commonParams.get("traceId"));     //失败
-//                interfaceCountCache.setFailure(isRepeatKey);
-//                new BusinessException("traceId={} 同盾拉取无效：false", true);
-//            }
-//            if (response.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
-//                interfaceCountCache.setFailure(isRepeatKey);
-//                return response;
-//            }
-//            FraudApiResponse apiResp = (FraudApiResponse) response.getData();
-//            response.setData(apiResp.getFinal_score());
-//            tdDataService.saveResult(orderNo, eventId, apiResp, commonParams);
+            boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
+            if (!isRpc) {
+                return new ResponseResult(traceId, ReturnCode.ACTIVE_THIRD_RPC, null);
+            }
+            ResponseResult response = null;
+            response = tdDataService.queryTdDatas(commonParams);
+            if (response == null) {
+                log.info("traceId={} 同盾拉取无效：false ", commonParams.get("traceId"));     //失败
+                interfaceCountCache.setFailure(isRepeatKey);
+                new BusinessException("traceId={} 同盾拉取无效：false", true);
+            }
+            if (response.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
+                interfaceCountCache.setFailure(isRepeatKey);
+                return response;
+            }
+            FraudApiResponse apiResp = (FraudApiResponse) response.getData();
+            response.setData(apiResp.getFinal_score());
+            tdDataService.saveResult(orderNo, eventId, apiResp, commonParams);
             //push推送
-            pushDataService.pushData(traceId,"tdscore", "100", mobile, orderNo);
-            return null;
+            if (null != apiResp.getFinal_score()) {
+                pushDataService.pushData(traceId,"tdscore", String.valueOf(apiResp.getFinal_score()), mobile, orderNo);
+            }else {
+                log.info("traceId={} 同盾拉取失败：false ，同盾分为空");     //失败
+            }
+            return response;
         } catch (Exception e) {
             log.info("traceId={} 同盾拉取无效：false ", TraceIDThreadLocal.getTraceID());     //失败
-//            interfaceCountCache.setFailure(isRepeatKey);
+            interfaceCountCache.setFailure(isRepeatKey);
             throw e;
         }
 

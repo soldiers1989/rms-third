@@ -97,7 +97,7 @@ public class PushDataServiceImpl implements IPushDataService {
             Object respose = dto.getData();
             ResponseDTO responseDTO = JSONObject.parseObject((String) respose, ResponseDTO.class);
             if (null != responseDTO) {
-                log.info("推送push系统返回結果通知：", dto);
+                log.info("推送push系统返回結果通知：", responseDTO);
             }
         }catch (Exception e) {
             log.info("推送push系统发生异常：",e.getMessage());

@@ -34,7 +34,7 @@ public class PushDataServiceImpl implements IPushDataService {
      * 将参数推送到push内部系统
      *
      * @param traceId
-     * @param type
+     * @param scoreType
      * @param score
      * @param mobile
      * @param orderNo
@@ -94,7 +94,9 @@ public class PushDataServiceImpl implements IPushDataService {
         log.info("traceId:" + traceId + " 推送push系统apiUrl" + apiUrl + "，推送数据：" + params);
         try {
             ResponseResult dto = HttpConnectionManager.doPost(apiUrl, params);
-            if (null != dto) {
+            Object respose = dto.getData();
+            ResponseDTO responseDTO = JSONObject.parseObject((String) respose, ResponseDTO.class);
+            if (null != responseDTO) {
                 log.info("推送push系统返回結果通知：", dto);
             }
         }catch (Exception e) {

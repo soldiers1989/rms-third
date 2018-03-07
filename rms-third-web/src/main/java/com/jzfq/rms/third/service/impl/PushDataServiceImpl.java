@@ -1,11 +1,9 @@
 package com.jzfq.rms.third.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
-import com.jzfq.rms.third.common.httpclient.HttpPushsConnectionManager;
 import com.jzfq.rms.third.service.IPushDataService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.lang3.StringUtils;
@@ -44,8 +42,8 @@ public class PushDataServiceImpl implements IPushDataService {
      */
 
     @Override
-    public void pushData(String traceId,String scoreType, String score, String mobile, String orderNo) {
-        pushDataToRmsPush(traceId,scoreType, score, mobile, orderNo);
+    public void pushData(String traceId, String scoreType, String score, String mobile, String orderNo) {
+        pushDataToRmsPush(traceId, scoreType, score, mobile, orderNo);
     }
 
 
@@ -55,9 +53,9 @@ public class PushDataServiceImpl implements IPushDataService {
      * @return
      */
 
-    public void pushDataToRmsPush(String traceId,String scoreType, String result, String mobile, String orderNo) {
+    public void pushDataToRmsPush(String traceId, String scoreType, String result, String mobile, String orderNo) {
         ThreadProvider.getThreadPool().execute(() -> {
-            requestPushParams(traceId,scoreType, result, mobile, orderNo);
+            requestPushParams(traceId, scoreType, result, mobile, orderNo);
         });
 
     }
@@ -67,7 +65,7 @@ public class PushDataServiceImpl implements IPushDataService {
      *
      * @return
      */
-    public void requestPushParams(String traceId,String scoreType, String result, String mobile, String orderNo) {
+    public void requestPushParams(String traceId, String scoreType, String result, String mobile, String orderNo) {
         //封装推送数据
         log.info("开始推送数据到push系统流水号traceID：", traceId);
         JSONObject jsonData = new JSONObject();
@@ -95,13 +93,15 @@ public class PushDataServiceImpl implements IPushDataService {
     public void doPostData(String traceId, Map<String, String> params) throws RuntimeException {
         log.info("traceId:" + traceId + " 推送push系统apiUrl" + apiUrl + "，推送数据：" + params);
         try {
-            ResponseDTO dto = HttpPushsConnectionManager.doPost(apiUrl, params);
-            System.out.println(dto.toString());
-            if (null != dto) {
-                log.info("推送push系统返回結果通知："+ JSON.toJSON(dto).toString());
+            ResponseResult dto = HttpConnectionManager.doPost(apiUrl, params);
+            log.info("返回结果：", dto);
+            Object respose = dto.getData();
+            ResponseDTO responseDTO = JSONObject.parseObject((String) respose, ResponseDTO.class);
+            if (null != responseDTO) {
+                log.info("推送push系统返回結果通知：" + responseDTO);
             }
-        }catch (Exception e) {
-            log.info("推送push系统发生异常：",e.getMessage());
+        } catch (Exception e) {
+            log.info("推送push系统发生异常：", e.getMessage());
         }
     }
 

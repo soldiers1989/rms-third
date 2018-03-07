@@ -139,7 +139,7 @@ public class Request1008Handler extends AbstractRequestHandler {
             response.setData(apiResp.getFinal_score());
             tdDataService.saveResult(orderNo, eventId, apiResp, commonParams);
             //push推送
-            pushDataService.pushData(traceId, String.valueOf(apiResp.getFinal_score()), mobile, orderNo);
+            pushDataService.pushData(traceId,"tdscore", String.valueOf(apiResp.getFinal_score()), mobile, orderNo);
             return response;
         } catch (Exception e) {
             log.info("traceId={} 同盾拉取无效：false ", TraceIDThreadLocal.getTraceID());     //失败

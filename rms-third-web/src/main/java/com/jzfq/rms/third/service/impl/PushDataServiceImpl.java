@@ -42,8 +42,8 @@ public class PushDataServiceImpl implements IPushDataService {
      */
 
     @Override
-    public void pushData(String traceId, String score, String mobile, String orderNo) {
-        pushDataToRmsPush(traceId, score, mobile, orderNo);
+    public void pushData(String traceId,String scoreType, String score, String mobile, String orderNo) {
+        pushDataToRmsPush(traceId,scoreType, score, mobile, orderNo);
     }
 
 
@@ -53,9 +53,9 @@ public class PushDataServiceImpl implements IPushDataService {
      * @return
      */
 
-    public void pushDataToRmsPush(String traceId, String result, String mobile, String orderNo) {
+    public void pushDataToRmsPush(String traceId,String scoreType, String result, String mobile, String orderNo) {
         ThreadProvider.getThreadPool().execute(() -> {
-            requestPushParams(traceId, result, mobile, orderNo);
+            requestPushParams(traceId,scoreType, result, mobile, orderNo);
         });
 
     }
@@ -65,11 +65,11 @@ public class PushDataServiceImpl implements IPushDataService {
      *
      * @return
      */
-    public void requestPushParams(String traceId, String result, String mobile, String orderNo) {
+    public void requestPushParams(String traceId,String scoreType, String result, String mobile, String orderNo) {
         //封装推送数据
         log.info("开始推送数据到push系统流水号traceID：", traceId);
         JSONObject jsonData = new JSONObject();
-        jsonData.put("brscore", result);
+        jsonData.put(scoreType, result);
         jsonData.put("mobile", mobile);
         jsonData.put("orderNo", orderNo);
         JSONObject jsonParams = new JSONObject();

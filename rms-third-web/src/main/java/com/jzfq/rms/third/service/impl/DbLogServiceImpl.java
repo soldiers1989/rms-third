@@ -94,6 +94,7 @@ public class DbLogServiceImpl implements IDbLogService {
     @Override
     public void recodeRequest(JSONObject params) {
         try{
+            logger.info("requestcodeRequests请求参数：",params);
             ThirdRequestLog record = new ThirdRequestLog();
             String traceID = params.getString("traceID");
             String callSystemID = params.getString("callSystemID");

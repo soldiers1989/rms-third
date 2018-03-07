@@ -92,8 +92,10 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         String traceId = TraceIDThreadLocal.getTraceID();
         try{
             ThreadProvider.getThreadPool().execute(()->{
+                JSONObject json = JSONObject.parseObject(result);
+                json.put("scorepettycashv1", getScoreByJson(json));
                 String taskIdStr = rmsService.queryByOrderNo(traceId, orderNo);
-                BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", result, customerType.toString());
+                BrPostData data = buildPostData(taskIdStr, "拉取数据集合信息信息", json.toJSONString(), customerType.toString());
                 //保存rms系统数据结构
                 saveData(data);
             });
@@ -230,6 +232,27 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         }
         return null;
     }
+
+    /**
+     * 从json中读取百融评分
+     *
+     * @param json
+     * @return
+     */
+    @Override
+    public String getScoreByJson(JSONObject json) {
+//        String score = json.getString("rs_Score_scorecust");
+////            if(StringUtils.isBlank(score)){
+////            score = json.getString("rs_Score_scorelargecashv1");
+////        }
+////        if(StringUtils.isBlank(score)){
+////            score = json.getString("rs_Score_scorelargecashv2");
+////        }
+        //百融策略调整，只获取key为rs_Score_scorelargecashv1的评分值
+        String  score = json.getString("rs_Score_scorelargecashv1");
+        return score;
+    }
+
     /**
      * @param name
      * @param certCardNo

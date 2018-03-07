@@ -73,4 +73,11 @@ public interface IRiskPostDataService {
      * @return
      */
     BairongData getBairongDataByOrder(String name, String certCardNo, String mobile);
+
+    /**
+     * 从json中读取百融评分
+     * @param json
+     * @return
+     */
+    String getScoreByJson(JSONObject json);
 }

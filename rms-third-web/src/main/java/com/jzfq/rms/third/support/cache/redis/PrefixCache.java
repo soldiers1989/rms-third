@@ -62,4 +62,11 @@ public class PrefixCache implements ICache {
         HashOperations<String,Object,Object> operateions = redisTemplate.opsForHash();
         return operateions.increment(group,key,1);
     }
+
+    @Override
+    public void batchDel(String... pattern) {
+        for (String kp : pattern) {
+            redisTemplate.delete(redisTemplate.keys(kp + "*"));
+        }
+    }
 }

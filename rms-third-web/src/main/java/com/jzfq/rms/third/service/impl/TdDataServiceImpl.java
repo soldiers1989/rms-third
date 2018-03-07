@@ -9,7 +9,7 @@ import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.mongo.TdHitRuleData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
-import com.jzfq.rms.third.common.mongo.TongDunData;
+import com.jzfq.rms.third.common.mongo.TongDunStringData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
@@ -127,41 +127,49 @@ public class TdDataServiceImpl implements ITdDataService {
             ThreadProvider.getThreadPool().execute(() ->  {
                 RiskPersonalInfo info = (RiskPersonalInfo)commonParams.get("personalInfo");
                 String taskId = rmsService.queryByOrderNo(traceId, orderNo);
-                TongDunData tongDunData = new TongDunData();
+                TongDunStringData tongDunData = new TongDunStringData();
                 tongDunData.setOrderNo(orderNo);
                 tongDunData.setCreateTime(new Date());
-                tongDunData.setApiResp(apiResp);
-
+                tongDunData.setApiResp(StringUtil.toJSONString(apiResp));
+                tongDunData.setValue(apiResp.getFinal_score());
+                tongDunData.setEventId(eventId);
                 //同盾信息写入mongo
                 if(StringUtils.isNotBlank(taskId)){
-                    TdHitRuleData tdHitRuleData = new TdHitRuleData(null,
+                    TdHitRuleData tdHitRuleData = new TdHitRuleData(taskId,
                             "同盾规则命中信息", new Date());
-                    tdHitRuleData.setTaskId(taskId);
                     if(apiResp.getDevice_info()!=null && apiResp.getDevice_info().get("deviceId")!=null){
                         tdHitRuleData.setData(apiResp.getDevice_info().get("deviceId").toString());
                     }
                     log.info("traceId= {} 同盾拉取结果：{} --同盾分= {} 拉取结果:{}"
                             ,traceId,apiResp.getSuccess(),apiResp.getFinal_score(),apiResp.toString());     //是否成功
-                    try{
-                        BeanUtils.copyProperties(tdHitRuleData, apiResp);
-                    }catch (Exception e){
-                        log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
-                    }
-                    if (tdHitRuleData==null){
-                        log.info("保存数据 订单号为{}获取同盾是返回的结果为null",orderNo);
-                        return ;
-                    }
+//                    try{
+//                        BeanUtils.copyProperties(tdHitRuleData, apiResp);
+//                    }catch (Exception e){
+//                        log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
+//                    }
+                    tdHitRuleData.setDevice_info(StringUtil.toJSONString(apiResp.getDevice_info()));
+                    tdHitRuleData.setFinal_score(apiResp.getFinal_score());
+                    tdHitRuleData.setHit_rules(StringUtil.toJSONString(apiResp.getHit_rules()));
+                    tdHitRuleData.setPolicy_set(StringUtil.toJSONString(apiResp.getPolicy_set()));
+                    tdHitRuleData.setPolicy_set_name(apiResp.getPolicy_set_name());
+                    tdHitRuleData.setSeq_id(apiResp.getSeq_id());
+//                    if (tdHitRuleData==null){
+//                        log.info("保存数据 订单号为{}获取同盾时返回的结果为null",orderNo);
+//                    }else{
+//                        mongoTemplate.insert(tdHitRuleData);
+//                    }
+                    log.info("保存数据 订单号为{}rms老结构结果为:{}",orderNo,tdHitRuleData);
                     mongoTemplate.insert(tdHitRuleData);
                 }
                 String sequenceId = apiResp.getSeq_id();
                 if (StringUtils.isBlank(sequenceId)){
-                    log.info("保存数据 订单号为{}获取同盾是返回的结果seq_id为空",orderNo);
+                    log.info("保存数据 订单号为{}获取同盾时返回的结果seq_id为空：{}",orderNo, apiResp.toString());
+                    mongoTemplate.insert(tongDunData);
                     return ;
                 }
                 //通过seqid 查询 同盾规则详情，保存到mongo
                 RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId, systemID);
-                tongDunData.setRuleDetailResult(ruleDetailResult);
-                tongDunData.setEventId(eventId);
+                tongDunData.setRuleDetailResult(StringUtil.toJSONString(ruleDetailResult));
                 mongoTemplate.insert(tongDunData);
             });
         }catch (Exception e){
@@ -176,9 +184,9 @@ public class TdDataServiceImpl implements ITdDataService {
      * @return
      */
     @Override
-    public List<TongDunData> getTongDongData(String orderNo) {
-        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo))
-                , TongDunData.class);
+    public List<TongDunStringData> getTongDongData(String orderNo) {
+        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo))
+                , TongDunStringData.class);
         return datas;
     }
 
@@ -190,9 +198,9 @@ public class TdDataServiceImpl implements ITdDataService {
      * @return
      */
     @Override
-    public List<TongDunData> getDataByEvent(String orderNo, String eventId) {
-        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo).and("eventId").is(eventId))
-                , TongDunData.class);
+    public List<TongDunStringData> getDataByEvent(String orderNo, String eventId) {
+        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo).and("eventId").is(eventId))
+                , TongDunStringData.class);
         return datas;
     }
 
@@ -203,9 +211,9 @@ public class TdDataServiceImpl implements ITdDataService {
      * @return
      */
     @Override
-    public List<TongDunData> getTongDongDataBySerialNo(String serialNo) {
-        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("serialNo").is(serialNo))
-                , TongDunData.class);
+    public List<TongDunStringData> getTongDongDataBySerialNo(String serialNo) {
+        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("serialNo").is(serialNo))
+                , TongDunStringData.class);
         return datas;
     }
 
@@ -217,10 +225,10 @@ public class TdDataServiceImpl implements ITdDataService {
      * @return
      */
     @Override
-    public TongDunData getTongDongData(String name, String certCardNo) {
-        List<TongDunData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
+    public TongDunStringData getTongDongData(String name, String certCardNo) {
+        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
                 .and("certCardNo").is(certCardNo))
-                , TongDunData.class);
+                , TongDunStringData.class);
         if(!CollectionUtils.isEmpty(datas)){
             Collections.sort(datas, (elementA, elementB) -> {
                 Date dateA = elementA.getCreateTime();
@@ -506,60 +514,22 @@ public class TdDataServiceImpl implements ITdDataService {
         return result;
     }
 
-    private RuleDetailResult getTdDetail(String orderNo, FraudApiResponse apiResp, Map<String, Object> commonParams){
-        String traceId = TraceIDThreadLocal.getTraceID();
-        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
-        TongDunData tongDunData = new TongDunData();
-        tongDunData.setOrderNo(orderNo);
-        tongDunData.setCreateTime(new Date());
-        tongDunData.setApiResp(apiResp);
-        //同盾信息写入mongo
-        if(StringUtils.isNotBlank(taskId)){
-            TdHitRuleData tdHitRuleData = new TdHitRuleData(null,
-                    "同盾规则命中信息", new Date());
-            tdHitRuleData.setTaskId(taskId);
-            if(apiResp.getDevice_info()!=null && apiResp.getDevice_info().get("deviceId")!=null){
-                tdHitRuleData.setData(apiResp.getDevice_info().get("deviceId").toString());
-            }
-            log.info("traceId= {} 同盾拉取结果：{} --同盾分= {} 拉取结果:{}"
-                    ,traceId,apiResp.getSuccess(),apiResp.getFinal_score(),apiResp.toString());     //是否成功
-            try{
-                BeanUtils.copyProperties(tdHitRuleData, apiResp);
-            }catch (Exception e){
-                log.error("保存数据 订单号为{} 克隆数据",orderNo,e);
-            }
-            if (tdHitRuleData==null){
-                log.info("保存数据 订单号为{}获取同盾是返回的结果为null",orderNo);
-                return null;
-            }
-            mongoTemplate.insert(tdHitRuleData);
-        }
-        String sequenceId = apiResp.getSeq_id();
-        if (StringUtils.isBlank(sequenceId)){
-            log.info("保存数据 订单号为{}获取同盾是返回的结果seq_id为空",orderNo);
-            return null;
-        }
-        //通过seqid 查询 同盾规则详情，保存到mongo
-        RuleDetailResult ruleDetailResult = getTdRuleData(taskId,  sequenceId,  traceId, CallSystemIDThreadLocal.getCallSystemID());
-        tongDunData.setRuleDetailResult(ruleDetailResult);
-        mongoTemplate.insert(tongDunData);
-        return ruleDetailResult;
-    }
-
     private RuleDetailResult getTdDetailBySerialNo(String serialNo, FraudApiResponse apiResp){
         String traceId = TraceIDThreadLocal.getTraceID();
-        TongDunData tongDunData = new TongDunData();
+        TongDunStringData tongDunData = new TongDunStringData();
         tongDunData.setSerialNo(serialNo);
         tongDunData.setCreateTime(new Date());
-        tongDunData.setApiResp(apiResp);
+        tongDunData.setValue(apiResp.getFinal_score());
+        tongDunData.setApiResp(StringUtil.toJSONString(apiResp));
         String sequenceId = apiResp.getSeq_id();
         if (StringUtils.isBlank(sequenceId)){
-            log.info("保存数据 流水号为{}获取同盾是返回的结果seq_id为空",serialNo);
+            log.info("保存数据 流水号为{}获取同盾时返回的结果seq_id为空",serialNo);
+            mongoTemplate.insert(tongDunData);
             return null;
         }
         //通过seqid 查询 同盾规则详情，保存到mongo
         RuleDetailResult ruleDetailResult = getTdRuleData(sequenceId,  traceId);
-        tongDunData.setRuleDetailResult(ruleDetailResult);
+        tongDunData.setRuleDetailResult(StringUtil.toJSONString(ruleDetailResult));
         mongoTemplate.insert(tongDunData);
         return ruleDetailResult;
     }

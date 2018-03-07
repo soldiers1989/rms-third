@@ -1,5 +1,6 @@
 package com.jzfq.rms.third.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
@@ -96,7 +97,7 @@ public class PushDataServiceImpl implements IPushDataService {
         try {
             ResponseDTO dto = HttpPushsConnectionManager.doPost(apiUrl, params);
             if (null != dto) {
-                log.info("推送push系统返回結果通知：", dto.toString());
+                log.info("推送push系统返回結果通知：", JSON.toJSON(dto).toString());
             }
         }catch (Exception e) {
             log.info("推送push系统发生异常：",e.getMessage());

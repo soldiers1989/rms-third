@@ -101,48 +101,48 @@ public class Request1011Handler extends AbstractRequestHandler {
         if (StringUtils.isBlank(strategyId)) {
             return new ResponseResult(traceId, ReturnCode.ERROR_NOT_FOUNT_STRATEGE_ID, null);
         }
-        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), strategyId);
-        if (null != jsonObject) {
-            riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
-            JSONObject resultJson = new JSONObject();
-            resultJson.put("score", riskPostDataService.getScoreByJson(jsonObject));
-            resultJson.put("weight", jsonObject.getString("Rule_final_weight"));
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
-        }
-//        // 2.判断是否远程拉取
-        String isRepeatKey = getKeyPersonalInfo(info, strategyId);
-        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
-        if (!isRpc) {
-            return new ResponseResult(traceId, ReturnCode.ACTIVE_THIRD_RPC, null);
-        }
-        // 3.远程拉取
-        ResponseResult result = null;
-        try {
-            result = brPostService.getApiData(info, getCommonParams(request));
-        } catch (Exception e) {
-            interfaceCountCache.setFailure(isRepeatKey);
-            log.error("traceId={} 获取百融分失败", traceId, e);
-            throw e;
-        }
-        if (result == null || result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
-            interfaceCountCache.setFailure(isRepeatKey);
-            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result);
-        }
-        String brResponse = (String) result.getData();
-        try {
-            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
-            riskPostDataService.saveRmsThirdData(info, customerType, strategyId, brResponse);
-        } catch (Exception e) {
-            log.error("traceId={} 保存数据失败", traceId, e);
-            interfaceCountCache.setFailure(isRepeatKey);
-        }
-        JSONObject resultJson = new JSONObject();
-        JSONObject tempResult = JSONObject.parseObject(brResponse);
-        resultJson.put("score", riskPostDataService.getScoreByJson(tempResult));
-        resultJson.put("weight", tempResult.getString("Rule_final_weight"));
+//        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), strategyId);
+//        if (null != jsonObject) {
+//            riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
+//            JSONObject resultJson = new JSONObject();
+//            resultJson.put("score", riskPostDataService.getScoreByJson(jsonObject));
+//            resultJson.put("weight", jsonObject.getString("Rule_final_weight"));
+//            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
+//        }
+////        // 2.判断是否远程拉取
+//        String isRepeatKey = getKeyPersonalInfo(info, strategyId);
+//        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
+//        if (!isRpc) {
+//            return new ResponseResult(traceId, ReturnCode.ACTIVE_THIRD_RPC, null);
+//        }
+//        // 3.远程拉取
+//        ResponseResult result = null;
+//        try {
+//            result = brPostService.getApiData(info, getCommonParams(request));
+//        } catch (Exception e) {
+//            interfaceCountCache.setFailure(isRepeatKey);
+//            log.error("traceId={} 获取百融分失败", traceId, e);
+//            throw e;
+//        }
+//        if (result == null || result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
+//            interfaceCountCache.setFailure(isRepeatKey);
+//            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result);
+//        }
+//        String brResponse = (String) result.getData();
+//        try {
+//            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
+//            riskPostDataService.saveRmsThirdData(info, customerType, strategyId, brResponse);
+//        } catch (Exception e) {
+//            log.error("traceId={} 保存数据失败", traceId, e);
+//            interfaceCountCache.setFailure(isRepeatKey);
+//        }
+//        JSONObject resultJson = new JSONObject();
+//        JSONObject tempResult = JSONObject.parseObject(brResponse);
+//        resultJson.put("score", riskPostDataService.getScoreByJson(tempResult));
+//        resultJson.put("weight", tempResult.getString("Rule_final_weight"));
         //push推送riskPostDataService.getScoreByJson(tempResult)
-        pushDataService.pushData(traceId,"brscore",riskPostDataService.getScoreByJson(tempResult),info.getMobile(),orderNo);
-        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
+        pushDataService.pushData(traceId,"brscore","200",info.getMobile(),orderNo);
+        return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
 
     }
 

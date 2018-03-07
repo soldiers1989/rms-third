@@ -241,13 +241,15 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
      */
     @Override
     public String getScoreByJson(JSONObject json) {
-        String score = json.getString("rs_Score_scorecust");
-        if(StringUtils.isBlank(score)){
-            score = json.getString("rs_Score_scorelargecashv1");
-        }
-        if(StringUtils.isBlank(score)){
-            score = json.getString("rs_Score_scorelargecashv2");
-        }
+//        String score = json.getString("rs_Score_scorecust");
+////            if(StringUtils.isBlank(score)){
+////            score = json.getString("rs_Score_scorelargecashv1");
+////        }
+////        if(StringUtils.isBlank(score)){
+////            score = json.getString("rs_Score_scorelargecashv2");
+////        }
+        //百融策略调整，只获取key为rs_Score_scorelargecashv1的评分值
+        String  score = json.getString("rs_Score_scorelargecashv1");
         return score;
     }
 

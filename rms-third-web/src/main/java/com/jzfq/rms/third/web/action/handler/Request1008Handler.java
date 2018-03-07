@@ -100,8 +100,8 @@ public class Request1008Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         Map<String, Object> commonParams = getCommonParams(request);
-        RiskPersonalInfo personInfo = JSONObject.parseObject(commonParams.get("personInfo").toString(),
-                RiskPersonalInfo.class);
+        log.info(commonParams.get("personalInfo").toString());
+        RiskPersonalInfo personInfo = (RiskPersonalInfo)commonParams.get("personalInfo");
         String mobile = "";
         if (null != personInfo) {
             mobile = personInfo.getMobile();

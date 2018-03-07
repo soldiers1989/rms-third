@@ -4,11 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseDTO;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.service.IMonitorService;
 import com.jzfq.rms.third.service.IPushDataService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +29,12 @@ public class PushDataServiceImpl implements IPushDataService {
     //请求push url
     @Value("${rms.api.push.url}")
     private String apiUrl;
-    //私钥key
-    @Value("${thirdToCustomer}")
-    private String thirdToCustomer;
+    //百融私钥key
+    @Value("${thirdToCustomerBr}")
+    private String thirdToCustomerBr;
+    //百融私钥key
+    @Value("${thirdToCustomerTd}")
+    private String thirdToCustomerTd;
 
     /**
      * 将参数推送到push内部系统
@@ -73,7 +79,13 @@ public class PushDataServiceImpl implements IPushDataService {
         jsonData.put("mobile", "18801014677");
         jsonData.put("orderNo", orderNo);
         JSONObject jsonParams = new JSONObject();
-        jsonParams.put("pushkey", thirdToCustomer);
+        if ("tdscore".equals(scoreType)) {
+            jsonData.put("scoreType", "1");//同盾分
+            jsonParams.put("pushkey", thirdToCustomerTd);
+        } else if ("brscore".equals(scoreType)) {
+            jsonData.put("scoreType", "2");//百融分
+            jsonParams.put("pushkey", thirdToCustomerBr);
+        }
         jsonParams.put("sourceID", 1);//风控rms
         jsonParams.put("targetID", 7);//third
         jsonParams.put("sendtype", 2);//http
@@ -97,6 +109,7 @@ public class PushDataServiceImpl implements IPushDataService {
             Object respose = dto.getData();
             ResponseDTO responseDTO = JSONObject.parseObject((String) respose, ResponseDTO.class);
             if (null != responseDTO) {
+                // 调用日志存入数据库
                 log.info("推送push系统返回結果通知：" + responseDTO);
             }
         } catch (Exception e) {

@@ -80,10 +80,8 @@ public class PushDataServiceImpl implements IPushDataService {
         jsonData.put("orderNo", orderNo);
         JSONObject jsonParams = new JSONObject();
         if ("tdscore".equals(scoreType)) {
-            jsonData.put("scoreType", "1");//同盾分
             jsonParams.put("pushkey", thirdToCustomerTd);
         } else if ("brscore".equals(scoreType)) {
-            jsonData.put("scoreType", "2");//百融分
             jsonParams.put("pushkey", thirdToCustomerBr);
         }
         jsonParams.put("sourceID", 1);//风控rms

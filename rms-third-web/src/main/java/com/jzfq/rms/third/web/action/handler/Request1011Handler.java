@@ -140,8 +140,8 @@ public class Request1011Handler extends AbstractRequestHandler {
         JSONObject tempResult = JSONObject.parseObject(brResponse);
         resultJson.put("score", riskPostDataService.getScoreByJson(tempResult));
         resultJson.put("weight", tempResult.getString("Rule_final_weight"));
-        //push推送
-        pushDataService.pushData(traceId,riskPostDataService.getScoreByJson(tempResult),info.getMobile(),orderNo);
+        //push推送riskPostDataService.getScoreByJson(tempResult)
+        pushDataService.pushData(traceId,"200",info.getMobile(),orderNo);
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
 
     }

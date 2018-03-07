@@ -220,7 +220,7 @@ public class HttpConnectionManager {
 	public static ResponseResult doPost(String url ,String charset) {
 		return doPost(url, null, null, charset);
 	}
-	
+
 	/**
 	 * @param url 请求路径
 	 * @param userName 用户名
@@ -340,7 +340,7 @@ public class HttpConnectionManager {
 	public static <K , V > ResponseResult doPost(String url ,Map<K,V> params) {
 		return doPost(url, params, CHARSET);
 	}
-	
+
 	/**
 	 * @param url 请求路径
 	 * @param params 请求参数
@@ -350,7 +350,7 @@ public class HttpConnectionManager {
 	public static <K , V > ResponseResult doPost(String url ,Map<K,V> params , String charset) {
 		return doPost(url, null, null, params, charset);
 	}
-	
+
 	/**
 	 * @param url 请求路径
 	 * @param userName 用户名

@@ -96,7 +96,7 @@ public class PushDataServiceImpl implements IPushDataService {
     }
 
     /**
-     * 发起请求
+     * 发起请求1
      *
      * @return
      */

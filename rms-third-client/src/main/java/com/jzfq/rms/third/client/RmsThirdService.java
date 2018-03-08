@@ -68,6 +68,7 @@ public class RmsThirdService {
         params.put("timestamp",timestamp);
         String json = JSONObject.toJSONString(map);
         params.put("params",json);
+        System.out.println(params.toString());
         ResponseResult result = HttpConnectionManager.doPost(url,params);
         if(ReturnCode.REQUEST_SUCCESS.code() != result.getCode()){
             return result;

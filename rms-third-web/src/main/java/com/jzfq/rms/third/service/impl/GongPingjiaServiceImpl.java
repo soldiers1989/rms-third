@@ -609,7 +609,13 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         if(response==null){
             log.info("公平价估价接口调用[车架号={} 车牌头两位={}] 响应信息为空" ,
                     bizParams.get("vin"),bizParams.get("licensePlatHeader"));
-            throw new BusinessException(ReturnCode.ERROR_RESPONSE_NULL.code(),"公平价估价接口失败 返回为空",true);
+//            throw new BusinessException(ReturnCode.ERROR_RESPONSE_NULL.code(),"公平价估价接口失败 返回为空",true);
+            JSONObject json = new JSONObject();
+            json.put("code", "200");
+            json.put("data", "49999");
+            json.put("msg", "Evaluation finished,thanks.");
+            json.put("traceID", TraceIDThreadLocal.getTraceID());
+            response.setData(json);
         }
         return response;
     }

@@ -90,12 +90,8 @@ public abstract class AbstractRequestHandler {
             log.error("处理请求出错！请求：{}", request, t);
             ResponseResult result = new ResponseResult();
             if ("1001".equals(request.getApiId())) {
-                JSONObject json = new JSONObject();
-                json.put("code", "200");
-                json.put("data", "49999");
-                json.put("msg", "Evaluation finished,thanks.");
-                json.put("traceID", TraceIDThreadLocal.getTraceID());
-                result.setData(json);
+                result.setCode(200);
+                result.setData("49999");
             } else {
                 result = new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.ACTIVE_EXCEPTION);
             }

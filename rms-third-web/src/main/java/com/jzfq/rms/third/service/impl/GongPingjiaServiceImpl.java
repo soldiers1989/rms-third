@@ -547,12 +547,8 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
         List<Map<String,String>> list = (List<Map<String,String>>)result.getData();
         if (list == null && result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
             //如果公平价没有返回data数据  则返回49999  并推送
-            JSONObject json = new JSONObject();
-            json.put("code", "200");
-            json.put("data", "49999");
-            json.put("msg", "Evaluation finished,thanks.");
-            json.put("traceID", TraceIDThreadLocal.getTraceID());
-            result.setData(json);
+            result.setCode(200);
+            result.setData("49999");
             return result;
         }
         // 计算估值

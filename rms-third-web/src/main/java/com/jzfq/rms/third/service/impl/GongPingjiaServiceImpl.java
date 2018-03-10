@@ -606,7 +606,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
      */
     private ResponseResult getGongpingjiaData( Map<String, Object> params,Map<String, Object> bizParams) throws BusinessException{
         ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.GPJ01.getCode(),params,bizParams);
-        response = null;
+//        response = null;
         if(response==null){
             log.info("公平价估价接口调用[车架号={} 车牌头两位={}] 响应信息为空" ,
                     bizParams.get("vin"),bizParams.get("licensePlatHeader"));

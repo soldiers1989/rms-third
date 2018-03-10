@@ -109,39 +109,39 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
      * @param result
      * @return
      */
-    private String calculateVluationAndSaveData(ResponseResult result, String vin, String licensePlatHeader){
+    private String calculateVluationAndSaveData(ResponseResult result, String vin, String licensePlatHeader) {
         Integer productiveYear = getProductiveYearByVin(vin);
-        if(productiveYear == null){
-            return null;
+        if (productiveYear == null) {
+            return "49999";
         }
-        List<Map<String,String>> datas = (List<Map<String,String>>)result.getData();
-        if(CollectionUtils.isEmpty(datas)){
-            return null;
+        List<Map<String, String>> datas = (List<Map<String, String>>) result.getData();
+        if (CollectionUtils.isEmpty(datas)) {
+            return "49999";
         }
         Set<String> slugs = new HashSet<>();
         List<EvaluationInfoVo> evaluationInfos = new ArrayList<>();
-        for(Map<String,String> data:datas){
-            EvaluationInfoVo evaluation = getEvaluationDatas(data,slugs);
-            if(evaluation!=null){
+        for (Map<String, String> data : datas) {
+            EvaluationInfoVo evaluation = getEvaluationDatas(data, slugs);
+            if (evaluation != null) {
                 evaluationInfos.add(evaluation);
             }
         }
         // 查新车型库信息
-        if(CollectionUtils.isEmpty(slugs)||CollectionUtils.isEmpty(evaluationInfos)){
-            return null;
+        if (CollectionUtils.isEmpty(slugs) || CollectionUtils.isEmpty(evaluationInfos)) {
+            return "49999";
         }
         List<GpjCarDetailModel> carRepositories = gpjCarDetailModelMapper.selectByModelSlugList(slugs);
-        if(CollectionUtils.isEmpty(carRepositories)){
-            return null;
+        if (CollectionUtils.isEmpty(carRepositories)) {
+            return "49999";
         }
-        Map<String,GpjCarDetailModel> repositories = new HashMap<>();
-        for(GpjCarDetailModel repository:carRepositories){
-            repositories.put(repository.getDetailModelSlug(),repository);
+        Map<String, GpjCarDetailModel> repositories = new HashMap<>();
+        for (GpjCarDetailModel repository : carRepositories) {
+            repositories.put(repository.getDetailModelSlug(), repository);
         }
-        for(EvaluationInfoVo evaluation:evaluationInfos){
+        for (EvaluationInfoVo evaluation : evaluationInfos) {
             String modelSlug = evaluation.getDetailModelSlug();
             GpjCarDetailModel repository = repositories.get(modelSlug);
-            if(repository ==null){
+            if (repository == null) {
                 continue;
             }
             evaluation.setBrandName(repository.getBrandName());
@@ -153,17 +153,21 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
             evaluation.setListedYear(repository.getListedYear());
         }
         EvaluationInfoVo tempEvaluation = null;
-        for(EvaluationInfoVo evaluation:evaluationInfos){
-            if(tempEvaluation == null){
+        for (EvaluationInfoVo evaluation : evaluationInfos) {
+            if (tempEvaluation == null) {
                 tempEvaluation = evaluation;
                 continue;
             }
             tempEvaluation = getDataByNearYear(tempEvaluation, evaluation, productiveYear);
         }
-        // 保存数据
-        saveGongPingJiaData(vin, licensePlatHeader, evaluationInfos,tempEvaluation.getPrivatePrice());
+        // 保存数据  如果公平价估值为null吧 推送49999，返回页面49999
+        if (StringUtils.isBlank(tempEvaluation.getPrivatePrice())) {
+            tempEvaluation.setPrivatePrice("49999");
+        }
+        saveGongPingJiaData(vin, licensePlatHeader, evaluationInfos, tempEvaluation.getPrivatePrice());
         return tempEvaluation.getPrivatePrice();
     }
+
 
     /**
      * 保存数据
@@ -523,25 +527,32 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService{
     @Override
     public ResponseResult getGpjDataAndCalculateEvaluations(String vin, String licensePlatHeader, Map<String, Object> commonParams) throws BusinessException {
         log.info("traceId={} 公平价接口调用[车架号={} 车牌头两位{}]-开始",
-                TraceIDThreadLocal.getTraceID(),vin,licensePlatHeader);
+                TraceIDThreadLocal.getTraceID(), vin, licensePlatHeader);
         Map<String, Object> params = new HashMap<>();
-        params.put("key",key);
-        params.put("secret",secret);
-        params.put("timeout",timeout);
-        String url = (String)prefixCache.readConfigByGroup("rms-third-interface-url","gpj-evaluation");
-        params.put("url",url);
+        params.put("key", key);
+        params.put("secret", secret);
+        params.put("timeout", timeout);
+        String url = (String) prefixCache.readConfigByGroup("rms-third-interface-url", "gpj-evaluation");
+        params.put("url", url);
         params.put("targetId", SystemIdEnum.THIRD_GPJ.getCode());
         params.put("appId", "");
         params.put("interfaceId", InterfaceIdEnum.THIRD_GPJ_EVALATION.getCode());
         params.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
         params.put("traceId", TraceIDThreadLocal.getTraceID());
 
-        Map<String, Object> bizParams  = new HashMap<>();
-        bizParams.put("vin",vin);
-        bizParams.put("licensePlatHeader",licensePlatHeader);
-        ResponseResult result = getGongpingjiaData( params ,bizParams);
+        Map<String, Object> bizParams = new HashMap<>();
+        bizParams.put("vin", vin);
+        bizParams.put("licensePlatHeader", licensePlatHeader);
+        ResponseResult result = getGongpingjiaData(params, bizParams);
         List<Map<String,String>> list = (List<Map<String,String>>)result.getData();
-        if(list == null&&result.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+        if (list == null && result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
+            //如果公平价没有返回data数据  则返回49999  并推送
+            JSONObject json = new JSONObject();
+            json.put("code", "200");
+            json.put("data", "49999");
+            json.put("msg", "Evaluation finished,thanks.");
+            json.put("traceID", TraceIDThreadLocal.getTraceID());
+            result.setData(json);
             return result;
         }
         // 计算估值

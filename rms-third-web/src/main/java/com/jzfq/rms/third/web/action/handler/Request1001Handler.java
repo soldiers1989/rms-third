@@ -69,6 +69,9 @@ public class Request1001Handler  extends AbstractRequestHandler{
 //        }
         String price = gongPingjiaService.getEvaluatePrice(vin, licensePlatHeader);
         if(StringUtils.isNotBlank(price)){
+            if ("".equals(price) || null == price) {
+                price = "49999";
+            }
             return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,price);
         }
         log.info(TraceIDThreadLocal.getTraceID(),"third1001","traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");

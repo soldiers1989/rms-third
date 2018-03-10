@@ -26,18 +26,19 @@ import java.util.Map;
  * @date 2017/10/13 16:44.
  **/
 @Component("request1001Handler")
-public class Request1001Handler  extends AbstractRequestHandler{
+public class Request1001Handler extends AbstractRequestHandler {
     final protected static ILogger log = RmsLogger.getFactory(LoggerFactory.getLogger(GongPingJiaAction.class));
+    final protected static Logger logger = LoggerFactory.getLogger(Request1001Handler.class);
     @Autowired
     private IGongPingjiaService gongPingjiaService;
 
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-        String frontId = (String)params.get("frontId");
-        String vin = (String)params.get("vin");
-        String licensePlatHeader = (String)params.get("licensePlatHeader");
-        if(StringUtils.isBlank(frontId)||
-                StringUtils.isBlank(vin)||StringUtils.isBlank(licensePlatHeader)){
+        String frontId = (String) params.get("frontId");
+        String vin = (String) params.get("vin");
+        String licensePlatHeader = (String) params.get("licensePlatHeader");
+        if (StringUtils.isBlank(frontId) ||
+                StringUtils.isBlank(vin) || StringUtils.isBlank(licensePlatHeader)) {
             return false;
         }
         return true;
@@ -45,50 +46,57 @@ public class Request1001Handler  extends AbstractRequestHandler{
 
     @Override
     protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
-        if(StringUtils.equals("01",request.getApiVersion())){
+        if (StringUtils.equals("01", request.getApiVersion())) {
             return handlerOfVersion01(request);
         }
         return handlerOfVersion01(request);
     }
+
     @Autowired
     ICountCache interfaceCountCache;
 
-    Long time = 24*60*60*3L;
+    Long time = 24 * 60 * 60 * 3L;
+
     /**
      * 版本10
+     *
      * @param request
      * @return
      */
-    private ResponseResult handlerOfVersion01(AbstractRequest request) throws BusinessException{
-        String vin = (String)request.getParam("vin");
-        String licensePlatHeader = (String)request.getParam("licensePlatHeader");
+    private ResponseResult handlerOfVersion01(AbstractRequest request) throws BusinessException {
+        String vin = (String) request.getParam("vin");
+        String licensePlatHeader = (String) request.getParam("licensePlatHeader");
 //        String isRepeatKey = getKey(vin, licensePlatHeader);
 //        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
 //        if(!isRpc){
 //            return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ACTIVE_THIRD_RPC,null);
 //        }
         String price = gongPingjiaService.getEvaluatePrice(vin, licensePlatHeader);
-        if(StringUtils.isNotBlank(price)){
+        if (StringUtils.isNotBlank(price)) {
             if ("".equals(price) || null == price) {
                 price = "49999";
             }
-            return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,price);
+            logger.info("公平价返回结果：" + new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS, price).toString() + ",公平价frontid：" + StringUtil.getStringOfObject(request.getParam("frontId")));
+            return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS, price);
         }
-        log.info(TraceIDThreadLocal.getTraceID(),"third1001","traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】");
-        Map<String,Object> commonParams = getCommonParams(request);
-        ResponseResult result = gongPingjiaService.getGpjDataAndCalculateEvaluations( vin, licensePlatHeader.toUpperCase(),commonParams);
-        log.info(TraceIDThreadLocal.getTraceID(),"third1001","traceID={} 公平价估值信息 params：【" + vin + ":"+licensePlatHeader+"】结束 {}",TraceIDThreadLocal.getTraceID(),result.getMsg());
+        log.info(TraceIDThreadLocal.getTraceID(), "third1001", "traceID={} 公平价估值信息 params：【" + vin + ":" + licensePlatHeader + "】");
+        Map<String, Object> commonParams = getCommonParams(request);
+        ResponseResult result = gongPingjiaService.getGpjDataAndCalculateEvaluations(vin, licensePlatHeader.toUpperCase(), commonParams);
+        log.info(TraceIDThreadLocal.getTraceID(), "third1001", "traceID={} 公平价估值返回结果 params：【" + vin + ":" + licensePlatHeader + "】结束 {}", TraceIDThreadLocal.getTraceID(), result.toString());
+        logger.info("公平价返回结果：" + result.toString() + ",公平价frontid：" + commonParams.get("frontId").toString());
         return result;
     }
-    private String getKey(String vin, String plantNo){
+
+    private String getKey(String vin, String plantNo) {
         StringBuilder sb = new StringBuilder("rms_third_1001_");
         sb.append(vin);
         sb.append("_");
         sb.append(plantNo);
-        return sb.toString() ;
+        return sb.toString();
     }
-    private Map<String,Object> getCommonParams(AbstractRequest request){
-        Map<String,Object> commonParams = new HashMap<>();
+
+    private Map<String, Object> getCommonParams(AbstractRequest request) {
+        Map<String, Object> commonParams = new HashMap<>();
         commonParams.put("frontId", StringUtil.getStringOfObject(request.getParam("frontId")));
         return commonParams;
     }

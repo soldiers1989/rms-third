@@ -10,7 +10,9 @@ import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.mongo.GongPingJiaData;
 import com.jzfq.rms.third.common.mongo.JuXinLiData;
 import com.jzfq.rms.third.common.utils.JWTUtils;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
+import com.jzfq.rms.third.constant.Constants;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
@@ -46,9 +48,6 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
     private String secret;
     @Value("${gongpingjia.timeout}")
     private Long timeout ;
-    //公平价默认值
-    @Value("${gongpingjiaDefaultValue}")
-    private String gongpingjiaDefaultValue;
 
 
     @Autowired
@@ -120,11 +119,11 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
         Integer productiveYear = getProductiveYearByVin(vin);
         if (productiveYear == null) {
 
-            return gongpingjiaDefaultValue;
+            return StringUtil.getStringOfObject(prefixCache.readConfig(Constants.DICTIONARY_PREFIX_DEFAULT_VALUE_CAR_VALUATION));
         }
         List<Map<String, String>> datas = (List<Map<String, String>>) result.getData();
         if (CollectionUtils.isEmpty(datas)) {
-            return gongpingjiaDefaultValue;
+            return StringUtil.getStringOfObject(prefixCache.readConfig(Constants.DICTIONARY_PREFIX_DEFAULT_VALUE_CAR_VALUATION));
         }
         Set<String> slugs = new HashSet<>();
         List<EvaluationInfoVo> evaluationInfos = new ArrayList<>();
@@ -137,11 +136,11 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
         // 查新车型库信息
         if (CollectionUtils.isEmpty(slugs) || CollectionUtils.isEmpty(evaluationInfos)) {
 
-            return gongpingjiaDefaultValue;
+            return StringUtil.getStringOfObject(prefixCache.readConfig(Constants.DICTIONARY_PREFIX_DEFAULT_VALUE_CAR_VALUATION));
         }
         List<GpjCarDetailModel> carRepositories = gpjCarDetailModelMapper.selectByModelSlugList(slugs);
         if (CollectionUtils.isEmpty(carRepositories)) {
-            return gongpingjiaDefaultValue;
+            return StringUtil.getStringOfObject(prefixCache.readConfig(Constants.DICTIONARY_PREFIX_DEFAULT_VALUE_CAR_VALUATION));
         }
         Map<String, GpjCarDetailModel> repositories = new HashMap<>();
         for (GpjCarDetailModel repository : carRepositories) {
@@ -171,7 +170,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
         }
         // 保存数据  如果公平价估值为null吧 推送49999，返回页面49999
         if (StringUtils.isBlank(tempEvaluation.getPrivatePrice())) {
-            tempEvaluation.setPrivatePrice(gongpingjiaDefaultValue);
+            tempEvaluation.setPrivatePrice(StringUtil.getStringOfObject(prefixCache.readConfig(Constants.DICTIONARY_PREFIX_DEFAULT_VALUE_CAR_VALUATION)));
         }
         saveGongPingJiaData(vin, licensePlatHeader, evaluationInfos, tempEvaluation.getPrivatePrice());
         return tempEvaluation.getPrivatePrice();
@@ -568,7 +567,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
         if (list == null && result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
             //如果公平价没有返回data数据  则返回49999  并推送
             result.setCode(200);
-            result.setData(gongpingjiaDefaultValue);
+            result.setData(StringUtil.getStringOfObject(prefixCache.readConfig(Constants.DICTIONARY_PREFIX_DEFAULT_VALUE_CAR_VALUATION)));
             return result;
         }
         // 计算估值

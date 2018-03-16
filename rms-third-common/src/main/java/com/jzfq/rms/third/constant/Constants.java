@@ -125,11 +125,11 @@ public class Constants
      * GBK编码
      */
     public final static String GBK = "gbk";
-    
+
     public final static String PRE_SALE = "110000";
 
     public final static long PIC_MAX_SIZE =2048;
-    
+
     public final static String LINE ="<br/>";
     /**
      * 是否删除
@@ -141,5 +141,8 @@ public class Constants
 
 
     public final static String STR_DIC_HEADER = "dictionary_prefix_";
-     
+
+    //公平价默认值redis key
+    public final static String DICTIONARY_PREFIX_DEFAULT_VALUE_CAR_VALUATION = "dictionary_prefix_default_value_car_valuation";
+
 }

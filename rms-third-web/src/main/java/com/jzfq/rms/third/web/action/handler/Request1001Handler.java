@@ -3,9 +3,11 @@ package com.jzfq.rms.third.web.action.handler;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.constant.Constants;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IGongPingjiaService;
+import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.support.log.ILogger;
 import com.jzfq.rms.third.support.log.impl.RmsLogger;
@@ -32,9 +34,8 @@ public class Request1001Handler extends AbstractRequestHandler {
     final protected static Logger logger = LoggerFactory.getLogger(Request1001Handler.class);
     @Autowired
     private IGongPingjiaService gongPingjiaService;
-    //公平价默认值49999
-    @Value("${gongpingjiaDefaultValue}")
-    private String gongpingjiaDefaultValue;
+    @Autowired
+    ICache prefixCache;
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
         String frontId = (String) params.get("frontId");
@@ -77,7 +78,7 @@ public class Request1001Handler extends AbstractRequestHandler {
         String price = gongPingjiaService.getEvaluatePrice(vin, licensePlatHeader);
         if (StringUtils.isNotBlank(price)) {
             if ("".equals(price) || null == price) {
-                price = gongpingjiaDefaultValue;
+                price = StringUtil.getStringOfObject(prefixCache.readConfig(Constants.DICTIONARY_PREFIX_DEFAULT_VALUE_CAR_VALUATION));;
             }
             logger.info("公平价返回结果：" + new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS, price).toString() + ",公平价frontid：" + StringUtil.getStringOfObject(request.getParam("frontId")));
             return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS, price);

@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -31,7 +32,9 @@ public class Request1001Handler extends AbstractRequestHandler {
     final protected static Logger logger = LoggerFactory.getLogger(Request1001Handler.class);
     @Autowired
     private IGongPingjiaService gongPingjiaService;
-
+    //公平价默认值49999
+    @Value("${gongpingjiaDefaultValue}")
+    private String gongpingjiaDefaultValue;
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
         String frontId = (String) params.get("frontId");
@@ -74,7 +77,7 @@ public class Request1001Handler extends AbstractRequestHandler {
         String price = gongPingjiaService.getEvaluatePrice(vin, licensePlatHeader);
         if (StringUtils.isNotBlank(price)) {
             if ("".equals(price) || null == price) {
-                price = "49999";
+                price = gongpingjiaDefaultValue;
             }
             logger.info("公平价返回结果：" + new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS, price).toString() + ",公平价frontid：" + StringUtil.getStringOfObject(request.getParam("frontId")));
             return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS, price);

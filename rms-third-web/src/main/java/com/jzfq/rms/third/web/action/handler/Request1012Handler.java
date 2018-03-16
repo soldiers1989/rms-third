@@ -112,6 +112,7 @@ public class Request1012Handler extends AbstractRequestHandler {
 //        String valueDb = rong360Service.getValueByDB(InterfaceIdEnum.THIRD_RSLL03.getCode(),PhoneDataTypeEnum.THREE_ITEM,bizData);
         String valueDb = rong360Service.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL03.getCode(),PhoneDataTypeEnum.THREE_ITEM,bizData);
         if(StringUtils.isNotBlank(valueDb)){
+            log.info("traceId={} 获取手机三要素成功(mongodb),返回结果={}",traceId, new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb)); //成功
             return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb);
         }
         //远程调用
@@ -125,6 +126,7 @@ public class Request1012Handler extends AbstractRequestHandler {
             ResponseResult responseResult = rong360Service.getMobilecheck3item(bizData);
             responseResult.setTraceID(traceId);
             if(responseResult.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+                log.info("traceId={} 拉取三方手机三要素失败,返回结果={}",traceId, responseResult); //失败
                 interfaceCountCache.setFailure(isRepeatKey);
                 return responseResult;
             }
@@ -134,6 +136,7 @@ public class Request1012Handler extends AbstractRequestHandler {
             // 保存数据
             rong360Service.saveDatas(orderNo, PhoneDataTypeEnum.THREE_ITEM, value, resultJson, bizData);
             responseResult.setData(value);
+            log.info("traceId={} 拉取三方手机三要素成功,返回结果={}",traceId, responseResult); //失败
             return responseResult;
         }catch (Exception e){
             interfaceCountCache.setFailure(isRepeatKey);

@@ -115,6 +115,7 @@ public class Request1015Handler extends AbstractRequestHandler {
             String rmsData = changeBairongPhone3rdinfo(data.getcResult(),bizData);
             // 保存报mongodb
             editAndSavePostData(taskIdStr, "手机三要素", rmsData, custumType);
+            log.info("frontId={}，获取捷安手机三要素成功,返回结果={}",frontId, new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,data.getcValue())); //成功
             return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,data.getcValue());
         }
 
@@ -139,9 +140,10 @@ public class Request1015Handler extends AbstractRequestHandler {
                 // 缓存到MYSQL
                 jieAnService.savePhonesData(InterfaceIdEnum.THIRD_JIEAN03.getCode(),((JSONObject)result.getData()).get("respCode").toString(),threeItem, value,bizData);
             }catch (Exception e){
-                log.error("异常",e);
+                log.error("捷安手机三要素异常",e);
             }
             result.setData(value);
+            log.info("frontId={}，获取捷安三方手机三要素成功,返回结果={}",frontId, result); //成功
         }else{
             interfaceCountCache.setFailure(isRepeatKey);
         }

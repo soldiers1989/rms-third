@@ -100,7 +100,6 @@ public class Request1008Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         Map<String, Object> commonParams = getCommonParams(request);
-        log.info(commonParams.get("personalInfo").toString());
         RiskPersonalInfo personInfo = (RiskPersonalInfo)commonParams.get("personalInfo");
         String mobile = "";
         if (null != personInfo) {
@@ -116,6 +115,7 @@ public class Request1008Handler extends AbstractRequestHandler {
             ResponseResult responseResult = new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
             TongDunStringData data = datas.get(0);
             responseResult.setData(data.getValue());
+            log.info("traceId={} 获取同盾分成功(mongodb),返回结果={}",traceId,responseResult.toString()); //成功
             return responseResult;
         }
         String isRepeatKey = getKeyByOrderNo(orderNo, eventId);
@@ -132,6 +132,7 @@ public class Request1008Handler extends AbstractRequestHandler {
                 new BusinessException("traceId={} 同盾拉取无效：false", true);
             }
             if (response.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
+                log.info("traceId={} 同盾拉取失败：false ,同盾返回结果={}", commonParams.get("traceId"),response);     //失败
                 interfaceCountCache.setFailure(isRepeatKey);
                 return response;
             }
@@ -144,6 +145,7 @@ public class Request1008Handler extends AbstractRequestHandler {
             }else {
                 log.info("traceId={} 同盾拉取失败：false ，同盾分为空");     //失败
             }
+            log.info("traceId={} 拉取三方同盾分成功,返回结果={}",traceId,response.toString()); //成功
             return response;
         } catch (Exception e) {
             log.info("traceId={} 同盾拉取无效：false ", TraceIDThreadLocal.getTraceID());     //失败
@@ -151,6 +153,22 @@ public class Request1008Handler extends AbstractRequestHandler {
             throw e;
         }
 
+    }
+
+    /**
+     * 封装推送参数
+     *
+     * @return
+     */
+
+    private  Map<String,String> getPushParams(String orderNo,String responseResult,String score ) {
+        Map<String,String> pushParams = new HashMap<String,String>();
+        pushParams.put("orderNo",orderNo);
+        pushParams.put("responseResult",responseResult);
+        pushParams.put("scoreType","tdscore");
+        pushParams.put("score",score);
+        pushParams.put("apiId","1008");
+        return pushParams;
     }
 
     private String getEventId(AbstractRequest request) {

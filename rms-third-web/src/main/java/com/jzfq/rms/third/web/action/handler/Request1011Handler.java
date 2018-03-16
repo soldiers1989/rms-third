@@ -107,6 +107,7 @@ public class Request1011Handler extends AbstractRequestHandler {
             JSONObject resultJson = new JSONObject();
             resultJson.put("score", riskPostDataService.getScoreByJson(jsonObject));
             resultJson.put("weight", jsonObject.getString("Rule_final_weight"));
+            log.info("traceId={} 获取百融分成功(mongodb),返回结果={}",traceId,new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //成功
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
         }
 //        // 2.判断是否远程拉取
@@ -126,6 +127,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         }
         if (result == null || result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
             interfaceCountCache.setFailure(isRepeatKey);
+            log.info("traceId={} 拉取百融分失败,返回结果={}",traceId,new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result)); //失败
             return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result);
         }
         String brResponse = (String) result.getData();
@@ -142,8 +144,25 @@ public class Request1011Handler extends AbstractRequestHandler {
         resultJson.put("weight", tempResult.getString("Rule_final_weight"));
         //push推送riskPostDataService.getScoreByJson(tempResult)
         pushDataService.pushData(traceId,"brscore",riskPostDataService.getScoreByJson(tempResult),info.getMobile(),orderNo);
+        log.info("traceId={} 拉取三方百融分成功,返回结果={}",traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //失败
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
 
+    }
+
+    /**
+     * 封装推送参数
+     *
+     * @return
+     */
+
+    private Map<String, String> getPushParams(String orderNo, String responseResult, String score) {
+        Map<String, String> pushParams = new HashMap<String, String>();
+        pushParams.put("orderNo", orderNo);
+        pushParams.put("thirdInterfaceResult", responseResult);
+        pushParams.put("scoreType", "brscore");
+        pushParams.put("score", score);
+        pushParams.put("apiId", "1011");
+        return pushParams;
     }
 
     String getStrategyId(AbstractRequest request) {

@@ -114,6 +114,7 @@ public class Request1016Handler extends AbstractRequestHandler {
             String rmsData = changeBairongPhonestatus(data.getcResult(),bizData);
             // 保存报mongodb
             editAndSavePostData(taskIdStr, "手机在网状态", rmsData, custumType);
+            log.info("frontId={}，获取捷安手机在网状态成功,返回结果={}",frontId, new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,data.getcValue())); //成功
             return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,data.getcValue());
         }
         String isRepeatKey = getRpcControlKey(bizData);
@@ -139,6 +140,7 @@ public class Request1016Handler extends AbstractRequestHandler {
                 log.error("异常",e);
             }
             result.setData(value);
+            log.info("frontId={}，获取捷安手机在网状态成功,返回结果={}",frontId,result); //成功
         }else{
             interfaceCountCache.setFailure(isRepeatKey);
         }

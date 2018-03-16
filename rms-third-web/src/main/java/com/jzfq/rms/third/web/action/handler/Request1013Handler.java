@@ -107,6 +107,7 @@ public class Request1013Handler extends AbstractRequestHandler {
 //        String valueDb = rong360Service.getValueByDB( InterfaceIdEnum.THIRD_RSLL01.getCode(),PhoneDataTypeEnum.NETWORK_LENGTH,bizData);
         String valueDb = rong360Service.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL01.getCode(),PhoneDataTypeEnum.NETWORK_LENGTH,bizData);
         if(StringUtils.isNotBlank(valueDb)){
+            log.info("traceId={}，获取手机在网时长成功,返回结果={}",traceId, new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb)); //成功
             return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb);
         }
         //远程调用
@@ -120,6 +121,7 @@ public class Request1013Handler extends AbstractRequestHandler {
             ResponseResult responseResult = rong360Service.getPhoneNetworkLength(bizData);
             responseResult.setTraceID(traceId);
             if(responseResult.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
+                log.info("traceId={}，拉取手机在网时长失败,返回结果={}",traceId,responseResult); //失败
                 interfaceCountCache.setFailure(isRepeatKey);
                 return responseResult;
             }
@@ -129,6 +131,7 @@ public class Request1013Handler extends AbstractRequestHandler {
             // 保存数据
             rong360Service.saveDatas(orderNo, PhoneDataTypeEnum.NETWORK_LENGTH, value, resultJson, bizData);
             responseResult.setData(value);
+            log.info("traceId={}，拉取手机在网时长成功,返回结果={}",traceId,responseResult); //成功
             return responseResult;
         }catch (Exception e){
             interfaceCountCache.setFailure(isRepeatKey);

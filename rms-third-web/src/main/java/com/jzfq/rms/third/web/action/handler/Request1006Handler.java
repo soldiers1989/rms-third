@@ -107,6 +107,7 @@ public class Request1006Handler   extends AbstractRequestHandler {
         }
         JSONObject result = jxlDataService.getBusinessDataAnalysis((String)response.getData(),phone);
         response.setData(result);
+        log.info("traceId={} 聚信立获取电商数据成功，返回结果={}",traceId,response);
         return response;
     }
     private Map<String,Object> getCommonParams(AbstractRequest request){

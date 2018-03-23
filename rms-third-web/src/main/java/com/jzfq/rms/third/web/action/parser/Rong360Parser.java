@@ -103,41 +103,49 @@ public class Rong360Parser {
     public static String getNetworkLengthOfRmsPull(JSONObject json) throws Exception {
         String jsonRsult = "";
         try {
+            json = new JSONObject();
+            json.put("error","100028");
+            json.put("msg","访问接口超时，请稍候再试");
+            json.put("tianji_api_jiao_phonenetworklength_response",new Object());
             logger.info("v手机在网时长接口返回数据rong360data：" + json.toJSONString());
             JSONObject jsonObject0 = json.getJSONObject("tianji_api_jiao_phonenetworklength_response");
             jsonRsult = jsonObject0.getString("message");
             if (StringUtils.isBlank(jsonRsult)) {
                 //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
                 JSONArray jsonObjectEcl = jsonObject0.getJSONArray("ECL");
-                if (jsonObjectEcl.size() > 0) {
-                    JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
-                    String errorCode = jsonObjectEclCode.getString("code");
-                    return Rong360PhoneTimeCode.getMsg(errorCode);
+                if (null != jsonObjectEcl) {
+                    if (jsonObjectEcl.size() > 0) {
+                        JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
+                        String errorCode = jsonObjectEclCode.getString("code");
+                        return Rong360PhoneTimeCode.getMsg(errorCode);
+                    }
                 }
                 //如果ECL没有返回信息 则获取正常响应信息RSL
                 JSONArray jsonObject4 = jsonObject0.getJSONArray("RSL");
-                if (jsonObject4.size() <= 0) {
-                    return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
+                if (jsonObject4 !=null) {
+                    if (jsonObject4.size() <= 0 ) {
+                        return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
+                    }
+                    JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
+                    JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
+                    String jsonRsult0 = jsonObject6.getString("code");
+                    if ("03".equals(jsonRsult0)) {
+                        return PhoneNetworkLengthEnum.THREE_MONTH.getCode();
+                    }
+                    if ("04".equals(jsonRsult0)) {
+                        return PhoneNetworkLengthEnum.SIX_MONTH.getCode();
+                    }
+                    if ("1".equals(jsonRsult0)) {
+                        return PhoneNetworkLengthEnum.ONE_YEAR.getCode();
+                    }
+                    if ("2".equals(jsonRsult0)) {
+                        return PhoneNetworkLengthEnum.TWO_YEAR.getCode();
+                    }
+                    if ("3".equals(jsonRsult0)) {
+                        return PhoneNetworkLengthEnum.OVER_TWO_YEAR.getCode();
+                    }
+                    return PhoneNetworkLengthEnum.OTHER.getCode();
                 }
-                JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
-                JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
-                String jsonRsult0 = jsonObject6.getString("code");
-                if ("03".equals(jsonRsult0)) {
-                    return PhoneNetworkLengthEnum.THREE_MONTH.getCode();
-                }
-                if ("04".equals(jsonRsult0)) {
-                    return PhoneNetworkLengthEnum.SIX_MONTH.getCode();
-                }
-                if ("1".equals(jsonRsult0)) {
-                    return PhoneNetworkLengthEnum.ONE_YEAR.getCode();
-                }
-                if ("2".equals(jsonRsult0)) {
-                    return PhoneNetworkLengthEnum.TWO_YEAR.getCode();
-                }
-                if ("3".equals(jsonRsult0)) {
-                    return PhoneNetworkLengthEnum.OVER_TWO_YEAR.getCode();
-                }
-                return PhoneNetworkLengthEnum.OTHER.getCode();
             }
             return jsonRsult;
         }catch (Exception e) {

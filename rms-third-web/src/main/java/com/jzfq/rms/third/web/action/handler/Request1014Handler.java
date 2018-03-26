@@ -102,18 +102,18 @@ public class Request1014Handler extends AbstractRequestHandler {
         bizData.put("phone",phone);
         bizData.put("custumType",custumType);
         bizData.put("frontId",frontId);
-        // 数据库
-//        String valueDb = rong360Service.getValueByDB(InterfaceIdEnum.THIRD_RSLL02.getCode(),PhoneDataTypeEnum.NETWORK_STATUS,bizData);
-        String valueDb = rong360Service.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL02.getCode(),PhoneDataTypeEnum.NETWORK_STATUS,bizData);
-        if(StringUtils.isNotBlank(valueDb)){
-            log.info("traceId={}，获取手机在网状态成功(mongodb),返回结果={}",traceId, new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb)); //成功
-            return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb);
-        }
         //远程调用
         String isRepeatKey = Rong360Parser.getRpcKeyOfStatus(bizData);
+        log.info("traceId={} 获取手机在网状态,缓存isRepeatKey={}", isRepeatKey);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
-        if(!isRpc){
-            return new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.ACTIVE_THIRD_RPC,null);
+        if(!isRpc) {
+            // 数据库
+//        String valueDb = rong360Service.getValueByDB(InterfaceIdEnum.THIRD_RSLL02.getCode(),PhoneDataTypeEnum.NETWORK_STATUS,bizData);
+            String valueDb = rong360Service.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL02.getCode(), PhoneDataTypeEnum.NETWORK_STATUS, bizData);
+            if (StringUtils.isNotBlank(valueDb)) {
+                log.info("traceId={}，获取手机在网状态成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb)); //成功
+                return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb);
+            }
         }
         try {
             //手机在网状态

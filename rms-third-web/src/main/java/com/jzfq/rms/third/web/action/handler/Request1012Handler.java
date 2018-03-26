@@ -108,21 +108,21 @@ public class Request1012Handler extends AbstractRequestHandler {
         bizData.put("phone",phone);
         bizData.put("custumType",custumType);
         bizData.put("frontId",frontId);
-        // 数据库
-//        String valueDb = rong360Service.getValueByDB(InterfaceIdEnum.THIRD_RSLL03.getCode(),PhoneDataTypeEnum.THREE_ITEM,bizData);
-        String valueDb = rong360Service.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL03.getCode(),PhoneDataTypeEnum.THREE_ITEM,bizData);
-        if(StringUtils.isNotBlank(valueDb)){
-            log.info("traceId={} 获取手机三要素成功(mongodb),返回结果={}",traceId, new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb)); //成功
-            return new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS,valueDb);
-        }
-        //远程调用
+        //判断缓存key是否失效
         String isRepeatKey = Rong360Parser.getRpcControlKey(bizData);
+        log.info("traceId={} 获取手机三要素,缓存isRepeatKey={}", isRepeatKey);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
-        /*if(!isRpc){
-            return new ResponseResult(traceId,ReturnCode.ACTIVE_THIRD_RPC,null);
-        }*/
+        if(!isRpc) {
+            // 数据库
+//        String valueDb = rong360Service.getValueByDB(InterfaceIdEnum.THIRD_RSLL03.getCode(),PhoneDataTypeEnum.THREE_ITEM,bizData);
+            String valueDb = rong360Service.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL03.getCode(), PhoneDataTypeEnum.THREE_ITEM, bizData);
+            if (StringUtils.isNotBlank(valueDb)) {
+                log.info("traceId={} 获取手机三要素成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb)); //成功
+                return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb);
+            }
+        }
         try {
-            //手机三要素
+            //手机三要素远程拉取
             ResponseResult responseResult = rong360Service.getMobilecheck3item(bizData);
             responseResult.setTraceID(traceId);
             if(responseResult.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){

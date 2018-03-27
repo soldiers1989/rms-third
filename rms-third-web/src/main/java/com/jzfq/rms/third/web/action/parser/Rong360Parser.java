@@ -38,33 +38,39 @@ public class Rong360Parser {
                 if (firstStr == '[') {
                     JSONArray jsonObject0 = json.getJSONArray("tianji_api_jiao_mobilecheck3item_response");
                     JSONObject jsonObject1 = jsonObject0.getJSONObject(0);
-                    JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
-
-                    //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
-                    JSONArray jsonObjectEcl = jsonObject2.getJSONArray("ECL");
-                    if (jsonObjectEcl.size() > 0) {
-                        JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
-                        String errorCode = jsonObjectEclCode.getString("code");
-                        return Rong360PhoneThreeCode.getMsg(errorCode);
-                    }
-                    //如果ECL没有返回信息 则获取正常响应信息RSL
-                    JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-                    if (jsonObject4.size() <= 0) {
-                        return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
-                    }
-
+                    if (null != jsonObject1) {
+                        JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
+                        if (null != jsonObject2) {
+                            //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
+                            JSONArray jsonObjectEcl = jsonObject2.getJSONArray("ECL");
+                            if (null != jsonObjectEcl) {
+                                if (jsonObjectEcl.size() > 0) {
+                                    JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
+                                    String errorCode = jsonObjectEclCode.getString("code");
+                                    return Rong360PhoneThreeCode.getMsg(errorCode);
+                                }
+                            }
+                            //如果ECL没有返回信息 则获取正常响应信息RSL
+                            JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
+                            if (null != jsonObject4) {
+                                if (jsonObject4.size() <= 0) {
+                                    return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
+                                }
 //                    JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-                    JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
-                    JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
-                    String jsonRsult0 = jsonObject6.getString("code");
-                    if ("0".equals(jsonRsult0)) {
-                        jsonRsult = PhoneThreeItemEnum.AGREE.getCode();
-                    } else if (StringUtils.equals("1", jsonRsult0) ||
-                            StringUtils.equals("4", jsonRsult0) ||
-                            StringUtils.equals("5", jsonRsult0)) {
-                        jsonRsult = PhoneThreeItemEnum.UNAGREE.getCode();
-                    } else {
-                        jsonRsult = PhoneThreeItemEnum.OTHER.getCode();
+                                JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
+                                JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
+                                String jsonRsult0 = jsonObject6.getString("code");
+                                if ("0".equals(jsonRsult0)) {
+                                    jsonRsult = PhoneThreeItemEnum.AGREE.getCode();
+                                } else if (StringUtils.equals("1", jsonRsult0) ||
+                                        StringUtils.equals("4", jsonRsult0) ||
+                                        StringUtils.equals("5", jsonRsult0)) {
+                                    jsonRsult = PhoneThreeItemEnum.UNAGREE.getCode();
+                                } else {
+                                    jsonRsult = PhoneThreeItemEnum.OTHER.getCode();
+                                }
+                            }
+                        }
                     }
                 } else if (firstStr == '{') {
                     JSONObject jsonMsg = JSONObject.parseObject(result);
@@ -118,8 +124,8 @@ public class Rong360Parser {
                 }
                 //如果ECL没有返回信息 则获取正常响应信息RSL
                 JSONArray jsonObject4 = jsonObject0.getJSONArray("RSL");
-                if (jsonObject4 !=null) {
-                    if (jsonObject4.size() <= 0 ) {
+                if (jsonObject4 != null) {
+                    if (jsonObject4.size() <= 0) {
                         return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
                     }
                     JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
@@ -144,7 +150,7 @@ public class Rong360Parser {
                 }
             }
             return jsonRsult;
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error("traceId={} 手机在网时长[{}]解析异常:e", TraceIDThreadLocal.getTraceID(), json, e);
             throw e;
         }
@@ -200,40 +206,49 @@ public class Rong360Parser {
                 if (firstStr == '[') {
                     JSONArray jsonObject0 = json.getJSONArray("tianji_api_jiao_phonestatus_response");
                     JSONObject jsonObject1 = jsonObject0.getJSONObject(0);
-                    JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
-                    JSONObject jsonObject3 = jsonObject2.getJSONObject("ISPNUM");
+                    if (null != jsonObject1) {
+                        JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
+                        if (null != jsonObject2) {
+                            JSONObject jsonObject3 = jsonObject2.getJSONObject("ISPNUM");
+                            //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
+                            JSONArray jsonObjectEcl = jsonObject2.getJSONArray("ECL");
+                            if (null != jsonObjectEcl) {
+                                if (jsonObjectEcl.size() > 0) {
+                                    JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
+                                    String errorCode = jsonObjectEclCode.getString("code");
+                                    return Rong360PhoneStatusCode.getMsg(errorCode);
+                                }
+                            }
+                            //如果ECL没有返回信息 则获取正常响应信息RSL
+                            JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
+                            if (null != jsonObject4) {
+                                if (jsonObject4.size() <= 0) {
+                                    return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
+                                }
 
-                    //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
-                    JSONArray jsonObjectEcl = jsonObject2.getJSONArray("ECL");
-                    if (jsonObjectEcl.size() > 0) {
-                        JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
-                        String errorCode = jsonObjectEclCode.getString("code");
-                        return Rong360PhoneStatusCode.getMsg(errorCode);
-                    }
-                    //如果ECL没有返回信息 则获取正常响应信息RSL
-                    JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-                    if (jsonObject4.size() <= 0) {
-                        return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
-                    }
 //                    JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-                    JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
-                    JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
-                    jsonRsult = jsonObject6.getString("code");
-                    if ("0".equals(jsonRsult)) {
-                        return PhoneStatusEnum.NORMAL.getCode();
+                                JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
+                                JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
+                                jsonRsult = jsonObject6.getString("code");
+                                if ("0".equals(jsonRsult)) {
+                                    return PhoneStatusEnum.NORMAL.getCode();
+                                }
+                                if ("1".equals(jsonRsult)) {
+                                    return PhoneStatusEnum.UNNORMAL.getCode();
+                                }
+                                if ("2".equals(jsonRsult)) {
+                                    return PhoneStatusEnum.UNNORMAL.getCode();
+                                }
+                                if ("3".equals(jsonRsult)) {
+                                    return PhoneStatusEnum.UNNORMAL.getCode();
+                                }
+                                if ("4".equals(jsonRsult)) {
+                                    return PhoneStatusEnum.UNNORMAL.getCode();
+                                }
+                            }
+                        }
                     }
-                    if ("1".equals(jsonRsult)) {
-                        return PhoneStatusEnum.UNNORMAL.getCode();
-                    }
-                    if ("2".equals(jsonRsult)) {
-                        return PhoneStatusEnum.UNNORMAL.getCode();
-                    }
-                    if ("3".equals(jsonRsult)) {
-                        return PhoneStatusEnum.UNNORMAL.getCode();
-                    }
-                    if ("4".equals(jsonRsult)) {
-                        return PhoneStatusEnum.UNNORMAL.getCode();
-                    }
+
                 } else if (firstStr == '{') {
                     JSONObject jsonMsg = JSONObject.parseObject(result);
                     jsonRsult = jsonMsg.getString("message");

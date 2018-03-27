@@ -232,39 +232,43 @@ public class Rong360ServiceImpl implements IRong360Service {
             char[] strChar = results.substring(0, 1).toCharArray();
             char firstStr = strChar[0];
             if (firstStr == '[') {
-
                 JSONArray jsonObject0 = paramJson.getJSONArray("tianji_api_jiao_phonestatus_response");
                 JSONObject jsonObject1 = jsonObject0.getJSONObject(0);
-                JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
+                if (null != jsonObject1) {
+                    JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
+                    if (null != jsonObject2) {
+                        //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
+                        JSONArray jsonObjectEcl = jsonObject2.getJSONArray("ECL");
+                        if (null != jsonObjectEcl) {
+                            if (jsonObjectEcl.size() > 0) {
+                                JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
+                                String errorCode = jsonObjectEclCode.getString("code");
+                                return Rong360PhoneStatusCode.getMsg(errorCode);
+                            }
+                        }
+                        //如果ECL没有返回信息 则获取正常响应信息RSL
+                        JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
+                        if (null != jsonObject4) {
+                            if (jsonObject4.size() <= 0) {
+                                return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
+                            }
+                            JSONObject jsonObject3 = jsonObject2.getJSONObject("ISPNUM");
+                            JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
+                            JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
+                            String jsonOperation0 = jsonObject3.getString("city");
+                            String jsonRsult0 = jsonObject6.getString("desc");
 
-                //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
-                JSONArray jsonObjectEcl = jsonObject2.getJSONArray("ECL");
-                if (jsonObjectEcl.size() > 0) {
-                    JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
-                    String errorCode = jsonObjectEclCode.getString("code");
-                    return Rong360PhoneStatusCode.getMsg(errorCode);
+                            String jsonOperation = jsonOperation0;
+                            String jsonRsult = jsonRsult0;
+                            String result = "{\"swift_number\":\"3100034_20170629114811_9744\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"3\",\"costTime\":31},\"flag\":{\"flag_telCheck\":1}}";
+                            net.sf.json.JSONObject jsonPhonestatus = net.sf.json.JSONObject.fromObject(result);
+                            net.sf.json.JSONObject product = jsonPhonestatus.getJSONObject("product");
+                            product.put("result", jsonRsult);
+                            product.put("operation", jsonOperation);
+                            return jsonPhonestatus.toString();
+                        }
+                    }
                 }
-                //如果ECL没有返回信息 则获取正常响应信息RSL
-                JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-                if (jsonObject4.size() <= 0) {
-                    return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
-                }
-
-
-                JSONObject jsonObject3 = jsonObject2.getJSONObject("ISPNUM");
-                JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
-                JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
-                String jsonOperation0 = jsonObject3.getString("city");
-                String jsonRsult0 = jsonObject6.getString("desc");
-
-                String jsonOperation = jsonOperation0;
-                String jsonRsult = jsonRsult0;
-                String result = "{\"swift_number\":\"3100034_20170629114811_9744\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"3\",\"costTime\":31},\"flag\":{\"flag_telCheck\":1}}";
-                net.sf.json.JSONObject jsonPhonestatus = net.sf.json.JSONObject.fromObject(result);
-                net.sf.json.JSONObject product = jsonPhonestatus.getJSONObject("product");
-                product.put("result", jsonRsult);
-                product.put("operation", jsonOperation);
-                return jsonPhonestatus.toString();
             }
         }
         return "";
@@ -372,51 +376,57 @@ public class Rong360ServiceImpl implements IRong360Service {
             if (firstStr == '[') {
                 JSONArray jsonObject0 = paramJson.getJSONArray("tianji_api_jiao_mobilecheck3item_response");
                 JSONObject jsonObject1 = jsonObject0.getJSONObject(0);
-                JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
+                if (null != jsonObject1) {
+                    JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
+                    if (null != jsonObject2) {
+                        //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
+                        JSONArray jsonObjectEcl = jsonObject2.getJSONArray("ECL");
+                        if (null != jsonObjectEcl) {
+                            if (jsonObjectEcl.size() > 0) {
+                                JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
+                                String errorCode = jsonObjectEclCode.getString("code");
+                                return "";
+                            }
+                        }
+                        //如果ECL没有返回信息 则获取正常响应信息RSL
+                        JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
+                        if (null != jsonObject4) {
+                            if (jsonObject4.size() <= 0) {
+                                return "";
+                            }
+                            JSONObject jsonObject3 = jsonObject2.getJSONObject("ISPNUM");
+                            JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
+                            JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
+                            String jsonOperation0 = jsonObject3.getString("isp");
+                            String jsonRsult0 = jsonObject6.getString("code");
+                            String jsonOperation = "";
+                            if ("电信".equals(jsonOperation0)) {
+                                jsonOperation = "1";
+                            } else if ("联通".equals(jsonOperation0)) {
+                                jsonOperation = "2";
+                            } else if ("移动".equals(jsonOperation0)) {
+                                jsonOperation = "3";
+                            } else {
+                                jsonOperation = "4";
+                            }
 
-                //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
-                JSONArray jsonObjectEcl = jsonObject2.getJSONArray("ECL");
-                if (jsonObjectEcl.size() > 0) {
-                    JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
-                    String errorCode = jsonObjectEclCode.getString("code");
-                    return "";
+                            String jsonRsult = "";
+                            if ("0".equals(jsonRsult0)) {
+                                jsonRsult = "1";
+                            } else if ("6".equals(jsonRsult0)) {
+                                jsonRsult = "2";
+                            } else {
+                                jsonRsult = "0";
+                            }
+                            String result = "{\"swift_number\":\"3100034_20170629114811_9744\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"3\",\"costTime\":31},\"flag\":{\"flag_telCheck\":1}}";
+                            JSONObject json3rd = JSONObject.parseObject(result);
+                            JSONObject product = json3rd.getJSONObject("product");
+                            product.put("result", jsonRsult);
+                            product.put("operation", jsonOperation);
+                            return json3rd.toString();
+                        }
+                    }
                 }
-                //如果ECL没有返回信息 则获取正常响应信息RSL
-
-                JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-                if (jsonObject4.size() <= 0) {
-                    return "";
-                }
-                JSONObject jsonObject3 = jsonObject2.getJSONObject("ISPNUM");
-                JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
-                JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
-                String jsonOperation0 = jsonObject3.getString("isp");
-                String jsonRsult0 = jsonObject6.getString("code");
-                String jsonOperation = "";
-                if ("电信".equals(jsonOperation0)) {
-                    jsonOperation = "1";
-                } else if ("联通".equals(jsonOperation0)) {
-                    jsonOperation = "2";
-                } else if ("移动".equals(jsonOperation0)) {
-                    jsonOperation = "3";
-                } else {
-                    jsonOperation = "4";
-                }
-
-                String jsonRsult = "";
-                if ("0".equals(jsonRsult0)) {
-                    jsonRsult = "1";
-                } else if ("6".equals(jsonRsult0)) {
-                    jsonRsult = "2";
-                } else {
-                    jsonRsult = "0";
-                }
-                String result = "{\"swift_number\":\"3100034_20170629114811_9744\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"3\",\"costTime\":31},\"flag\":{\"flag_telCheck\":1}}";
-                JSONObject json3rd = JSONObject.parseObject(result);
-                JSONObject product = json3rd.getJSONObject("product");
-                product.put("result", jsonRsult);
-                product.put("operation", jsonOperation);
-                return json3rd.toString();
             }
         }
         return "";

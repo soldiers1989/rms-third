@@ -62,19 +62,19 @@ public class TestAction {
 
 
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("frontId","49");
-        map.put("channelId","1");
-        map.put("operationType","1");
-        map.put("clientType","1");
-        map.put("financialProductId","1");
-        Map<String ,Object> personalInfo = new HashMap<>();
-        personalInfo.put("mobile","15398461910");
-        personalInfo.put("name","严秋俊");
-        personalInfo.put("bankNo","6217003860024844738");
-        personalInfo.put("certCardNo","530323199506231910");
-        map.put("personInfo",personalInfo);
-        map.put("orderNo","1106633711234");//test22055444
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("frontId","49");
+//        map.put("channelId","1");
+//        map.put("operationType","1");
+//        map.put("clientType","1");
+//        map.put("financialProductId","1");
+//        Map<String ,Object> personalInfo = new HashMap<>();
+//        personalInfo.put("mobile","15398461910");
+//        personalInfo.put("name","严秋俊");
+//        personalInfo.put("bankNo","6217003860024844738");
+//        personalInfo.put("certCardNo","530323199506231910");
+//        map.put("personInfo",personalInfo);
+//        map.put("orderNo","1106633711234");//test22055444
 //        ResponseResult dto = rmsThirdService.sendAndHandleRespose("test33020180111172732","1","","1008","01",map);
 //        System.out.println(dto);
 
@@ -93,15 +93,30 @@ public class TestAction {
 //        map.put("personInfo",personalInfo);
 //        map.put("orderNo","305677");
 
+
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("frontId","6457");
+        map.put("custumType","0");
+        map.put("idNumber","330824199404094923");
+        map.put("name","胡梦颖");
+        map.put("phone","18305009311");
+        map.put("orderNo","18022521250381154926");
+
+
+
+
+
+
         Map<String, Object> params = new HashMap<>();
-        params.put("traceID", "test33020180111172732");
+        params.put("traceID", "1802252125038115492620180327111129");
         params.put("callSystemID", "1");
         params.put("appId", "1");
-        params.put("apiId", "1008");
+        params.put("apiId", "1014");
         params.put("v", "01");
         Long timestamp = System.currentTimeMillis();
 
-        params.put("token", UniformInterfaceUtils.getToken("1", "1008", "93dd7a6468807ade", timestamp));
+        params.put("token", UniformInterfaceUtils.getToken("1", "1014", "93dd7a6468807ade", timestamp));
         params.put("timestamp", timestamp);
         String json = JSONObject.toJSONString(map);
         params.put("params", json);

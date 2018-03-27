@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -263,7 +264,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_BR01.getCode());
         List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
                 .and("certCardNo").is(certCardNo).and("mobile").is(mobile).and("strategyId").is(strategyId)
-                .and("createTime").gte(getMinTime(outTime))), BairongData.class);
+                .and("createTime").gte(getMinTime(outTime))).with(new Sort(Sort.Direction.DESC, "createTime")), BairongData.class);
         if (CollectionUtils.isEmpty(datas)) {
             return null;
         }

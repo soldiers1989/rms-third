@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -199,7 +200,7 @@ public class TdDataServiceImpl implements ITdDataService {
      */
     @Override
     public List<TongDunStringData> getDataByEvent(String orderNo, String eventId) {
-        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo).and("eventId").is(eventId))
+        List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo).and("eventId").is(eventId)).with(new Sort(Sort.Direction.DESC, "createTime"))
                 , TongDunStringData.class);
         return datas;
     }

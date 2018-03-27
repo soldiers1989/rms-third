@@ -102,10 +102,12 @@ public class Request1014Handler extends AbstractRequestHandler {
         bizData.put("phone",phone);
         bizData.put("custumType",custumType);
         bizData.put("frontId",frontId);
+
         //远程调用
         String isRepeatKey = Rong360Parser.getRpcKeyOfStatus(bizData);
-        log.info("traceId={} 获取手机在网状态,缓存isRepeatKey={}", isRepeatKey);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
+        log.info("traceId={} 获取手机在网状态,缓存isRepeatKey={},是否重新拉取={}",traceId, isRepeatKey,isRpc);
+
         if(!isRpc) {
             // 数据库
 //        String valueDb = rong360Service.getValueByDB(InterfaceIdEnum.THIRD_RSLL02.getCode(),PhoneDataTypeEnum.NETWORK_STATUS,bizData);
@@ -113,6 +115,9 @@ public class Request1014Handler extends AbstractRequestHandler {
             if (StringUtils.isNotBlank(valueDb)) {
                 log.info("traceId={}，获取手机在网状态成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb)); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb);
+            }else {
+                log.info("traceId={}，获取手机在网状态成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
+                return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
             }
         }
         try {

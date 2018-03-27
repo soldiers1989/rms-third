@@ -101,20 +101,24 @@ public class Request1011Handler extends AbstractRequestHandler {
         if (StringUtils.isBlank(strategyId)) {
             return new ResponseResult(traceId, ReturnCode.ERROR_NOT_FOUNT_STRATEGE_ID, null);
         }
-        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), strategyId);
-        if (null != jsonObject) {
-            riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
-            JSONObject resultJson = new JSONObject();
-            resultJson.put("score", riskPostDataService.getScoreByJson(jsonObject));
-            resultJson.put("weight", jsonObject.getString("Rule_final_weight"));
-            log.info("traceId={} 获取百融分成功(mongodb),返回结果={}",traceId,new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //成功
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
-        }
 //        // 2.判断是否远程拉取
+
         String isRepeatKey = getKeyPersonalInfo(info, strategyId);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
+        log.info("traceId={} 获取百融分,缓存isRepeatKey={},是否重新拉取={}",traceId, isRepeatKey,isRpc);
         if (!isRpc) {
-            return new ResponseResult(traceId, ReturnCode.ACTIVE_THIRD_RPC, null);
+            JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), strategyId);
+            if (null != jsonObject) {
+                riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
+                JSONObject resultJson = new JSONObject();
+                resultJson.put("score", riskPostDataService.getScoreByJson(jsonObject));
+                resultJson.put("weight", jsonObject.getString("Rule_final_weight"));
+                log.info("traceId={} 获取百融分成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //成功
+                return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
+            }else {
+                log.info("traceId={}，获取百融分成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
+                return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
+            }
         }
         // 3.远程拉取
         ResponseResult result = null;

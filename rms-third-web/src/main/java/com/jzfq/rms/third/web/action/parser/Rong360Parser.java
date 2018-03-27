@@ -103,10 +103,6 @@ public class Rong360Parser {
     public static String getNetworkLengthOfRmsPull(JSONObject json) throws Exception {
         String jsonRsult = "";
         try {
-            json = new JSONObject();
-            json.put("error","100028");
-            json.put("msg","访问接口超时，请稍候再试");
-            json.put("tianji_api_jiao_phonenetworklength_response",new Object());
             logger.info("v手机在网时长接口返回数据rong360data：" + json.toJSONString());
             JSONObject jsonObject0 = json.getJSONObject("tianji_api_jiao_phonenetworklength_response");
             jsonRsult = jsonObject0.getString("message");

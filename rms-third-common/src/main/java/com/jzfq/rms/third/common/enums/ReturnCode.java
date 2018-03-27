@@ -12,9 +12,9 @@ import java.util.Map;
 public enum ReturnCode {
     ERROR_REFUSE_IP(-60,"拒绝IP"),
     NOT_EXIST_SEND_HANDLER(-2, "不存在发送处理模块"),
-	ACTIVE_EXCEPTION(-1, "异常"),
+    ACTIVE_EXCEPTION(-1, "异常"),
     ACTIVE_SUCCESS(01, "操作成功"),
-    ACTIVE_FAILURE(02, "操作失败"),
+    ACTIVE_FAILURE(02, "操作失败（接口ping不通）"),
     ERROR_PARAMS_NOT_NULL(03, "参数不能为空"),
     ERROR_HEADER_NOT_NULL(04, "请求头不能为空"),
     ERROR_INVALID_TOKEN(05, "请求token验证不通过"),
@@ -41,13 +41,14 @@ public enum ReturnCode {
     ERROR_PARAMS_FORMAT(500, "参数格式错误"),
     ERROR_SERVER(503, "系统异常"),
     ERROR_USER_TYPE_ERROR(1111, "用户类型参数错误"),
-    ERROR_RSLL_PARAMS_ERROR(2222, "调用融360接口，返回参数发生错误"),
+    ERROR_RSLL_PARAMS_ERROR(2222, "调用融360接口，返回参数RSL发生错误"),
+    REQUEST_NO_EXIST_DATA(200,"此数据mongodb不存在，请删除缓存重新拉取"),
     ERROR_UNKOWN_ERROR(9999, "未知错误,响应数据为null");
-	private int code;
-	
-	private String msg;
-	
-	private ReturnCode(int code, String msg) {
+    private int code;
+
+    private String msg;
+
+    private ReturnCode(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
@@ -116,6 +117,6 @@ public enum ReturnCode {
 
         return sb.toString();
     }
-	
+
 
 }

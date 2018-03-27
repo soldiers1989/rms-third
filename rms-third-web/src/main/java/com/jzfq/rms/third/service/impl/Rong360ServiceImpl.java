@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -199,9 +200,10 @@ public class Rong360ServiceImpl implements IRong360Service {
     public String getValueByDBAndSave(String orderNo, String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData) {
         Integer outTime = configCacheDao.getOutTimeUnit(interfaceId);
         List<Rong360Data> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
-                .and("name").is(bizData.get("name")).and("idCard")
-                .is(bizData.get("idNumber")).and("phone")
-                .is(bizData.get("phone")).and("createTime").gte(getMinTime(outTime))), Rong360Data.class);
+                        .and("name").is(bizData.get("name")).and("idCard")
+                        .is(bizData.get("idNumber")).and("phone")
+                        .is(bizData.get("phone")).and("createTime").gte(getMinTime(outTime))).with(new Sort(Sort.Direction.DESC, "createTime")),
+                Rong360Data.class);
         if (CollectionUtils.isEmpty(report)) {
             return null;
         }
@@ -295,7 +297,7 @@ public class Rong360ServiceImpl implements IRong360Service {
                 if (jsonObject4.size() <= 0) {
                     return "";
                 }
-            }else {
+            } else {
                 return "";
             }
             JSONObject jsonObject3 = jsonObject0.getJSONObject("ISPNUM");
@@ -380,6 +382,7 @@ public class Rong360ServiceImpl implements IRong360Service {
                     return "";
                 }
                 //如果ECL没有返回信息 则获取正常响应信息RSL
+
                 JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
                 if (jsonObject4.size() <= 0) {
                     return "";
@@ -399,6 +402,7 @@ public class Rong360ServiceImpl implements IRong360Service {
                 } else {
                     jsonOperation = "4";
                 }
+
                 String jsonRsult = "";
                 if ("0".equals(jsonRsult0)) {
                     jsonRsult = "1";

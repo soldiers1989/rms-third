@@ -110,20 +110,24 @@ public class Request1008Handler extends AbstractRequestHandler {
         if (StringUtils.isBlank(eventId)) {
             return new ResponseResult(traceId, ReturnCode.ERROR_NOT_FOUNT_EVENT_ID, null);
         }
-        List<TongDunStringData> datas = tdDataService.getDataByEvent(orderNo, eventId);
-        if (!CollectionUtils.isEmpty(datas)) {
-            ResponseResult responseResult = new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
-            TongDunStringData data = datas.get(0);
-            responseResult.setData(data.getValue());
-            log.info("traceId={} 获取同盾分成功(mongodb),返回结果={}",traceId,responseResult.toString()); //成功
-            return responseResult;
-        }
+
         String isRepeatKey = getKeyByOrderNo(orderNo, eventId);
-        try {
-            boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
-            if (!isRpc) {
-                return new ResponseResult(traceId, ReturnCode.ACTIVE_THIRD_RPC, null);
+        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
+        log.info("traceId={} 获取同盾分,缓存isRepeatKey={},是否重新拉取={}",traceId, isRepeatKey,isRpc);
+        if (!isRpc) {
+            List<TongDunStringData> datas = tdDataService.getDataByEvent(orderNo, eventId);
+            if (!CollectionUtils.isEmpty(datas)) {
+                ResponseResult responseResult = new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
+                TongDunStringData data = datas.get(0);
+                responseResult.setData(data.getValue());
+                log.info("traceId={} 获取同盾分成功(mongodb),返回结果={}", traceId, responseResult.toString()); //成功
+                return responseResult;
+            }else {
+                log.info("traceId={}，获取同盾分成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
+                return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
             }
+        }
+        try {
             ResponseResult response = null;
             response = tdDataService.queryTdDatas(commonParams);
             if (response == null) {

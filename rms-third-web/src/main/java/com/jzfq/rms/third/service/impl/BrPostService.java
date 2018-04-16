@@ -65,6 +65,7 @@ public class BrPostService {
     private String login() {
         Map<String,Object> commonParams = getLoginCommonParams();
         Map<String,Object> bizParams = getInterfaceInput();
+        log.info("登录百融系统参数信息："+"commonParams："+commonParams+"bizParams："+bizParams);
         ResponseResult response = sendMessegeService
                 .sendByThreeChance(SendMethodEnum.BR03.getCode(),commonParams,bizParams);
         if(response.getCode()== ReturnCode.REQUEST_SUCCESS.code()&&response.getData()!=null){

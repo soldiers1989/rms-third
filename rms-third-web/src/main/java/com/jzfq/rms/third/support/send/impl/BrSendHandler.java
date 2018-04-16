@@ -58,7 +58,7 @@ public class BrSendHandler extends AbstractSendHandler {
         String apicode = (String)getBizParams().get("apicode");
         String loginName = (String)getBizParams().get("loginName");
         String loginResult = ms.login(userName, pwd, loginName, apicode);
-        return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS, loginResult);
+        return new ResponseResult(this.getParams().get("traceId") == null ? "":this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS, loginResult);
     }
 
     private ResponseResult getBrFourItemsOfBank(){
@@ -69,7 +69,7 @@ public class BrSendHandler extends AbstractSendHandler {
         MerchantServer ms = (MerchantServer)this.getParams().get("ms");
         String apicode = (String)this.getParams().get("apicode");
         String data = ms.getApiData(getJsonData(), apicode);
-        return new ResponseResult(this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,data);
+        return new ResponseResult(this.getParams().get("traceId") == null ? "" : this.getParams().get("traceId").toString(), ReturnCode.REQUEST_SUCCESS,data);
     }
 
     private String getJsonData(){

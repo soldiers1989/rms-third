@@ -93,7 +93,8 @@ public class HttpTools {
         
         boolean redirectAll = false;
         DefaultRedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-        if(redirectAll) {
+        //并不明白这的意义何在(redirectAll)。。。。。。
+        if(!redirectAll) {
             redirectStrategy = new LaxRedirectStrategy();
         }
         

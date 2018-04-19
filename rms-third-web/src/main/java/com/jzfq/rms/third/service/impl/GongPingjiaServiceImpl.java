@@ -160,7 +160,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
             evaluation.setGuidePrice(repository.getPriceBn());
             evaluation.setListedYear(repository.getListedYear());
         }
-        EvaluationInfoVo tempEvaluation = null;
+        EvaluationInfoVo tempEvaluation = new EvaluationInfoVo();
         for (EvaluationInfoVo evaluation : evaluationInfos) {
             if (tempEvaluation == null) {
                 tempEvaluation = evaluation;

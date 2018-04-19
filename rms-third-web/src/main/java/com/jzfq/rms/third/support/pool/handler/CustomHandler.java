@@ -15,7 +15,8 @@ public class CustomHandler implements RejectedExecutionHandler {
             // put阻塞方法
             executor.getQueue().put(r);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

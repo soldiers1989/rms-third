@@ -583,10 +583,10 @@ public class HttpConnectionManager {
 			V value = entry.getValue();
 			if(key == null || value == null || StringUtils.isBlank(key.toString()) ||StringUtils.isBlank(value.toString())) {
 				LOG.info("参数的key 或者value 为空!!!");
+			}else {
+				pairsList.add(new BasicNameValuePair(key.toString(), StringUtil.getStringOfObject(value)));
 			}
-			pairsList.add(new BasicNameValuePair(key.toString(), StringUtil.getStringOfObject(value)));
 		}
-
 		return pairsList;
 	}
 }

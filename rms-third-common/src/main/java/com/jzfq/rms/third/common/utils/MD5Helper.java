@@ -17,7 +17,7 @@ public class MD5Helper {
             MessageDigest alg = MessageDigest.getInstance("MD5");
             alg.update(str.getBytes("UTF-8"));
             byte[] digesta = alg.digest();
-            sRes = byteToHex(digesta).toUpperCase();
+            sRes = byteToHex(digesta);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("MD5散列出错，不支持MD5算法！", e);
         } catch (UnsupportedEncodingException e) {
@@ -39,6 +39,6 @@ public class MD5Helper {
             }
             hex.append(temp);
         }
-        return hex.toString();
+        return hex.toString().toUpperCase();
     }
 }

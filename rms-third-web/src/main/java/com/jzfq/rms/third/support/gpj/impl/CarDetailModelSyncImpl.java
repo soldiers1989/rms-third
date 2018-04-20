@@ -50,11 +50,11 @@ public class CarDetailModelSyncImpl implements IGPJSync {
                 gongPingjiaService.updateCarDetailModels(task);
             }
             sysTaskMapper.updateTask(task);
-        } catch (Exception e){
+        } catch (IllegalArgumentException e){
             task.setStatus(STR_TASK_STATUS_FAILURE);
             sysTaskMapper.updateTask(task);
             log.error("执行同步任务失败：",e);
-            new RuntimeException(e);
+            throw new IllegalArgumentException("conut 一定是非负数");
         }
     }
 }

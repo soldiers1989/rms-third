@@ -56,30 +56,34 @@ public class PageInterceptor implements Interceptor
         // 在RoutingStatementHandler里面所有StatementHandler接口方法的实现都是调用的delegate对应的方法。
         RoutingStatementHandler handler = (RoutingStatementHandler) invocation.getTarget();
         // 通过反射获取到当前RoutingStatementHandler对象的delegate属性
-        StatementHandler delegate = (StatementHandler) ReflectUtil.getFieldValue(handler, "delegate");
+        StatementHandler delegate = null;
+        if (null != ReflectUtil.getFieldValue(handler, "delegate")) {
+             delegate = (StatementHandler) ReflectUtil.getFieldValue(handler, "delegate");
+        }
         // 获取到当前StatementHandler的 boundSql，这里不管是调用handler.getBoundSql()还是直接调用delegate.getBoundSql()结果是一样的，因为之前已经说过了
         // RoutingStatementHandler实现的所有StatementHandler接口方法里面都是调用的delegate对应的方法。
-        BoundSql boundSql = delegate.getBoundSql();
-        // 拿到当前绑定Sql的参数对象，就是我们在调用对应的Mapper映射语句时所传入的参数对象
-        Object obj = boundSql.getParameterObject();
-        // 这里我们简单的通过传入的是Page对象就认定它是需要进行分页操作的。
-        PageParam<?> page = getPageParam(obj);
-        if (page != null)
-        {
-            // 通过反射获取delegate父类BaseStatementHandler的mappedStatement属性
-            MappedStatement mappedStatement = (MappedStatement) ReflectUtil.getFieldValue(delegate, "mappedStatement");
-            // 拦截到的prepare方法参数是一个Connection对象
-            Connection connection = (Connection) invocation.getArgs()[0];
-            // 获取当前要执行的Sql语句，也就是我们直接在Mapper映射语句中写的Sql语句
-            String sql = boundSql.getSql();
-            // 给当前的page参数对象设置总记录数
-            this.setTotalRow(page, mappedStatement, connection);
-            // 获取分页Sql语句
-            String pageSql = this.getPageSql(page, sql);
-            // 利用反射设置当前BoundSql对应的sql属性为我们建立好的分页Sql语句
-            ReflectUtil.setFieldValue(boundSql, "sql", pageSql);
-        }
-
+       if (null != delegate) {
+           BoundSql boundSql = delegate.getBoundSql();
+           // 拿到当前绑定Sql的参数对象，就是我们在调用对应的Mapper映射语句时所传入的参数对象
+           Object obj = boundSql.getParameterObject();
+           // 这里我们简单的通过传入的是Page对象就认定它是需要进行分页操作的。
+           PageParam<?> page = getPageParam(obj);
+           if (page != null)
+           {
+               // 通过反射获取delegate父类BaseStatementHandler的mappedStatement属性
+               MappedStatement mappedStatement = (MappedStatement) ReflectUtil.getFieldValue(delegate, "mappedStatement");
+               // 拦截到的prepare方法参数是一个Connection对象
+               Connection connection = (Connection) invocation.getArgs()[0];
+               // 获取当前要执行的Sql语句，也就是我们直接在Mapper映射语句中写的Sql语句
+               String sql = boundSql.getSql();
+               // 给当前的page参数对象设置总记录数
+               this.setTotalRow(page, mappedStatement, connection);
+               // 获取分页Sql语句
+               String pageSql = this.getPageSql(page, sql);
+               // 利用反射设置当前BoundSql对应的sql属性为我们建立好的分页Sql语句
+               ReflectUtil.setFieldValue(boundSql, "sql", pageSql);
+           }
+       }
         return invocation.proceed();
     }
 

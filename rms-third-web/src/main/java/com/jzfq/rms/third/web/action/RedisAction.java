@@ -43,24 +43,24 @@ public class RedisAction {
         return new ResponseResult("", ReturnCode.ERROR_INVALID_ARGS, null);
     }
 
-    @RequestMapping(value = "deleteLikeKey.json", method = RequestMethod.GET)
-    public ResponseResult deleteLikeKey() throws BusinessException {
-        try {
-            File file = new File("/data/redis/redis.txt");//txt文件
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String s = null;
-            while ((s = br.readLine()) != null) {//使用readLine方法，一次读一行
-                System.out.println(s);
-                if (!"".equals(s)) {
-                    prefixCache.batchDel(s);
-                }
-            }
-            br.close();
-            ;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseResult("", ReturnCode.ACTIVE_SUCCESS, null);
-    }
+//    @RequestMapping(value = "deleteLikeKey.json", method = RequestMethod.GET)
+//    public ResponseResult deleteLikeKey() throws BusinessException {
+//        try {
+//            File file = new File("/data/redis/redis.txt");//txt文件
+//            BufferedReader br = new BufferedReader(new FileReader(file));
+//            String s = null;
+//            while ((s = br.readLine()) != null) {//使用readLine方法，一次读一行
+//                System.out.println(s);
+//                if (!"".equals(s)) {
+//                    prefixCache.batchDel(s);
+//                }
+//            }
+//            br.close();
+//            ;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return new ResponseResult("", ReturnCode.ACTIVE_SUCCESS, null);
+//    }
 
 }

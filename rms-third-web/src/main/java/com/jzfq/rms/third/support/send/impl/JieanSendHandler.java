@@ -77,7 +77,7 @@ public class JieanSendHandler extends AbstractSendHandler {
         params.put("jsonStr","{\"CERT_ID\":\""+this.getBizParams().get("idNumber")+"\"," +
                 "\"CERT_NAME\":\""+this.getBizParams().get("name")+"\"," +
                 "\"MP\":\""+this.getBizParams().get("phone")+"\",\"PROD_ID\":\"MP3\"}");
-        params.put("merPriv","");
+//        params.put("merPriv","");
         String ordId = StringUtil.getStringOfObject(this.getBizParams().get("orderId"));
         params.put("ordId",ordId);
         logger.info("捷安三要素 traceId={} orderId={}",this.getParams().get("traceId"),ordId);
@@ -103,7 +103,7 @@ public class JieanSendHandler extends AbstractSendHandler {
         params.put("merPriv","");
         params.put("retUrl","");
         params.put("jsonStr","{\"MP\":\""+this.getBizParams().get("phone")+"\",\"PROD_ID\":\"MPTIME\"}");
-        params.put("merPriv","");
+//        params.put("merPriv","");
         String ordId = StringUtil.getStringOfObject(this.getBizParams().get("orderId"));
         params.put("ordId",ordId);
         logger.info("捷安在网时长 traceId={} orderId={}",this.getParams().get("traceId"),ordId);
@@ -129,7 +129,7 @@ public class JieanSendHandler extends AbstractSendHandler {
         params.put("merPriv","");
         params.put("retUrl","");
         params.put("jsonStr","{\"MP\":\""+this.getBizParams().get("phone")+"\",\"PROD_ID\":\"MPSTAT\"}");
-        params.put("merPriv","");
+//        params.put("merPriv","");
         String ordId = StringUtil.getStringOfObject(this.getBizParams().get("orderId"));
         params.put("ordId",ordId);
         logger.info("捷安在网状态 traceId={} orderId={}",this.getParams().get("traceId"),ordId);

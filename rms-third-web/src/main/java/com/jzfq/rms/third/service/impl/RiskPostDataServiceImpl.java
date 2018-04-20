@@ -372,9 +372,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
             while (it.hasNext()) {
                 Map.Entry entry = it.next();
                 String key = entry.getKey().toString();
-                if (key.startsWith("ex_bad" + i)) {
-                    list.add(getKv(key, entry.getValue().toString()));
-                } else if (key.startsWith("ex_execut" + i)) {
+                if (key.startsWith("ex_bad" + i) || key.startsWith("ex_execut" + i)) {
                     list.add(getKv(key, entry.getValue().toString()));
                 }
             }

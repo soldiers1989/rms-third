@@ -510,15 +510,15 @@ public class HttpPushsConnectionManager {
 		return doPost(url, null, null, charset);
 	}
 	
-	public static void main(String[] args) {
-		String url = "http://p.missfresh.cn/pop2baidu-webapp/pop2baidu/completeOrder.do";
-		Map<String,String> params = new HashMap<String, String>();
-		params.put("order_id", "11111111111");
-		ResponseDTO response = HttpPushsConnectionManager.doPost(url, params);
-		
-		int code = response.getCode();
-		System.out.println(code);
-		
-	}
+//	public static void main(String[] args) {
+//		String url = "http://p.missfresh.cn/pop2baidu-webapp/pop2baidu/completeOrder.do";
+//		Map<String,String> params = new HashMap<String, String>();
+//		params.put("order_id", "11111111111");
+//		ResponseDTO response = HttpPushsConnectionManager.doPost(url, params);
+//
+//		int code = response.getCode();
+//		System.out.println(code);
+//
+//	}
 	
 }

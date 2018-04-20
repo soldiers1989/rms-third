@@ -80,7 +80,7 @@ public class Request1005Handler   extends AbstractRequestHandler{
         Map<String,Object> commonParams = getCommonParams( request);
         JSONObject data = jxlDataService.queryJxlData(  customerName,   idCard,   phone, commonParams);
         if(data==null){
-            new RuntimeException("traceId="+ TraceIDThreadLocal.getTraceID()+" 聚信立 用户报告等数据接口，返回为null");
+            throw new RuntimeException("traceId="+ TraceIDThreadLocal.getTraceID()+" 聚信立 用户报告等数据接口，返回为null");
         }
         return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.REQUEST_SUCCESS,data);
     }

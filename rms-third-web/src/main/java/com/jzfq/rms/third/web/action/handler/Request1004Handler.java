@@ -124,7 +124,7 @@ public class Request1004Handler extends AbstractRequestHandler {
         String isRepeatKey = JuXinLinParser.getKeyByInfo(customerName, idCard, phone, token);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
         if (!isRpc) {
-            log.info("traceId={} 聚信立获取用户报告数据 调用中");
+            log.info("traceId={} 聚信立获取用户报告数据 调用中",traceId);
             return new ResponseResult(traceId, ReturnCode.ACTIVE_THIRD_RPC, null);
         }
         // 远程调用

@@ -101,10 +101,10 @@ public class Request1002Handler extends AbstractRequestHandler {
             JSONObject data = (JSONObject)result.getData();
             if(data!=null){
                 pengYuanService.saveRmsDatas(orderNo, data.toJSONString(), carInfo);
+                String value =  getThirdResult(data);
+                pengYuanService.saveCarCheckInfo(reqId,data.toJSONString(),value,carInfo,ReturnCode.REQUEST_SUCCESS.code());
+                result.setData(value);
             }
-            String value =  getThirdResult(data);
-            pengYuanService.saveCarCheckInfo(reqId,data.toJSONString(),value,carInfo,ReturnCode.REQUEST_SUCCESS.code());
-            result.setData(value);
         }else{
             interfaceCountCache.setFailure(isRepeatKey);
         }

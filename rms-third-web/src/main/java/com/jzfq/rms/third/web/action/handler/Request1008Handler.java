@@ -128,12 +128,12 @@ public class Request1008Handler extends AbstractRequestHandler {
             }
         }
         try {
-            ResponseResult response = null;
+            ResponseResult response = new ResponseResult();
             response = tdDataService.queryTdDatas(commonParams);
             if (response == null) {
                 log.info("traceId={} 同盾拉取无效：false ", commonParams.get("traceId"));     //失败
                 interfaceCountCache.setFailure(isRepeatKey);
-                new BusinessException("traceId={} 同盾拉取无效：false", true);
+                throw new BusinessException("traceId={} 同盾拉取无效：false", true);
             }
             if (response.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
                 log.info("traceId={} 同盾拉取失败：false ,同盾返回结果={}", commonParams.get("traceId"),response);     //失败
@@ -147,7 +147,7 @@ public class Request1008Handler extends AbstractRequestHandler {
             if (null != apiResp.getFinal_score()) {
                 pushDataService.pushData(traceId,"tdscore", String.valueOf(apiResp.getFinal_score()), mobile, orderNo);
             }else {
-                log.info("traceId={} 同盾拉取失败：false ，同盾分为空");     //失败
+                log.info("traceId={} 同盾拉取失败：false ，同盾分为空",traceId);     //失败
             }
             log.info("traceId={} 拉取三方同盾分成功,返回结果={}",traceId,response.toString()); //成功
             return response;

@@ -39,4 +39,5 @@ public abstract class AbstractSendHandler implements ISendHandler{
     public static String getDefaultBasePackage(){
         return DEFAULT_BASE_PACKAGE;
     }
+
 }

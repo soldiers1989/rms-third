@@ -37,6 +37,13 @@ public enum InterfaceIdEnum {
     THIRD_JIEAN02("17","捷安-手机在网状态"),
     THIRD_JIEAN03("18","捷安-运营商实名"),
 
+
+    JAO20("51","集奥-手机三要素"),//集奥-手机三要素
+    JAO21("52","集奥-手机在网状态"),//集奥-手机在网状态
+    JAO22("53","集奥-手机在网时长"),//集奥-手机在网时长
+
+    JAOLOGIN("27","JaoSendHandler"),//集奥登录事件
+
     THIRD_BR03("21","百融-登陆事件");
 
     private String code;

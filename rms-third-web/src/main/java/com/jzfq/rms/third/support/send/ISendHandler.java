@@ -21,4 +21,5 @@ public interface ISendHandler {
      * @param bizParams
      */
     void init(Map<String, Object> params, Map<String, Object> bizParams) ;
+
 }

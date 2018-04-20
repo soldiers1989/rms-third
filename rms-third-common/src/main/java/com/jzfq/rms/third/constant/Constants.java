@@ -145,4 +145,9 @@ public class Constants
     //公平价默认值redis key
     public final static String DICTIONARY_PREFIX_DEFAULT_VALUE_CAR_VALUATION = "dictionary_prefix_default_value_car_valuation";
 
+    //集奥 token 失效时间 设置 24h
+    public final static Long JAO_TOKEN_KEY_OUT_TIME = 1*23*60*60L;
+
+
+
 }

@@ -24,6 +24,9 @@ public enum ApiIdEnum {
     ThIRD_JA_LENGTH("1017","手机在网时长"),
     ThIRD_GPJ_UPDATE("1018","公平价车型库更新任务"),
     ThIRD_XJHJ_TD_AND_BR("1019","同盾百融数据"),
+    ThIRD_JAO_THREE("1020","手机三要素"),
+    ThIRD_JAO_LENGTH("1021","手机在网时长"),
+    ThIRD_JAO_STATUS("1022","手机在网状态"),
     ThIRD_PAGE_REDIS_OPT("P001","REDIS数据维护"),
     ThIRD_SYS_RMS_LOG("S000","记录rms调用第三方日志");
 

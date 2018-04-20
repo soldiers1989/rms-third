@@ -36,6 +36,12 @@ public enum  ResponseHandlerEnum {
     JIEAN02("17","JieanResponseHandler"),//捷安-手机在网状态
     JIEAN03("18","JieanResponseHandler"),//捷安-运营商实名
 
+    JAO20("51","JaoResponseHandler"),//集奥-手机在网时长
+    JAO21("52","JaoResponseHandler"),//集奥-手机在网状态
+    JAO22("53","JaoResponseHandler"),//集奥-手机三要素
+
+    JAOLOGIN("27","JaoResponseHandler"),//集奥登录事件
+
     BR03("21","BrResponseHandler");//百融登陆事件
 
     private String code;

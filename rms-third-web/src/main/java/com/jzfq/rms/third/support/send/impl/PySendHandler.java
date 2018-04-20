@@ -38,7 +38,8 @@ public class PySendHandler extends AbstractSendHandler {
         //调用webservice
         String pyUrl =(String) this.getParams().get("url");
         if(StringUtils.isBlank(pyUrl)){
-            new BusinessException("鹏元获取车辆信息 接口URL为null",true);
+//            new BusinessException("鹏元获取车辆信息 接口URL为null",true);
+            return new ResponseResult(traceId,ReturnCode.REQUEST_NO_PY_URL,ReturnCode.REQUEST_NO_PY_URL.msg());
         }
         Client client = new Client(new URL(pyUrl));
         String userName =(String) this.getParams().get("userName");

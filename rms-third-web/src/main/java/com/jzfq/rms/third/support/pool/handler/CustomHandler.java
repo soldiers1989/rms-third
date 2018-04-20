@@ -16,7 +16,9 @@ public class CustomHandler implements RejectedExecutionHandler {
             executor.getQueue().put(r);
         } catch (InterruptedException e) {
 //            e.printStackTrace();
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            //中断线程操作 重新跑批isInterrupted方法 并不意味着线程退出
+            Thread.currentThread().interrupt();
         }
     }
 }

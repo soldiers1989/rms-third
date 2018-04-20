@@ -88,7 +88,7 @@ public class Request1006Handler   extends AbstractRequestHandler {
         List<JuXinLiData> juXinLiDatas = jxlDataService.getJuXinLiDatas(customerName+"_"+idCard+"_"+phone, JxlDataTypeEnum.JXL_DATA_TYPE_REPORT.code(), InterfaceIdEnum.THIRD_JXL04.getCode());
         if(!CollectionUtils.isEmpty(juXinLiDatas)){
             JuXinLiData juXinLiData = juXinLiDatas.get(0);
-            log.info("traceId={} 聚信立获取用户报告数据结束");
+            log.info("traceId={} 聚信立获取用户报告数据结束",traceId);
             JSONObject result = jxlDataService.getBusinessDataAnalysis(juXinLiData.getData(),phone);
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS,result);
         }

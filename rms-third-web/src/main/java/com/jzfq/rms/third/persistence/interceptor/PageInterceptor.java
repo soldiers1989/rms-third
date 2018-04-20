@@ -71,17 +71,19 @@ public class PageInterceptor implements Interceptor
            if (page != null)
            {
                // 通过反射获取delegate父类BaseStatementHandler的mappedStatement属性
-               MappedStatement mappedStatement = (MappedStatement) ReflectUtil.getFieldValue(delegate, "mappedStatement");
-               // 拦截到的prepare方法参数是一个Connection对象
-               Connection connection = (Connection) invocation.getArgs()[0];
-               // 获取当前要执行的Sql语句，也就是我们直接在Mapper映射语句中写的Sql语句
-               String sql = boundSql.getSql();
-               // 给当前的page参数对象设置总记录数
-               this.setTotalRow(page, mappedStatement, connection);
-               // 获取分页Sql语句
-               String pageSql = this.getPageSql(page, sql);
-               // 利用反射设置当前BoundSql对应的sql属性为我们建立好的分页Sql语句
-               ReflectUtil.setFieldValue(boundSql, "sql", pageSql);
+               if (null != ReflectUtil.getFieldValue(delegate, "mappedStatement")) {
+                   MappedStatement mappedStatement = (MappedStatement) ReflectUtil.getFieldValue(delegate, "mappedStatement");
+                   // 拦截到的prepare方法参数是一个Connection对象
+                   Connection connection = (Connection) invocation.getArgs()[0];
+                   // 获取当前要执行的Sql语句，也就是我们直接在Mapper映射语句中写的Sql语句
+                   String sql = boundSql.getSql();
+                   // 给当前的page参数对象设置总记录数
+                   this.setTotalRow(page, mappedStatement, connection);
+                   // 获取分页Sql语句
+                   String pageSql = this.getPageSql(page, sql);
+                   // 利用反射设置当前BoundSql对应的sql属性为我们建立好的分页Sql语句
+                   ReflectUtil.setFieldValue(boundSql, "sql", pageSql);
+               }
            }
        }
         return invocation.proceed();

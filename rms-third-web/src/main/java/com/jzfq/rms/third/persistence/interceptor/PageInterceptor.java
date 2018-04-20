@@ -78,7 +78,9 @@ public class PageInterceptor implements Interceptor
                    // 获取当前要执行的Sql语句，也就是我们直接在Mapper映射语句中写的Sql语句
                    String sql = boundSql.getSql();
                    // 给当前的page参数对象设置总记录数
-                   this.setTotalRow(page, mappedStatement, connection);
+                   if (null != mappedStatement) {
+                       this.setTotalRow(page, mappedStatement, connection);
+                   }
                    // 获取分页Sql语句
                    String pageSql = this.getPageSql(page, sql);
                    // 利用反射设置当前BoundSql对应的sql属性为我们建立好的分页Sql语句

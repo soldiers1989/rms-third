@@ -166,7 +166,9 @@ public final class RSAUtils {
 		String decryptValue = null ;
 		byte[] data = null;
 		if (null != hexStringToBytes(text)) {
-			 data = decrypt(privateKey, hexStringToBytes(text));
+		    if (null != decrypt(privateKey, hexStringToBytes(text))) {
+                data = decrypt(privateKey, hexStringToBytes(text));
+            }
 		}
 		try {
 			decryptValue = data != null ? new String(data,"UTF-8") : null;

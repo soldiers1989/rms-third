@@ -43,6 +43,13 @@ public abstract class AbstractRequestHandler {
             return null;
         }
         String apiId = request.getApiId();
+        if ("1012".equals(apiId)) {
+            apiId = "1020";
+        }else if ("1013".equals(apiId)) {
+            apiId = "1021";
+        }else if ("1014".equals(apiId)) {
+            apiId = "1022";
+        }
         try {
             ApplicationContext applicationContext = WebApplicationContextUtils
                     .getWebApplicationContext(context,

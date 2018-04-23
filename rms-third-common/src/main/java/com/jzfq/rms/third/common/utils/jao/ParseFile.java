@@ -59,6 +59,7 @@ public class ParseFile {
 			return false;
 		}
 		BASE64Decoder decoder = new BASE64Decoder();
+		OutputStream out = null;
 		try {
 			// Base64解码
 			byte[] bytes = decoder.decodeBuffer(fileStr);
@@ -68,14 +69,21 @@ public class ParseFile {
 				}
 			}
 			// 生成文件
-			OutputStream out = new FileOutputStream(filePath);
+			out = new FileOutputStream(filePath);
 			out.write(bytes);
-			out.flush();
-			out.close();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}finally {
+			if (null != out) {
+				try {
+					out.flush();
+					out.close();
+				}catch (Exception ex){
+					ex.printStackTrace();;
+				}
+			}
 		}
 	}
 }

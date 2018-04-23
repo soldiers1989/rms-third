@@ -165,13 +165,12 @@ public class Request1022Handler extends AbstractRequestHandler {
                                                        String phone,
                                                        String custumType,
                                                        String frontId) {
-        bizData = new HashMap<>();
-        bizData.put("name", name);
-        bizData.put("idNumber", idNumber);
-        bizData.put("phone", phone);
-        bizData.put("custumType", custumType);
-        bizData.put("frontId", frontId);
-        return bizData;
-
+        Map<String, Object> bizData1 = new HashMap<>();
+        bizData1.put("name", name);
+        bizData1.put("idNumber", idNumber);
+        bizData1.put("phone", phone);
+        bizData1.put("custumType", custumType);
+        bizData1.put("frontId", frontId);
+        return bizData1;
     }
 }

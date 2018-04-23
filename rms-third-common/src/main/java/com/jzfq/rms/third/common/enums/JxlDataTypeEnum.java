@@ -20,17 +20,11 @@ public enum  JxlDataTypeEnum {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public String msg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

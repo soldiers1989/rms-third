@@ -37,7 +37,7 @@ public class JaoParser {
                     if (jsonObjectEcl.size() > 0) {
                         JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
                         String errorCode = jsonObjectEclCode.getString("code");
-                        return Rong360PhoneThreeCode.getMsg(errorCode);
+                        return JaoEclCodeEnum.getMsg(errorCode);
                     }
                 }
                 //如果ECL没有返回信息 则获取正常响应信息RSL
@@ -102,7 +102,7 @@ public class JaoParser {
                     if (jsonObjectEcl.size() > 0) {
                         JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
                         String errorCode = jsonObjectEclCode.getString("code");
-                        return Rong360PhoneTimeCode.getMsg(errorCode);
+                        return JaoEclCodeEnum.getMsg(errorCode);
                     }
                 }
                 //如果ECL没有返回信息 则获取正常响应信息RSL
@@ -190,7 +190,7 @@ public class JaoParser {
                     if (jsonObjectEcl.size() > 0) {
                         JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
                         String errorCode = jsonObjectEclCode.getString("code");
-                        return Rong360PhoneStatusCode.getMsg(errorCode);
+                        return JaoEclCodeEnum.getMsg(errorCode);
                     }
                 }
                 //如果ECL没有返回信息 则获取正常响应信息RSL

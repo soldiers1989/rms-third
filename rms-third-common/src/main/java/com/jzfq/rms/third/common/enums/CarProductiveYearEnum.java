@@ -46,17 +46,11 @@ public enum CarProductiveYearEnum {
         return code;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
-    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public static String getName(Integer code){
         for(CarProductiveYearEnum s: CarProductiveYearEnum.values()){

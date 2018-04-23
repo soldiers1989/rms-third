@@ -59,17 +59,11 @@ public enum SendMethodEnum {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public static String getName(String code){
         for(SendMethodEnum c: SendMethodEnum.values()){

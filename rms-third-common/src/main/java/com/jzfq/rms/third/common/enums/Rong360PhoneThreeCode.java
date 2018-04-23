@@ -75,17 +75,11 @@ public enum Rong360PhoneThreeCode {
         return code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
 
     public String msg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 
 
 

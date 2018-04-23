@@ -31,7 +31,12 @@ public class ParseFile {
 		try {
 			in = new FileInputStream(filePath);
 			data = new byte[in.available()];
-			in.read(data);
+            int count = 0;
+//            StringBuffer buf = new StringBuffer();
+//            while ((count = in.read(data)) > 0) {
+//                buf.append(new String(data,0,count));
+//            }
+            count = in.read(data);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return "" ;
@@ -54,7 +59,7 @@ public class ParseFile {
      * @param filePath 生成的文件全路径
      * @return
      */
-	public static boolean generateFile(String fileStr, String filePath) {
+	public static  boolean generateFile(String fileStr, String filePath) {
 		if (fileStr == null||"".equals(fileStr)) {
 			return false;
 		}
@@ -71,19 +76,19 @@ public class ParseFile {
 			// 生成文件
 			out = new FileOutputStream(filePath);
 			out.write(bytes);
+            out.flush();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}finally {
-			if (null != out) {
-				try {
-					out.flush();
-					out.close();
-				}catch (Exception ex){
-					ex.printStackTrace();;
-				}
-			}
+		            if (null != out) {
+		                try {
+                            out.close();
+                        }catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
 		}
 	}
 }

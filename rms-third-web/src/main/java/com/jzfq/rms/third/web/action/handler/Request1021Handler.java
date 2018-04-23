@@ -25,6 +25,7 @@ import java.util.Map;
 
 /**
  * 融360 在网时长
+ *
  * @author 大连桔子分期科技有限公司
  * @date 2017/10/17 16:41.
  **/
@@ -34,6 +35,8 @@ public class Request1021Handler extends AbstractRequestHandler {
 
     @Autowired
     IJaoService iJaoService;
+    @Autowired
+    IRong360Service rong360Service;
 
 
     @Autowired
@@ -47,15 +50,15 @@ public class Request1021Handler extends AbstractRequestHandler {
      */
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
-        String frontId = (String)params.get("frontId");
-        String orderNo = (String)params.get("orderNo");
-        String name = (String)params.get("name");
-        String idNumber = (String)params.get("idNumber");
-        String phone = (String)params.get("phone");
-        String custumType = (String)params.get("custumType");
-        if(StringUtils.isBlank(frontId)||StringUtils.isBlank(orderNo)||StringUtils.isBlank(name)
-                ||StringUtils.isBlank(idNumber)||StringUtils.isBlank(phone)
-                ||StringUtils.isBlank(custumType)){
+        String frontId = (String) params.get("frontId");
+        String orderNo = (String) params.get("orderNo");
+        String name = (String) params.get("name");
+        String idNumber = (String) params.get("idNumber");
+        String phone = (String) params.get("phone");
+        String custumType = (String) params.get("custumType");
+        if (StringUtils.isBlank(frontId) || StringUtils.isBlank(orderNo) || StringUtils.isBlank(name)
+                || StringUtils.isBlank(idNumber) || StringUtils.isBlank(phone)
+                || StringUtils.isBlank(custumType)) {
             return false;
         }
         return true;
@@ -69,7 +72,7 @@ public class Request1021Handler extends AbstractRequestHandler {
      */
     @Override
     protected ResponseResult bizHandle(AbstractRequest request) throws Exception {
-        if(StringUtils.equals(request.getApiVersion(),"02")){
+        if (StringUtils.equals(request.getApiVersion(), "02")) {
             return handler01(request);
         }
         return handler01(request);
@@ -80,14 +83,16 @@ public class Request1021Handler extends AbstractRequestHandler {
     /**
      * 超时时间 三天
      */
-    private static final Long time = 3*24*60*60L;
+    private static final Long time = 3 * 24 * 60 * 60L;
+
     /**
      * 版本01
+     *
      * @param request
      * @return
      * @throws Exception
      */
-    private ResponseResult handler01(AbstractRequest request) throws Exception{
+    private ResponseResult handler01(AbstractRequest request) throws Exception {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         // 数据库查询
@@ -97,49 +102,75 @@ public class Request1021Handler extends AbstractRequestHandler {
         String custumType = request.getParam("custumType").toString();
         String frontId = request.getParam("frontId").toString();
         Map<String, Object> bizData = new HashMap<>();
-        bizData.put("realName",name);
-        bizData.put("idNumber",idNumber);
-        bizData.put("cid",phone);
-        bizData.put("custumType",custumType);
+        bizData.put("realName", name);
+        bizData.put("idNumber", idNumber);
+        bizData.put("cid", phone);
+        bizData.put("custumType", custumType);
 //        bizData.put("frontId",frontId);
         //远程调用
         String isRepeatKey = JaoParser.getRpcKeyOfNetWorkLength(bizData);
-        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey,time);
-        log.info("traceId={} 获取手机在网时长,缓存isRepeatKey={},是否重新拉取={}",traceId, isRepeatKey,isRpc);
+        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
+        log.info("traceId={} 获取手机在网时长,缓存isRepeatKey={},是否重新拉取={}", traceId, isRepeatKey, isRpc);
 
-        if(!isRpc) {
+        if (!isRpc) {
             // 数据库
 //        String valueDb = rong360Service.getValueByDB( InterfaceIdEnum.THIRD_RSLL01.getCode(),PhoneDataTypeEnum.NETWORK_LENGTH,bizData);
-            String valueDb = iJaoService.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL01.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
+            String valueDb = iJaoService.getValueByDBAndSave(orderNo, InterfaceIdEnum.JAO22.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
             if (StringUtils.isNotBlank(valueDb)) {
-                log.info("traceId={}，获取手机在网时长成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb)); //成功
+                log.info("traceId={}，获取手机在网时长成功(mongodb==jao),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb)); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb);
-            }else {
-                log.info("traceId={}，获取手机在网时长成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
-                return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
+            } else {
+                //获取融360老数据
+                bizData = newBizForRong360(bizData, name, idNumber, phone, custumType, frontId);
+                valueDb = rong360Service.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL01.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
+                if (StringUtils.isNotBlank(valueDb)) {
+                    log.info("traceId={}，获取手机在网时长成功(mongodb==rong360),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb)); //成功
+                    return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb);
+                } else {
+                    log.info("traceId={}，获取手机在网时长成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
+                    return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
+                }
             }
         }
         try {
             //手机在网时长
             ResponseResult responseResult = iJaoService.getPhoneNetworkLength(bizData);
             responseResult.setTraceID(traceId);
-            if(responseResult.getCode()!=ReturnCode.REQUEST_SUCCESS.code()){
-                log.info("traceId={}，拉取手机在网时长失败,返回结果={}",traceId,responseResult); //失败
+            if (responseResult.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
+                log.info("traceId={}，拉取手机在网时长失败,返回结果={}", traceId, responseResult); //失败
                 interfaceCountCache.setFailure(isRepeatKey);
                 return responseResult;
             }
-            JSONObject resultJson = (JSONObject)responseResult.getData();
+            JSONObject resultJson = (JSONObject) responseResult.getData();
             // 转换rms-pull需要的值
-            String value = Rong360Parser.getNetworkLengthOfRmsPull(resultJson);
+            String value = JaoParser.getNetworkLengthOfRmsPull(resultJson);
             // 保存数据
             iJaoService.saveDatas(orderNo, PhoneDataTypeEnum.NETWORK_LENGTH, value, resultJson, bizData);
             responseResult.setData(value);
-            log.info("traceId={}，拉取手机在网时长成功,返回结果={}",traceId,responseResult); //成功
+            log.info("traceId={}，拉取手机在网时长成功,返回结果={}", traceId, responseResult); //成功
             return responseResult;
-        }catch (Exception e){
+        } catch (Exception e) {
             interfaceCountCache.setFailure(isRepeatKey);
-            log.error("traceId={} 手机在网时长异常",traceId,e);
+            log.error("traceId={} 手机在网时长异常", traceId, e);
             throw e;
         }
+    }
+    /*
+     * 封装融360缓存参数数据
+     * */
+
+    public static Map<String, Object> newBizForRong360(Map<String, Object> bizData, String name,
+                                                       String idNumber,
+                                                       String phone,
+                                                       String custumType,
+                                                       String frontId) {
+        bizData = new HashMap<>();
+        bizData.put("name", name);
+        bizData.put("idNumber", idNumber);
+        bizData.put("phone", phone);
+        bizData.put("custumType", custumType);
+        bizData.put("frontId", frontId);
+        return bizData;
+
     }
 }

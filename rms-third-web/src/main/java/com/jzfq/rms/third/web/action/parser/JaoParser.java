@@ -27,7 +27,7 @@ public class JaoParser {
     public static String getValueOfRmsPull(JSONObject json) throws Exception {
         String jsonRsult = "";
         try {
-            logger.info("手机三要素接口返回数据rong360data：" + json.toJSONString());
+            logger.info("手机三要素接口返回数据集奥data：" + json.toJSONString());
             String result = json.getString("data");
             if (StringUtils.isNotBlank(result)) {
                 JSONObject jsonObject = json.getJSONObject("data");
@@ -74,7 +74,7 @@ public class JaoParser {
      * @return
      */
     public static String getRpcControlKey(Map<String, Object> bizData) {
-        StringBuilder sb = new StringBuilder("rms_third_1020_");
+        StringBuilder sb = new StringBuilder("rms_third_1012_");
         sb.append(StringUtil.getStringOfObject(bizData.get("realName")));
         sb.append("_");
         sb.append(StringUtil.getStringOfObject(bizData.get("idNumber")));
@@ -92,7 +92,7 @@ public class JaoParser {
     public static String getNetworkLengthOfRmsPull(JSONObject json) throws Exception {
         String jsonRsult = "";
         try {
-            logger.info("v手机在网时长接口返回数据rong360data：" + json.toJSONString());
+            logger.info("v手机在网时长接口返回数据集奥data：" + json.toJSONString());
             JSONObject jsonObject0 = json.getJSONObject("data");
             jsonRsult = jsonObject0.getString("message");
             if (StringUtils.isBlank(jsonRsult)) {
@@ -147,7 +147,7 @@ public class JaoParser {
      * @return
      */
     public static String getRpcKeyOfNetWorkLength(Map<String, Object> bizData) {
-        StringBuilder sb = new StringBuilder("rms_third_1021_");
+        StringBuilder sb = new StringBuilder("rms_third_1013_");
         sb.append(StringUtil.getStringOfObject(bizData.get("realName")));
         sb.append("_");
         sb.append(StringUtil.getStringOfObject(bizData.get("idNumber")));
@@ -163,7 +163,7 @@ public class JaoParser {
      * @return
      */
     public static String getRpcKeyOfStatus(Map<String, Object> bizData) {
-        StringBuilder sb = new StringBuilder("rms_third_1022_");
+        StringBuilder sb = new StringBuilder("rms_third_1014_");
         sb.append(StringUtil.getStringOfObject(bizData.get("realName")));
         sb.append("_");
         sb.append(StringUtil.getStringOfObject(bizData.get("idNumber")));
@@ -181,7 +181,7 @@ public class JaoParser {
     public static String getStatusOfRmsPull(JSONObject json) throws Exception {
         try {
             String jsonRsult = "";
-            logger.info("手机在网状态接口返回数据rong360data：" + json.toJSONString());
+            logger.info("手机在网状态接口返回数据集奥data：" + json.toJSONString());
             String result = json.getString("data");
             if (StringUtils.isNotBlank(result)) {
                 JSONObject jsonObject0 = json.getJSONObject("data");

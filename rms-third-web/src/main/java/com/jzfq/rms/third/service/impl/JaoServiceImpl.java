@@ -100,8 +100,8 @@ public class JaoServiceImpl implements IJaoService {
     public ResponseResult getPhoneNetworkLength(Map<String, Object> commonParams) throws Exception {
         Map<String, Object> bizData = getCommonParams();
         commonParams.put("innerIfType", jao_phone_length_innerIfType);
-        commonParams.put("authCode", JAoAuthCodeUtil.lpad(jao_rule_uno,8,'0'));
-        commonParams.put("interfaceId",InterfaceIdEnum.JAO22.getCode());
+        commonParams.put("authCode", JAoAuthCodeUtil.lpad(jao_rule_uno, 8, '0'));
+        commonParams.put("interfaceId", InterfaceIdEnum.JAO22.getCode());
         return sendMessegeService.sendByThreeChance(SendMethodEnum.JAO22.getCode(), commonParams, bizData);
     }
 
@@ -113,9 +113,9 @@ public class JaoServiceImpl implements IJaoService {
     public ResponseResult getMobilecheck3item(Map<String, Object> commonParams) throws Exception {
         Map<String, Object> bizData = getCommonParams();
         commonParams.put("innerIfType", jao_phone_three_innerIfType);
-        commonParams.put("authCode", JAoAuthCodeUtil.lpad(jao_rule_uno,8,'0'));
-        commonParams.put("interfaceId",InterfaceIdEnum.JAO20.getCode());
-        return sendMessegeService.sendByThreeChance(SendMethodEnum.JAO20.getCode(),commonParams,bizData);
+        commonParams.put("authCode", JAoAuthCodeUtil.lpad(jao_rule_uno, 8, '0'));
+        commonParams.put("interfaceId", InterfaceIdEnum.JAO20.getCode());
+        return sendMessegeService.sendByThreeChance(SendMethodEnum.JAO20.getCode(), commonParams, bizData);
     }
 
 
@@ -127,8 +127,8 @@ public class JaoServiceImpl implements IJaoService {
     public ResponseResult getPhonestatus(Map<String, Object> commonParams) throws Exception {
         Map<String, Object> bizData = getCommonParams();
         commonParams.put("innerIfType", jao_phone_status_innerIfType);
-        commonParams.put("authCode", JAoAuthCodeUtil.lpad(jao_rule_uno,8,'0'));
-        commonParams.put("interfaceId",InterfaceIdEnum.JAO21.getCode());
+        commonParams.put("authCode", JAoAuthCodeUtil.lpad(jao_rule_uno, 8, '0'));
+        commonParams.put("interfaceId", InterfaceIdEnum.JAO21.getCode());
         return sendMessegeService.sendByThreeChance(SendMethodEnum.JAO21.getCode(), commonParams, bizData);
     }
 
@@ -140,7 +140,8 @@ public class JaoServiceImpl implements IJaoService {
     public void saveDatas(String orderNo, PhoneDataTypeEnum type, String value, JSONObject resultJson, Map<String, Object> bizData) {
         String traceId = TraceIDThreadLocal.getTraceID();
         ThreadProvider.getThreadPool().execute(() -> {
-            String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+//            String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+            String taskId = "13154";
             try {
                 // 保存数据 Rong360Data
                 saveData(new JiaoData((String) bizData.get("realName"), (String) bizData.get("idNumber")
@@ -172,7 +173,8 @@ public class JaoServiceImpl implements IJaoService {
         String traceId = TraceIDThreadLocal.getTraceID();
         try {
             ThreadProvider.getThreadPool().execute(() -> {
-                String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+//                String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+                String taskId = "13254";
                 try {
                     if (StringUtils.isBlank(taskId)) {
                         return;
@@ -217,11 +219,11 @@ public class JaoServiceImpl implements IJaoService {
     @Override
     public String getValueByDBAndSave(String orderNo, String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData) {
         Integer outTime = configCacheDao.getOutTimeUnit(interfaceId);
-        List<Rong360Data> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
-                        .and("name").is(bizData.get("name")).and("idCard")
+        List<JiaoData> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
+                        .and("name").is(bizData.get("realName")).and("idCard")
                         .is(bizData.get("idNumber")).and("phone")
-                        .is(bizData.get("phone")).and("createTime").gte(getMinTime(outTime))).with(new Sort(Sort.Direction.DESC, "createTime")),
-                Rong360Data.class);
+                        .is(bizData.get("cid")).and("createTime").gte(getMinTime(outTime))).with(new Sort(Sort.Direction.DESC, "createTime")),
+                JiaoData.class);
         if (CollectionUtils.isEmpty(report)) {
             return null;
         }
@@ -244,49 +246,38 @@ public class JaoServiceImpl implements IJaoService {
     private static String changeBairongPhonestatus(JSONObject paramJson) {
 
         log.info("在网状态转换：" + paramJson.toJSONString());
-        String results = paramJson.getString("tianji_api_jiao_phonestatus_response");
+        String results = paramJson.getString("data");
         if (StringUtils.isNotBlank(results)) {
-            //如果包含[ 则表示接口返回正确
-            char[] strChar = results.substring(0, 1).toCharArray();
-            char firstStr = strChar[0];
-            if (firstStr == '[') {
-                JSONArray jsonObject0 = paramJson.getJSONArray("tianji_api_jiao_phonestatus_response");
-                JSONObject jsonObject1 = jsonObject0.getJSONObject(0);
-                if (null != jsonObject1) {
-                    JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
-                    if (null != jsonObject2) {
-                        //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
-                        JSONArray jsonObjectEcl = jsonObject2.getJSONArray("ECL");
-                        if (null != jsonObjectEcl) {
-                            if (jsonObjectEcl.size() > 0) {
-                                JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
-                                String errorCode = jsonObjectEclCode.getString("code");
-                                return Rong360PhoneStatusCode.getMsg(errorCode);
-                            }
-                        }
-                        //如果ECL没有返回信息 则获取正常响应信息RSL
-                        JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-                        if (null != jsonObject4) {
-                            if (jsonObject4.size() <= 0) {
-                                return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
-                            }
-                            JSONObject jsonObject3 = jsonObject2.getJSONObject("ISPNUM");
-                            JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
-                            JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
-                            String jsonOperation0 = jsonObject3.getString("city");
-                            String jsonRsult0 = jsonObject6.getString("desc");
-
-                            String jsonOperation = jsonOperation0;
-                            String jsonRsult = jsonRsult0;
-                            String result = "{\"swift_number\":\"3100034_20170629114811_9744\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"3\",\"costTime\":31},\"flag\":{\"flag_telCheck\":1}}";
-                            net.sf.json.JSONObject jsonPhonestatus = net.sf.json.JSONObject.fromObject(result);
-                            net.sf.json.JSONObject product = jsonPhonestatus.getJSONObject("product");
-                            product.put("result", jsonRsult);
-                            product.put("operation", jsonOperation);
-                            return jsonPhonestatus.toString();
-                        }
-                    }
+            JSONObject jsonObject0 = paramJson.getJSONObject("data");
+            //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
+            JSONArray jsonObjectEcl = jsonObject0.getJSONArray("ECL");
+            if (null != jsonObjectEcl) {
+                if (jsonObjectEcl.size() > 0) {
+                    JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
+                    String errorCode = jsonObjectEclCode.getString("code");
+                    return Rong360PhoneStatusCode.getMsg(errorCode);
                 }
+            }
+            //如果ECL没有返回信息 则获取正常响应信息RSL
+            JSONArray jsonObject4 = jsonObject0.getJSONArray("RSL");
+            if (null != jsonObject4) {
+                if (jsonObject4.size() <= 0) {
+                    return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
+                }
+                JSONObject jsonObject3 = jsonObject0.getJSONObject("ISPNUM");
+                JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
+                JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
+                String jsonOperation0 = jsonObject3.getString("city");
+                String jsonRsult0 = jsonObject6.getString("desc");
+
+                String jsonOperation = jsonOperation0;
+                String jsonRsult = jsonRsult0;
+                String result = "{\"swift_number\":\"3100034_20170629114811_9744\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"3\",\"costTime\":31},\"flag\":{\"flag_telCheck\":1}}";
+                net.sf.json.JSONObject jsonPhonestatus = net.sf.json.JSONObject.fromObject(result);
+                net.sf.json.JSONObject product = jsonPhonestatus.getJSONObject("product");
+                product.put("result", jsonRsult);
+                product.put("operation", jsonOperation);
+                return jsonPhonestatus.toString();
             }
         }
         return "";
@@ -301,7 +292,7 @@ public class JaoServiceImpl implements IJaoService {
     private static String changeBairongPhoneNetworkLength(JSONObject paramJson) {
         String jsonRsult = "";
         log.info("在网时长转换:" + paramJson.toJSONString());
-        JSONObject jsonObject0 = paramJson.getJSONObject("tianji_api_jiao_phonenetworklength_response");
+        JSONObject jsonObject0 = paramJson.getJSONObject("data");
         jsonRsult = jsonObject0.getString("message");
         if (StringUtils.isBlank(jsonRsult)) {
 //				先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
@@ -365,8 +356,8 @@ public class JaoServiceImpl implements IJaoService {
 
         commonParams.put("sys", jao_sys);
 
-        commonParams.put("username",jao_rule_name);
-        commonParams.put("password",jao_rule_pwd);
+        commonParams.put("username", jao_rule_name);
+        commonParams.put("password", jao_rule_pwd);
         commonParams.put("uno", jao_rule_uno);
 
 
@@ -380,7 +371,6 @@ public class JaoServiceImpl implements IJaoService {
     }
 
 
-
     /**
      * 三要素转换
      *
@@ -389,65 +379,54 @@ public class JaoServiceImpl implements IJaoService {
      */
     private static String changeBairongPhone3rdinfo(JSONObject paramJson) {
         log.info("三要素转换：" + paramJson.toJSONString());
-        String jsonResult = paramJson.getString("tianji_api_jiao_mobilecheck3item_response");
+        String jsonResult = paramJson.getString("data");
         if (StringUtils.isNotBlank(jsonResult)) {
-            //如果包含[ 则表示接口返回正确
-            char[] strChar = jsonResult.substring(0, 1).toCharArray();
-            char firstStr = strChar[0];
-            if (firstStr == '[') {
-                JSONArray jsonObject0 = paramJson.getJSONArray("tianji_api_jiao_mobilecheck3item_response");
-                JSONObject jsonObject1 = jsonObject0.getJSONObject(0);
-                if (null != jsonObject1) {
-                    JSONObject jsonObject2 = jsonObject1.getJSONObject("checkResult");
-                    if (null != jsonObject2) {
-                        //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
-                        JSONArray jsonObjectEcl = jsonObject2.getJSONArray("ECL");
-                        if (null != jsonObjectEcl) {
-                            if (jsonObjectEcl.size() > 0) {
-                                JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
-                                String errorCode = jsonObjectEclCode.getString("code");
-                                return "";
-                            }
-                        }
-                        //如果ECL没有返回信息 则获取正常响应信息RSL
-                        JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");
-                        if (null != jsonObject4) {
-                            if (jsonObject4.size() <= 0) {
-                                return "";
-                            }
-                            JSONObject jsonObject3 = jsonObject2.getJSONObject("ISPNUM");
-                            JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
-                            JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
-                            String jsonOperation0 = jsonObject3.getString("isp");
-                            String jsonRsult0 = jsonObject6.getString("code");
-                            String jsonOperation = "";
-                            if ("电信".equals(jsonOperation0)) {
-                                jsonOperation = "1";
-                            } else if ("联通".equals(jsonOperation0)) {
-                                jsonOperation = "2";
-                            } else if ("移动".equals(jsonOperation0)) {
-                                jsonOperation = "3";
-                            } else {
-                                jsonOperation = "4";
-                            }
-
-                            String jsonRsult = "";
-                            if ("0".equals(jsonRsult0)) {
-                                jsonRsult = "1";
-                            } else if ("6".equals(jsonRsult0)) {
-                                jsonRsult = "2";
-                            } else {
-                                jsonRsult = "0";
-                            }
-                            String result = "{\"swift_number\":\"3100034_20170629114811_9744\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"3\",\"costTime\":31},\"flag\":{\"flag_telCheck\":1}}";
-                            JSONObject json3rd = JSONObject.parseObject(result);
-                            JSONObject product = json3rd.getJSONObject("product");
-                            product.put("result", jsonRsult);
-                            product.put("operation", jsonOperation);
-                            return json3rd.toString();
-                        }
-                    }
+            JSONObject jsonObject0 = paramJson.getJSONObject("data");
+            //先获取ECL 是否有错误信息(如果接口数据异常会在此返回)
+            JSONArray jsonObjectEcl = jsonObject0.getJSONArray("ECL");
+            if (null != jsonObjectEcl) {
+                if (jsonObjectEcl.size() > 0) {
+                    JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
+                    String errorCode = jsonObjectEclCode.getString("code");
+                    return "";
                 }
+            }
+            //如果ECL没有返回信息 则获取正常响应信息RSL
+            JSONArray jsonObject4 = jsonObject0.getJSONArray("RSL");
+            if (null != jsonObject4) {
+                if (jsonObject4.size() <= 0) {
+                    return "";
+                }
+                JSONObject jsonObject3 = jsonObject0.getJSONObject("ISPNUM");
+                JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
+                JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
+                String jsonOperation0 = jsonObject3.getString("isp");
+                String jsonRsult0 = jsonObject6.getString("code");
+                String jsonOperation = "";
+                if ("电信".equals(jsonOperation0)) {
+                    jsonOperation = "1";
+                } else if ("联通".equals(jsonOperation0)) {
+                    jsonOperation = "2";
+                } else if ("移动".equals(jsonOperation0)) {
+                    jsonOperation = "3";
+                } else {
+                    jsonOperation = "4";
+                }
+
+                String jsonRsult = "";
+                if ("0".equals(jsonRsult0)) {
+                    jsonRsult = "1";
+                } else if ("6".equals(jsonRsult0)) {
+                    jsonRsult = "2";
+                } else {
+                    jsonRsult = "0";
+                }
+                String result = "{\"swift_number\":\"3100034_20170629114811_9744\",\"code\":600000,\"product\":{\"result\":\"1\",\"operation\":\"3\",\"costTime\":31},\"flag\":{\"flag_telCheck\":1}}";
+                JSONObject json3rd = JSONObject.parseObject(result);
+                JSONObject product = json3rd.getJSONObject("product");
+                product.put("result", jsonRsult);
+                product.put("operation", jsonOperation);
+                return json3rd.toString();
             }
         }
         return "";

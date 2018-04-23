@@ -135,7 +135,11 @@ public final class RSAUtils {
 			return null;
 		}
 		*/
-		
+
+		if (null == data || null == privateKey) {
+		    return null;
+        }
+
 		try {
 			Cipher cipher = Cipher.getInstance("RSA",
 					new org.bouncycastle.jce.provider.BouncyCastleProvider());
@@ -152,7 +156,7 @@ public final class RSAUtils {
 			e.printStackTrace();
 			return null ;
 		}
-		
+
 	}
 	/**
      * 解密
@@ -164,12 +168,7 @@ public final class RSAUtils {
 		// byte[] data = decrypt(privateKey, Base64.decodeBase64(text));
 		long st = System.currentTimeMillis() ;
 		String decryptValue = null ;
-		byte[] data = null;
-		if (null != hexStringToBytes(text)) {
-		    if (null != decrypt(privateKey, hexStringToBytes(text))) {
-                data = decrypt(privateKey, hexStringToBytes(text));
-            }
-		}
+		byte[] data = decrypt(privateKey, hexStringToBytes(text));
 		try {
 			decryptValue = data != null ? new String(data,"UTF-8") : null;
 		} catch (UnsupportedEncodingException e) {
@@ -275,27 +274,27 @@ public final class RSAUtils {
     }
 	
 	public static void main(String[] args) {
-//		KeyPair keyPair = generateKeyPair();
-//		//KeyPair keyPair = getKeyPair();
-//		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-//		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+		KeyPair keyPair = generateKeyPair();
+		//KeyPair keyPair = getKeyPair();
+		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
 //		System.err.println("publicKey.getModulus:"+publicKey.getModulus());
 //		//System.err.println(publicKey.getModulus().toString(16));
 //		System.err.println("publicKey.getPublicExponent:"+publicKey.getPublicExponent());
 //		//System.err.println(publicKey.getPublicExponent().toString(16));
 //		//System.out.println(privateKey.getModulus());
 //		System.err.println("privateKey.getPrivateExponent:"+privateKey.getPrivateExponent());
-//		String miwen = encrypt(publicKey,"你好大使馆哈师大说句话 hgfghf655766") ;
+		String miwen = encrypt(publicKey,"你好大使馆哈师大说句话 hgfghf655766") ;
 //		System.out.println(miwen);
-//		String jiemi = decrypt(privateKey,miwen) ;
+		String jiemi = decrypt(privateKey,miwen) ;
 //		System.out.println(jiemi);
 //
 //		System.out.println(publicKey.getEncoded().length+"ddddddddddddddddddddd");
 //		System.out.println(publicKey);
-//		miwen = encrypt(privateKey,"{\"code\":\"200\",\"data\":{\"tokenId\":\"3b5335396092dbf2da0012808a47d0df7\",\"digitalSignatureKey\":\"0f3hcwpqlqkmnw1\"},\"msg\":\"成功\",\"tokenId\":\"3b5335396092dbf2da0012808a47d0df7\"}") ;
-//		System.out.println(miwen);
-//		jiemi = decrypt(publicKey,miwen) ;
-//		System.out.println(jiemi);
+		miwen = encrypt(privateKey,"{\"code\":\"200\",\"data\":{\"tokenId\":\"3b5335396092dbf2da0012808a47d0df7\",\"digitalSignatureKey\":\"0f3hcwpqlqkmnw1\"},\"msg\":\"成功\",\"tokenId\":\"3b5335396092dbf2da0012808a47d0df7\"}") ;
+		System.out.println(miwen);
+		jiemi = decrypt(publicKey,miwen) ;
+		System.out.println(jiemi);
 //
 //
 //		String publicKeygetModulus = "146092808730320144735729361737259771395235784649397849347545828067983277664773638462655578460422052152852205026953787284472096786817652688013074920919852351549938104513323543701126867458745130312737974044654218992287837756506147223536240986269365483829624306509395462000876837761910186773929621438806709092917";

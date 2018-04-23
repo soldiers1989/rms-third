@@ -27,7 +27,20 @@ public class Client {
 	}
 
 //	private String server = "http://yz.geotmt.com" ; // http://yz.geotmt.com、https://yz.geotmt.com
+	private int encrypted = 1 ; // 是否加密传输
+	private String encryptionType = "AES" ; // AES(秘钥长度不固定)、DES(秘钥长度8)、DESede(秘钥长度24)
+	private String encryptionKey = "123456789" ; // 加密类型和加密秘钥向GEO索取(如果是获取数据的时候传的是RSA那么这里自己定义即可)
 
+	private String spiderEncryptionType = "AES" ; // AES(秘钥长度不固定)、DES(秘钥长度8)、DESede(秘钥长度24)
+	private String spiderEncryptionKey = "123456789" ; // 加密类型和加密秘钥向GEO索取(如果是获取数据的时候传的是RSA那么这里自己定义即可)
+
+	private String username = "test12" ; // 账户向GEO申请开通
+	private String password = "test12" ;
+	private String uno = "200206" ;
+	private String etype = "" ;
+	private int dsign = 0 ; // 是否进行数字签名 1是0否
+	private String loginUrl = "" ; // http://yz.geotmt.com、https://yz.geotmt.com
+	private String dataUrl = "" ; // http://yz.geotmt.com、https://yz.geotmt.com
 	private Client() {
 
 	}
@@ -36,8 +49,87 @@ public class Client {
 		return LazyHolder.INSTANCE;
 	}
 
-	private static JaoParamsRequestModel jaoParamsRequestModel;
 
+	public String getEtype() {
+		return etype;
+	}
+
+	public void setEtype(String etype) {
+		this.etype = etype;
+	}
+
+	public int getEncrypted() {
+		return encrypted;
+	}
+
+	public void setEncrypted(int encrypted) {
+		this.encrypted = encrypted;
+	}
+
+
+	public String getEncryptionType() {
+		return encryptionType;
+	}
+
+	public String getEncryptionKey() {
+		return encryptionKey;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getUno() {
+		return uno;
+	}
+
+	public void setEncryptionType(String encryptionType) {
+		this.encryptionType = encryptionType;
+	}
+
+	public void setEncryptionKey(String encryptionKey) {
+		this.encryptionKey = encryptionKey;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setUno(String uno) {
+		this.uno = uno;
+	}
+
+	public int getDsign() {
+		return dsign;
+	}
+
+	public void setDsign(int dsign) {
+		this.dsign = dsign;
+	}
+
+	public String getLoginUrl() {
+		return loginUrl;
+	}
+
+	public void setLoginUrl(String loginUrl) {
+		this.loginUrl = loginUrl;
+	}
+
+	public String getDataUrl() {
+		return dataUrl;
+	}
+
+	public void setDataUrl(String dataUrl) {
+		this.dataUrl = dataUrl;
+	}
 
 	private static final int httpConnectTimeout = 10000 ;
 	private static final int httpReadTimeout = 10000 ;
@@ -61,8 +153,15 @@ public class Client {
 	}
 	public String getData(String path,Map<String,Object> params,Map<String,Object> bizParam,String sys){
 //		this.encrypted= Integer.parseInt(bizParam.get("encrypted").toString());
-
-		jaoParamsRequestModel = new JaoParamsRequestModel(bizParam);
+		this.encryptionType= bizParam.get("encryptionType").toString();
+		this.encryptionKey= bizParam.get("encryptionKey").toString();
+		this.username= bizParam.get("username").toString();
+		this.password= bizParam.get("password").toString();
+		this.uno= bizParam.get("uno").toString();
+//		this.etype= "";
+		this.dsign=  Integer.parseInt(bizParam.get("dsign").toString());
+		this.loginUrl= bizParam.get("loginUrl").toString();
+		this.dataUrl= bizParam.get("dataUrl").toString();
 		return getData(path,params,sys,httpConnectTimeout,httpReadTimeout) ;
 	}
 	/**
@@ -80,10 +179,10 @@ public class Client {
 			Set<String> set = params.keySet() ;
 			for (String k : set) {
 				String value = params.get(k) ;
-				if(jaoParamsRequestModel.getDsign()==1){
+				if(dsign==1){
 					paraMap.put(k, value) ;
 				}
-				if(jaoParamsRequestModel.getEncrypted() == 1){
+				if(encrypted == 1){
 					// value = Secret.encrypt(encryptionType,value, encryptionKey)  ; // 加密
 					value = encrypt(value, sys) ; // 加密
 				}
@@ -94,9 +193,9 @@ public class Client {
 		if(sb!=null&&sb.length()>0) {
 			sbStr = sb.substring(0, sb.length()-1) ;
 		}
-		if(jaoParamsRequestModel.getDsign()==1){
+		if(dsign==1){
 			paraMap.put("tokenId", tokenId) ;
-			String digitalSignature = DigitalSignature.clientDigitalSignature(paraMap, null, "", digitalSignatureKeyMap.get(jaoParamsRequestModel.getUsername())) ;
+			String digitalSignature = DigitalSignature.clientDigitalSignature(paraMap, null, "", digitalSignatureKeyMap.get(username)) ;
 			headers.put("digitalSignature", digitalSignature) ;
 		}
 		String newParams = sbStr+"&tokenId="+tokenId ;
@@ -123,10 +222,10 @@ public class Client {
 			Set<String> set = params.keySet() ;
 			for (String k : set) {
 				String value = params.get(k).toString() ;
-				if(jaoParamsRequestModel.getDsign()==1){
+				if(dsign==1){
 					paraMap.put(k, value) ;
 				}
-				if(jaoParamsRequestModel.getEncrypted() == 1){
+				if(encrypted == 1){
 					// value = Secret.encrypt(encryptionType,value, encryptionKey)  ; // 加密
 					value = encrypt(value, sys) ; // 加密
 				}
@@ -137,9 +236,9 @@ public class Client {
 		if(sb!=null&&sb.length()>0) {
 			sbStr = sb.substring(0, sb.length()-1) ;
 		}
-		if(jaoParamsRequestModel.getDsign()==1){
+		if(dsign==1){
 			paraMap.put("tokenId", tokenId) ;
-			String digitalSignature = DigitalSignature.clientDigitalSignature(paraMap, null, "", digitalSignatureKeyMap.get(jaoParamsRequestModel.getUsername())) ;
+			String digitalSignature = DigitalSignature.clientDigitalSignature(paraMap, null, "", digitalSignatureKeyMap.get(username)) ;
 			headers.put("digitalSignature", digitalSignature) ;
 		}
 		String newParams = sbStr+"&tokenId="+tokenId ;
@@ -150,9 +249,9 @@ public class Client {
 			if("-100".equals(code)||"-200".equals(code)||"-300".equals(code)){
 				logger.info("集奥tokenId无效重新获取tokenId");
 				tokenId = getToken(false) ;  // 等计费功能上线后第三个参数才能填RSA不然都只能是空
-				if(jaoParamsRequestModel.getDsign()==1){
+				if(dsign==1){
 					paraMap.put("tokenId", tokenId) ;
-					String digitalSignature = DigitalSignature.clientDigitalSignature(paraMap, null, "", digitalSignatureKeyMap.get(jaoParamsRequestModel.getUsername())) ;
+					String digitalSignature = DigitalSignature.clientDigitalSignature(paraMap, null, "", digitalSignatureKeyMap.get(username)) ;
 					headers.put("digitalSignature", digitalSignature) ;
 				}
 				newParams = sbStr+"&tokenId="+tokenId ;
@@ -171,19 +270,19 @@ public class Client {
 		if(first){
 			if(getNewToken()){
 				// 走网络获取token需要同步
-				synchronized (jaoParamsRequestModel.getUsername().intern()) {
+				synchronized (username.intern()) {
 					return getToken() ; 
 				}
 			}else{
-				return tokenIdMap.get(jaoParamsRequestModel.getUsername()) ;
+				return tokenIdMap.get(username) ;
 			}
 		}else{
-			synchronized (jaoParamsRequestModel.getUsername().intern()) {
-				Long tokenTime = getTokenTimeMap.get(jaoParamsRequestModel.getUsername()) ;
+			synchronized (username.intern()) {
+				Long tokenTime = getTokenTimeMap.get(username) ;
 				long getTokenTime = tokenTime==null ? 0l : tokenTime;
 				if(System.currentTimeMillis()-getTokenTime>=tokenCyc){
 					// 避免高并发
-					tokenIdMap.put(jaoParamsRequestModel.getUsername(), "") ; // 使token失效
+					tokenIdMap.put(username, "") ; // 使token失效
 				}
 				String tokenId = getToken() ;
 				return tokenId ;
@@ -197,33 +296,33 @@ public class Client {
 	public String getToken(){
 		if(getNewToken()){
 			// 加密用户名密码
-			String eUsername = jaoParamsRequestModel.getUsername() ;
-			String ePassword = jaoParamsRequestModel.getUsername() ;
-			String eDsign = jaoParamsRequestModel.getDsign()+"" ;
-			if(jaoParamsRequestModel.getEncrypted() == 1){
+			String eUsername = username ;  
+			String ePassword = password ;
+			String eDsign = dsign+"" ;
+			if(encrypted == 1){
 				/*
 				eUsername = Secret.encrypt(encryptionType,username, encryptionKey) ;  
 				ePassword = Secret.encrypt(encryptionType,password, encryptionKey) ;
 				eDsign = Secret.encrypt(encryptionType,dsign+"", encryptionKey) ;
 				*/
-				eUsername = encrypt(jaoParamsRequestModel.getUsername()) ;
-				ePassword = encrypt(jaoParamsRequestModel.getPassword()) ;
-				eDsign = encrypt(jaoParamsRequestModel.getDsign()+"") ;
+				eUsername = encrypt(username) ;
+				ePassword = encrypt(password) ;
+				eDsign = encrypt(dsign+"") ;
 			}
 			String params = "" ;
-			if("RSA".equalsIgnoreCase(jaoParamsRequestModel.getEtype())){
+			if("RSA".equalsIgnoreCase(etype)){
 				KeyPair keyPair = RSAUtils.getKeyPair();
-				String paraEncryptionType = RSAUtils.encrypt(keyPair.getPublic(), jaoParamsRequestModel.getEncryptionType()) ;
-				String paraEncryptionKey = RSAUtils.encrypt(keyPair.getPublic(), jaoParamsRequestModel.getEncryptionKey()) ;
-				params = "username="+eUsername+"&password="+ePassword+"&etype="+jaoParamsRequestModel.getEtype()+"&encryptionType="+paraEncryptionType+"&encryptionKey="+paraEncryptionKey+"&encrypted="+jaoParamsRequestModel.getEncrypted()+"&dsign="+eDsign ;
+				String paraEncryptionType = RSAUtils.encrypt(keyPair.getPublic(), encryptionType) ;
+				String paraEncryptionKey = RSAUtils.encrypt(keyPair.getPublic(), encryptionKey) ;
+				params = "username="+eUsername+"&password="+ePassword+"&etype="+etype+"&encryptionType="+paraEncryptionType+"&encryptionKey="+paraEncryptionKey+"&encrypted="+encrypted+"&dsign="+eDsign ;
 			}else{
-				params = "username="+eUsername+"&password="+ePassword+"&uno="+jaoParamsRequestModel.getUno()+"&encrypted="+jaoParamsRequestModel.getEncrypted()+"&dsign="+eDsign ;
+				params = "username="+eUsername+"&password="+ePassword+"&uno="+uno+"&encrypted="+encrypted+"&dsign="+eDsign ;
 			}
 			String reqencoding = "UTF-8" ;
 			String respencoding = "UTF-8" ;
 			String requestMethod = "POST" ;
 			Map<String,String> headerMap = null ;
-			String rs = HttpClient.getRs(jaoParamsRequestModel.getLoginUrl(), params, reqencoding, respencoding, requestMethod, httpConnectTimeout, httpReadTimeout, headerMap) ;
+			String rs = HttpClient.getRs(loginUrl, params, reqencoding, respencoding, requestMethod, httpConnectTimeout, httpReadTimeout, headerMap) ;
 			if(rs!=null&&!"".equals(rs)){
 				// 解密返回值
 				if(rs.startsWith("{")){
@@ -237,13 +336,13 @@ public class Client {
 				if("200".equals(map.get("code")+"")){
 					long getTokenTime = System.currentTimeMillis() ;
 					String tokenId = map.get("tokenId")+"" ;
-					tokenIdMap.put(jaoParamsRequestModel.getUsername(), tokenId) ;
-					getTokenTimeMap.put(jaoParamsRequestModel.getUsername(), getTokenTime) ;
+					tokenIdMap.put(username, tokenId) ;
+					getTokenTimeMap.put(username, getTokenTime) ;
 					Map data = (Map)map.get("data") ;
 					if(data!=null){
 						String digitalSignatureKey = (String)data.get("digitalSignatureKey") ;
 						if(digitalSignatureKey!=null){
-							digitalSignatureKeyMap.put(jaoParamsRequestModel.getUsername(), digitalSignatureKey) ;
+							digitalSignatureKeyMap.put(username, digitalSignatureKey) ;
 						}
 					}
 					return tokenId ;
@@ -255,7 +354,7 @@ public class Client {
 				return "" ;
 			}
 		}else{
-			return tokenIdMap.get(jaoParamsRequestModel.getUsername()) ;
+			return tokenIdMap.get(username) ;
 		}
 	}
 	/**
@@ -295,14 +394,14 @@ public class Client {
 	 * @return
 	 */
 	public String loginOut(String sys){
-		String tokenId = tokenIdMap.get(jaoParamsRequestModel.getUsername()) ;
+		String tokenId = tokenIdMap.get(username) ;
 		if(tokenId!=null&&!"".equals(tokenId)){
-			String digitalSignatureKey = digitalSignatureKeyMap.get(jaoParamsRequestModel.getUsername());
+			String digitalSignatureKey = digitalSignatureKeyMap.get(username);
 			Map<String,String> headers = new HashMap<String,String>() ;
 			if(digitalSignatureKey!=null&&!"".equals(digitalSignatureKey)){
 				TreeMap<String,String> paraMap = new TreeMap<String,String>() ;
 				paraMap.put("tokenId", tokenId) ;
-				String digitalSignature = DigitalSignature.clientDigitalSignature(paraMap, null, "", digitalSignatureKeyMap.get(jaoParamsRequestModel.getUsername())) ;
+				String digitalSignature = DigitalSignature.clientDigitalSignature(paraMap, null, "", digitalSignatureKeyMap.get(username)) ;
 				headers.put("digitalSignature", digitalSignature) ;
 			}
 			return loginOut(tokenId,headers,sys) ;
@@ -320,7 +419,7 @@ public class Client {
 		String reqencoding = "UTF-8" ;
 		String respencoding = "UTF-8" ;
 		String requestMethod = "POST" ;
-		String rs = HttpClient.getRs(jaoParamsRequestModel.getDataUrl(), params, reqencoding, respencoding, requestMethod, httpConnectTimeout, httpReadTimeout, headerMap) ;
+		String rs = HttpClient.getRs(dataUrl, params, reqencoding, respencoding, requestMethod, httpConnectTimeout, httpReadTimeout, headerMap) ;
 		if(rs!=null&&!"".equals(rs)){
 			// 解密返回值
 			if(rs.startsWith("{")){
@@ -332,9 +431,9 @@ public class Client {
 			Map<String,Object> map = JSON.parseObject(rs, Map.class) ;
 			if("200".equals(map.get("code")+"")){
 				logger.info("集奥退出成功");
-				tokenIdMap.remove(jaoParamsRequestModel.getUsername()) ;
-				getTokenTimeMap.remove(jaoParamsRequestModel.getUsername()) ;
-				digitalSignatureKeyMap.remove(jaoParamsRequestModel.getUsername()) ;
+				tokenIdMap.remove(username) ;
+				getTokenTimeMap.remove(username) ;
+				digitalSignatureKeyMap.remove(username) ;
 			}else{
 				logger.info("集奥退出失败");
 			}
@@ -357,10 +456,10 @@ public class Client {
 	 */
 	private String encrypt(String text,String sys){
 		if("civp".equalsIgnoreCase(sys)){
-			text = Secret.encrypt(jaoParamsRequestModel.getEncryptionType(),text, jaoParamsRequestModel.getEncryptionKey()) ;
+			text = Secret.encrypt(encryptionType,text, encryptionKey) ;  
 			return text ;
 		}else{
-			text = Secret.encrypt(jaoParamsRequestModel.getSpiderEncryptionType(),text, jaoParamsRequestModel.getSpiderEncryptionKey()) ;
+			text = Secret.encrypt(spiderEncryptionType,text, spiderEncryptionKey) ;  
 			return text ;
 		}
 	}
@@ -380,10 +479,10 @@ public class Client {
 	 */
 	private String decrypt(String rs,String sys){
 		if("civp".equalsIgnoreCase(sys)){
-			rs = Secret.decrypt(jaoParamsRequestModel.getEncryptionType(),rs, jaoParamsRequestModel.getEncryptionKey()) ;
+			rs = Secret.decrypt(encryptionType,rs, encryptionKey) ;
 			return rs ;
 		}else{
-			rs = Secret.decrypt(jaoParamsRequestModel.getSpiderEncryptionType(),rs, jaoParamsRequestModel.getSpiderEncryptionKey()) ;
+			rs = Secret.decrypt(spiderEncryptionType,rs, spiderEncryptionKey) ;
 			return rs ;
 		}
 	}
@@ -393,9 +492,25 @@ public class Client {
 	 * @return
 	 */
 	public boolean getNewToken(){
-		Long tokenTime = getTokenTimeMap.get(jaoParamsRequestModel.getUsername()) ;
+		Long tokenTime = getTokenTimeMap.get(username) ;
 		long getTokenTime = tokenTime==null ? 0l : tokenTime;
-		return tokenIdMap.get(jaoParamsRequestModel.getUsername())==null||"".equals(tokenIdMap.get(jaoParamsRequestModel.getUsername()))||System.currentTimeMillis()-getTokenTime>=tokenCycle ;
+		return tokenIdMap.get(username)==null||"".equals(tokenIdMap.get(username))||System.currentTimeMillis()-getTokenTime>=tokenCycle ;
+	}
+	
+	public String getSpiderEncryptionType() {
+		return spiderEncryptionType;
+	}
+
+	public void setSpiderEncryptionType(String spiderEncryptionType) {
+		this.spiderEncryptionType = spiderEncryptionType;
+	}
+
+	public String getSpiderEncryptionKey() {
+		return spiderEncryptionKey;
+	}
+
+	public void setSpiderEncryptionKey(String spiderEncryptionKey) {
+		this.spiderEncryptionKey = spiderEncryptionKey;
 	}
 
 	public String rpad(String str, int strLength, char chr) {

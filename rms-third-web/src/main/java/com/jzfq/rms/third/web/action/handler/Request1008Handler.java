@@ -145,7 +145,7 @@ public class Request1008Handler extends AbstractRequestHandler {
             tdDataService.saveResult(orderNo, eventId, apiResp, commonParams);
             //push推送
             if (null != apiResp.getFinal_score()) {
-                pushDataService.pushData(traceId,"tdscore", String.valueOf(apiResp.getFinal_score()), mobile, orderNo);
+                pushDataService.pushData(traceId,"tdscore", String.valueOf(apiResp.getFinal_score()), personInfo.getCertCardNo(), orderNo);
             }else {
                 log.info("traceId={} 同盾拉取失败：false ，同盾分为空",traceId);     //失败
             }

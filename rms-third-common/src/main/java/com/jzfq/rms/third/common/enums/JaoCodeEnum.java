@@ -62,7 +62,7 @@ public enum JaoCodeEnum {
 
 
 
-    public static final Map<String, String> map = new HashMap<String, String>();
+    protected static final Map<String, String> map = new HashMap<String, String>();
     static{
         for (JaoCodeEnum item : JaoCodeEnum.values()) {
             map.put(item.code, item.msg);

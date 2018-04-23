@@ -18,7 +18,7 @@ public interface IPushDataService {
      * @param orderNo
      * @return
      */
-    void pushData(String traceId,String scoreType, String score, String mobile, String orderNo);
+    void pushData(String traceId,String scoreType, String score, String idcard, String orderNo);
 
 
 }

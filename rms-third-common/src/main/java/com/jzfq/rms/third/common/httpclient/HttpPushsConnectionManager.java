@@ -15,6 +15,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +32,7 @@ import java.util.Map;
  */
 public class HttpPushsConnectionManager {
 	
-/*	private static Logger LOG = (Logger) LogFactory.getLog(HttpConnectionManager.class);*/
+	private static Logger LOG =  LoggerFactory.getLogger(HttpPushsConnectionManager.class);
 	
 	/**
 	 * 最大连接数
@@ -173,7 +175,8 @@ public class HttpPushsConnectionManager {
 			
 			return send(request,charset);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			LOG.info(e.getMessage());
 			return null;
 		}
 	}
@@ -300,7 +303,8 @@ public class HttpPushsConnectionManager {
 			
 			return send(request,charset);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			LOG.info(e.getMessage());
 			return null;
 		}
 		
@@ -359,7 +363,8 @@ public class HttpPushsConnectionManager {
 			
 			return send(request,charset);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			LOG.info(e.getMessage());
 			return null;
 		}
 	}
@@ -403,7 +408,8 @@ public class HttpPushsConnectionManager {
 				try {
 					response.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					LOG.info(e.getMessage());
 				}
 			}
 				
@@ -490,7 +496,8 @@ public class HttpPushsConnectionManager {
 			
 			return send(request,charset);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			LOG.info(e.getMessage());
 			return null;
 		}
 	}

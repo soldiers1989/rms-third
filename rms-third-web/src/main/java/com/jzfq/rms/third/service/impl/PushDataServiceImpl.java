@@ -42,14 +42,14 @@ public class PushDataServiceImpl implements IPushDataService {
      * @param traceId
      * @param scoreType
      * @param score
-     * @param mobile
+     * @param idcard
      * @param orderNo
      * @return
      */
 
     @Override
-    public void pushData(String traceId, String scoreType, String score, String mobile, String orderNo) {
-        pushDataToRmsPush(traceId, scoreType, score, mobile, orderNo);
+    public void pushData(String traceId, String scoreType, String score, String idcard, String orderNo) {
+        pushDataToRmsPush(traceId, scoreType, score, idcard, orderNo);
     }
 
 
@@ -59,9 +59,9 @@ public class PushDataServiceImpl implements IPushDataService {
      * @return
      */
 
-    public void pushDataToRmsPush(String traceId, String scoreType, String result, String mobile, String orderNo) {
+    public void pushDataToRmsPush(String traceId, String scoreType, String result, String idcard, String orderNo) {
         ThreadProvider.getThreadPool().execute(() -> {
-            requestPushParams(traceId, scoreType, result, mobile, orderNo);
+            requestPushParams(traceId, scoreType, result, idcard, orderNo);
         });
 
     }
@@ -71,12 +71,12 @@ public class PushDataServiceImpl implements IPushDataService {
      *
      * @return
      */
-    public void requestPushParams(String traceId, String scoreType, String result, String mobile, String orderNo) {
+    public void requestPushParams(String traceId, String scoreType, String result, String idcard, String orderNo) {
         //封装推送数据
         log.info("开始推送数据到push系统流水号traceID：", traceId);
         JSONObject jsonData = new JSONObject();
         jsonData.put(scoreType, result);
-        jsonData.put("mobile", mobile);
+        jsonData.put("idcard  ", idcard  );
         jsonData.put("orderNo", orderNo);
         JSONObject jsonParams = new JSONObject();
         if ("tdscore".equals(scoreType)) {
@@ -90,7 +90,7 @@ public class PushDataServiceImpl implements IPushDataService {
         jsonParams.put("sendparam", jsonData.toString());
         Map<String, String> map = new HashMap<String, String>();
         map.put("params", jsonParams.toString());
-        log.info("推送push系统数据参数封装完成：", map.toString());
+        log.info("推送push系统数据参数封装完成："+ map.toString());
         //開始推送
         doPostData(traceId, map);
     }

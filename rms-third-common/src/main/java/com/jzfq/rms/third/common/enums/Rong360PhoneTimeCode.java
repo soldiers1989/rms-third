@@ -47,7 +47,7 @@ public enum Rong360PhoneTimeCode {
 
 
 
-    public static final Map<Integer, String> map = new HashMap<Integer, String>();
+    protected static final Map<Integer, String> map = new HashMap<Integer, String>();
     static{
         for (Rong360PhoneTimeCode item : Rong360PhoneTimeCode.values()) {
             map.put(item.code, item.msg);

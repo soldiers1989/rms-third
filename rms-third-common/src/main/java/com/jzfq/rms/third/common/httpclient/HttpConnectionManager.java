@@ -198,7 +198,8 @@ public class HttpConnectionManager {
 			
 			return send(request,charset);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			LOG.info(e.getMessage());
 			return null;
 		}
 	}
@@ -325,7 +326,8 @@ public class HttpConnectionManager {
 			
 			return send(request,charset);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			LOG.info(e.getMessage());
 			return null;
 		}
 		
@@ -384,7 +386,8 @@ public class HttpConnectionManager {
 			
 			return send(request,charset);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			LOG.info(e.getMessage());
 			return null;
 		}
 	}
@@ -421,7 +424,8 @@ public class HttpConnectionManager {
 				try {
 					response.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					LOG.info(e.getMessage());
 				}
 			}
 		}
@@ -509,7 +513,8 @@ public class HttpConnectionManager {
 			
 			return send(request,charset);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			LOG.info(e.getMessage());
 			return null;
 		}
 	}
@@ -563,7 +568,8 @@ public class HttpConnectionManager {
 
 			return send(request,charset);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			LOG.info(e.getMessage());
 			return null;
 		}
 	}

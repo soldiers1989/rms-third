@@ -57,7 +57,7 @@ public enum Rong360PhoneStatusCode {
 
 
 
-    public static final Map<Integer, String> map = new HashMap<Integer, String>();
+    protected static final Map<Integer, String> map = new HashMap<Integer, String>();
     static{
         for (Rong360PhoneStatusCode item : Rong360PhoneStatusCode.values()) {
             map.put(item.code, item.msg);

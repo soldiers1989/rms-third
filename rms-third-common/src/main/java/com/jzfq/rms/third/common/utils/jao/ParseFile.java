@@ -26,15 +26,23 @@ public class ParseFile {
      */
 	public static String getFileStr(String filePath) {
 		byte[] data = null;
+		InputStream in = null;
 		// 读取文件字节数组
 		try {
-			InputStream in = new FileInputStream(filePath);
+			in = new FileInputStream(filePath);
 			data = new byte[in.available()];
 			in.read(data);
-			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return "" ;
+		}finally {
+			if (null != in) {
+				try {
+					in.close();
+				}catch (IOException ex){
+					ex.printStackTrace();
+				}
+			}
 		}
 		// 对字节数组Base64编码
 		BASE64Encoder encoder = new BASE64Encoder();

@@ -164,7 +164,10 @@ public final class RSAUtils {
 		// byte[] data = decrypt(privateKey, Base64.decodeBase64(text));
 		long st = System.currentTimeMillis() ;
 		String decryptValue = null ;
-		byte[] data = decrypt(privateKey, hexStringToBytes(text));
+		byte[] data = null;
+		if (null != hexStringToBytes(text)) {
+			 data = decrypt(privateKey, hexStringToBytes(text));
+		}
 		try {
 			decryptValue = data != null ? new String(data,"UTF-8") : null;
 		} catch (UnsupportedEncodingException e) {
@@ -270,41 +273,41 @@ public final class RSAUtils {
     }
 	
 	public static void main(String[] args) {
-		KeyPair keyPair = generateKeyPair();
-		//KeyPair keyPair = getKeyPair();
-		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-		System.err.println("publicKey.getModulus:"+publicKey.getModulus());
-		//System.err.println(publicKey.getModulus().toString(16));
-		System.err.println("publicKey.getPublicExponent:"+publicKey.getPublicExponent());
-		//System.err.println(publicKey.getPublicExponent().toString(16));
-		//System.out.println(privateKey.getModulus());
-		System.err.println("privateKey.getPrivateExponent:"+privateKey.getPrivateExponent());
-		String miwen = encrypt(publicKey,"你好大使馆哈师大说句话 hgfghf655766") ;
-		System.out.println(miwen);
-		String jiemi = decrypt(privateKey,miwen) ;
-		System.out.println(jiemi);
-		
-		System.out.println(publicKey.getEncoded().length+"ddddddddddddddddddddd");
-		System.out.println(publicKey);
-		miwen = encrypt(privateKey,"{\"code\":\"200\",\"data\":{\"tokenId\":\"3b5335396092dbf2da0012808a47d0df7\",\"digitalSignatureKey\":\"0f3hcwpqlqkmnw1\"},\"msg\":\"成功\",\"tokenId\":\"3b5335396092dbf2da0012808a47d0df7\"}") ;
-		System.out.println(miwen);
-		jiemi = decrypt(publicKey,miwen) ;
-		System.out.println(jiemi);
-		
-		
-		String publicKeygetModulus = "146092808730320144735729361737259771395235784649397849347545828067983277664773638462655578460422052152852205026953787284472096786817652688013074920919852351549938104513323543701126867458745130312737974044654218992287837756506147223536240986269365483829624306509395462000876837761910186773929621438806709092917";
-		String publicKeygetPublicExponent = "65537" ;
-		String privateKeygetPrivateExponent = "42797745316590879331999756107140246746374289782623393039405715139191768739582054180760859527620168443514495389054820362155420391688849260069320008647637896635466193738861220089120152377950332958757102733242003174861734744105050029562777024551670221668038025921938206071392308124916602082924998644417338384865" ;
-
-		KeyPair keyPair1 = getKeyPair(publicKeygetModulus,publicKeygetPublicExponent,privateKeygetPrivateExponent);
-		publicKey = (RSAPublicKey) keyPair1.getPublic();
-		
-	    privateKey = (RSAPrivateKey) keyPair1.getPrivate();
-		String miwen1 = encrypt(publicKey,"adminahgsdvghasgdhagsdhjgasyudgasudbjkasbdhjasdbjhasbdhasjdvasfdasgvgdhv") ;
-		System.out.println("11111111:"+miwen1);
-		String jiemi1 = decrypt(privateKey,miwen1) ;
-		System.out.println(jiemi1);
+//		KeyPair keyPair = generateKeyPair();
+//		//KeyPair keyPair = getKeyPair();
+//		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+//		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+//		System.err.println("publicKey.getModulus:"+publicKey.getModulus());
+//		//System.err.println(publicKey.getModulus().toString(16));
+//		System.err.println("publicKey.getPublicExponent:"+publicKey.getPublicExponent());
+//		//System.err.println(publicKey.getPublicExponent().toString(16));
+//		//System.out.println(privateKey.getModulus());
+//		System.err.println("privateKey.getPrivateExponent:"+privateKey.getPrivateExponent());
+//		String miwen = encrypt(publicKey,"你好大使馆哈师大说句话 hgfghf655766") ;
+//		System.out.println(miwen);
+//		String jiemi = decrypt(privateKey,miwen) ;
+//		System.out.println(jiemi);
+//
+//		System.out.println(publicKey.getEncoded().length+"ddddddddddddddddddddd");
+//		System.out.println(publicKey);
+//		miwen = encrypt(privateKey,"{\"code\":\"200\",\"data\":{\"tokenId\":\"3b5335396092dbf2da0012808a47d0df7\",\"digitalSignatureKey\":\"0f3hcwpqlqkmnw1\"},\"msg\":\"成功\",\"tokenId\":\"3b5335396092dbf2da0012808a47d0df7\"}") ;
+//		System.out.println(miwen);
+//		jiemi = decrypt(publicKey,miwen) ;
+//		System.out.println(jiemi);
+//
+//
+//		String publicKeygetModulus = "146092808730320144735729361737259771395235784649397849347545828067983277664773638462655578460422052152852205026953787284472096786817652688013074920919852351549938104513323543701126867458745130312737974044654218992287837756506147223536240986269365483829624306509395462000876837761910186773929621438806709092917";
+//		String publicKeygetPublicExponent = "65537" ;
+//		String privateKeygetPrivateExponent = "42797745316590879331999756107140246746374289782623393039405715139191768739582054180760859527620168443514495389054820362155420391688849260069320008647637896635466193738861220089120152377950332958757102733242003174861734744105050029562777024551670221668038025921938206071392308124916602082924998644417338384865" ;
+//
+//		KeyPair keyPair1 = getKeyPair(publicKeygetModulus,publicKeygetPublicExponent,privateKeygetPrivateExponent);
+//		publicKey = (RSAPublicKey) keyPair1.getPublic();
+//
+//	    privateKey = (RSAPrivateKey) keyPair1.getPrivate();
+//		String miwen1 = encrypt(publicKey,"adminahgsdvghasgdhagsdhjgasyudgasudbjkasbdhjasdbjhasbdhasjdvasfdasgvgdhv") ;
+//		System.out.println("11111111:"+miwen1);
+//		String jiemi1 = decrypt(privateKey,miwen1) ;
+//		System.out.println(jiemi1);
 		
 		
 	}

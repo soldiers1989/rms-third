@@ -140,8 +140,8 @@ public class JaoServiceImpl implements IJaoService {
     public void saveDatas(String orderNo, PhoneDataTypeEnum type, String value, JSONObject resultJson, Map<String, Object> bizData) {
         String traceId = TraceIDThreadLocal.getTraceID();
         ThreadProvider.getThreadPool().execute(() -> {
-//            String taskId = rmsService.queryByOrderNo(traceId, orderNo);
-            String taskId = "13154";
+            String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+//            String taskId = "13154";
             try {
                 // 保存数据 Rong360Data
                 saveData(new JiaoData((String) bizData.get("realName"), (String) bizData.get("idNumber")
@@ -173,8 +173,8 @@ public class JaoServiceImpl implements IJaoService {
         String traceId = TraceIDThreadLocal.getTraceID();
         try {
             ThreadProvider.getThreadPool().execute(() -> {
-//                String taskId = rmsService.queryByOrderNo(traceId, orderNo);
-                String taskId = "13254";
+                String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+//                String taskId = "13254";
                 try {
                     if (StringUtils.isBlank(taskId)) {
                         return;

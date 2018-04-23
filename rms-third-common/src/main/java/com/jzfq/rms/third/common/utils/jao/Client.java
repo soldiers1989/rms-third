@@ -139,6 +139,10 @@ public class Client {
 
 	private static final long tokenCycle = 86400000l ;
 	private static final long tokenCyc = 35000l ;  // 避免高并发时刚好token过期造成同时多个线程一起申请新token，如果在此时间内有过更新那么直接返回内存里面的token
+
+	private static final Object lock1 = new Object();
+	private static final Object lock2 = new Object();
+
 	public static void main(String[] args){
 //		Client client = new Client();
 //		String path = client.server+"/civp/getview/api/u/queryUnify" ;
@@ -270,14 +274,14 @@ public class Client {
 		if(first){
 			if(getNewToken()){
 				// 走网络获取token需要同步
-				synchronized (username.intern()) {
+				synchronized (lock1) {
 					return getToken() ; 
 				}
 			}else{
 				return tokenIdMap.get(username) ;
 			}
 		}else{
-			synchronized (username.intern()) {
+			synchronized (lock2) {
 				Long tokenTime = getTokenTimeMap.get(username) ;
 				long getTokenTime = tokenTime==null ? 0l : tokenTime;
 				if(System.currentTimeMillis()-getTokenTime>=tokenCyc){

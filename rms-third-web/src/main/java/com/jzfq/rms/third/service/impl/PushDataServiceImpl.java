@@ -76,7 +76,7 @@ public class PushDataServiceImpl implements IPushDataService {
         log.info("开始推送数据到push系统流水号traceID：", traceId);
         JSONObject jsonData = new JSONObject();
         jsonData.put(scoreType, result);
-        jsonData.put("idcard  ", idcard  );
+        jsonData.put("idcard", idcard  );
         jsonData.put("orderNo", orderNo);
         JSONObject jsonParams = new JSONObject();
         if ("tdscore".equals(scoreType)) {

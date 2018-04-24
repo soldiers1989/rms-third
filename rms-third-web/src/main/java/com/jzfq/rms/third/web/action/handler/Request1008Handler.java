@@ -102,8 +102,10 @@ public class Request1008Handler extends AbstractRequestHandler {
         Map<String, Object> commonParams = getCommonParams(request);
         RiskPersonalInfo personInfo = (RiskPersonalInfo)commonParams.get("personalInfo");
         String mobile = "";
+        String idCard = "";
         if (null != personInfo) {
             mobile = personInfo.getMobile();
+            idCard = personInfo.getCertCardNo();
         }
 //        // 根据orderNo查询数据库
         String eventId = getEventId(request);
@@ -145,7 +147,7 @@ public class Request1008Handler extends AbstractRequestHandler {
             tdDataService.saveResult(orderNo, eventId, apiResp, commonParams);
             //push推送
             if (null != apiResp.getFinal_score()) {
-                pushDataService.pushData(traceId,"tdscore", String.valueOf(apiResp.getFinal_score()), personInfo.getCertCardNo(), orderNo);
+                pushDataService.pushData(traceId,"tdscore", String.valueOf(apiResp.getFinal_score()), idCard, orderNo);
             }else {
                 log.info("traceId={} 同盾拉取失败：false ，同盾分为空",traceId);     //失败
             }

@@ -96,6 +96,10 @@ public class Request1011Handler extends AbstractRequestHandler {
         String customerType = (String) request.getParam("customerType");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
+        String idCard = "";
+        if (null != info) {
+            idCard = info.getCertCardNo();
+        }
         // 1.搜索mongo中是否存在
         String strategyId = getStrategyId(request);
         if (StringUtils.isBlank(strategyId)) {
@@ -147,7 +151,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         resultJson.put("score", riskPostDataService.getScoreByJson(tempResult));
         resultJson.put("weight", tempResult.getString("Rule_final_weight"));
         //push推送riskPostDataService.getScoreByJson(tempResult)
-        pushDataService.pushData(traceId,"brscore",riskPostDataService.getScoreByJson(tempResult),info.getCertCardNo(),orderNo);
+        pushDataService.pushData(traceId,"brscore",riskPostDataService.getScoreByJson(tempResult),idCard,orderNo);
         log.info("traceId={} 拉取三方百融分成功,返回结果={}",traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //失败
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
 

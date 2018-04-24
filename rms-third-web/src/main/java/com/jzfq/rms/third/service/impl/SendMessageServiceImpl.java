@@ -6,6 +6,8 @@ import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.AbstractHandlerFactory;
 import com.jzfq.rms.third.service.IMonitorService;
 import com.jzfq.rms.third.service.ISendMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,10 @@ import java.util.Map;
  **/
 @Service
 public class SendMessageServiceImpl extends AbstractHandlerFactory implements ISendMessageService {
+
+    private static Logger logger = LoggerFactory.getLogger(SendMessageServiceImpl.class);
+
+
     @Autowired
     IMonitorService monitorService;
     /**
@@ -40,7 +46,8 @@ public class SendMessageServiceImpl extends AbstractHandlerFactory implements IS
             try {
                 result = send(method,params,bizParams);
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                logger.info(e.getMessage());
                 error=e;
             }finally {
                 Map<String,Object> newParams = new HashMap<>();
@@ -50,7 +57,8 @@ public class SendMessageServiceImpl extends AbstractHandlerFactory implements IS
                 try {
                     handlerResult = getResult(method,newParams);
                 } catch (Exception e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
+                    logger.info(e.getMessage());
                     if(error==null){
                         error=e;
                     }

@@ -18,9 +18,9 @@ import java.util.*;
  * @date:   2015年12月4日 下午12:36:38
  */
 public class CrawlerUtils {
-    
-    
-    public static Set<Integer> refreshType = new HashSet<Integer>();
+
+
+    public static final Set<Integer> refreshType = new HashSet<Integer>();
         
     static{
         refreshType.add(8);//图片验证码

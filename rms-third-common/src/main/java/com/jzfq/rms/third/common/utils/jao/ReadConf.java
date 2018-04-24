@@ -1,5 +1,8 @@
 package com.jzfq.rms.third.common.utils.jao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +14,8 @@ import java.util.Properties;
  *
  */
 public class ReadConf {
+
+	private static Logger logger = LoggerFactory.getLogger(ReadConf.class);
 	private static Map<String,Properties> properties = new HashMap<String,Properties>() ;
 	private static String baseDir = "" + File.separator ;
 	
@@ -56,22 +61,26 @@ public class ReadConf {
 			p = new Properties();
 			p.load(insReader);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		} finally {
 			if (is != null) {
 				try {
 					is.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					logger.info(e.getMessage());
 				}
 			}
 			if (insReader != null) {
 				try {
 					insReader.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					logger.info(e.getMessage());
 				}
 			}
 		}

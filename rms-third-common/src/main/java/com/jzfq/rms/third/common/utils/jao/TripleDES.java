@@ -1,11 +1,16 @@
 package com.jzfq.rms.third.common.utils.jao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 
 public class TripleDES extends ByteHexStr{
+
+    private static Logger logger = LoggerFactory.getLogger(TripleDES.class);
 
     public static final String Key = "123456781234567811122235" ; // 24位
     private static final String Algorithm = "DESede";  //定义 加密算法,可用 DES,DESede,Blowfish
@@ -22,7 +27,8 @@ public class TripleDES extends ByteHexStr{
 			return rs ;
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("src:"+src+";keybyte:"+keybyte);
-			e.printStackTrace();
+//			e.printStackTrace();
+            logger.info(e.getMessage());
 		}
 		return null ;
     }
@@ -36,9 +42,11 @@ public class TripleDES extends ByteHexStr{
         } catch (java.security.NoSuchAlgorithmException e1) {
         	e1.printStackTrace();
         } catch (javax.crypto.NoSuchPaddingException e2) {
-        	e2.printStackTrace();
+//        	e2.printStackTrace();
+            logger.info(e2.getMessage());
         } catch (Exception e3) {
-        	e3.printStackTrace();
+//        	e3.printStackTrace();
+            logger.info(e3.getMessage());
         }
         return null;
     }
@@ -55,10 +63,12 @@ public class TripleDES extends ByteHexStr{
 			return rs ;
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("src:"+src+";keybyte:"+keybyte);
-			e.printStackTrace();
+//			e.printStackTrace();
+            logger.info(e.getMessage());
 		} catch (RuntimeException e) {
 			System.out.println("src:"+src+";keybyte:"+keybyte);
-			e.printStackTrace();
+//			e.printStackTrace();
+            logger.info(e.getMessage());
 		}
 		return null ;
     }
@@ -70,11 +80,14 @@ public class TripleDES extends ByteHexStr{
             c1.init(Cipher.DECRYPT_MODE, deskey);
             return c1.doFinal(src);
         } catch (java.security.NoSuchAlgorithmException e1) {
-        	e1.printStackTrace();
+//        	e1.printStackTrace();
+            logger.info(e1.getMessage());
         } catch (javax.crypto.NoSuchPaddingException e2) {
-        	e2.printStackTrace();
+//        	e2.printStackTrace();
+            logger.info(e2.getMessage());
         } catch (Exception e3) {
-        	e3.printStackTrace();
+//        	e3.printStackTrace();
+            logger.info(e3.getMessage());
         }
         return null;
     }

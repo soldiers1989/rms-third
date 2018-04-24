@@ -1,5 +1,8 @@
 package com.jzfq.rms.third.common.utils.jao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.KeyPair;
 import java.security.MessageDigest;
 
@@ -9,6 +12,9 @@ import java.security.MessageDigest;
  *
  */
 public class Secret {
+
+	private static Logger logger = LoggerFactory.getLogger(Secret.class);
+
 	/**
 	 * 加密
 	 * @param encryptionType 加密类型
@@ -81,7 +87,8 @@ public class Secret {
 	            sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
 	        }
 	    } catch (Exception e) {
-	        e.printStackTrace() ;
+//	        e.printStackTrace() ;
+			logger.info(e.getMessage());
 	        return null;  
 	    }
 	    return sb.toString();  

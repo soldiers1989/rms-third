@@ -138,16 +138,16 @@ public class Base64Utils {
         if (!destFile.getParentFile().exists()) {  
             destFile.getParentFile().mkdirs();  
         }
-
         OutputStream out = null;
         try {
-            destFile.createNewFile();
-            out = new FileOutputStream(destFile);
-            byte[] cache = new byte[CACHE_SIZE];
-            int nRead = 0;
-            while ((nRead = in.read(cache)) != -1) {
-                out.write(cache, 0, nRead);
-                out.flush();
+            if (destFile.createNewFile()) {
+                out = new FileOutputStream(destFile);
+                byte[] cache = new byte[CACHE_SIZE];
+                int nRead = 0;
+                while ((nRead = in.read(cache)) != -1) {
+                    out.write(cache, 0, nRead);
+                    out.flush();
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

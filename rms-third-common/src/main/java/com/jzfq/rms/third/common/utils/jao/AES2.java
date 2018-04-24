@@ -1,5 +1,8 @@
 package com.jzfq.rms.third.common.utils.jao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -13,6 +16,9 @@ import java.security.Key;
  *
  */
 public class AES2 extends ByteHexStr{
+
+    private static Logger logger = LoggerFactory.getLogger(AES2.class);
+
     private static final String AESTYPE ="AES/ECB/PKCS5Padding"; 
     /**
      * 加密
@@ -29,7 +35,8 @@ public class AES2 extends ByteHexStr{
             encrypt = cipher.doFinal(plainText.getBytes("UTF-8"));     
         }catch(Exception e){
         	System.out.println("content:"+plainText+",password:"+keyStr);
-            e.printStackTrace(); 
+//            e.printStackTrace();
+            logger.info(e.getMessage());
         }
         // return new String(Base64.encodeBase64(encrypt)); 
         String rs = parseByte2HexStr(encrypt);
@@ -51,7 +58,9 @@ public class AES2 extends ByteHexStr{
             // decrypt = cipher.doFinal(Base64.decodeBase64(encryptData)); 
             decrypt = cipher.doFinal(parseHexStr2Byte(encryptData));
         }catch(Exception e){ 
-            e.printStackTrace(); 
+//            e.printStackTrace();
+            logger.info(e.getMessage());
+
         } 
         try {
 			String rs = new String(decrypt,"UTF-8") ;
@@ -59,11 +68,13 @@ public class AES2 extends ByteHexStr{
 			return rs ;
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("content:"+encryptData+",password:"+keyStr);
-			e.printStackTrace();
-			return "" ;
+//			e.printStackTrace();
+            logger.info(e.getMessage());
+            return "" ;
 		} catch (RuntimeException e) {
 			System.out.println("content:"+encryptData+",password:"+keyStr);
-			e.printStackTrace();
+//			e.printStackTrace();
+            logger.info(e.getMessage());
 			return "" ;
 		}
     } 
@@ -74,23 +85,24 @@ public class AES2 extends ByteHexStr{
             return keySpec; 
         }catch(Exception e){
         	System.out.println("key:"+key);
-        	e.printStackTrace();
+//        	e.printStackTrace();
+            logger.info(e.getMessage());
             throw e; 
         } 
     } 
  
     public static void main(String[] args) {
          
-        String keyStr = "UITN25LMUQC436IM";
- 
-        String plainText = "this is a string will be AES_Encrypt";
-         
-        String encText = encrypt(plainText ,keyStr);
-        System.out.println(encText); 
-        String decString = decrypt(encText ,keyStr); 
-         
-        
-        System.out.println(decString); 
+//        String keyStr = "UITN25LMUQC436IM";
+//
+//        String plainText = "this is a string will be AES_Encrypt";
+//
+//        String encText = encrypt(plainText ,keyStr);
+//        System.out.println(encText);
+//        String decString = decrypt(encText ,keyStr);
+//
+//
+//        System.out.println(decString);
  
     } 
 }

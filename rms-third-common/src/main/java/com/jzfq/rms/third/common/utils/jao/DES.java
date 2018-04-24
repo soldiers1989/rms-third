@@ -1,5 +1,8 @@
 package com.jzfq.rms.third.common.utils.jao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -15,26 +18,29 @@ import java.security.spec.InvalidKeySpecException;
  * 注意：DES加密和解密过程中，密钥长度都必须是8的倍数
  */
 public class DES extends ByteHexStr{
+
+	private static Logger logger = LoggerFactory.getLogger(DES.class);
+
 	public DES() {
 	}
 
 	// 测试
 	public static void main(String args[]) {
 		// 待加密内容
-		String str = "测试内容";
-		// 密码，长度要是8的倍数
-		String password = "qazwsxed";
-
-		String result = DES.encrypt(str, password);
-		System.out.println("加密后：" + result);
-
-		// 直接将如上内容解密
-		try {
-			String decryResult = DES.decrypt(result, password);
-			System.out.println("解密后：" + decryResult);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
+//		String str = "测试内容";
+//		// 密码，长度要是8的倍数
+//		String password = "qazwsxed";
+//
+//		String result = DES.encrypt(str, password);
+//		System.out.println("加密后：" + result);
+//
+//		// 直接将如上内容解密
+//		try {
+//			String decryResult = DES.decrypt(result, password);
+//			System.out.println("解密后：" + decryResult);
+//		} catch (Exception e1) {
+//			e1.printStackTrace();
+//		}
 
 	}
 	/**
@@ -49,7 +55,8 @@ public class DES extends ByteHexStr{
 			result = encrypt(datasource.getBytes("UTF-8"), password);
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("content:"+datasource+",password:"+password);
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 		String rs = parseByte2HexStr(result) ;
 		System.out.println("encrypt;content:"+datasource+";password:"+password+";rs:"+rs);
@@ -79,7 +86,8 @@ public class DES extends ByteHexStr{
 			// 正式执行加密操作
 			return cipher.doFinal(datasource);
 		} catch (Throwable e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 		return null;
 	}
@@ -98,28 +106,36 @@ public class DES extends ByteHexStr{
 			return rs ;
 		} catch (InvalidKeyException e) {
             System.out.println("content:"+src+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (NoSuchAlgorithmException e) {
             System.out.println("content:"+src+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (InvalidKeySpecException e) {
             System.out.println("content:"+src+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (NoSuchPaddingException e) {
             System.out.println("content:"+src+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (IllegalBlockSizeException e) {
             System.out.println("content:"+src+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (BadPaddingException e) {
             System.out.println("content:"+src+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (UnsupportedEncodingException e) {
             System.out.println("content:"+src+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (RuntimeException e) {
 			System.out.println("content:"+src+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 		return null ;
 	}
@@ -146,7 +162,8 @@ public class DES extends ByteHexStr{
 		try {
 			desKey = new DESKeySpec(password.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 		// 创建一个密匙工厂
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");

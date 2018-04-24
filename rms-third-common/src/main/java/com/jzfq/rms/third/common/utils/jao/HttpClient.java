@@ -1,5 +1,8 @@
 package com.jzfq.rms.third.common.utils.jao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.*;
@@ -17,6 +20,9 @@ import java.util.zip.GZIPInputStream;
  * wushujia
  */
 public class HttpClient {
+
+	private static Logger logger = LoggerFactory.getLogger(HttpClient.class);
+
 	private static ThreadLocal<Integer> httpState = new ThreadLocal<Integer>();  // http 本次请求返回的状态码
 	private static ThreadLocal<String> httpCookieString = new ThreadLocal<String>();  // http 本次请求返回的cookie   getRs 用这个方法时有效
 	
@@ -50,7 +56,8 @@ public class HttpClient {
 			cookies = httpCookieString.get() ;
 			System.out.println(cookies);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 	}
 	public static String readCookies(URLConnection url_con){
@@ -203,7 +210,8 @@ public class HttpClient {
 				
 				reader = new BufferedReader(new InputStreamReader(in, respencoding));
 			}catch(Exception e){
-				e.printStackTrace();
+//				e.printStackTrace();
+				logger.info(e.getMessage());
 			}
 			StringBuilder buffer = new StringBuilder();
 			String line = "";
@@ -233,7 +241,8 @@ public class HttpClient {
 			return rs;
 		} catch (Exception e) {
 			System.out.println(path + "?" + params + "@" + headerMap + "@" + cookies);
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 			return "" ;
 		} finally {
 			if (connection instanceof HttpsURLConnection){
@@ -323,7 +332,8 @@ public class HttpClient {
 				sunJSSEX509TrustManager.checkClientTrusted(chain, authType);
 			} catch (CertificateException excep) {
 				// do any special handling here, or rethrow exception.
-				excep.printStackTrace();
+//				excep.printStackTrace();
+				logger.info(excep.getMessage());
 			}
 		}
 

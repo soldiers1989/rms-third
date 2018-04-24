@@ -24,8 +24,8 @@ import java.util.regex.Pattern;
  */
 public final class StringUtil {
 public static final int DEFAULT_HASH_LENGTH=32;
-	
-	public static final String[] PASSWD_ALPHABET={
+
+	protected static final String[] PASSWD_ALPHABET={
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
 		"0123456789",
 		"`~!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?"

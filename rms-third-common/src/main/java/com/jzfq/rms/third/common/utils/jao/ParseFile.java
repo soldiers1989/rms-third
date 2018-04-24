@@ -1,5 +1,7 @@
 package com.jzfq.rms.third.common.utils.jao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -11,6 +13,9 @@ import java.io.*;
  *
  */
 public class ParseFile {
+
+	private static Logger logger = LoggerFactory.getLogger(ParseFile.class);
+
 	public static void main(String[] args) {
 		// 测试从Base64编码转换为图片文件
 		String strImg = "";
@@ -38,14 +43,16 @@ public class ParseFile {
 //            }
             count = in.read(data);
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 			return "" ;
 		}finally {
 			if (null != in) {
 				try {
 					in.close();
 				}catch (IOException ex){
-					ex.printStackTrace();
+//					ex.printStackTrace();
+					logger.info(ex.getMessage());
 				}
 			}
 		}
@@ -79,14 +86,16 @@ public class ParseFile {
             out.flush();
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 			return false;
 		}finally {
 		            if (null != out) {
 		                try {
                             out.close();
                         }catch (IOException ex) {
-                            ex.printStackTrace();
+//                            ex.printStackTrace();
+							logger.info(ex.getMessage());
                         }
                     }
 		}

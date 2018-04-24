@@ -1,5 +1,8 @@
 package com.jzfq.rms.third.common.utils.jao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 
@@ -9,6 +12,10 @@ import java.math.BigInteger;
  *
  */
 public class XOREncrypt {
+
+	private static Logger logger = LoggerFactory.getLogger(XOREncrypt.class);
+
+
 	private static final int RADIX = 16;
     /**
      * 加密
@@ -27,7 +34,8 @@ public class XOREncrypt {
 		try {
 			bi_content = new BigInteger(content.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 		BigInteger bi_r0 = new BigInteger(seed);
 		BigInteger bi_r1 = bi_r0.xor(bi_content);
@@ -56,7 +64,8 @@ public class XOREncrypt {
 			System.out.println("decrypt;content:"+encrypted+";password:"+seed+";rs:"+rs);
 			return rs ;
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 			return "";
 		}
 	}

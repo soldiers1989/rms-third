@@ -1,6 +1,8 @@
 package com.jzfq.rms.third.common.utils.jao;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import java.io.ByteArrayOutputStream;
@@ -22,6 +24,9 @@ import java.security.spec.RSAPublicKeySpec;
  *
  */
 public final class RSAUtils {
+
+	private static Logger logger = LoggerFactory.getLogger(RSAUtils.class);
+
 	private static final Provider PROVIDER = new BouncyCastleProvider();
    
 	private static final int KEY_SIZE = 2048 ;
@@ -43,7 +48,8 @@ public final class RSAUtils {
 			keyPairGenerator.initialize(KEY_SIZE, new SecureRandom());
 			keyPair = keyPairGenerator.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 		System.out.printf("生成随机公私钥耗时:"+(System.currentTimeMillis()-st));
 		return keyPair ;
@@ -93,7 +99,8 @@ public final class RSAUtils {
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 			return cipher.doFinal(data);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 			return null;
 		}
 	}
@@ -110,7 +117,8 @@ public final class RSAUtils {
 		try {
 			data = encrypt(publicKey, text.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 		// return data != null ? Base64.encodeBase64String(data) : null;
 		String encryptValue = data != null ? parseByteToHexStr(data) : null;
@@ -153,7 +161,8 @@ public final class RSAUtils {
 			}
 			return bout.toByteArray();
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 			return null ;
 		}
 
@@ -172,7 +181,8 @@ public final class RSAUtils {
 		try {
 			decryptValue = data != null ? new String(data,"UTF-8") : null;
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 		System.out.printf("解密:"+text+";耗时:"+(System.currentTimeMillis()-st));
 		return decryptValue ;
@@ -243,7 +253,8 @@ public final class RSAUtils {
             RSAPublicKeySpec keySpec = new RSAPublicKeySpec(b1, b2);  
             return (RSAPublicKey) keyFactory.generatePublic(keySpec);  
         } catch (Exception e) {  
-        	e.printStackTrace();
+//        	e.printStackTrace();
+			logger.info(e.getMessage());
             return null;  
         }  
     }  
@@ -268,7 +279,8 @@ public final class RSAUtils {
             RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(b1, b2);  
             return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);  
         } catch (Exception e) {  
-        	e.printStackTrace();
+//        	e.printStackTrace();
+			logger.info(e.getMessage());
             return null;  
         }  
     }

@@ -21,6 +21,8 @@ import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.security.cert.CertificateException;
@@ -37,6 +39,8 @@ import java.util.Map;
  */
 @SuppressWarnings("deprecation")
 public class HttpTools {
+
+    private static final Logger logger = LoggerFactory.getLogger(HttpTools.class);
     
     /***** 超时时间 *****/
     public static final int TIMEOUT = 10000;
@@ -79,7 +83,8 @@ public class HttpTools {
             connectionManager.setDefaultMaxPerRoute(MAX_ROUTE_CONNECTIONS);
             connectionManager.setValidateAfterInactivity(4000);
         } catch (Exception e) {
-        	e.printStackTrace();
+//        	e.printStackTrace();
+            logger.info(e.getMessage());
         }
     }
     

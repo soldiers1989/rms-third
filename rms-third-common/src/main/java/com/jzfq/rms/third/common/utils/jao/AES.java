@@ -1,5 +1,8 @@
 package com.jzfq.rms.third.common.utils.jao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -12,13 +15,17 @@ import java.security.SecureRandom;
  * 
  */
 public class AES extends ByteHexStr{
+
+	private static Logger logger = LoggerFactory.getLogger(AES.class);
+
+
 	public static void main(String[] args) {
-		String content = "jshagdauiwqhi测试";
-		String password = "123456sd78";
-		String a = encrypt(content, password);
-		System.out.println(a);
-		String b = decrypt(a, password);
-		System.out.println(b);
+//		String content = "jshagdauiwqhi测试";
+//		String password = "123456sd78";
+//		String a = encrypt(content, password);
+//		System.out.println(a);
+//		String b = decrypt(a, password);
+//		System.out.println(b);
 	}
 
 	/**
@@ -49,22 +56,27 @@ public class AES extends ByteHexStr{
 			return rs ;
 		} catch (NoSuchAlgorithmException e) {
 			System.out.println("content:"+content+",password:"+password);
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (NoSuchPaddingException e) {
             System.out.println("content:"+content+",password:"+password);
             e.printStackTrace();
 		} catch (InvalidKeyException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (UnsupportedEncodingException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (IllegalBlockSizeException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (BadPaddingException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 		return null;
 	}
@@ -96,25 +108,32 @@ public class AES extends ByteHexStr{
 			return rs ;
 		} catch (NoSuchAlgorithmException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (NoSuchPaddingException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (InvalidKeyException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (IllegalBlockSizeException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (BadPaddingException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (UnsupportedEncodingException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (RuntimeException e) {
 			System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		}
 		return null;
 	}

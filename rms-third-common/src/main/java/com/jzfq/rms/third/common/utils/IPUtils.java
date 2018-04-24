@@ -2,6 +2,8 @@ package com.jzfq.rms.third.common.utils;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
@@ -15,7 +17,13 @@ import java.util.List;
  * @date 2017/10/23 13:28.
  **/
 public class IPUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(IPUtils.class);
+
     private static String ip = "";
+
+    private static String localIp = "127.0.0.1";
+
     public static String getLocalHostIP() {
         if(StringUtils.isNotBlank(ip)){
             return ip;
@@ -32,7 +40,8 @@ public class IPUtils {
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.info(e.getMessage());
         }
         return ip;
     }
@@ -45,7 +54,7 @@ public class IPUtils {
             while (it.hasNext()) {
                 InterfaceAddress address = it.next();
                 String ip = address.getAddress().getHostAddress();
-                if(!StringUtils.contains(ip,":")&&!StringUtils.equals(ip,"127.0.0.1")){
+                if(!StringUtils.contains(ip,":")&&!StringUtils.equals(ip,localIp)){
                     return ip;
                 }
             }

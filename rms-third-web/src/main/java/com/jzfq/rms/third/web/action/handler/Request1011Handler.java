@@ -96,18 +96,18 @@ public class Request1011Handler extends AbstractRequestHandler {
         String customerType = (String) request.getParam("customerType");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
-        String idCard = "";
-        if (null != info) {
-            idCard = info.getCertCardNo();
-        }
         // 1.搜索mongo中是否存在
         String strategyId = getStrategyId(request);
         if (StringUtils.isBlank(strategyId)) {
             return new ResponseResult(traceId, ReturnCode.ERROR_NOT_FOUNT_STRATEGE_ID, null);
         }
+        String idCard = "";
+        String isRepeatKey = "";
+        if (null != info) {
+            idCard = info.getCertCardNo();
+            isRepeatKey = getKeyPersonalInfo(info, strategyId);
+        }
 //        // 2.判断是否远程拉取
-
-        String isRepeatKey = getKeyPersonalInfo(info, strategyId);
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
         log.info("traceId={} 获取百融分,缓存isRepeatKey={},是否重新拉取={}",traceId, isRepeatKey,isRpc);
         if (!isRpc) {

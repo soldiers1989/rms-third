@@ -20,7 +20,7 @@ import java.util.*;
 public class CrawlerUtils {
 
 
-    public static final Set<Integer> refreshType = new HashSet<Integer>();
+    protected static final Set<Integer> refreshType = new HashSet<Integer>();
         
     static{
         refreshType.add(8);//图片验证码

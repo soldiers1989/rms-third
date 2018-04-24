@@ -28,7 +28,7 @@ import java.util.Properties;
  * @date 2017-12-27.
  */
 public class ConnectionFactory {
-    private static final Logger log = LoggerFactory.getLogger(Request1004Handler.class);
+    private static Logger logger = LoggerFactory.getLogger(ConnectionFactory.class);
 
     private final String serverUrl = "/data/config/rms-third/prod.properties";
 
@@ -46,7 +46,8 @@ public class ConnectionFactory {
             String driver = logProperties.getStringProperty("log.db.driver");
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.info(e.getMessage());
             System.exit(0);
         }
         Properties properties = new Properties();
@@ -81,7 +82,8 @@ public class ConnectionFactory {
                 configProperties.load(in);
                 return new PropertiesUtil(configProperties);
             }catch (Exception e){
-                e.printStackTrace();
+//                e.printStackTrace();
+                logger.info(e.getMessage());
             }
         }
         System.out.println(projectUrl);

@@ -22,7 +22,7 @@ public class IPUtils {
 
     private static String ip = "";
 
-    private static String localIp = "127.0.0.1";
+    private static final String localIp = "127.0.0.1";
 
     public static String getLocalHostIP() {
         if(StringUtils.isNotBlank(ip)){

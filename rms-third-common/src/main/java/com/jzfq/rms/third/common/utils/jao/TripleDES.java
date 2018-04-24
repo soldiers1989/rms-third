@@ -40,7 +40,8 @@ public class TripleDES extends ByteHexStr{
             c1.init(Cipher.ENCRYPT_MODE, deskey);
             return c1.doFinal(src);
         } catch (java.security.NoSuchAlgorithmException e1) {
-        	e1.printStackTrace();
+//        	e1.printStackTrace();
+            logger.info(e1.getMessage());
         } catch (javax.crypto.NoSuchPaddingException e2) {
 //        	e2.printStackTrace();
             logger.info(e2.getMessage());

@@ -60,7 +60,8 @@ public class AES extends ByteHexStr{
 			logger.info(e.getMessage());
 		} catch (NoSuchPaddingException e) {
             System.out.println("content:"+content+",password:"+password);
-            e.printStackTrace();
+//            e.printStackTrace();
+			logger.info(e.getMessage());
 		} catch (InvalidKeyException e) {
             System.out.println("content:"+content+",password:"+password);
 //            e.printStackTrace();

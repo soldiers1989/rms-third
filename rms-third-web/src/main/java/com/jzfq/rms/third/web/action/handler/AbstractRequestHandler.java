@@ -70,10 +70,10 @@ public abstract class AbstractRequestHandler {
     throws BusinessException{
         try {
             // 验证身份
-            if (!request.verifyToken()) {
-                log.warn("请求签名验证不通过！request：{}", request);
-                return new ResponseResult("",ReturnCode.ERROR_INVALID_TOKEN);
-            }
+//            if (!request.verifyToken()) {
+//                log.warn("请求签名验证不通过！request：{}", request);
+//                return new ResponseResult("",ReturnCode.ERROR_INVALID_TOKEN);
+//            }
 
             AbstractRequestHandler handler = findRequestHandler(request, context);
             if (handler == null) {

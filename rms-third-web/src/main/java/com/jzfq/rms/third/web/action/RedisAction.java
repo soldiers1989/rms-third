@@ -37,7 +37,7 @@ public class RedisAction {
     @RequestMapping(value = "deleteByKey.json", method = RequestMethod.GET)
     public ResponseResult deleteByKey(String secret, String key) throws BusinessException {
         if (StringUtils.equals(STR_REDIS_DEL_SECRET, secret)) {
-            prefixCache.batchDel("rms_third_10" + key);
+            prefixCache.batchDel(key);
             return new ResponseResult("", ReturnCode.REQUEST_SUCCESS, null);
         }
         return new ResponseResult("", ReturnCode.ERROR_INVALID_ARGS, null);

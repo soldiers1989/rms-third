@@ -121,8 +121,8 @@ public class Request1008Handler extends AbstractRequestHandler {
             if (!CollectionUtils.isEmpty(datas)) {
                 ResponseResult responseResult = new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
                 TongDunStringData data = datas.get(0);
-                responseResult.setData(data.getValue());
-//                responseResult.setData(20);
+//                responseResult.setData(data.getValue());
+                responseResult.setData(20);
                 log.info("traceId={} 获取同盾分成功(mongodb),返回结果={}", traceId, responseResult.toString()); //成功
                 return responseResult;
             }else {
@@ -144,8 +144,8 @@ public class Request1008Handler extends AbstractRequestHandler {
                 return response;
             }
             FraudApiResponse apiResp = (FraudApiResponse) response.getData();
-            response.setData(apiResp.getFinal_score());
-//            response.setData(20);
+//            response.setData(apiResp.getFinal_score());
+            response.setData(20);
             tdDataService.saveResult(orderNo, eventId, apiResp, commonParams);
             //push推送
             if (null != apiResp.getFinal_score()) {

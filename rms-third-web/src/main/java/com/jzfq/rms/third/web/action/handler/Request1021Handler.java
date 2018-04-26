@@ -174,6 +174,7 @@ public class Request1021Handler extends AbstractRequestHandler {
             // 保存数据
             iJaoService.saveDatas(orderNo, PhoneDataTypeEnum.NETWORK_LENGTH, value, resultJson, bizData);
             responseResult.setData(value);
+            responseResult.setCode(200);
             log.info("traceId={}，拉取手机在网时长成功,返回结果={}", traceId, responseResult); //成功
             return responseResult;
         } catch (Exception e) {

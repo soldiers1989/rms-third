@@ -100,14 +100,14 @@ public class Request1011Handler extends AbstractRequestHandler {
         String strategyId = getStrategyId(request);
         if (StringUtils.isBlank(strategyId)) {
             return new ResponseResult(traceId, ReturnCode.ERROR_NOT_FOUNT_STRATEGE_ID, null);
-        }else {
-            info = new RiskPersonalInfo();
         }
         String idCard = "";
         String isRepeatKey = "";
         if (null != info) {
             idCard = info.getCertCardNo();
             isRepeatKey = getKeyPersonalInfo(info, strategyId);
+        }else {
+            info = new RiskPersonalInfo();
         }
 //        // 2.判断是否远程拉取
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);

@@ -3,9 +3,11 @@ package com.jzfq.rms.third.web.action.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
+import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IJaoService;
 import com.jzfq.rms.third.service.IRong360Service;
+import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import com.jzfq.rms.third.web.action.parser.JaoParser;
@@ -72,6 +74,8 @@ public class Request1020Handler extends AbstractRequestHandler {
 
     @Autowired
     ICountCache interfaceCountCache;
+    @Autowired
+    ICache prefixCache;
     /**
      * 超时时间 三天
      */
@@ -145,13 +149,20 @@ public class Request1020Handler extends AbstractRequestHandler {
                 interfaceCountCache.setFailure(isRepeatKey);
                 return responseResult;
             }
-            JSONObject resultJson = (JSONObject) responseResult.getData();
+
+            //获取挡板测试数据
+            String testData = StringUtil.getStringOfObject(prefixCache.readConfig("phone-time-test-data"));
+            JSONObject resultJson = JSONObject.parseObject(testData);
+
+            //恢复上线
+
+//            JSONObject resultJson = (JSONObject) responseResult.getData();
             // 转换rms-pull需要的值
             String value = JaoParser.getValueOfRmsPull(resultJson);
             //校验验证码
             if (!JaoCodeEnum.checkJaoCode(value) || !JaoEclCodeEnum.checkJaoCode(value)) {
                 interfaceCountCache.setFailure(isRepeatKey);
-                log.info("traceId={} 拉取三方手机三要素返回错误码,返回结果={}", traceId, responseResult); //失败
+                log.info("traceId={} 拉取三方手机三要素返回错误码={},返回结果={}", traceId,value, responseResult); //失败
                 responseResult.setData(null);
                 responseResult.setCode(Integer.parseInt(value));
                 return responseResult;
@@ -173,10 +184,10 @@ public class Request1020Handler extends AbstractRequestHandler {
      * */
 
     public static Map<String, Object> newBizForRong360(Map<String, Object> bizData, String name,
-                                 String idNumber,
-                                 String phone,
-                                 String custumType,
-                                 String frontId) {
+                                                       String idNumber,
+                                                       String phone,
+                                                       String custumType,
+                                                       String frontId) {
         Map<String, Object> bizData1 = new HashMap<>();
         bizData1.put("name", name);
         bizData1.put("idNumber", idNumber);

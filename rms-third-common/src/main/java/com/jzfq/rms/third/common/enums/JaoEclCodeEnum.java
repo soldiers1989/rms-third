@@ -77,4 +77,17 @@ public enum JaoEclCodeEnum {
     public static Map<String, String> getMap() {
         return map;
     }
+
+    public static boolean checkJaoCode(String code){
+        boolean flag = true;
+        for (String errorcode : map.keySet()) {
+            if (code.equals(errorcode)) {
+                flag = false;
+                break;
+            }
+        }
+        return false;
+    }
+
+
 }

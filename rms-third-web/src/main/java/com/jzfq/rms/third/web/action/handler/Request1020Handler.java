@@ -2,9 +2,7 @@ package com.jzfq.rms.third.web.action.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
-import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
-import com.jzfq.rms.third.common.enums.PhoneDataTypeEnum;
-import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.service.IJaoService;
 import com.jzfq.rms.third.service.IRong360Service;
@@ -150,6 +148,14 @@ public class Request1020Handler extends AbstractRequestHandler {
             JSONObject resultJson = (JSONObject) responseResult.getData();
             // 转换rms-pull需要的值
             String value = JaoParser.getValueOfRmsPull(resultJson);
+            //校验验证码
+            if (!JaoCodeEnum.checkJaoCode(value) || !JaoEclCodeEnum.checkJaoCode(value)) {
+                interfaceCountCache.setFailure(isRepeatKey);
+                log.info("traceId={} 拉取三方手机三要素返回错误码,返回结果={}", traceId, responseResult); //失败
+                responseResult.setData(null);
+                responseResult.setCode(Integer.parseInt(value));
+                return responseResult;
+            }
             // 保存数据
             iJaoService.saveDatas(orderNo, PhoneDataTypeEnum.THREE_ITEM, value, resultJson, bizData);
             responseResult.setData(value);

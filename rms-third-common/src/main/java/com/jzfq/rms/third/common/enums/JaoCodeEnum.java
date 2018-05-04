@@ -96,7 +96,7 @@ public enum JaoCodeEnum {
                 break;
             }
         }
-        return false;
+        return flag;
     }
 
 

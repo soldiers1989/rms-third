@@ -86,7 +86,7 @@ public enum JaoEclCodeEnum {
                 break;
             }
         }
-        return false;
+        return flag;
     }
 
 

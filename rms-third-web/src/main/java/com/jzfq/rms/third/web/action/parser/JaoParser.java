@@ -47,7 +47,7 @@ public class JaoParser {
                 JSONArray jsonObject4 = jsonObject.getJSONArray("RSL");
                 if (null != jsonObject4) {
                     if (jsonObject4.size() <= 0) {
-                        return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
+                        return String.valueOf(ReturnCode.ERROR_RSLL_PARAMS_ERROR.code());
                     }
                     JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
                     JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
@@ -115,7 +115,7 @@ public class JaoParser {
                 JSONArray jsonObject4 = jsonObject0.getJSONArray("RSL");
                 if (jsonObject4 != null) {
                     if (jsonObject4.size() <= 0) {
-                        return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
+                        return String.valueOf(ReturnCode.ERROR_RSLL_PARAMS_ERROR.code());
                     }
                     JSONObject jsonObject5 = jsonObject4.getJSONObject(0);
                     JSONObject jsonObject6 = jsonObject5.getJSONObject("RS");
@@ -206,7 +206,7 @@ public class JaoParser {
                 JSONArray jsonObject4 = jsonObject0.getJSONArray("RSL");
                 if (null != jsonObject4) {
                     if (jsonObject4.size() <= 0) {
-                        return ReturnCode.ERROR_RSLL_PARAMS_ERROR.msg();
+                        return String.valueOf(ReturnCode.ERROR_RSLL_PARAMS_ERROR.code());
                     }
 
 //                    JSONArray jsonObject4 = jsonObject2.getJSONArray("RSL");

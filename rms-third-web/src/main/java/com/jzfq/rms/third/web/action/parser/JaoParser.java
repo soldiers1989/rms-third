@@ -37,6 +37,9 @@ public class JaoParser {
                     if (jsonObjectEcl.size() > 0) {
                         JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
                         String errorCode = jsonObjectEclCode.getString("code");
+                        if ("-200".equals(errorCode) || "200".equals(errorCode)) {
+                            errorCode = "500";
+                        }
                         return errorCode;
                     }
                 }
@@ -102,6 +105,9 @@ public class JaoParser {
                     if (jsonObjectEcl.size() > 0) {
                         JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
                         String errorCode = jsonObjectEclCode.getString("code");
+                        if ("-200".equals(errorCode) || "200".equals(errorCode)) {
+                            errorCode = "500";
+                        }
                         return errorCode;
                     }
                 }
@@ -190,6 +196,9 @@ public class JaoParser {
                     if (jsonObjectEcl.size() > 0) {
                         JSONObject jsonObjectEclCode = jsonObjectEcl.getJSONObject(0);
                         String errorCode = jsonObjectEclCode.getString("code");
+                        if ("-200".equals(errorCode) || "200".equals(errorCode)) {
+                            errorCode = "500";
+                        }
                         return errorCode;
                     }
                 }

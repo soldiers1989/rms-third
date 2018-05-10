@@ -7,7 +7,9 @@ import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.mongo.JiaoData;
+import com.jzfq.rms.third.common.mongo.JiaoErrorData;
 import com.jzfq.rms.third.common.mongo.Rong360Data;
+import com.jzfq.rms.third.common.utils.DateUtils;
 import com.jzfq.rms.third.common.utils.JAoAuthCodeUtil;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
@@ -88,6 +90,12 @@ public class JaoServiceImpl implements IJaoService {
     @Autowired
     ISendMessageService sendMessegeService;
 
+    @Override
+    public void saveErrorDatas(String orderNo, PhoneDataTypeEnum type, String value, JSONObject result, Map<String, Object> bizData) {
+        // 保存错误数据 Rong360Data
+        saveErrorData(new JiaoErrorData((String) bizData.get("realName"), (String) bizData.get("idNumber")
+                , (String) bizData.get("cid"), value, type, result));
+    }
 
     @Autowired
     IRiskPostDataService riskPostDataService;
@@ -229,6 +237,19 @@ public class JaoServiceImpl implements IJaoService {
         }
         saveRmsDatas(orderNo, type, report.get(0).getData(), bizData);
         return report.get(0).getValue();
+    }
+
+
+    @Override
+    public List<JiaoErrorData> getData(String interfaceId,PhoneDataTypeEnum type) {
+        Integer outTime = configCacheDao.getOutTimeUnit(interfaceId);
+        List<JiaoErrorData> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
+                        .and("createTime").gte(DateUtils.lastDayWholePointDate(new Date())).lt(new Date())).with(new Sort(Sort.Direction.DESC, "createTime")),
+                JiaoErrorData.class);
+        if (CollectionUtils.isEmpty(report)) {
+            return null;
+        }
+        return report;
     }
 
     private Date getMinTime(Integer time) {
@@ -446,6 +467,16 @@ public class JaoServiceImpl implements IJaoService {
             log.error("入库失败......", e);
         }
         log.info("集奥 数据入库结束......");
+    }
+
+    private void saveErrorData(JiaoErrorData data) {
+        log.info("集奥 返回错误数据开始入库......");
+        try {
+            mongoTemplate.insert(data);
+        } catch (Exception e) {
+            log.error("入库失败......", e);
+        }
+        log.info("集奥 返回错误数据入库结束......");
     }
 
 }

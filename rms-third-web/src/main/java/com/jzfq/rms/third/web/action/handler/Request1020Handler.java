@@ -123,7 +123,7 @@ public class Request1020Handler extends AbstractRequestHandler {
         if (!isRpc) {
             // 数据库
 //        String valueDb = rong360Service.getValueByDB(InterfaceIdEnum.THIRD_RSLL03.getCode(),PhoneDataTypeEnum.THREE_ITEM,bizData);
-            String valueDb = iJaoService.getValueByDBAndSave(orderNo, InterfaceIdEnum.JAO20.getCode(), PhoneDataTypeEnum.THREE_ITEM, bizData);
+            String valueDb = iJaoService.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL03.getCode(), PhoneDataTypeEnum.THREE_ITEM, bizData);
             if (StringUtils.isNotBlank(valueDb)) {
                 log.info("traceId={} 获取手机三要素成功(mongodb==jao),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb)); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb);
@@ -150,9 +150,7 @@ public class Request1020Handler extends AbstractRequestHandler {
                 return responseResult;
             }
 
-
             //恢复上线
-
             JSONObject resultJson = (JSONObject) responseResult.getData();
             // 转换rms-pull需要的值
             String value = JaoParser.getValueOfRmsPull(resultJson);
@@ -162,6 +160,7 @@ public class Request1020Handler extends AbstractRequestHandler {
                 log.info("traceId={} 拉取三方手机三要素返回错误码={},返回结果={}", traceId,value, responseResult); //失败
                 responseResult.setData(null);
                 responseResult.setCode(Integer.parseInt(value));
+                iJaoService.saveErrorDatas(orderNo, PhoneDataTypeEnum.THREE_ITEM, value, resultJson, bizData);
                 return responseResult;
             }
             // 保存数据

@@ -117,7 +117,7 @@ public class Request1021Handler extends AbstractRequestHandler {
         if (!isRpc) {
             // 数据库
 //        String valueDb = rong360Service.getValueByDB( InterfaceIdEnum.THIRD_RSLL01.getCode(),PhoneDataTypeEnum.NETWORK_LENGTH,bizData);
-            String valueDb = iJaoService.getValueByDBAndSave(orderNo, InterfaceIdEnum.JAO22.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
+            String valueDb = iJaoService.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL01.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
             if (StringUtils.isNotBlank(valueDb)) {
                 log.info("traceId={}，获取手机在网时长成功(mongodb==jao),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb)); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb);
@@ -154,6 +154,7 @@ public class Request1021Handler extends AbstractRequestHandler {
                 log.info("traceId={} 拉取手机在网时长返回错误码={},返回结果={}", traceId, value,responseResult); //失败
                 responseResult.setData(null);
                 responseResult.setCode(Integer.parseInt(value));
+                iJaoService.saveErrorDatas(orderNo, PhoneDataTypeEnum.NETWORK_LENGTH, value, resultJson, bizData);
                 return responseResult;
             }
             // 保存数据

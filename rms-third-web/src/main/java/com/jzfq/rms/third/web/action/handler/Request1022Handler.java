@@ -126,7 +126,7 @@ public class Request1022Handler extends AbstractRequestHandler {
             } else {
                 //获取融360老数据
                 bizData = newBizForRong360(bizData, name, idNumber, phone, custumType, frontId);
-                valueDb = rong360Service.getValueByDBAndSave(orderNo, InterfaceIdEnum.THIRD_RSLL02.getCode(), PhoneDataTypeEnum.NETWORK_STATUS, bizData);
+                valueDb = rong360Service.getValueByDBAndSave(orderNo,  InterfaceIdEnum.THIRD_RSLL02.getCode(), PhoneDataTypeEnum.NETWORK_STATUS, bizData);
                 if (StringUtils.isNotBlank(valueDb)) {
                     log.info("traceId={}，获取手机在网状态成功(mongodb==rong360),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb)); //成功
                     return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb);
@@ -156,6 +156,7 @@ public class Request1022Handler extends AbstractRequestHandler {
                 log.info("traceId={} 拉取三方手机在网状态返回错误码={},返回结果={}", traceId,value, responseResult); //失败
                 responseResult.setData(null);
                 responseResult.setCode(Integer.parseInt(value));
+                iJaoService.saveErrorDatas(orderNo, PhoneDataTypeEnum.NETWORK_STATUS, value, resultJson, bizData);
                 return responseResult;
             }
             // 保存数据

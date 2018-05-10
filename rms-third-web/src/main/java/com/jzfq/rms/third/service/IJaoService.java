@@ -6,7 +6,9 @@ package com.jzfq.rms.third.service;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.PhoneDataTypeEnum;
+import com.jzfq.rms.third.common.mongo.JiaoErrorData;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,5 +31,10 @@ public interface IJaoService {
     String getValueByDB(String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData);
 
     String getValueByDBAndSave(String orderNo, String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData);
+
+    void saveErrorDatas(String orderNo, PhoneDataTypeEnum type, String value, JSONObject result, Map<String, Object> bizData);
+
+    List<JiaoErrorData> getData(String interfaceId,PhoneDataTypeEnum type);
+
 
 }

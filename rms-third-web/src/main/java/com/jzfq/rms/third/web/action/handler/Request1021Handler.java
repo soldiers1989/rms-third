@@ -144,13 +144,8 @@ public class Request1021Handler extends AbstractRequestHandler {
                 return responseResult;
             }
 
-            //获取挡板测试数据
-            String testData = StringUtil.getStringOfObject(prefixCache.readConfig("phone-time-test-data"));
-            JSONObject resultJson = JSONObject.parseObject(testData);
-
-
             //恢复上线
-//            JSONObject resultJson = (JSONObject) responseResult.getData();
+            JSONObject resultJson = (JSONObject) responseResult.getData();
             // 转换rms-pull需要的值
             String value = JaoParser.getNetworkLengthOfRmsPull(resultJson);
             //校验验证码

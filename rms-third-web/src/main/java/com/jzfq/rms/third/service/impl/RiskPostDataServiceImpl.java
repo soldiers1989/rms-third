@@ -30,6 +30,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -136,6 +137,26 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
 
 
     @Override
+    public void saveBairongData(String name, String certCardNo, String mobile, String strategyId, String data) {
+        ThreadProvider.getThreadPool().execute(() -> {
+            BairongData baiRongScore = buildBairongData(name, certCardNo, mobile, strategyId,
+                    "0", data);
+            saveData(baiRongScore);
+        });
+    }
+
+    @Override
+    public void saveRmsBrPostData(String name, String certCardNo, String mobile, String strategyId, String data, String taskId) {
+        ThreadProvider.getThreadPool().execute(() -> {
+            JSONObject json = JSONObject.parseObject(data);
+            json.put("scorepettycashv1", getScoreByJson(json));
+            BrPostData brPostData = buildPostData(taskId, "拉取数据集合信息信息", json.toJSONString(), "0");
+            //保存rms系统数据结构
+            saveData(brPostData);
+        });
+    }
+
+    @Override
     public Object queryData(long taskId, int type) {
         if (type == CustomerTypeEnum.CUSTOMERTYPE_CAR.getCode()) {
             type = CustomerTypeEnum.CUSTOMERTYPE_WHITE_COLLAR.getCode();
@@ -200,6 +221,56 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
             return null;
         }
         return JSONObject.parseObject(data);
+    }
+
+    /**
+     * 更新百融分
+     *
+     * @param name
+     * @param certCardNo
+     * @param mobile
+     * @return
+     */
+    @Override
+    public int updateBairongData(String name, String certCardNo, String mobile, String strategyId, String data) {
+        int num = mongoTemplate.updateMulti(new Query(Criteria.where("name").is(name)
+                .and("certCardNo").is(certCardNo).and("mobile").is(mobile)), Update.update("data", data), BairongData.class).getN();
+        return num;
+    }
+
+
+    @Override
+    public BairongData getLastBairongData(String name, String certCardNo, String mobile, String strategyId) {
+        List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
+                .and("certCardNo").is(certCardNo).and("mobile").is(mobile)).with(new Sort(Sort.Direction.DESC, "createTime")), BairongData.class);
+        if (CollectionUtils.isEmpty(datas)) {
+            return null;
+        }
+        if (null == datas.get(0)) {
+            return null;
+        }
+        return datas.get(0);
+    }
+
+
+    @Override
+    public BrPostData getLastBrPostData(String taskId) {
+        List<BrPostData> datas = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId)
+                .and("desc").is("拉取数据集合信息信息")).with(new Sort(Sort.Direction.DESC, "createTime")), BrPostData.class);
+        if (CollectionUtils.isEmpty(datas)) {
+            return null;
+        }
+        if (null == datas.get(0)) {
+            return null;
+        }
+        return datas.get(0);
+    }
+
+    @Override
+    public int updateBrPostData(String taskId, String data) {
+        int num = mongoTemplate.updateMulti(new Query(Criteria.where("taskId").is(taskId)
+                .and("desc").regex("拉取数据集合信息信息")), Update.update("data", data), BrPostData.class).getN();
+        return num;
     }
 
     /**

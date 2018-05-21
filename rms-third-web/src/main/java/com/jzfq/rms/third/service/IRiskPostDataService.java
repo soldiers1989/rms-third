@@ -80,4 +80,44 @@ public interface IRiskPostDataService {
      * @return
      */
     String getScoreByJson(JSONObject json);
+
+    /**
+     *
+     * @param name
+     * @param certCardNo
+     * @param mobile
+     * @return
+     */
+    int updateBairongData(String name,String certCardNo,String mobile, String strategyId,String data);
+
+    /**
+     *
+     * @param taskId
+     * @param data
+     * @return
+     */
+    int updateBrPostData(String taskId,String data);
+
+
+    /**
+     *
+     * @param name
+     * @param certCardNo
+     * @param mobile
+     * @return
+     */
+    BairongData getLastBairongData(String name,String certCardNo,String mobile, String strategyId);
+
+    /**
+     *
+     * @return
+     */
+    BrPostData getLastBrPostData(String taskId);
+
+    void saveBairongData(String name,String certCardNo,String mobile, String strategyId,String data);
+
+    void saveRmsBrPostData(String name,String certCardNo,String mobile, String strategyId,String data,String taskId);
+
+
+
 }

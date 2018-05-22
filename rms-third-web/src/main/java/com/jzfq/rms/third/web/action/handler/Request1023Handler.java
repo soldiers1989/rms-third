@@ -148,9 +148,7 @@ public class Request1023Handler extends AbstractRequestHandler {
         }
         try {
             //保存极光数据
-            iJiguangService.saveData(info, jsonObject, orderNo, channelId, traceId, resultMap.get("yqScore"), resultMap.get("wyScore"),
-                    resultMap.get("gxfxScore"), resultMap.get("sumScore")
-                    , resultMap.get("description"));
+            iJiguangService.saveData(info, jsonObject, orderNo, channelId, traceId, resultMap);
             result.setData(resultMap);
         } catch (Exception e) {
             log.error("traceId={} 保存数据失败", traceId, e);

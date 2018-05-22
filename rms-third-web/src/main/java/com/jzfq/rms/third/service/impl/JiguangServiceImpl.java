@@ -22,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class JiguangServiceImpl implements IJiguangService {
@@ -50,14 +51,14 @@ public class JiguangServiceImpl implements IJiguangService {
 
     @Override
     public void saveData(RiskPersonalInfo info, JSONObject data, String orderNo, String channelId, String traceId
-            , String yqScore, String wyScore, String fxgxScore, String sumScore, String description) {
+            ,Map<String,String> resultMap) {
         ThreadProvider.getThreadPool().execute(() -> {
-            saveData(getJiguangData(info, data, orderNo, channelId, traceId, yqScore, wyScore, fxgxScore, sumScore, description));
+            saveData(getJiguangData(info, data, orderNo, channelId, traceId,resultMap));
         });
     }
 
     public JiguangData getJiguangData(RiskPersonalInfo info, JSONObject data, String orderNo, String channelId, String traceId
-            , String yqScore, String wyScore, String fxgxScore, String sumScore, String description) {
+            , Map<String,String> resultMap) {
         JiguangData jiguangData = new JiguangData();
         jiguangData.setName(info.getName());
         jiguangData.setPhone(info.getMobile());
@@ -66,12 +67,12 @@ public class JiguangServiceImpl implements IJiguangService {
         jiguangData.setCreateTime(new Date());
         jiguangData.setData(data);
         jiguangData.setTraceId(traceId);
-        jiguangData.setYqScore(yqScore);
-        jiguangData.setWyScore(wyScore);
-        jiguangData.setGxfxScore(fxgxScore);
-        jiguangData.setSumScore(sumScore);
+        jiguangData.setYqScore(resultMap.get("yqScore"));
+        jiguangData.setWyScore(resultMap.get("wyScore"));
+        jiguangData.setGxfxScore(resultMap.get("gxfxScore"));
+        jiguangData.setSumScore(resultMap.get("sumScore"));
         jiguangData.setOrderNo(orderNo);
-        jiguangData.setDescription(description);
+        jiguangData.setDescription(resultMap.get("description"));
         return jiguangData;
     }
 

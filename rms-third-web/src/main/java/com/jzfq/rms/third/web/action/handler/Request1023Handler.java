@@ -124,10 +124,13 @@ public class Request1023Handler extends AbstractRequestHandler {
             log.info("traceId={} 拉取极光反欺诈数据失败,返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result)); //失败
             return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result);
         }
-        String brResponse = (String) result.getData();
+        String brResponse = "";
+        if (null !=  result.getData()) {
+             brResponse = (String) result.getData();
+        }
         if (StringUtils.isBlank(brResponse)) {
             interfaceCountCache.setFailure(isRepeatKey);
-            log.info("traceId={} 拉取极光反欺诈数据失败,返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, brResponse)); //失败
+            log.info("traceId={} 拉取极光反欺诈数据失败,返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result)); //失败
             return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, null);
         }
         JSONObject jsonObject = JSONObject.parseObject(brResponse);
@@ -139,6 +142,10 @@ public class Request1023Handler extends AbstractRequestHandler {
                 interfaceCountCache.setFailure(isRepeatKey);
                 return new ResponseResult(traceId, Integer.parseInt(code), null);
             }
+        } else {
+            interfaceCountCache.setFailure(isRepeatKey);
+            log.info("traceId={} 拉取极光反欺诈数据失败,返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result)); //失败
+            return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, null);
         }
         try {
             //保存极光数据

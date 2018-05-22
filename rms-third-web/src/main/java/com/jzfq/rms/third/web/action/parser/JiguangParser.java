@@ -25,7 +25,7 @@ public class JiguangParser {
      * @return
      */
     public static Map<String, String> getScore(JSONObject json) throws Exception {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = null;
         try {
             logger.info("极光反欺诈接口返回数据data：" + json.toJSONString());
             JSONObject jsonObject0 = json.getJSONObject("data");
@@ -33,10 +33,12 @@ public class JiguangParser {
             //校验code是否正常
             boolean flag = JiguangCodeEnum.checkJaoCode(code);
             if (!flag) {
+                map = new HashMap<String, String>();
                 map.put("code", code);
                 return map;
             }
             if (null != jsonObject0) {
+                map = new HashMap<String, String>();
                 //判断是否是黑名单
                 JSONArray jsonArray = jsonObject0.getJSONArray("hits");
                 if (jsonArray!= null && jsonArray.size() > 0) {

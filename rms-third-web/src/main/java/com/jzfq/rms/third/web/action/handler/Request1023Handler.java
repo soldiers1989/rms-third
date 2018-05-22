@@ -89,10 +89,8 @@ public class Request1023Handler extends AbstractRequestHandler {
         String channelId = (String) request.getParam("channelId");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
-        String idCard = "";
         String isRepeatKey = "";
         if (null != info) {
-            idCard = info.getCertCardNo();
             isRepeatKey = getKeyPersonalInfo(info, channelId);
         } else {
             info = new RiskPersonalInfo();

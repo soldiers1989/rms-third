@@ -79,7 +79,7 @@ public class JiguangServiceImpl implements IJiguangService {
 
     @Override
     public ResponseResult getHttpData(String name, String idcard, String phone, String channelId) {
-        phone = MD5Helper.encrypt(phone);
+        phone = MD5Helper.encrypt(phone);//MD5加密手机号
         String url = jiguang_api_url + "?name=" + name + "&id_number=" + idcard + "&phone=" + phone;
         ResponseResult result = null;
         if ("1".equals(channelId)) {

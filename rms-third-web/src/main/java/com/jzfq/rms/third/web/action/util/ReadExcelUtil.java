@@ -148,7 +148,7 @@ public class ReadExcelUtil {
             int page = rowNumCount % 1000 == 0 ? rowNumCount / 1000 : rowNumCount / 1000 + 1;
             //执行递归操作
 //            input = updateScore(0, 1000, page, input, hssfrow, hssfsheet,riskPostDataService);
-            updateScoreMaster(rowNumCount,hssfrow, hssfsheet,riskPostDataService);
+            updateScoreMaster(rowNumCount, hssfsheet,riskPostDataService);
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
@@ -164,7 +164,8 @@ public class ReadExcelUtil {
      * @date 2016-11-8
      */
 
-    public int updateScoreMaster(int rowNumCount, XSSFRow hssfrow, XSSFSheet hssfsheet,IRiskPostDataService riskPostDataService) {
+    public int updateScoreMaster(int rowNumCount, XSSFSheet hssfsheet,IRiskPostDataService riskPostDataService) {
+        XSSFRow hssfrow = null;
         Master master=new Master(new Worker(riskPostDataService), 50);
         for (int j = 1; j < rowNumCount; j++) {
             BrScoreModel info = new BrScoreModel();

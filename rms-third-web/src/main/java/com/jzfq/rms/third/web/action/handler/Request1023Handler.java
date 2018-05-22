@@ -99,7 +99,7 @@ public class Request1023Handler extends AbstractRequestHandler {
         String isRepeatKey = "";
         if (null != info) {
             idCard = info.getCertCardNo();
-            isRepeatKey = getKeyPersonalInfo(info);
+            isRepeatKey = getKeyPersonalInfo(info,channelId);
         } else {
             info = new RiskPersonalInfo();
         }
@@ -163,9 +163,9 @@ public class Request1023Handler extends AbstractRequestHandler {
      *
      * @return
      */
-    private String getKeyPersonalInfo(RiskPersonalInfo info) {
+    private String getKeyPersonalInfo(RiskPersonalInfo info,String channelId) {
         StringBuilder sb = new StringBuilder("rms_third_1023_");
-//        sb.append(strategyId);
+        sb.append(channelId);
         sb.append("_");
         sb.append(info.getName());
         sb.append("_");

@@ -54,17 +54,11 @@ public class Request1023Handler extends AbstractRequestHandler {
     @Override
     protected boolean checkParams(Map<String, Serializable> params) {
 
-        String frontId = (String) params.get("frontId");
         String orderNo = (String) params.get("orderNo");
         String channelId = (String) params.get("channelId");
-        String financialProductId = (String) params.get("financialProductId");
-        String operationType = (String) params.get("operationType");
-        String clientType = (String) params.get("clientType");
-        String customerType = (String) params.get("customerType");
-        if (StringUtils.isBlank(frontId) || StringUtils.isBlank(orderNo)
-                || StringUtils.isBlank(channelId) || StringUtils.isBlank(financialProductId)
-                || StringUtils.isBlank(operationType) || StringUtils.isBlank(clientType)
-                || params.get("personInfo") == null || StringUtils.isBlank(customerType)) {
+        if (StringUtils.isBlank(orderNo)
+                || StringUtils.isBlank(channelId)
+                || params.get("personInfo") == null) {
             return false;
         }
         return true;
@@ -99,7 +93,7 @@ public class Request1023Handler extends AbstractRequestHandler {
         String isRepeatKey = "";
         if (null != info) {
             idCard = info.getCertCardNo();
-            isRepeatKey = getKeyPersonalInfo(info,channelId);
+            isRepeatKey = getKeyPersonalInfo(info, channelId);
         } else {
             info = new RiskPersonalInfo();
         }
@@ -163,7 +157,7 @@ public class Request1023Handler extends AbstractRequestHandler {
      *
      * @return
      */
-    private String getKeyPersonalInfo(RiskPersonalInfo info,String channelId) {
+    private String getKeyPersonalInfo(RiskPersonalInfo info, String channelId) {
         StringBuilder sb = new StringBuilder("rms_third_1023_");
         sb.append(channelId);
         sb.append("_");

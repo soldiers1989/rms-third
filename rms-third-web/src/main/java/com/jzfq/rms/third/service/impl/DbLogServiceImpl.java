@@ -49,40 +49,41 @@ public class DbLogServiceImpl implements IDbLogService {
     TThirdTransferLogMapper tThirdTransferLogMapper;
     @Autowired
     IRiskPostDataService riskPostDataService;
+
     @Override
     public void writeLogToDB(String traceId, Map<String, Object> params, Map<String, Object> logParams) {
-        String targetId = getString(params,"targetId");
-        if(StringUtils.equals(targetId, SystemIdEnum.THIRD_GPJ.getCode())){
+        String targetId = getString(params, "targetId");
+        if (StringUtils.equals(targetId, SystemIdEnum.THIRD_GPJ.getCode())) {
             TGpjTransferLog log = createNewGpjRecord(logParams);
             gpjTransferLogMapper.insert(log);
             return;
         }
-        if(StringUtils.equals(targetId,SystemIdEnum.THIRD_BR.getCode())){
+        if (StringUtils.equals(targetId, SystemIdEnum.THIRD_BR.getCode())) {
             TBrTransferLog log = createNewBrRecord(logParams);
             brTransferLogMapper.insert(log);
             return;
         }
-        if(StringUtils.equals(targetId,SystemIdEnum.THIRD_RSLL.getCode())){
+        if (StringUtils.equals(targetId, SystemIdEnum.THIRD_RSLL.getCode())) {
             TRsllTransferLog log = createNewRsllRecord(logParams);
             rsllTransferLogMapper.insert(log);
             return;
         }
-        if(StringUtils.equals(targetId,SystemIdEnum.THIRD_TD.getCode())){
+        if (StringUtils.equals(targetId, SystemIdEnum.THIRD_TD.getCode())) {
             TTdTransferLog log = createNewTdRecord(logParams);
             tdTransferLogMapper.insert(log);
             return;
         }
-        if(StringUtils.equals(targetId,SystemIdEnum.THIRD_JIEAN.getCode())){
+        if (StringUtils.equals(targetId, SystemIdEnum.THIRD_JIEAN.getCode())) {
             TJieanTransferLog log = createNewJieanRecord(logParams);
             jieanTransferLogMapper.insert(log);
             return;
         }
-        if(StringUtils.equals(targetId,SystemIdEnum.THIRD_PY.getCode())){
+        if (StringUtils.equals(targetId, SystemIdEnum.THIRD_PY.getCode())) {
             TPyTransferLog log = createNewPyRecord(logParams);
             pyTransferLogMapper.insert(log);
             return;
         }
-        if(StringUtils.equals(targetId,SystemIdEnum.THIRD_JXL.getCode())){
+        if (StringUtils.equals(targetId, SystemIdEnum.THIRD_JXL.getCode())) {
             TJxlTransferLog log = createNewJxlRecord(logParams);
             jxlTransferLogMapper.insert(log);
         }
@@ -93,12 +94,12 @@ public class DbLogServiceImpl implements IDbLogService {
      */
     @Override
     public void recodeRequest(JSONObject params) {
-        try{
-            logger.info("requestcodeRequests请求参数：",params);
+        try {
+            logger.info("requestcodeRequests请求参数：" + params);
             ThirdRequestLog record = new ThirdRequestLog();
             String traceID = params.getString("traceID");
             String callSystemID = params.getString("callSystemID");
-            if(StringUtils.isBlank(traceID)||StringUtils.isBlank(callSystemID)){
+            if (StringUtils.isBlank(traceID) || StringUtils.isBlank(callSystemID)) {
                 logger.info("记录访问日志：流水号或系统编号为空 参数：{}", params);
             }
             record.setAppId(params.getString("apiId"));
@@ -107,165 +108,170 @@ public class DbLogServiceImpl implements IDbLogService {
             record.setData(params);
             record.setCreateTime(new Date());
             riskPostDataService.saveData(record);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("记录访问日志异常：{} 参数：{}", e, params);
         }
     }
 
-    private TPyTransferLog createNewPyRecord(Map<String, Object> params){
+    private TPyTransferLog createNewPyRecord(Map<String, Object> params) {
         TPyTransferLog record = new TPyTransferLog();
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"interfaceId"));
-        record.setcTraceid(getString(params,"traceId"));
-        record.setcSystemId(getString(params,"systemId"));
-        record.setcStatus(getString(params,"status"));
-        record.setcMsg(getString(params,"message"));
-        record.setcChannel(getString(params,"appId"));
-        record.setcParams(getString(params,"params"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcInterfaceKey(getString(params, "interfaceId"));
+        record.setcTraceid(getString(params, "traceId"));
+        record.setcSystemId(getString(params, "systemId"));
+        record.setcStatus(getString(params, "status"));
+        record.setcMsg(getString(params, "message"));
+        record.setcChannel(getString(params, "appId"));
+        record.setcParams(getString(params, "params"));
+        record.setcProLine(getString(params, "systemId"));
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcIp(getString(params,"systemIP"));
+        record.setcIp(getString(params, "systemIP"));
         return record;
     }
 
-    private TGpjTransferLog createNewGpjRecord(Map<String, Object> params){
+    private TGpjTransferLog createNewGpjRecord(Map<String, Object> params) {
         TGpjTransferLog record = new TGpjTransferLog();
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"interfaceId"));
-        record.setcTraceid(getString(params,"traceId"));
-        record.setcSystemId(getString(params,"systemId"));
-        record.setcStatus(getString(params,"status"));
-        record.setcMsg(getString(params,"message"));
-        record.setcChannel(getString(params,"appId"));
-        record.setcParams(getString(params,"params"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcInterfaceKey(getString(params, "interfaceId"));
+        record.setcTraceid(getString(params, "traceId"));
+        record.setcSystemId(getString(params, "systemId"));
+        record.setcStatus(getString(params, "status"));
+        record.setcMsg(getString(params, "message"));
+        record.setcChannel(getString(params, "appId"));
+        record.setcParams(getString(params, "params"));
+        record.setcProLine(getString(params, "systemId"));
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcIp(getString(params,"systemIP"));
+        record.setcIp(getString(params, "systemIP"));
         return record;
     }
 
-    private TJxlTransferLog createNewJxlRecord(Map<String, Object> params){
+    private TJxlTransferLog createNewJxlRecord(Map<String, Object> params) {
         TJxlTransferLog record = new TJxlTransferLog();
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"interfaceId"));
-        record.setcTraceid(getString(params,"traceId"));
-        record.setcSystemId(getString(params,"systemId"));
-        record.setcStatus(getString(params,"status"));
-        record.setcMsg(getString(params,"message"));
-        record.setcChannel(getString(params,"appId"));
-        record.setcParams(getString(params,"params"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcInterfaceKey(getString(params, "interfaceId"));
+        record.setcTraceid(getString(params, "traceId"));
+        record.setcSystemId(getString(params, "systemId"));
+        record.setcStatus(getString(params, "status"));
+        record.setcMsg(getString(params, "message"));
+        record.setcChannel(getString(params, "appId"));
+        record.setcParams(getString(params, "params"));
+        record.setcProLine(getString(params, "systemId"));
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcIp(getString(params,"systemIP"));
+        record.setcIp(getString(params, "systemIP"));
         return record;
     }
 
-    private TTdTransferLog createNewTdRecord(Map<String, Object> params){
+    private TTdTransferLog createNewTdRecord(Map<String, Object> params) {
         TTdTransferLog record = new TTdTransferLog();
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"interfaceId"));
-        record.setcTraceid(getString(params,"traceId"));
-        record.setcSystemId(getString(params,"systemId"));
-        record.setcStatus(getString(params,"status"));
-        record.setcMsg(getString(params,"message"));
-        record.setcChannel(getString(params,"appId"));
-        record.setcParams(getString(params,"params"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcInterfaceKey(getString(params, "interfaceId"));
+        record.setcTraceid(getString(params, "traceId"));
+        record.setcSystemId(getString(params, "systemId"));
+        record.setcStatus(getString(params, "status"));
+        record.setcMsg(getString(params, "message"));
+        record.setcChannel(getString(params, "appId"));
+        record.setcParams(getString(params, "params"));
+        record.setcProLine(getString(params, "systemId"));
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcIp(getString(params,"systemIP"));
+        record.setcIp(getString(params, "systemIP"));
         return record;
     }
 
-    private TBrTransferLog createNewBrRecord(Map<String, Object> params){
+    private TBrTransferLog createNewBrRecord(Map<String, Object> params) {
         TBrTransferLog record = new TBrTransferLog();
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"interfaceId"));
-        record.setcTraceid(getString(params,"traceId"));
-        record.setcSystemId(getString(params,"systemId"));
-        record.setcStatus(getString(params,"status"));
-        record.setcMsg(getString(params,"message"));
-        record.setcChannel(getString(params,"appId"));
-        record.setcParams(getString(params,"params"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcInterfaceKey(getString(params, "interfaceId"));
+        record.setcTraceid(getString(params, "traceId"));
+        record.setcSystemId(getString(params, "systemId"));
+        record.setcStatus(getString(params, "status"));
+        record.setcMsg(getString(params, "message"));
+        record.setcChannel(getString(params, "appId"));
+        record.setcParams(getString(params, "params"));
+        record.setcProLine(getString(params, "systemId"));
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcIp(getString(params,"systemIP"));
+        record.setcIp(getString(params, "systemIP"));
         return record;
     }
 
-    private TRsllTransferLog createNewRsllRecord(Map<String, Object> params){
+    private TRsllTransferLog createNewRsllRecord(Map<String, Object> params) {
         TRsllTransferLog record = new TRsllTransferLog();
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"interfaceId"));
-        record.setcTraceid(getString(params,"traceId"));
-        record.setcSystemId(getString(params,"systemId"));
-        record.setcStatus(getString(params,"status"));
-        record.setcMsg(getString(params,"message"));
-        record.setcChannel(getString(params,"appId"));
-        record.setcParams(getString(params,"params"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcInterfaceKey(getString(params, "interfaceId"));
+        record.setcTraceid(getString(params, "traceId"));
+        record.setcSystemId(getString(params, "systemId"));
+        record.setcStatus(getString(params, "status"));
+        record.setcMsg(getString(params, "message"));
+        record.setcChannel(getString(params, "appId"));
+        record.setcParams(getString(params, "params"));
+        record.setcProLine(getString(params, "systemId"));
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcIp(getString(params,"systemIP"));
+        record.setcIp(getString(params, "systemIP"));
         return record;
     }
 
-    private TJieanTransferLog createNewJieanRecord(Map<String, Object> params){
+    private TJieanTransferLog createNewJieanRecord(Map<String, Object> params) {
         TJieanTransferLog record = new TJieanTransferLog();
         record.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
-        record.setcInterfaceKey(getString(params,"interfaceId"));
-        record.setcTraceid(getString(params,"traceId"));
-        record.setcSystemId(getString(params,"systemId"));
-        record.setcStatus(getString(params,"status"));
-        record.setcMsg(getString(params,"message"));
-        record.setcChannel(getString(params,"appId"));
-        record.setcParams(getString(params,"params"));
-        record.setcProLine(getString(params,"systemId"));
+        record.setcInterfaceKey(getString(params, "interfaceId"));
+        record.setcTraceid(getString(params, "traceId"));
+        record.setcSystemId(getString(params, "systemId"));
+        record.setcStatus(getString(params, "status"));
+        record.setcMsg(getString(params, "message"));
+        record.setcChannel(getString(params, "appId"));
+        record.setcParams(getString(params, "params"));
+        record.setcProLine(getString(params, "systemId"));
         record.setDtCreateTime(new Date());
         record.setnDel(0);
-        record.setcIp(getString(params,"systemIP"));
+        record.setcIp(getString(params, "systemIP"));
         return record;
     }
 
-    private String getString(Map<String,Object> params,String key){
+    private String getString(Map<String, Object> params, String key) {
         Object input = params.get(key);
-        if(input==null){
+        if (input == null) {
             return "N/A";
         }
         return input.toString().trim();
     }
-    private Integer getInteger(Object ob){
-        if(ob==null||!NumberUtils.isNumber(ob.toString().trim())){
+
+    private Integer getInteger(Object ob) {
+        if (ob == null || !NumberUtils.isNumber(ob.toString().trim())) {
             return 0;
         }
         return Integer.parseInt(ob.toString().trim());
     }
-    private Long getLong(Object ob){
-        if(ob==null||!NumberUtils.isNumber(ob.toString().trim())){
+
+    private Long getLong(Object ob) {
+        if (ob == null || !NumberUtils.isNumber(ob.toString().trim())) {
             return 0L;
         }
         return Long.parseLong(ob.toString().trim());
     }
-    private Long getLong(Map<String,Object> params,String key){
+
+    private Long getLong(Map<String, Object> params, String key) {
         Object input = params.get(key);
-        if(input==null||!NumberUtils.isNumber(input.toString().trim())){
+        if (input == null || !NumberUtils.isNumber(input.toString().trim())) {
             return 0L;
         }
         return Long.parseLong(input.toString().trim());
     }
-    private Integer getInteger(Map<String,Object> params,String key){
+
+    private Integer getInteger(Map<String, Object> params, String key) {
         Object input = params.get(key);
-        if(input==null||!NumberUtils.isNumber(input.toString().trim())){
+        if (input == null || !NumberUtils.isNumber(input.toString().trim())) {
             return 0;
         }
         return Integer.parseInt(input.toString().trim());
     }
-    private String toJSONString(Object ob){
-        if(ob==null){
+
+    private String toJSONString(Object ob) {
+        if (ob == null) {
             return "N/A";
         }
         String json = JSON.toJSONString(ob, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteMapNullValue);

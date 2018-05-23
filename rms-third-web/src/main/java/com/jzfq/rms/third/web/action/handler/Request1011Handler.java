@@ -3,9 +3,11 @@ package com.jzfq.rms.third.web.action.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
+import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.service.IPushDataService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.impl.BrPostService;
@@ -42,10 +44,15 @@ public class Request1011Handler extends AbstractRequestHandler {
     ICountCache interfaceCountCache;
     @Autowired
     IPushDataService pushDataService;
+
+    @Autowired
+    IConfigDao configCacheDao;
+
+
     /**
      * 超时时间 三天
      */
-    private static final Long time = 3 * 24 * 60 * 60L;
+    private static final Long time = 30 * 24 * 60 * 60L;
 
     /**
      * 检查业务参数是否合法，交由子类实现。

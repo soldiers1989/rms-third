@@ -44,7 +44,7 @@ public class Request1005Handler   extends AbstractRequestHandler{
     /**
      * 超时时间 三天
      */
-    private static final Long time = 3*24*60*60L;
+    private static final Long time = 90*24*60*60L;
 
     /**
      * 检查业务参数是否合法，交由子类实现。

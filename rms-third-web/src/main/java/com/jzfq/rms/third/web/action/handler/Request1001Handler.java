@@ -59,7 +59,7 @@ public class Request1001Handler extends AbstractRequestHandler {
     @Autowired
     ICountCache interfaceCountCache;
 
-    Long time = 24 * 60 * 60 * 3L;
+    Long time = 24 * 60 * 60 * 10L;
 
     /**
      * 版本10

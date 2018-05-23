@@ -79,7 +79,7 @@ public class Request1020Handler extends AbstractRequestHandler {
     /**
      * 超时时间 三天
      */
-    private static final Long time = 3 * 24 * 60 * 60L;
+    private static final Long time = 30 * 24 * 60 * 60L;
 
     /**
      * 版本01

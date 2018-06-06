@@ -2,6 +2,7 @@ package com.jzfq.rms.third.service;
 
 import com.jzfq.rms.third.common.domain.SysTask;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.mongo.GongPingJiaData;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
 import com.jzfq.rms.third.exception.BusinessException;
 
@@ -60,4 +61,12 @@ public interface IGongPingjiaService {
      * @return
      */
     String getEvaluatePrice(String vin, String plantNo);
+
+
+    /**
+     * 查询全部公平价数据s
+     * @return
+     */
+    List<GongPingJiaData> queryGaopingjiaDatas();
+
 }

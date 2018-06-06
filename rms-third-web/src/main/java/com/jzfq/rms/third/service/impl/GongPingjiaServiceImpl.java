@@ -47,7 +47,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
     @Value("${gongpingjia.secret}")
     private String secret;
     @Value("${gongpingjia.timeout}")
-    private Long timeout ;
+    private Long timeout;
 
 
     @Autowired
@@ -563,7 +563,7 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
         bizParams.put("vin", vin);
         bizParams.put("licensePlatHeader", licensePlatHeader);
         ResponseResult result = getGongpingjiaData(params, bizParams);
-        List<Map<String,String>> list = (List<Map<String,String>>)result.getData();
+        List<Map<String, String>> list = (List<Map<String, String>>) result.getData();
         if (list == null && result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
             //如果公平价没有返回data数据  则返回49999  并推送
             result.setCode(200);
@@ -603,6 +603,14 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
         return calendar.getTime();
     }
 
+
+    @Override
+    public List<GongPingJiaData> queryGaopingjiaDatas() {
+        List<GongPingJiaData> report = mongoTemplate.find(new Query(Criteria.where("desc").is(GpjTypeEnum.GPJ_EVALUATION.msg()))
+                , GongPingJiaData.class);
+        return report;
+    }
+
     /**
      * 根据vin第十位获取生产年份
      *
@@ -625,12 +633,12 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
      * @return
      */
 
-    private ResponseResult getGongpingjiaData( Map<String, Object> params,Map<String, Object> bizParams) throws BusinessException{
-        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.GPJ01.getCode(),params,bizParams);
+    private ResponseResult getGongpingjiaData(Map<String, Object> params, Map<String, Object> bizParams) throws BusinessException {
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.GPJ01.getCode(), params, bizParams);
 //        response = null;
-        if(response==null){
-            log.info("公平价估价接口调用[车架号={} 车牌头两位={}] 响应信息为空" ,
-                    bizParams.get("vin"),bizParams.get("licensePlatHeader"));
+        if (response == null) {
+            log.info("公平价估价接口调用[车架号={} 车牌头两位={}] 响应信息为空",
+                    bizParams.get("vin"), bizParams.get("licensePlatHeader"));
 //            throw new BusinessException(ReturnCode.ERROR_RESPONSE_NULL.code(),"公平价估价接口失败 返回为空",true);
             response = new ResponseResult();
 

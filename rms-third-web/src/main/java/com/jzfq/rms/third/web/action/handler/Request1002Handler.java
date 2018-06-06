@@ -1,5 +1,6 @@
 package com.jzfq.rms.third.web.action.handler;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.mongo.PengYuan;
 import com.jzfq.rms.third.common.domain.TPyCarCheck;
@@ -138,6 +139,7 @@ public class Request1002Handler extends AbstractRequestHandler {
 
 
     private String getThirdResult(JSONObject json) {
+        log.info("鹏元解析后的json："+ JSON.toJSONString(json));
         if (json == null) {
             return CarCheckEnum.OTHER.getCode();
         }

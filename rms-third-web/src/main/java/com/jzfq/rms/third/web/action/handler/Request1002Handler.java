@@ -138,11 +138,10 @@ public class Request1002Handler extends AbstractRequestHandler {
 
 
     private String getThirdResult(JSONObject json) {
-        log.info("解析后的json：" + json);
         if (json == null) {
             return CarCheckEnum.OTHER.getCode();
         }
-        JSONObject carInfo = json.getJSONObject("checkInfo");
+        JSONObject carInfo = json.getJSONObject("carCheckInfo");
         if (carInfo == null) {
             return CarCheckEnum.OTHER.getCode();
         }

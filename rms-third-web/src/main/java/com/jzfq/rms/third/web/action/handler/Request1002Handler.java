@@ -1,6 +1,5 @@
 package com.jzfq.rms.third.web.action.handler;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.mongo.PengYuan;
 import com.jzfq.rms.third.common.domain.TPyCarCheck;
@@ -78,24 +77,20 @@ public class Request1002Handler extends AbstractRequestHandler {
         // 根据查询数据库
         Map<String, Object> carInfo = JSONObject.parseObject(request.getParam("carInfo").toString(), HashMap.class);
         log.info("traceId=" + traceId + " 鹏元车辆信息 params：【" + carInfo + "】");
-        String isRepeatKey = getKeyByFourItem(carInfo);
-        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
-        log.info("traceId={} 获取鹏元车辆信息,缓存isRepeatKey={},是否重新拉取={}", traceId, isRepeatKey, isRpc);
-        if (!isRpc) {
-            List<TPyCarCheck> carChecksInfo = pengYuanService.getPengYuanData(StringUtil.getStringOfObject(carInfo.get("name")), StringUtil.getStringOfObject(carInfo.get("certCardNo")), StringUtil.getStringOfObject(carInfo.get("plateNo")), StringUtil.getStringOfObject(carInfo.get("type")));
-            if (!CollectionUtils.isEmpty(carChecksInfo)) {
-                TPyCarCheck carCheck = carChecksInfo.get(0);
-                // 存mongodb
-                String result = carCheck.getcResult();
-                pengYuanService.saveRmsDatas(orderNo, result, carInfo);
-                log.info("traceId={} 获取鹏元车辆信息成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, carCheck.getcValue())); //成功
-                return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, carCheck.getcValue());
-            } else {
-                log.info("traceId={} 获取鹏元车辆信息失败(mongodb不存在此数据),请删除缓存" + isRepeatKey + "重新拉取，返回结果={}", traceId, null); //成功
-                return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
-            }
+        List<TPyCarCheck> carChecksInfo = pengYuanService.getPengYuanData(StringUtil.getStringOfObject(carInfo.get("name")), StringUtil.getStringOfObject(carInfo.get("certCardNo")), StringUtil.getStringOfObject(carInfo.get("plateNo")), StringUtil.getStringOfObject(carInfo.get("type")));
+        if (!CollectionUtils.isEmpty(carChecksInfo)) {
+            TPyCarCheck carCheck = carChecksInfo.get(0);
+            // 存mongodb
+            String result = carCheck.getcResult();
+            pengYuanService.saveRmsDatas(orderNo, result, carInfo);
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, carCheck.getcValue());
         }
         Map<String, Object> commonParams = getCommonParams(request);
+        String isRepeatKey = getKeyByFourItem(carInfo);
+        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
+        if (!isRpc) {
+            return new ResponseResult(traceId, ReturnCode.ACTIVE_THIRD_RPC, null);
+        }
         String reqId = getReqId();
         commonParams.put("reqId", reqId);
         ResponseResult result = null;
@@ -139,7 +134,10 @@ public class Request1002Handler extends AbstractRequestHandler {
 
 
     private String getThirdResult(JSONObject json) {
-        log.info("鹏元解析后的json："+ JSON.toJSONString(json));
+
+
+        log.info("解析后的json："+json);
+
         if (json == null) {
             return CarCheckEnum.OTHER.getCode();
         }

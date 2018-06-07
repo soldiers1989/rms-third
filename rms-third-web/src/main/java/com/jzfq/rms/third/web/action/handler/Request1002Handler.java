@@ -86,7 +86,7 @@ public class Request1002Handler extends AbstractRequestHandler {
                 TPyCarCheck carCheck = carChecksInfo.get(0);
                 // 存mongodb
                 String result = carCheck.getcResult();
-                pengYuanService.saveRmsDatas(orderNo, result, carInfo);
+                pengYuanService.saveRmsDatas(orderNo, result, carInfo,carCheck.getcValue());
                 log.info("traceId={} 获取鹏元车辆信息成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, carCheck.getcValue())); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, carCheck.getcValue());
             } else {
@@ -108,8 +108,8 @@ public class Request1002Handler extends AbstractRequestHandler {
         if (result.getCode() == ReturnCode.REQUEST_SUCCESS.code()) {
             JSONObject data = (JSONObject) result.getData();
             if (data != null) {
-                pengYuanService.saveRmsDatas(orderNo, data.toJSONString(), carInfo);
                 String value = getThirdResult(data);
+                pengYuanService.saveRmsDatas(orderNo, data.toJSONString(), carInfo,value);
                 pengYuanService.saveCarCheckInfo(reqId, data.toJSONString(), value, carInfo, ReturnCode.REQUEST_SUCCESS.code());
                 result.setData(value);
             }

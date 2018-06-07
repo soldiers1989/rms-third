@@ -1,13 +1,13 @@
 package com.jzfq.rms.third.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jzfq.rms.mongo.PengYuan;
 import com.jzfq.rms.third.common.domain.TPyCarCheck;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.enums.SendMethodEnum;
 import com.jzfq.rms.third.common.enums.SystemIdEnum;
+import com.jzfq.rms.third.common.mongo.PengYuan;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
@@ -166,7 +166,7 @@ public class PengYuanServiceImpl implements IPengYuanService {
      * @param result
      */
     @Override
-    public void saveRmsDatas(String orderNo, String result, Map<String,Object> carInfo) {
+    public void saveRmsDatas(String orderNo, String result, Map<String,Object> carInfo,String value) {
         String traceId = TraceIDThreadLocal.getTraceID();
         try {
             ThreadProvider.getThreadPool().execute(()->{
@@ -182,7 +182,7 @@ public class PengYuanServiceImpl implements IPengYuanService {
                 if(StringUtils.isNotBlank(result)){
                     json = JSONObject.parseObject(result);
                 }
-                PengYuan py = new PengYuan(taskId,(String) carInfo.get("certCardNo"), "",json );
+                PengYuan py = new PengYuan(taskId,(String) carInfo.get("certCardNo"), "",json ,value);
                 saveData(py);
             });
         }catch (Exception e){

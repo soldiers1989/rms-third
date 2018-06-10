@@ -59,7 +59,7 @@ public class PyResponseHandler extends AbstractResponseHandler {
         String xml = new CompressStringUtil().decompress(returnValue);
         logger.info("traceId=["+traceId+"]响应报文 result ==>" + xml);
         data = parseXml2Json(xml);
-        logger.info("鹏元数据 traceId=[" + traceId + "]\r\n" + data);
+        logger.info("鹏元数据 traceId=[" + traceId + "]\r\n data:" + data);
         JSONObject checkInfo = data.getJSONObject("carCheckInfo");
         if (checkInfo.containsKey("errorCode")) {
             result = new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE,data);

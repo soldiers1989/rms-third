@@ -86,7 +86,7 @@ public class PyResponseHandler extends AbstractResponseHandler {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document document = db.parse(new ByteArrayInputStream(xml.getBytes("GBK")));
+            Document document = db.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
             Node node = document.getFirstChild();
             String nodeName = node.getNodeName();
             if ("cisReports".equals(nodeName)) {

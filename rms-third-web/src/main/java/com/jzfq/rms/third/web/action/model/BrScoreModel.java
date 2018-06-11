@@ -1,5 +1,7 @@
 package com.jzfq.rms.third.web.action.model;
 
+import java.util.Date;
+
 public class BrScoreModel {
 
     private int id;//任务id
@@ -15,6 +17,8 @@ public class BrScoreModel {
     private String score;//百融分
 
     private String taskId;//任务id
+
+    private Date updateTime;//更新时间
 
 
     public String getName() {
@@ -65,6 +69,14 @@ public class BrScoreModel {
         this.taskId = taskId;
     }
 
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     @Override
     public String toString() {

@@ -10,8 +10,9 @@ import java.util.Date;
 
 /**
  * 请求百融返回的数据
+ *
  * @author 大连桔子分期科技有限公司
- * @date   9/29/16. 下午4:04:55
+ * @date 9/29/16. 下午4:04:55
  */
 @Document(collection = "bairong_data")
 public class BairongData {
@@ -41,6 +42,8 @@ public class BairongData {
     private Date createTime;
 
     private String data;
+
+    private Date updateDate;
 
     public String getName() {
         return name;
@@ -109,6 +112,15 @@ public class BairongData {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
     public static class BairongDataBuild {

@@ -149,7 +149,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
     public void saveRmsBrPostData(String name, String certCardNo, String mobile, String strategyId, String data, String taskId) {
         ThreadProvider.getThreadPool().execute(() -> {
             JSONObject json = JSONObject.parseObject(data);
-            json.put("scorepettycashv1", getScoreByJson(json));
+//            json.put("scorepettycashv1", getScoreByJson(json));
             BrPostData brPostData = buildPostData(taskId, "拉取数据集合信息信息", json.toJSONString(), "0");
             //保存rms系统数据结构
             saveData(brPostData);

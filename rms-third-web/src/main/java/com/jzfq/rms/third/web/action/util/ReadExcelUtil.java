@@ -29,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -190,7 +191,10 @@ public class ReadExcelUtil {
                 //taskId
                 info.setTaskId(getCellXLSXValue(hssfrow.getCell((short) 5), null));
 
-
+                String time = getCellXLSXValue(hssfrow.getCell((short) 6), null);
+                Date updateDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(time);
+                //时间
+                info.setUpdateTime(updateDate);
                 logger.info("当前行：" + j+ "当前数据：【"+info.toString()+"】");
 
                 //添加任务

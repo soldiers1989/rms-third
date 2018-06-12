@@ -46,7 +46,7 @@ public class ReadGongpingjiaAction {
         ResponseResult responseResult = new ResponseResult();
         List<GongPingJiaData> datas = gongPingjiaService.queryGaopingjiaDatas();
         String root = ReadGongpingjiaAction.class.getClassLoader().getResource("excel").getPath();
-        ExportExcelUtil.export(datas,"d:\\gpjdata.xls");
+        ExportExcelUtil.export(datas,"file:/data/excel/gpjdata.xls");
         responseResult.setCode(200);
         return responseResult;
     }

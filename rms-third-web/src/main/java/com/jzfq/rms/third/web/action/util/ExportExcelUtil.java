@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,19 +29,19 @@ public class ExportExcelUtil {
 
 
         //第一步创建workbook
-        HSSFWorkbook wb = new HSSFWorkbook();
+        XSSFWorkbook wb = new XSSFWorkbook();
 
         //第二步创建sheet
-        HSSFSheet sheet = wb.createSheet("公平价数据");
+        XSSFSheet sheet = wb.createSheet("公平价数据");
 
         //第三步创建行row:添加表头0行
-        HSSFRow row = sheet.createRow(0);
-        HSSFCellStyle style = wb.createCellStyle();
+        XSSFRow row = sheet.createRow(0);
+        XSSFCellStyle style = wb.createCellStyle();
         //style.setAlignment(HSSFCellStyle.ALIGN_CENTER);  //居中
 
 
         //第四步创建单元格
-        HSSFCell cell = row.createCell(0); //第一个单元格
+        XSSFCell cell = row.createCell(0); //第一个单元格
         cell.setCellValue("客户id");
         cell.setCellStyle(style);
 

@@ -3,10 +3,7 @@ package com.jzfq.rms.third.web.action;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
-import com.jzfq.rms.third.common.enums.JaoCodeEnum;
-import com.jzfq.rms.third.common.enums.JaoEclCodeEnum;
-import com.jzfq.rms.third.common.enums.PhoneDataTypeEnum;
-import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
@@ -283,7 +280,7 @@ public class RequestBrTdGeoAction {
                 logger.info("traceId={} 拉取三方手机三要素返回错误码={},返回结果={}", bizData, value, responseResult); //失败
                 return null;
             }
-            return value;
+            return PhoneThreeItemEnum.getName(value);
         } catch (Exception e) {
             logger.error("traceId={} 手机三要素异常", bizData, e);
             return null;
@@ -309,7 +306,7 @@ public class RequestBrTdGeoAction {
                 logger.info("traceId={} 拉取三方手机在网时长返回错误码={},返回结果={}", bizData, value, responseResult); //失败
                 return null;
             }
-            return value;
+            return PhoneNetworkLengthEnum.getName(value);
         } catch (Exception e) {
             logger.error("traceId={} 手机在网时长异常", bizData, e);
             return null;
@@ -335,7 +332,7 @@ public class RequestBrTdGeoAction {
                 logger.info("traceId={} 拉取三方手机在网状态返回错误码={},返回结果={}", bizData, value, responseResult); //失败
                 return null;
             }
-            return value;
+            return PhoneStatusEnum.getName(value);
         } catch (Exception e) {
             logger.error("traceId={} 手机在网状态异常", bizData, e);
             return null;

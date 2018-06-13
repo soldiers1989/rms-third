@@ -151,7 +151,7 @@ public class RequestBrTdGeoAction {
                 //三要素
                 info.setThree(getThree(getJaoCommonParams(info)));
                 //在网时长
-                info.setStatus(getLength(getJaoCommonParams(info)));
+                info.setLength(getLength(getJaoCommonParams(info)));
                 //在网状态
                 info.setStatus(getStatus(getJaoCommonParams(info)));
                 logger.info("当前行：" + j + "当前数据：【" + info.toString() + "】");
@@ -291,7 +291,7 @@ public class RequestBrTdGeoAction {
     //在网时长
     public String getLength(Map<String, Object> bizData) {
         try {
-            //手机三要素远程拉取
+            //在网时长
             ResponseResult responseResult = iJaoService.getPhoneNetworkLength(bizData);
             if (responseResult.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
                 logger.info("traceId={} 拉取三方手机在网时长失败,返回结果={}", bizData, responseResult); //失败

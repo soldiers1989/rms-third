@@ -137,11 +137,21 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
 
 
     @Override
-    public void saveBairongData(String name, String certCardNo, String mobile, String strategyId, String data) {
+    public void saveBairongData(String name, String certCardNo, String mobile, String strategyId, String data, Date updateTime, String flag) {
         ThreadProvider.getThreadPool().execute(() -> {
-            BairongData baiRongScore = buildBairongData(name, certCardNo, mobile, strategyId,
-                    "0", data);
-            saveData(baiRongScore);
+//            BairongData baiRongScore = buildBairongData(name, certCardNo, mobile, strategyId,
+//                    "0", data);
+            BairongData bairongData = new BairongData();
+            bairongData.setFlag(flag);
+            bairongData.setUpdateTime(updateTime);
+            bairongData.setData(data);
+            bairongData.setCertCardNo(certCardNo);
+            bairongData.setMobile(mobile);
+            bairongData.setName(name);
+            bairongData.setCreateTime(new Date());
+            bairongData.setStrategyId(strategyId);
+            bairongData.setType("0");
+            saveData(bairongData);
         });
     }
 
@@ -232,9 +242,9 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
      * @return
      */
     @Override
-    public int updateBairongData(String name, String certCardNo, String mobile, String strategyId, String data) {
+    public int updateBairongData(String name, String certCardNo, String mobile, String strategyId, String data, Date updateTime, String flag) {
         int num = mongoTemplate.updateMulti(new Query(Criteria.where("name").is(name)
-                .and("certCardNo").is(certCardNo).and("mobile").is(mobile)), Update.update("data", data), BairongData.class).getN();
+                .and("certCardNo").is(certCardNo).and("mobile").is(mobile)), Update.update("data", data).set("updateTime", updateTime).set("flag", flag), BairongData.class).getN();
         return num;
     }
 

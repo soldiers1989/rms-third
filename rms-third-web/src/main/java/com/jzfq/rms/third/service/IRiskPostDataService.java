@@ -6,6 +6,7 @@ import com.jzfq.rms.domain.RiskPostTask;
 import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.mongo.BairongData;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +89,7 @@ public interface IRiskPostDataService {
      * @param mobile
      * @return
      */
-    int updateBairongData(String name,String certCardNo,String mobile, String strategyId,String data);
+    int updateBairongData(String name, String certCardNo, String mobile, String strategyId, String data, Date updateTime, String flag);
 
     /**
      *
@@ -114,7 +115,7 @@ public interface IRiskPostDataService {
      */
     BrPostData getLastBrPostData(String taskId);
 
-    void saveBairongData(String name,String certCardNo,String mobile, String strategyId,String data);
+    void saveBairongData(String name,String certCardNo,String mobile, String strategyId,String data,Date updateTime, String flag);
 
     void saveRmsBrPostData(String name,String certCardNo,String mobile, String strategyId,String data,String taskId);
 

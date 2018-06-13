@@ -39,7 +39,6 @@ public class ReadExcelUtil {
     private static Logger logger = LoggerFactory.getLogger(ReadExcelUtil.class);
 
 
-
     private static ReadExcelUtil singleton;
 
     /*
@@ -134,7 +133,7 @@ public class ReadExcelUtil {
      * @date 2016-11-8
      */
 
-    public int readExcelXLSX(FileInputStream in,IRiskPostDataService riskPostDataService) {
+    public int readExcelXLSX(FileInputStream in, IRiskPostDataService riskPostDataService) {
         // TODO Auto-generated method stub
         int input = 0;
         try {
@@ -149,7 +148,7 @@ public class ReadExcelUtil {
             int page = rowNumCount % 1000 == 0 ? rowNumCount / 1000 : rowNumCount / 1000 + 1;
             //执行递归操作
 //            input = updateScore(0, 1000, page, input, hssfrow, hssfsheet,riskPostDataService);
-            updateScoreMaster(rowNumCount,hssfrow, hssfsheet,riskPostDataService);
+            updateScoreMaster(rowNumCount, hssfrow, hssfsheet, riskPostDataService);
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
@@ -160,23 +159,28 @@ public class ReadExcelUtil {
 
     /**
      * @ClassName: ReadExcelUtil
-     * @Description: TODO(递归遍历master-work设计模式)
+     * @Description: TODO(递归遍历master - work设计模式)
      * @author xuliang
      * @date 2016-11-8
      */
 
-    public int updateScoreMaster(int rowNumCount, XSSFRow hssfrow, XSSFSheet hssfsheet,IRiskPostDataService riskPostDataService) {
-        Master master=new Master(new Worker(riskPostDataService), 50);
+    public int updateScoreMaster(int rowNumCount, XSSFRow hssfrow, XSSFSheet hssfsheet, IRiskPostDataService riskPostDataService) {
+        Master master = new Master(new Worker(riskPostDataService), 50);
         for (int j = 1; j < rowNumCount; j++) {
             BrScoreModel info = new BrScoreModel();
             try {
                 hssfrow = hssfsheet.getRow(j);
 
+                //不处理乱码
+                if (getCellXLSXValue(hssfrow.getCell((short) 1), null).contains("?")) {
+                    continue;
+                }
                 info.setId(j);
-
                 /**将EXCEL中的第 j 行，第五列的值插入到实例中*/
                 //百融分
-                info.setScore(getCellXLSXValue(hssfrow.getCell((short) 1), null));
+                info.setScore(getCellXLSXValue(hssfrow.getCell((short) 0), null));
+                //姓名
+                info.setName(getCellXLSXValue(hssfrow.getCell((short) 1), null).trim());
 
                 /**将EXCEL中的第 j 行，第二列的值插入到实例中*/
                 //身份证
@@ -185,18 +189,16 @@ public class ReadExcelUtil {
                 /**将EXCEL中的第 j 行，第三列的值插入到实例中*/
                 //电话
                 info.setPhone(getCellXLSXValue(hssfrow.getCell((short) 3), null));
-                //姓名
-                info.setName(getCellXLSXValue(hssfrow.getCell((short) 4), null));
+
                 /**将EXCEL中的第 j 行，第四列的值插入到实例中*/
                 //taskId
-                info.setTaskId(getCellXLSXValue(hssfrow.getCell((short) 5), null));
+                info.setTaskId(getCellXLSXValue(hssfrow.getCell((short) 4), null));
 
-                String time = getCellXLSXValue(hssfrow.getCell((short) 6), null);
-                Date updateDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(time);
                 //时间
-                info.setUpdateTime(updateDate);
-                logger.info("当前行：" + j+ "当前数据：【"+info.toString()+"】");
+                info.setUpdateTime(new Date());
+                logger.info("当前行：" + j + "当前数据：【" + info.toString() + "】");
 
+                info.setFlag("1");
                 //添加任务
                 master.submit(info);
                 //更新成功加1
@@ -210,11 +212,11 @@ public class ReadExcelUtil {
         //开始执行
         master.execute();
         long start = System.currentTimeMillis();
-        while(true){
-            if(master.isComplete()){
+        while (true) {
+            if (master.isComplete()) {
                 long end = System.currentTimeMillis() - start;
                 int ret = master.getResult();
-                logger.info("最终结果：" + ret + "， 50个线程执行"+rowNumCount+"条数据共耗时：" + end/1000+"s");
+                logger.info("最终结果：" + ret + "， 50个线程执行" + rowNumCount + "条数据共耗时：" + end / 1000 + "s");
                 break;
             }
         }
@@ -225,11 +227,6 @@ public class ReadExcelUtil {
     }
 
 
-
-
-
-
-
     /**
      * @ClassName: ReadExcelUtil
      * @Description: TODO(递归遍历)
@@ -237,12 +234,12 @@ public class ReadExcelUtil {
      * @date 2016-11-8
      */
 
-    public int updateScore(int page, int pageSize, int sumPage, int input, XSSFRow hssfrow, XSSFSheet hssfsheet,IRiskPostDataService riskPostDataService) {
+    public int updateScore(int page, int pageSize, int sumPage, int input, XSSFRow hssfrow, XSSFSheet hssfsheet, IRiskPostDataService riskPostDataService) {
         logger.info("当前页：" + page);
         if (page == sumPage) {
             return input;
         }
-        for (int j = page * 1000+1; j < pageSize; j++) {
+        for (int j = page * 1000 + 1; j < pageSize; j++) {
 
             BrScoreModel info = new BrScoreModel();
             try {
@@ -269,32 +266,32 @@ public class ReadExcelUtil {
                 //查询最近一次bairong_data数据
                 BairongData brData = riskPostDataService.getLastBairongData(info.getName(), info.getIdCard(), info.getPhone(), info.getStrategyId());
                 if (null != brData) {
-                    JSONObject json = JSONObject.parseObject("{\"rs_strategy_id\":\"STR0000799\",\"code\":\"00\",\"swift_number\":\"3002138_20180511135404_2553\",\"rs_Score_decision\":\"Accept\",\"rs_product_type\":\"100085\",\"rs_platform\":\"ios\",\"scorecust\":\"787\",\"flag_score\":\"1\",\"rs_final_decision\":\"Accept\",\"flag_riskstrategy\":\"1\",\"rs_product_name\":\"假数据"+new SimpleDateFormat(DateUtils.DATE_FORMAT_LONG)+"\",\"rs_Score_scorecust\":\"666\",\"rs_strategy_version\":\"1.0\",\"rs_scene\":\"lend\"}");
+                    JSONObject json = JSONObject.parseObject("{\"rs_strategy_id\":\"STR0000799\",\"code\":\"00\",\"swift_number\":\"3002138_20180511135404_2553\",\"rs_Score_decision\":\"Accept\",\"rs_product_type\":\"100085\",\"rs_platform\":\"ios\",\"scorecust\":\"787\",\"flag_score\":\"1\",\"rs_final_decision\":\"Accept\",\"flag_riskstrategy\":\"1\",\"rs_product_name\":\"假数据" + new SimpleDateFormat(DateUtils.DATE_FORMAT_LONG) + "\",\"rs_Score_scorecust\":\"666\",\"rs_strategy_version\":\"1.0\",\"rs_scene\":\"lend\"}");
                     if (StringUtils.isNotBlank(brData.getData())) {
                         json = JSONObject.parseObject(brData.getData());
                     }
                     json.put("rs_Score_scorecust", info.getScore());
                     brData.setData(JSONObject.toJSONString(json));
-                    logger.info("bairongdata更新后数据为:"+json);
+                    logger.info("bairongdata更新后数据为:" + json);
                     //更新bairong_data
-                    riskPostDataService.updateBairongData(info.getName(), info.getIdCard(), info.getPhone(), info.getStrategyId(), brData.getData());
+                    riskPostDataService.updateBairongData(info.getName(), info.getIdCard(), info.getPhone(), info.getStrategyId(), brData.getData(),brData.getUpdateTime(),brData.getFlag());
                 }
                 //ch
                 //更新br_post_data最近一次数据
                 BrPostData brPostData = riskPostDataService.getLastBrPostData(info.getTaskId());
                 if (null != brPostData) {
-                    JSONObject brJson = JSONObject.parseObject("{\"rs_strategy_id\":\"STR0000799\",\"code\":\"00\",\"swift_number\":\"3002138_20180502101600_2512\",\"rs_Score_decision\":\"Accept\",\"rs_product_type\":\"100085\",\"rs_platform\":\"ios\",\"scorecust\":\"787\",\"flag_score\":\"1\",\"rs_final_decision\":\"Accept\",\"flag_riskstrategy\":\"1\",\"rs_product_name\":\"假数据"+new SimpleDateFormat(DateUtils.DATE_FORMAT_LONG)+"\",\"rs_Score_scorecust\":\"787\",\"rs_strategy_version\":\"1.0\",\"scorepettycashv1\":\"666\",\"rs_scene\":\"lend\"}");
+                    JSONObject brJson = JSONObject.parseObject("{\"rs_strategy_id\":\"STR0000799\",\"code\":\"00\",\"swift_number\":\"3002138_20180502101600_2512\",\"rs_Score_decision\":\"Accept\",\"rs_product_type\":\"100085\",\"rs_platform\":\"ios\",\"scorecust\":\"787\",\"flag_score\":\"1\",\"rs_final_decision\":\"Accept\",\"flag_riskstrategy\":\"1\",\"rs_product_name\":\"假数据" + new SimpleDateFormat(DateUtils.DATE_FORMAT_LONG) + "\",\"rs_Score_scorecust\":\"787\",\"rs_strategy_version\":\"1.0\",\"scorepettycashv1\":\"666\",\"rs_scene\":\"lend\"}");
                     if (StringUtils.isNotBlank(brPostData.getData())) {
                         brJson = JSONObject.parseObject(brPostData.getData());
                     }
                     brJson.put("scorepettycashv1", info.getScore());
                     brPostData.setData(JSONObject.toJSONString(brJson));
-                    logger.info("brPostData更新后数据为:"+brJson);
+                    logger.info("brPostData更新后数据为:" + brJson);
                     //更新br_post_data
                     riskPostDataService.updateBrPostData(info.getTaskId(), brPostData.getData());
                 }
 
-                logger.info("当前行：" + j+ "当前数据：【"+info.toString()+"】");
+                logger.info("当前行：" + j + "当前数据：【" + info.toString() + "】");
 
                 //更新成功加1
                 input++;
@@ -305,7 +302,7 @@ public class ReadExcelUtil {
             }
         }
         //继续执行递归
-        updateScore(page+1, pageSize+1000, sumPage, input, hssfrow, hssfsheet,riskPostDataService);
+        updateScore(page + 1, pageSize + 1000, sumPage, input, hssfrow, hssfsheet, riskPostDataService);
         return input;
     }
 

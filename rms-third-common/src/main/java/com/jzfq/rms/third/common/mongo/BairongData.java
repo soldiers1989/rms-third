@@ -43,7 +43,9 @@ public class BairongData {
 
     private String data;
 
-    private Date updateDate;
+    private Date updateTime;
+
+    private String flag;
 
     public String getName() {
         return name;
@@ -115,12 +117,20 @@ public class BairongData {
     }
 
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 
     public static class BairongDataBuild {

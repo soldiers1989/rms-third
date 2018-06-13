@@ -60,10 +60,11 @@ public class Worker implements Runnable {
             //执行更新百融分操作
             //查询最近一次bairong_data数据
             BairongData brData = riskPostDataService.getLastBairongData(info.getName(), info.getIdCard(), info.getPhone(), info.getStrategyId());
-            JSONObject json = JSONObject.parseObject("{\"rs_strategy_id\":\"STR0000799\",\"code\":\"00\",\"swift_number\":\"3002138_20180511135404_2553\",\"rs_Score_decision\":\"Accept\",\"rs_product_type\":\"100085\",\"rs_platform\":\"ios\",\"scorecust\":\"787\",\"flag_score\":\"1\",\"rs_final_decision\":\"Accept\",\"flag_riskstrategy\":\"1\",\"rs_product_name\":\"假数据" + new SimpleDateFormat(DateUtils.DATE_FORMAT_LONG) + "\",\"rs_Score_scorecust\":\"666\",\"rs_strategy_version\":\"1.0\",\"rs_scene\":\"lend\"}");
+            JSONObject json = JSONObject.parseObject("{\"rs_strategy_id\":\"STR0000799\",\"code\":\"00\",\"swift_number\":\"3002138_20180511135404_2553\",\"rs_Score_decision\":\"Accept\",\"rs_product_type\":\"100085\",\"rs_platform\":\"ios\",\"scorecust\":\"0\",\"flag_score\":\"1\",\"rs_final_decision\":\"Accept\",\"flag_riskstrategy\":\"1\",\"rs_product_name\":\"假数据" + new SimpleDateFormat(DateUtils.DATE_FORMAT_LONG) + "\",\"rs_Score_scorecust\":\"0\",\"rs_strategy_version\":\"1.0\",\"rs_scene\":\"lend\"}");
             if (null != brData) {
                 //新增更新时间
-                brData.setUpdateDate(info.getUpdateTime());
+                brData.setUpdateTime(info.getUpdateTime());
+                brData.setFlag(info.getFlag());
                 if (StringUtils.isNotBlank(brData.getData())) {
                     json = JSONObject.parseObject(brData.getData());
                 }
@@ -71,20 +72,21 @@ public class Worker implements Runnable {
                 brData.setData(JSONObject.toJSONString(json));
                 logger.info("bairongdata更新后数据为:" + json);
                 //更新bairong_data
-                riskPostDataService.updateBairongData(info.getName(), info.getIdCard(), info.getPhone(), info.getStrategyId(), brData.getData());
+                riskPostDataService.updateBairongData(info.getName(), info.getIdCard(), info.getPhone(), info.getStrategyId(), brData.getData(),brData.getUpdateTime(),brData.getFlag());
             }else {
                 brData = new BairongData();
-                brData.setUpdateDate(info.getUpdateTime());
+                brData.setUpdateTime(info.getUpdateTime());
+                brData.setFlag(info.getFlag());
                 json.put("rs_Score_scorecust", info.getScore());
                 brData.setData(JSONObject.toJSONString(json));
                 //新增一条
-                riskPostDataService.saveBairongData(info.getName(),info.getIdCard(),info.getPhone(),"STR0000799",brData.getData());
+                riskPostDataService.saveBairongData(info.getName(),info.getIdCard(),info.getPhone(),"STR0000799",brData.getData(),brData.getUpdateTime(),brData.getFlag());
 //                riskPostDataService.saveRmsThirdData(info, customerType, strategyId, brResponse);
             }
             //ch
             //更新br_post_data最近一次数据
             BrPostData brPostData = riskPostDataService.getLastBrPostData(info.getTaskId());
-            JSONObject brJson = JSONObject.parseObject("{\"rs_strategy_id\":\"STR0000799\",\"code\":\"00\",\"swift_number\":\"3002138_20180502101600_2512\",\"rs_Score_decision\":\"Accept\",\"rs_product_type\":\"100085\",\"rs_platform\":\"ios\",\"scorecust\":\"787\",\"flag_score\":\"1\",\"rs_final_decision\":\"Accept\",\"flag_riskstrategy\":\"1\",\"rs_product_name\":\"假数据" + new SimpleDateFormat(DateUtils.DATE_FORMAT_LONG) + "\",\"rs_Score_scorecust\":\"787\",\"rs_strategy_version\":\"1.0\",\"scorepettycashv1\":\"666\",\"rs_scene\":\"lend\"}");
+            JSONObject brJson = JSONObject.parseObject("{\"rs_strategy_id\":\"STR0000799\",\"code\":\"00\",\"swift_number\":\"3002138_20180502101600_2512\",\"rs_Score_decision\":\"Accept\",\"rs_product_type\":\"100085\",\"rs_platform\":\"ios\",\"scorecust\":\"0\",\"flag_score\":\"1\",\"rs_final_decision\":\"Accept\",\"flag_riskstrategy\":\"1\",\"rs_product_name\":\"假数据" + new SimpleDateFormat(DateUtils.DATE_FORMAT_LONG) + "\",\"rs_Score_scorecust\":\"0\",\"rs_strategy_version\":\"1.0\",\"scorepettycashv1\":\"0\",\"rs_scene\":\"lend\"}");
             if (null != brPostData) {
                 if (StringUtils.isNotBlank(brPostData.getData())) {
                     brJson = JSONObject.parseObject(brPostData.getData());

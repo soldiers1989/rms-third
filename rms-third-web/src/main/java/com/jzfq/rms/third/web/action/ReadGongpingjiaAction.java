@@ -42,11 +42,11 @@ public class ReadGongpingjiaAction {
      * @return
      */
     @RequestMapping(value = "export.json", method = RequestMethod.POST)
-    public ResponseResult updateScore(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public ResponseResult updateScore(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ResponseResult responseResult = new ResponseResult();
         List<GongPingJiaData> datas = gongPingjiaService.queryGaopingjiaDatas();
-        String root = ReadGongpingjiaAction.class.getClassLoader().getResource("excel").getPath();
-        ExportExcelUtil.export(datas,"file:/data/excel/gpjdata.xls");
+        String root = ReadGongpingjiaAction.class.getClassLoader().getResource("excel/gpjdata.xlsx").getPath();
+        ExportExcelUtil.export(datas, root);
         responseResult.setCode(200);
         return responseResult;
     }

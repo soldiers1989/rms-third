@@ -152,11 +152,11 @@ public class RequestBrTdGeoAction {
                 //百融分
                 info.setBrScore(getBrScore(getCommonParamsBr(info)));
                 //三要素
-                info.setThree(getLength(getJaoCommonParams(info)));
+                info.setThree(getThree(getJaoCommonParams(info)));
                 //在网时长
-                info.setStatus(getStatus(getJaoCommonParams(info)));
+                info.setStatus(getLength(getJaoCommonParams(info)));
                 //在网状态
-                info.setStatus(getCellXLSXValue(hssfrow.getCell((short) 5), null));
+                info.setStatus(getStatus(getJaoCommonParams(info)));
                 logger.info("当前行：" + j + "当前数据：【" + info.toString() + "】");
                 list.add(info);
                 //添加任务

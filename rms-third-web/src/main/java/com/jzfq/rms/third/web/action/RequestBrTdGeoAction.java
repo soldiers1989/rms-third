@@ -9,6 +9,7 @@ import com.jzfq.rms.third.common.enums.PhoneDataTypeEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IJaoService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
@@ -30,6 +31,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,6 +75,8 @@ public class RequestBrTdGeoAction {
      */
     @RequestMapping(value = "brTdGeoRequestData.json", method = RequestMethod.POST)
     public ResponseResult brTdGeoRequestData(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        MDC.put("traceID", "1234567890");
+        TraceIDThreadLocal.setTraceID("1234567890");
         logger.info("comein...................");
         ResponseResult responseResult = new ResponseResult();
         String root = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/0613gy.xlsx").getPath();
@@ -85,6 +89,8 @@ public class RequestBrTdGeoAction {
         responseResult.setData(result);
         responseResult.setMsg("共执行excel数据：" + result + "条！");
         logger.info("共执行excel数据：" + result + "条！");
+        MDC.remove("traceID");
+        TraceIDThreadLocal.removeTraceID();
         return responseResult;
     }
 
@@ -139,10 +145,10 @@ public class RequestBrTdGeoAction {
                 info.setIdCard(getCellXLSXValue(hssfrow.getCell((short) 2), null));
 
                 //同盾分
-                info.setTdScore(getTdScore(getCommonParams(info)));
+                info.setTdScore(getTdScore(getCommonParamsTd(info)));
                 /**将EXCEL中的第 j 行，第四列的值插入到实例中*/
                 //百融分
-                info.setBrScore(getBrScore(getCommonParams(info)));
+                info.setBrScore(getBrScore(getCommonParamsBr(info)));
                 //三要素
                 info.setThree(getLength(getJaoCommonParams(info)));
                 //在网时长
@@ -160,13 +166,11 @@ public class RequestBrTdGeoAction {
                 break;
             }
         }
-        //继续执行递归
-//        updateScore(page+1, pageSize+1000, sumPage, input, hssfrow, hssfsheet,riskPostDataService);
         return list;
     }
 
     //封装请求三方参数
-    public Map<String, Object> getCommonParams(Run200Model info) {
+    public Map<String, Object> getCommonParamsTd(Run200Model info) {
         RiskPersonalInfo per = new RiskPersonalInfo();
         per.setName(info.getName());
         per.setMobile(info.getPhone());
@@ -175,6 +179,21 @@ public class RequestBrTdGeoAction {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("personalInfo", per);
         map.put("eventId", "Loan_ios_20170509");//同盾事件id
+        map.put("channelId", "1");//渠道  桔子分期
+        map.put("clientType", "1");//设备类型  ios
+//        map.put()
+        return map;
+    }
+
+    //封装请求三方参数
+    public Map<String, Object> getCommonParamsBr(Run200Model info) {
+        RiskPersonalInfo per = new RiskPersonalInfo();
+        per.setName(info.getName());
+        per.setMobile(info.getPhone());
+        per.setCertCardNo(info.getIdCard());
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("personalInfo", per);
         map.put("channelId", "1");//渠道  桔子分期
         map.put("clientType", "1");//设备类型  ios
         map.put("strategyId", "STR0000187");//百融策略id

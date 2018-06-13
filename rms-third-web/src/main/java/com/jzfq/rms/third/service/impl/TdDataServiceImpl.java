@@ -390,8 +390,6 @@ public class TdDataServiceImpl implements ITdDataService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("partner_code", partner_code);       // 合作方标识
         String channelId = (String) commonParams.get("channelId");
-        String financialProductId = (String) commonParams.get("financialProductId");
-        String operationType = (String) commonParams.get("operationType");
         String clientType = (String) commonParams.get("clientType");
         String eventId = (String) commonParams.get("eventId");
         String sceretKey = getSecretKey(channelId, clientType);

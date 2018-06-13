@@ -248,7 +248,7 @@ public class RequestBrTdGeoAction {
         }
 
         if (result == null || result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
-            logger.info("traceId={} 拉取百融分失败,返回结果={}", commonParams, null); //失败
+            logger.info("traceId={} 拉取百融分失败,返回结果={}", commonParams, result); //失败
             return null;
         }
         String brResponse = (String) result.getData();

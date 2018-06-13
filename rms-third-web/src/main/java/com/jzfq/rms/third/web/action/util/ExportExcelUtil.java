@@ -211,6 +211,9 @@ public class ExportExcelUtil {
         }
         //第六步将生成excel文件保存到指定路径下
         try {
+            if (!new File(file).exists()) {
+                new File(file).createNewFile();
+            }
             FileOutputStream fout = new FileOutputStream(file);
             wb.write(fout);
             fout.close();

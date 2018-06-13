@@ -84,7 +84,7 @@ public class RequestBrTdGeoAction {
         //生成数据
         List<Run200Model> result = readExcelXLSX(new FileInputStream(file));
         //导出数据
-        ExportExcelUtil.export0613(result, "file:/data/excel/0613.xlsx");
+        ExportExcelUtil.export0613(result, "d:\\0613.xlsx");
         responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
         responseResult.setData(result);
         responseResult.setMsg("共执行excel数据：" + result + "条！");

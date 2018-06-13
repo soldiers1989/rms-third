@@ -318,7 +318,7 @@ public class RequestBrTdGeoAction {
     public String getStatus(Map<String, Object> bizData) {
         try {
             //手机三要素远程拉取
-            ResponseResult responseResult = iJaoService.getPhoneNetworkLength(bizData);
+            ResponseResult responseResult = iJaoService.getPhonestatus(bizData);
             if (responseResult.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
                 logger.info("traceId={} 拉取三方手机在网状态失败,返回结果={}", bizData, responseResult); //失败
                 return null;

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.mongo.GongPingJiaData;
 import com.jzfq.rms.third.persistence.dao.impl.GongpingjiaDao;
+import com.jzfq.rms.third.web.action.model.Run200Model;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
@@ -102,9 +103,9 @@ public class ExportExcelUtil {
             int count = 0;
             for (int j = 0; j < data.size(); j++) {
                 JSONArray array = JSONArray.parseArray(JSON.toJSONString(data.get(j).getData()));
-                logger.info("第  "+j+"行====================="+JSON.toJSONString(array));
+                logger.info("第  " + j + "行=====================" + JSON.toJSONString(array));
                 for (int i = 0; i < array.size(); i++) {
-                    System.out.println("excel:"+getValueByFileds("brandName", array.getJSONObject(i)));
+                    System.out.println("excel:" + getValueByFileds("brandName", array.getJSONObject(i)));
                     //创建行
                     row = sheet.createRow(count + 1);
                     //创建单元格并且添加数据
@@ -138,6 +139,90 @@ public class ExportExcelUtil {
         System.out.println("Excel文件生成成功...");
 
     }
+
+
+    /*
+     * 导出数据
+     * */
+    public static void export0613(List<Run200Model> data, String file) throws Exception {
+
+
+        //第一步创建workbook
+        HSSFWorkbook wb = new HSSFWorkbook();
+
+        //第二步创建sheet
+        HSSFSheet sheet = wb.createSheet("0613数据");
+
+        //第三步创建行row:添加表头0行
+        HSSFRow row = sheet.createRow(0);
+        HSSFCellStyle style = wb.createCellStyle();
+        //style.setAlignment(HSSFCellStyle.ALIGN_CENTER);  //居中
+
+
+        //第四步创建单元格
+        HSSFCell cell = row.createCell(0); //第一个单元格
+        cell.setCellValue("手机号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(1);         //第二个单元格
+        cell.setCellValue("姓名");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(2);         //第二个单元格
+        cell.setCellValue("身份证");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(3);         //第二个单元格
+        cell.setCellValue("同盾分");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(4);         //第二个单元格
+        cell.setCellValue("百融分");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(5);         //第二个单元格
+        cell.setCellValue("是否实名制");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(6);         //第二个单元格
+        cell.setCellValue("在网时长");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(7);         //第二个单元格
+        cell.setCellValue("在网状态");
+        cell.setCellStyle(style);
+        //第五步插入数据
+        if (null != data && data.size() > 0) {
+            int count = 0;
+            for (Run200Model info : data) {
+                count++;
+                //创建行
+                row = sheet.createRow(count);
+                //创建单元格并且添加数据
+                row.createCell(0).setCellValue(info.getPhone());//手机号
+                row.createCell(1).setCellValue(info.getName());//姓名
+                row.createCell(2).setCellValue(info.getIdCard());//身份证
+                row.createCell(3).setCellValue(info.getTdScore());//同盾分
+                row.createCell(4).setCellValue(info.getBrScore());//百融分
+                row.createCell(5).setCellValue(info.getThree());//手机三要素
+                row.createCell(6).setCellValue(info.getLength());//手机在网时长
+                row.createCell(7).setCellValue(info.getStatus());//手机在网状态
+            }
+        }
+        //第六步将生成excel文件保存到指定路径下
+        try {
+            FileOutputStream fout = new FileOutputStream(file);
+            wb.write(fout);
+            fout.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Excel文件生成成功...");
+
+    }
+
+
+
 
 
 

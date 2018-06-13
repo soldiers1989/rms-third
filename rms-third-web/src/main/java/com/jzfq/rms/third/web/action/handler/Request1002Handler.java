@@ -108,7 +108,7 @@ public class Request1002Handler extends AbstractRequestHandler {
         if (result.getCode() == ReturnCode.REQUEST_SUCCESS.code()) {
             JSONObject data = (JSONObject) result.getData();
             if (data != null) {
-                String value = getThirdResult(data);
+                String value = getThirdResult(data,traceId);
                 pengYuanService.saveRmsDatas(orderNo, data.toJSONString(), carInfo, value);
                 pengYuanService.saveCarCheckInfo(reqId, data.toJSONString(), value, carInfo, ReturnCode.REQUEST_SUCCESS.code());
                 result.setData(value);
@@ -137,8 +137,8 @@ public class Request1002Handler extends AbstractRequestHandler {
     }
 
 
-    private String getThirdResult(JSONObject json) {
-        log.info("鹏元解析后的json：" + json);
+    private String getThirdResult(JSONObject json, String traceId) {
+        log.info("traceId：" + traceId + "鹏元解析后的json：" + json);
         if (json == null) {
             return CarCheckEnum.OTHER.getCode();
         }

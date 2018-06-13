@@ -140,6 +140,47 @@ public class BrPostService {
     }
 
     /**
+     * 根据url 和类型 查询数据
+     * @return
+     */
+    public ResponseResult getApiDataByParams(RiskPersonalInfo info,Map<String,Object> commonParams) throws Exception{
+        // 设置公共参数
+        setApiCommonParamsByParams(commonParams);
+        // 设置业务参数
+        Map<String ,Object> bizParams = getBizParams(info, commonParams);
+        ResponseResult response = sendMessegeService.sendByThreeChance(SendMethodEnum.BR01.getCode(),commonParams,bizParams);
+        return response;
+    }
+
+
+    /**
+     * 获取 策略引擎 公共参数
+     * @param commonParams
+     */
+    private void setApiCommonParamsByParams(Map<String, Object> commonParams){
+        commonParams.put("url","百融客户端调用方法getApiData");
+        commonParams.put("targetId", SystemIdEnum.THIRD_BR.getCode());
+        commonParams.put("appId", "");
+        commonParams.put("systemId", CallSystemIDThreadLocal.getCallSystemID());
+        commonParams.put("traceId", TraceIDThreadLocal.getTraceID());
+        commonParams.put("ms",ms);
+        String channelId = (String)commonParams.get("channelId");
+        String financialProductId = (String)commonParams.get("financialProductId");
+        String operationType = (String)commonParams.get("operationType");
+        String clientType = (String)commonParams.get("clientType");
+        String strategyId = (String)commonParams.get("strategyId");
+        commonParams.put("strategyId",strategyId);
+        // 登陆 获取token
+        String token = getTokenid();
+        //设置token
+        commonParams.put("token",token);
+        commonParams.put("interfaceId", InterfaceIdEnum.THIRD_BR01.getCode());
+        commonParams.put("apiName", "strategyApi");
+        commonParams.put("apicode",ruleApiCode);
+    }
+
+
+    /**
      * 获取 策略引擎 公共参数
      * @param commonParams
      */

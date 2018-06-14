@@ -20,6 +20,8 @@ public class BrScoreModel {
 
     private Date updateTime;//更新时间
 
+    private String flag;//标志1
+
 
     public String getName() {
         return name;
@@ -96,5 +98,13 @@ public class BrScoreModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 }

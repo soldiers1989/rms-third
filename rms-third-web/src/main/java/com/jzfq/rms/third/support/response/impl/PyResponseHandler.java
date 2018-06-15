@@ -2,6 +2,7 @@ package com.jzfq.rms.third.support.response.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.enums.CarCheckEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.utils.Base64;
 import com.jzfq.rms.third.common.utils.CompressStringUtil;
@@ -49,7 +50,8 @@ public class PyResponseHandler extends AbstractResponseHandler {
         //返回状态为1是正常报文，2为发生异常
         ResponseResult result =  null;
         if (data.getIntValue("status")!= 1) {
-            result = new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE,data);
+            //非1情况返回上游  code为200  data为3 无法核查
+            result = new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS, CarCheckEnum.UNCHECK.getCode());
             result.setMsg(data.getString("errorCode")+data.getString("errorMessage"));
             return result;
         }

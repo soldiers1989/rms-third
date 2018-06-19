@@ -76,7 +76,7 @@ public class RequestBrTdGeoAction {
         TraceIDThreadLocal.setTraceID("1234567890");
         logger.info("comein...................");
         ResponseResult responseResult = new ResponseResult();
-        String root = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/new500.xlsx").getPath();
+        String root = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/0619500.xlsx").getPath();
         File file = new File(root);
         //生成数据 old
         List<Run200Model> result = readExcelXLSX(new FileInputStream(file));

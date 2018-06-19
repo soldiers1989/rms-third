@@ -113,34 +113,34 @@ public class Request1008Handler extends AbstractRequestHandler {
             return new ResponseResult(traceId, ReturnCode.ERROR_NOT_FOUNT_EVENT_ID, null);
         }
 
-        String isRepeatKey = getKeyByOrderNo(orderNo, eventId);
-        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
-        log.info("traceId={} 获取同盾分,缓存isRepeatKey={},是否重新拉取={}",traceId, isRepeatKey,isRpc);
-        if (!isRpc) {
-            List<TongDunStringData> datas = tdDataService.getDataByEvent(orderNo, eventId);
-            if (!CollectionUtils.isEmpty(datas)) {
-                ResponseResult responseResult = new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
-                TongDunStringData data = datas.get(0);
-                responseResult.setData(data.getValue());
-//                responseResult.setData(20);
-                log.info("traceId={} 获取同盾分成功(mongodb),返回结果={}", traceId, responseResult.toString()); //成功
-                return responseResult;
-            }else {
-                log.info("traceId={}，获取同盾分成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
-                return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
-            }
-        }
+//        String isRepeatKey = getKeyByOrderNo(orderNo, eventId);
+//        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
+//        log.info("traceId={} 获取同盾分,缓存isRepeatKey={},是否重新拉取={}",traceId, isRepeatKey,isRpc);
+//        if (!isRpc) {
+//            List<TongDunStringData> datas = tdDataService.getDataByEvent(orderNo, eventId);
+//            if (!CollectionUtils.isEmpty(datas)) {
+//                ResponseResult responseResult = new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
+//                TongDunStringData data = datas.get(0);
+//                responseResult.setData(data.getValue());
+////                responseResult.setData(20);
+//                log.info("traceId={} 获取同盾分成功(mongodb),返回结果={}", traceId, responseResult.toString()); //成功
+//                return responseResult;
+//            }else {
+//                log.info("traceId={}，获取同盾分成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
+//                return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
+//            }
+//        }
         try {
             ResponseResult response = new ResponseResult();
             response = tdDataService.queryTdDatas(commonParams);
             if (response == null) {
                 log.info("traceId={} 同盾拉取无效：false ", commonParams.get("traceId"));     //失败
-                interfaceCountCache.setFailure(isRepeatKey);
+//                interfaceCountCache.setFailure(isRepeatKey);
                 throw new BusinessException("traceId={} 同盾拉取无效：false", true);
             }
             if (response.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
                 log.info("traceId={} 同盾拉取失败：false ,同盾返回结果={}", commonParams.get("traceId"),response);     //失败
-                interfaceCountCache.setFailure(isRepeatKey);
+//                interfaceCountCache.setFailure(isRepeatKey);
                 return response;
             }
             FraudApiResponse apiResp = (FraudApiResponse) response.getData();
@@ -157,7 +157,7 @@ public class Request1008Handler extends AbstractRequestHandler {
             return response;
         } catch (Exception e) {
             log.info("traceId={} 同盾拉取无效：false ", TraceIDThreadLocal.getTraceID());     //失败
-            interfaceCountCache.setFailure(isRepeatKey);
+//            interfaceCountCache.setFailure(isRepeatKey);
             throw e;
         }
 

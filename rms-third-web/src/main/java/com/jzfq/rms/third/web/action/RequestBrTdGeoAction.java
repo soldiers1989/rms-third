@@ -161,11 +161,11 @@ public class RequestBrTdGeoAction {
 
                 /**将EXCEL中的第 j 行，第五列的值插入到实例中*/
                 //电话
-                info.setPhone(getCellXLSXValue(hssfrow.getCell((short) 0), null));
+                info.setPhone(getCellXLSXValue(hssfrow.getCell((short) 1), null));
 
                 /**将EXCEL中的第 j 行，第二列的值插入到实例中*/
                 //姓名
-                info.setName(getCellXLSXValue(hssfrow.getCell((short) 1), null));
+                info.setName(getCellXLSXValue(hssfrow.getCell((short) 0), null));
 
                 /**将EXCEL中的第 j 行，第三列的值插入到实例中*/
                 //身份证

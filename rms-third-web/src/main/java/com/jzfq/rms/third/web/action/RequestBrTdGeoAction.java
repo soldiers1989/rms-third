@@ -76,14 +76,17 @@ public class RequestBrTdGeoAction {
         TraceIDThreadLocal.setTraceID("1234567890");
         logger.info("comein...................");
         ResponseResult responseResult = new ResponseResult();
-        String root = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/0613gy.xlsx").getPath();
+        String root = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/new500.xlsx").getPath();
         File file = new File(root);
-        //生成数据
+        //生成数据 old
         List<Run200Model> result = readExcelXLSX(new FileInputStream(file));
 
-        String rootExport = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/0613.xlsx").getPath();
+        //生成数据 old
+        List<Run200Model> resultNew= readExcelXLSXNew(new FileInputStream(file));
+
+        String rootExport = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/0619.xlsx").getPath();
         //导出数据
-        ExportExcelUtil.export0613(result, rootExport);
+        ExportExcelUtil.export0613(result,resultNew, rootExport);
         responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
         responseResult.setData(result);
         responseResult.setMsg("共执行excel数据：" + result + "条！");
@@ -107,7 +110,32 @@ public class RequestBrTdGeoAction {
             int rowNumCount = hssfsheet.getPhysicalNumberOfRows();
             //执行递归操作
 //            input = updateScore(0, 1000, page, input, hssfrow, hssfsheet,riskPostDataService);
-            List<Run200Model> list = updateScoreMaster(rowNumCount, hssfrow, hssfsheet);
+            //取历史数据
+            List<Run200Model> list = updateScoreMaster(rowNumCount, hssfrow, hssfsheet,"1");
+            return list;
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public List<Run200Model> readExcelXLSXNew(FileInputStream in) {
+        // TODO Auto-generated method stub
+        int input = 0;
+        try {
+            //通过得到的文件输入流inputstream创建一个HSSFWordbook对象
+            XSSFWorkbook hssfworkbook = new XSSFWorkbook(in);
+            XSSFSheet hssfsheet = hssfworkbook.getSheetAt(1);//第一个工作表
+            XSSFRow hssfrow = hssfsheet.getRow(0);//第一行
+            //遍历该表格中所有的工作表，i表示工作表的数量 getNumberOfSheets表示工作表的总数
+            hssfsheet = hssfworkbook.getSheetAt(0);
+            int rowNumCount = hssfsheet.getPhysicalNumberOfRows();
+            //执行递归操作
+//            input = updateScore(0, 1000, page, input, hssfrow, hssfsheet,riskPostDataService);
+            //重新拉取
+            List<Run200Model> list = updateScoreMaster(rowNumCount, hssfrow, hssfsheet,"0");
             return list;
         } catch (Exception e) {
             // TODO: handle exception
@@ -124,7 +152,7 @@ public class RequestBrTdGeoAction {
      * @date 2018-06-13
      */
 
-    public List<Run200Model> updateScoreMaster(int rowNumCount, XSSFRow hssfrow, XSSFSheet hssfsheet) {
+    public List<Run200Model> updateScoreMaster(int rowNumCount, XSSFRow hssfrow, XSSFSheet hssfsheet, String flag) {
         List<Run200Model> list = new ArrayList<Run200Model>();
         for (int j = 1; j < rowNumCount; j++) {
             Run200Model info = new Run200Model();
@@ -147,13 +175,13 @@ public class RequestBrTdGeoAction {
                 info.setTdScore(getTdScore(getCommonParamsTd(info)));
                 /**将EXCEL中的第 j 行，第四列的值插入到实例中*/
                 //百融分
-                info.setBrScore(getBrScore(getCommonParamsBr(info)));
+                info.setBrScore(getBrScore(getCommonParamsBr(info),flag));
                 //三要素
-                info.setThree(getThree(getJaoCommonParams(info)));
+                info.setThree(getThree(getJaoCommonParams(info),flag));
                 //在网时长
-                info.setLength(getLength(getJaoCommonParams(info)));
+                info.setLength(getLength(getJaoCommonParams(info),flag));
                 //在网状态
-                info.setStatus(getStatus(getJaoCommonParams(info)));
+                info.setStatus(getStatus(getJaoCommonParams(info),flag));
                 logger.info("当前行：" + j + "当前数据：【" + info.toString() + "】");
                 list.add(info);
                 //添加任务
@@ -211,6 +239,9 @@ public class RequestBrTdGeoAction {
 
     //同盾分
     public String getTdScore(Map<String, Object> commonParams) {
+        if (1==1) {
+            return "12";
+        }
         ResponseResult response = new ResponseResult();
         try {
             response = tdDataService.queryTdDatasByParams(commonParams);
@@ -236,14 +267,20 @@ public class RequestBrTdGeoAction {
 
 
     //百融分
-    public String getBrScore(Map<String, Object> commonParams) {
+    public String getBrScore(Map<String, Object> commonParams, String flag) {
+        if (1==1) {
+            return "88";
+        }
         // 3.远程拉取
         ResponseResult result = null;
         RiskPersonalInfo info = (RiskPersonalInfo) commonParams.get("personalInfo");
-        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), (String) commonParams.get("strategyId"));
-        if (null != jsonObject) {
-            logger.info("traceId={} 获取百融分成功(mongodb),返回结果={}", null, riskPostDataService.getScoreByJson(jsonObject)); //成功
-            return riskPostDataService.getScoreByJson(jsonObject);
+        if ("1".equals(flag)) {
+            //取历史数据
+            JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), (String) commonParams.get("strategyId"));
+            if (null != jsonObject) {
+                logger.info("traceId={} 获取百融分成功(mongodb),返回结果={}", null, riskPostDataService.getScoreByJson(jsonObject)); //成功
+                return riskPostDataService.getScoreByJson(jsonObject);
+            }
         }
         try {
 
@@ -269,13 +306,18 @@ public class RequestBrTdGeoAction {
 
 
     //三要素
-    public String getThree(Map<String, Object> bizData) {
+    public String getThree(Map<String, Object> bizData, String flag) {
+        if (1==1) {
+            return "90";
+        }
         try {
-
-            String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.THIRD_RSLL03.getCode(), PhoneDataTypeEnum.THREE_ITEM, bizData);
-            if (StringUtils.isNotBlank(valueDb)) {
-                logger.info("traceId={} 获取手机三要素成功(mongodb==jao),返回结果={}", null, valueDb); //成功
-                return valueDb;
+            if ("1".equals(flag)) {
+                //qu历史数据
+                String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.THIRD_RSLL03.getCode(), PhoneDataTypeEnum.THREE_ITEM, bizData);
+                if (StringUtils.isNotBlank(valueDb)) {
+                    logger.info("traceId={} 获取手机三要素成功(mongodb==jao),返回结果={}", null, valueDb); //成功
+                    return valueDb;
+                }
             }
             //手机三要素远程拉取
             ResponseResult responseResult = iJaoService.getMobilecheck3item(bizData);
@@ -301,13 +343,17 @@ public class RequestBrTdGeoAction {
 
 
     //在网时长
-    public String getLength(Map<String, Object> bizData) {
+    public String getLength(Map<String, Object> bizData, String flag) {
+        if (1==1) {
+            return "96";
+        }
         try {
-
-            String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.THIRD_RSLL01.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
-            if (StringUtils.isNotBlank(valueDb)) {
-                logger.info("traceId={}，获取手机在网时长成功(mongodb==jao),返回结果={}", null, valueDb); //成功
-                return valueDb;
+            if ("1".equals(flag)) {
+                String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.THIRD_RSLL01.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
+                if (StringUtils.isNotBlank(valueDb)) {
+                    logger.info("traceId={}，获取手机在网时长成功(mongodb==jao),返回结果={}", null, valueDb); //成功
+                    return valueDb;
+                }
             }
 
             //在网时长
@@ -334,14 +380,18 @@ public class RequestBrTdGeoAction {
 
 
     //在网状态
-    public String getStatus(Map<String, Object> bizData) {
+    public String getStatus(Map<String, Object> bizData, String flag) {
+        if (1==1) {
+            return "78";
+        }
         try {
-            String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.JAO21.getCode(), PhoneDataTypeEnum.NETWORK_STATUS, bizData);
-            if (StringUtils.isNotBlank(valueDb)) {
-                logger.info("traceId={}，获取手机在网状态成功(mongodb==jao),返回结果={}", null, valueDb); //成功
-                return valueDb;
+            if ("1".equals(flag)) {
+                String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.JAO21.getCode(), PhoneDataTypeEnum.NETWORK_STATUS, bizData);
+                if (StringUtils.isNotBlank(valueDb)) {
+                    logger.info("traceId={}，获取手机在网状态成功(mongodb==jao),返回结果={}", null, valueDb); //成功
+                    return valueDb;
+                }
             }
-
             //手机三要素远程拉取
             ResponseResult responseResult = iJaoService.getPhonestatus(bizData);
             if (responseResult.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {

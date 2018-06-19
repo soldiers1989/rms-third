@@ -145,14 +145,14 @@ public class ExportExcelUtil {
     /*
      * 导出数据
      * */
-    public static void export0613(List<Run200Model> data, String file) throws Exception {
+    public static void export0613(List<Run200Model> data,List<Run200Model> newData, String file) throws Exception {
 
 
         //第一步创建workbook
         HSSFWorkbook wb = new HSSFWorkbook();
 
         //第二步创建sheet
-        HSSFSheet sheet = wb.createSheet("0613数据");
+        HSSFSheet sheet = wb.createSheet("sheet1");
 
         //第三步创建行row:添加表头0行
         HSSFRow row = sheet.createRow(0);
@@ -210,6 +210,68 @@ public class ExportExcelUtil {
                 row.createCell(7).setCellValue(info.getStatus());//手机在网状态
             }
         }
+
+        HSSFSheet sheet2 = wb.createSheet("重新拉取");
+
+
+        //第三步创建行row:添加表头0行
+        HSSFRow row2 = sheet2.createRow(0);
+        HSSFCellStyle style2 = wb.createCellStyle();
+        //style.setAlignment(HSSFCellStyle.ALIGN_CENTER);  //居中
+
+
+        //第四步创建单元格
+        HSSFCell cell2 = row2.createCell(0); //第一个单元格
+        cell2.setCellValue("手机号");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell(1);         //第二个单元格
+        cell2.setCellValue("姓名");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell(2);         //第二个单元格
+        cell2.setCellValue("身份证");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell(3);         //第二个单元格
+        cell2.setCellValue("同盾分");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell(4);         //第二个单元格
+        cell2.setCellValue("百融分");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell(5);         //第二个单元格
+        cell2.setCellValue("是否实名制");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell(6);         //第二个单元格
+        cell2.setCellValue("在网时长");
+        cell2.setCellStyle(style2);
+
+        cell2 = row2.createCell(7);         //第二个单元格
+        cell2.setCellValue("在网状态");
+        cell2.setCellStyle(style2);
+        //第五步插入数据
+        if (null != newData && newData.size() > 0) {
+            int count = 0;
+            for (Run200Model info : newData) {
+                count++;
+                //创建行
+                row2 = sheet2.createRow(count);
+                //创建单元格并且添加数据
+                row2.createCell(0).setCellValue(info.getPhone());//手机号
+                row2.createCell(1).setCellValue(info.getName());//姓名
+                row2.createCell(2).setCellValue(info.getIdCard());//身份证
+                row2.createCell(3).setCellValue(info.getTdScore());//同盾分
+                row2.createCell(4).setCellValue(info.getBrScore());//百融分
+                row2.createCell(5).setCellValue(info.getThree());//手机三要素
+                row2.createCell(6).setCellValue(info.getLength());//手机在网时长
+                row2.createCell(7).setCellValue(info.getStatus());//手机在网状态
+            }
+        }
+
+
         //第六步将生成excel文件保存到指定路径下
         try {
             if (!new File(file).exists()) {

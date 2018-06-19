@@ -82,11 +82,11 @@ public class RequestBrTdGeoAction {
         List<Run200Model> result = readExcelXLSX(new FileInputStream(file));
 
         //生成数据 old
-        List<Run200Model> resultNew= readExcelXLSXNew(new FileInputStream(file));
+        List<Run200Model> resultNew = readExcelXLSXNew(new FileInputStream(file));
 
         String rootExport = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/0619.xlsx").getPath();
         //导出数据
-        ExportExcelUtil.export0613(result,resultNew, rootExport);
+        ExportExcelUtil.export0613(result, resultNew, rootExport);
         responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
         responseResult.setData(result);
         responseResult.setMsg("共执行excel数据：" + result + "条！");
@@ -111,7 +111,7 @@ public class RequestBrTdGeoAction {
             //执行递归操作
 //            input = updateScore(0, 1000, page, input, hssfrow, hssfsheet,riskPostDataService);
             //取历史数据
-            List<Run200Model> list = updateScoreMaster(rowNumCount, hssfrow, hssfsheet,"1");
+            List<Run200Model> list = updateScoreMaster(rowNumCount, hssfrow, hssfsheet, "1");
             return list;
         } catch (Exception e) {
             // TODO: handle exception
@@ -135,7 +135,7 @@ public class RequestBrTdGeoAction {
             //执行递归操作
 //            input = updateScore(0, 1000, page, input, hssfrow, hssfsheet,riskPostDataService);
             //重新拉取
-            List<Run200Model> list = updateScoreMaster(rowNumCount, hssfrow, hssfsheet,"0");
+            List<Run200Model> list = updateScoreMaster(rowNumCount, hssfrow, hssfsheet, "0");
             return list;
         } catch (Exception e) {
             // TODO: handle exception
@@ -172,16 +172,16 @@ public class RequestBrTdGeoAction {
                 info.setIdCard(getCellXLSXValue(hssfrow.getCell((short) 2), null));
 
                 //同盾分
-                info.setTdScore(getTdScore(getCommonParamsTd(info)));
+                info.setTdScore(getTdScore(getCommonParamsTd(info), flag));
                 /**将EXCEL中的第 j 行，第四列的值插入到实例中*/
                 //百融分
-                info.setBrScore(getBrScore(getCommonParamsBr(info),flag));
+                info.setBrScore(getBrScore(getCommonParamsBr(info), flag));
                 //三要素
-                info.setThree(getThree(getJaoCommonParams(info),flag));
+                info.setThree(getThree(getJaoCommonParams(info), flag));
                 //在网时长
-                info.setLength(getLength(getJaoCommonParams(info),flag));
+                info.setLength(getLength(getJaoCommonParams(info), flag));
                 //在网状态
-                info.setStatus(getStatus(getJaoCommonParams(info),flag));
+                info.setStatus(getStatus(getJaoCommonParams(info), flag));
                 logger.info("当前行：" + j + "当前数据：【" + info.toString() + "】");
                 list.add(info);
                 //添加任务
@@ -238,9 +238,9 @@ public class RequestBrTdGeoAction {
     }
 
     //同盾分
-    public String getTdScore(Map<String, Object> commonParams) {
-        if (1==1) {
-            return "12";
+    public String getTdScore(Map<String, Object> commonParams, String flag) {
+        if ("1".equals(flag)) {
+            return "";
         }
         ResponseResult response = new ResponseResult();
         try {
@@ -268,9 +268,6 @@ public class RequestBrTdGeoAction {
 
     //百融分
     public String getBrScore(Map<String, Object> commonParams, String flag) {
-        if (1==1) {
-            return "88";
-        }
         // 3.远程拉取
         ResponseResult result = null;
         RiskPersonalInfo info = (RiskPersonalInfo) commonParams.get("personalInfo");
@@ -307,9 +304,6 @@ public class RequestBrTdGeoAction {
 
     //三要素
     public String getThree(Map<String, Object> bizData, String flag) {
-        if (1==1) {
-            return "90";
-        }
         try {
             if ("1".equals(flag)) {
                 //qu历史数据
@@ -344,9 +338,6 @@ public class RequestBrTdGeoAction {
 
     //在网时长
     public String getLength(Map<String, Object> bizData, String flag) {
-        if (1==1) {
-            return "96";
-        }
         try {
             if ("1".equals(flag)) {
                 String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.THIRD_RSLL01.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
@@ -381,9 +372,6 @@ public class RequestBrTdGeoAction {
 
     //在网状态
     public String getStatus(Map<String, Object> bizData, String flag) {
-        if (1==1) {
-            return "78";
-        }
         try {
             if ("1".equals(flag)) {
                 String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.JAO21.getCode(), PhoneDataTypeEnum.NETWORK_STATUS, bizData);

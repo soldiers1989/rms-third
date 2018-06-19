@@ -82,4 +82,16 @@ public interface ITdDataService {
      * @throws Exception
      */
     JSONObject queryTdAllDatas(String serialNo, Map<String, Object> commonParams)  throws Exception;
+
+    /**
+     * 自定义抓取同盾数据
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    ResponseResult queryTdDatasByParams(Map<String,Object> params) throws Exception;
+
+
+
+
 }

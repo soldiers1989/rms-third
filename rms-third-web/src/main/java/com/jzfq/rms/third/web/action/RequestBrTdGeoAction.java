@@ -82,11 +82,11 @@ public class RequestBrTdGeoAction {
         List<Run200Model> result = readExcelXLSX(new FileInputStream(file));
 
         //生成数据 old
-        List<Run200Model> resultNew = readExcelXLSXNew(new FileInputStream(file));
+//        List<Run200Model> resultNew = readExcelXLSXNew(new FileInputStream(file));
 
         String rootExport = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/0619.xlsx").getPath();
         //导出数据
-        ExportExcelUtil.export0613(result, resultNew, rootExport);
+        ExportExcelUtil.export0613(result, null, rootExport);
         responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
         responseResult.setData(result);
         responseResult.setMsg("共执行excel数据：" + result + "条！");
@@ -224,6 +224,7 @@ public class RequestBrTdGeoAction {
         map.put("channelId", "1");//渠道  桔子分期
         map.put("clientType", "1");//设备类型  ios
         map.put("strategyId", "STR0000187");//百融策略id
+//        map.put("strategyId", "STR0000799");
         return map;
     }
 
@@ -277,6 +278,8 @@ public class RequestBrTdGeoAction {
             if (null != jsonObject) {
                 logger.info("traceId={} 获取百融分成功(mongodb),返回结果={}", null, riskPostDataService.getScoreByJson(jsonObject)); //成功
                 return riskPostDataService.getScoreByJson(jsonObject);
+            }else {
+                return "";
             }
         }
         //flag 为0时
@@ -309,12 +312,14 @@ public class RequestBrTdGeoAction {
     //三要素
     public String getThree(Map<String, Object> bizData, String flag) {
         try {
-            String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.THIRD_RSLL03.getCode(), PhoneDataTypeEnum.THREE_ITEM, bizData);
+            String valueDb = iJaoService.getValueByDBNew(InterfaceIdEnum.THIRD_RSLL03.getCode(), PhoneDataTypeEnum.THREE_ITEM, bizData);
             if ("1".equals(flag)) {
                 //qu历史数据
                 if (StringUtils.isNotBlank(valueDb)) {
                     logger.info("traceId={} 获取手机三要素成功(mongodb==jao),返回结果={}", null, valueDb); //成功
                     return valueDb;
+                }else {
+                    return "";
                 }
             }
             //flag 为0
@@ -348,11 +353,13 @@ public class RequestBrTdGeoAction {
     //在网时长
     public String getLength(Map<String, Object> bizData, String flag) {
         try {
-            String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.THIRD_RSLL01.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
+            String valueDb = iJaoService.getValueByDBNew(InterfaceIdEnum.THIRD_RSLL01.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
             if ("1".equals(flag)) {
                 if (StringUtils.isNotBlank(valueDb)) {
                     logger.info("traceId={}，获取手机在网时长成功(mongodb==jao),返回结果={}", null, valueDb); //成功
                     return valueDb;
+                }else {
+                    return "";
                 }
             }
             //flag 为0
@@ -386,11 +393,13 @@ public class RequestBrTdGeoAction {
     //在网状态
     public String getStatus(Map<String, Object> bizData, String flag) {
         try {
-            String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.JAO21.getCode(), PhoneDataTypeEnum.NETWORK_STATUS, bizData);
+            String valueDb = iJaoService.getValueByDBNew(InterfaceIdEnum.JAO21.getCode(), PhoneDataTypeEnum.NETWORK_STATUS, bizData);
             if ("1".equals(flag)) {
                 if (StringUtils.isNotBlank(valueDb)) {
                     logger.info("traceId={}，获取手机在网状态成功(mongodb==jao),返回结果={}", null, valueDb); //成功
                     return valueDb;
+                }else {
+                    return "";
                 }
             }
             //flag 为0

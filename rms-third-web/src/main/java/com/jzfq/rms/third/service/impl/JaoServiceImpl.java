@@ -213,11 +213,23 @@ public class JaoServiceImpl implements IJaoService {
 
     @Override
     public String getValueByDB(String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData) {
-//        Integer outTime = configCacheDao.getOutTimeUnit(interfaceId);
+        Integer outTime = configCacheDao.getOutTimeUnit(interfaceId);
         List<Rong360Data> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
                 .and("name").is(bizData.get("name")).and("idCard")
                 .is(bizData.get("idNumber")).and("phone")
-                .is(bizData.get("phone"))), Rong360Data.class);
+                .is(bizData.get("phone")).and("createTime").gte(getMinTime(outTime))), Rong360Data.class);
+        if (CollectionUtils.isEmpty(report)) {
+            return null;
+        }
+        return report.get(0).getValue();
+    }
+
+    @Override
+    public String getValueByDBNew(String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData) {
+        List<Rong360Data> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
+                .and("name").is(bizData.get("realName")).and("idCard")
+                .is(bizData.get("idNumber")).and("phone")
+                .is(bizData.get("cid"))), Rong360Data.class);
         if (CollectionUtils.isEmpty(report)) {
             return null;
         }

@@ -30,6 +30,8 @@ public interface IJaoService {
 
     String getValueByDB(String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData);
 
+    String getValueByDBNew(String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData);
+
     String getValueByDBAndSave(String orderNo, String interfaceId, PhoneDataTypeEnum type, Map<String, Object> bizData);
 
     void saveErrorDatas(String orderNo, PhoneDataTypeEnum type, String value, JSONObject result, Map<String, Object> bizData);

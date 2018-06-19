@@ -239,8 +239,14 @@ public class RequestBrTdGeoAction {
     public String getBrScore(Map<String, Object> commonParams) {
         // 3.远程拉取
         ResponseResult result = null;
+        RiskPersonalInfo info = (RiskPersonalInfo) commonParams.get("personalInfo");
+        JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), (String) commonParams.get("strategyId"));
+        if (null != jsonObject) {
+            logger.info("traceId={} 获取百融分成功(mongodb),返回结果={}", null, riskPostDataService.getScoreByJson(jsonObject)); //成功
+            return riskPostDataService.getScoreByJson(jsonObject);
+        }
         try {
-            RiskPersonalInfo info = (RiskPersonalInfo) commonParams.get("personalInfo");
+
             result = brPostService.getApiDataByParams(info, commonParams);
         } catch (Exception e) {
             e.printStackTrace();
@@ -265,6 +271,12 @@ public class RequestBrTdGeoAction {
     //三要素
     public String getThree(Map<String, Object> bizData) {
         try {
+
+            String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.THIRD_RSLL03.getCode(), PhoneDataTypeEnum.THREE_ITEM, bizData);
+            if (StringUtils.isNotBlank(valueDb)) {
+                logger.info("traceId={} 获取手机三要素成功(mongodb==jao),返回结果={}", null, valueDb); //成功
+                return valueDb;
+            }
             //手机三要素远程拉取
             ResponseResult responseResult = iJaoService.getMobilecheck3item(bizData);
             if (responseResult.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
@@ -291,6 +303,13 @@ public class RequestBrTdGeoAction {
     //在网时长
     public String getLength(Map<String, Object> bizData) {
         try {
+
+            String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.THIRD_RSLL01.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH, bizData);
+            if (StringUtils.isNotBlank(valueDb)) {
+                logger.info("traceId={}，获取手机在网时长成功(mongodb==jao),返回结果={}", null, valueDb); //成功
+                return valueDb;
+            }
+
             //在网时长
             ResponseResult responseResult = iJaoService.getPhoneNetworkLength(bizData);
             if (responseResult.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
@@ -317,6 +336,12 @@ public class RequestBrTdGeoAction {
     //在网状态
     public String getStatus(Map<String, Object> bizData) {
         try {
+            String valueDb = iJaoService.getValueByDB(InterfaceIdEnum.JAO21.getCode(), PhoneDataTypeEnum.NETWORK_STATUS, bizData);
+            if (StringUtils.isNotBlank(valueDb)) {
+                logger.info("traceId={}，获取手机在网状态成功(mongodb==jao),返回结果={}", null, valueDb); //成功
+                return valueDb;
+            }
+
             //手机三要素远程拉取
             ResponseResult responseResult = iJaoService.getPhonestatus(bizData);
             if (responseResult.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {

@@ -152,7 +152,7 @@ public class ExportExcelUtil {
         HSSFWorkbook wb = new HSSFWorkbook();
 
         //第二步创建sheet
-        HSSFSheet sheet = wb.createSheet("sheet1");
+        HSSFSheet sheet = wb.createSheet("历史分数匹配");
 
         //第三步创建行row:添加表头0行
         HSSFRow row = sheet.createRow(0);

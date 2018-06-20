@@ -11,7 +11,6 @@ import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.service.IPushDataService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.impl.BrPostService;
-import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.auth.AbstractRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -48,9 +47,6 @@ public class Request1011Handler extends AbstractRequestHandler {
 
     @Autowired
     IConfigDao configCacheDao;
-
-    @Autowired
-    ICache prefixCache;
 
 
     /**
@@ -117,12 +113,12 @@ public class Request1011Handler extends AbstractRequestHandler {
         if (null != info) {
             idCard = info.getCertCardNo();
             isRepeatKey = getKeyPersonalInfo(info, strategyId);
-        } else {
+        }else {
             info = new RiskPersonalInfo();
         }
 //        // 2.判断是否远程拉取
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
-        log.info("traceId={} 获取百融分,缓存isRepeatKey={},是否重新拉取={}", traceId, isRepeatKey, isRpc);
+        log.info("traceId={} 获取百融分,缓存isRepeatKey={},是否重新拉取={}",traceId, isRepeatKey,isRpc);
         if (!isRpc) {
             JSONObject jsonObject = riskPostDataService.getBairongData(info.getName(), info.getCertCardNo(), info.getMobile(), strategyId);
             if (null != jsonObject) {
@@ -132,9 +128,8 @@ public class Request1011Handler extends AbstractRequestHandler {
                 resultJson.put("weight", jsonObject.getString("Rule_final_weight"));
                 log.info("traceId={} 获取百融分成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
-            } else {
-                interfaceCountCache.setFailure(isRepeatKey);
-                log.info("traceId={}，获取百融分成功(mongodb不存在此数据，已删除缓存{}，请重新拉取),", traceId, isRepeatKey); //成功
+            }else {
+                log.info("traceId={}，获取百融分成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
             }
         }
@@ -149,7 +144,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         }
         if (result == null || result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
             interfaceCountCache.setFailure(isRepeatKey);
-            log.info("traceId={} 拉取百融分失败,返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result)); //失败
+            log.info("traceId={} 拉取百融分失败,返回结果={}",traceId,new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result)); //失败
             return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result);
         }
         String brResponse = (String) result.getData();
@@ -165,8 +160,8 @@ public class Request1011Handler extends AbstractRequestHandler {
         resultJson.put("score", riskPostDataService.getScoreByJson(tempResult));
         resultJson.put("weight", tempResult.getString("Rule_final_weight"));
         //push推送riskPostDataService.getScoreByJson(tempResult)
-        pushDataService.pushData(traceId, "brscore", riskPostDataService.getScoreByJson(tempResult), idCard, orderNo);
-        log.info("traceId={} 拉取三方百融分成功,返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //失败
+        pushDataService.pushData(traceId,"brscore",riskPostDataService.getScoreByJson(tempResult),idCard,orderNo);
+        log.info("traceId={} 拉取三方百融分成功,返回结果={}",traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //失败
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
 
     }

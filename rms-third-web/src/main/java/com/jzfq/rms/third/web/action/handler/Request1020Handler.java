@@ -135,7 +135,9 @@ public class Request1020Handler extends AbstractRequestHandler {
                     log.info("traceId={} 获取手机三要素成功(mongodb==rong360),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb)); //成功
                     return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, valueDb);
                 } else {
-                    log.info("traceId={}，获取手机三要素成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
+                    prefixCache.setLoseTime(isRepeatKey, 0l);
+                    log.info("traceId={}，获取手机三要素成功(mongodb不存在此数据，已删除缓存{}，请重新拉取),", traceId, isRepeatKey); //成功
+//                    log.info("traceId={}，获取手机三要素成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
                     return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
                 }
             }

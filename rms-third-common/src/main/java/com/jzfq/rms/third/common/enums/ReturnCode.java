@@ -42,7 +42,7 @@ public enum ReturnCode {
     ERROR_SERVER(503, "系统异常"),
     ERROR_USER_TYPE_ERROR(1111, "用户类型参数错误"),
     ERROR_RSLL_PARAMS_ERROR(2222, "调用融360接口，返回参数RSL发生错误"),
-    REQUEST_NO_EXIST_DATA(200,"此数据mongodb不存在，已删除缓存，请重新拉取"),
+    REQUEST_NO_EXIST_DATA(200,"此数据mongodb不存在，请删除缓存重新拉取"),
     REQUEST_NO_PY_URL(500,"鹏元获取车辆信息 接口URL为null"),
     ERROR_UNKOWN_ERROR(9999, "未知错误,响应数据为null");
     private int code;

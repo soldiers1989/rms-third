@@ -3,7 +3,9 @@ package com.jzfq.rms.third.web.action;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.exception.BusinessException;
+import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.support.cache.ICache;
+import com.jzfq.rms.third.support.cache.ICountCache;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,8 @@ import java.io.FileReader;
 public class RedisAction {
     @Autowired
     ICache prefixCache;
+    @Autowired
+    ICountCache interfaceCountCache;
     private static String STR_REDIS_DEL_SECRET = "redisClearCount";
 
     @RequestMapping(value = "del.json", method = RequestMethod.GET)
@@ -43,24 +47,25 @@ public class RedisAction {
         return new ResponseResult("", ReturnCode.ERROR_INVALID_ARGS, null);
     }
 
-//    @RequestMapping(value = "deleteLikeKey.json", method = RequestMethod.GET)
-//    public ResponseResult deleteLikeKey() throws BusinessException {
-//        try {
-//            File file = new File("/data/redis/redis.txt");//txt文件
-//            BufferedReader br = new BufferedReader(new FileReader(file));
-//            String s = null;
-//            while ((s = br.readLine()) != null) {//使用readLine方法，一次读一行
-//                System.out.println(s);
-//                if (!"".equals(s)) {
-//                    prefixCache.batchDel(s);
-//                }
-//            }
-//            br.close();
-//            ;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return new ResponseResult("", ReturnCode.ACTIVE_SUCCESS, null);
-//    }
+    @RequestMapping(value = "deleteLikeKey.json", method = RequestMethod.GET)
+    public ResponseResult deleteLikeKey() throws BusinessException {
+        try {
+            String rootExport = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/redis.txt").getPath();
+            File file = new File(rootExport);//txt文件
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String s = null;
+            while ((s = br.readLine()) != null) {//使用readLine方法，一次读一行
+                System.out.println(s);
+                if (!"".equals(s)) {
+                    interfaceCountCache.setFailure(s);
+                }
+            }
+            br.close();
+            ;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseResult("", ReturnCode.ACTIVE_SUCCESS, null);
+    }
 
 }

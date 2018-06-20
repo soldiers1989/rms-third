@@ -50,7 +50,7 @@ public class RedisAction {
     @RequestMapping(value = "deleteLikeKey.json", method = RequestMethod.GET)
     public ResponseResult deleteLikeKey() throws BusinessException {
         try {
-            String rootExport = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/redis.txt").getPath();
+            String rootExport = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/rediskey.txt").getPath();
             File file = new File(rootExport);//txt文件
             BufferedReader br = new BufferedReader(new FileReader(file));
             String s = null;

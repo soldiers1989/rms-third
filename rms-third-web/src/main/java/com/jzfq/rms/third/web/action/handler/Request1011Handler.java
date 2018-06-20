@@ -133,7 +133,7 @@ public class Request1011Handler extends AbstractRequestHandler {
                 log.info("traceId={} 获取百融分成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
             } else {
-                prefixCache.setLoseTime(isRepeatKey, 0l);
+                interfaceCountCache.setFailure(isRepeatKey);
                 log.info("traceId={}，获取百融分成功(mongodb不存在此数据，已删除缓存{}，请重新拉取),", traceId, isRepeatKey); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
             }

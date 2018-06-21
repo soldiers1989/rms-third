@@ -46,8 +46,8 @@ public class BrResponseHandler extends AbstractResponseHandler {
         ResponseResult responseResult = (ResponseResult)params.get("response");
         ResponseResult result = new ResponseResult(TraceIDThreadLocal.getTraceID(),ReturnCode.REQUEST_SUCCESS,Constants.EMPTY_STR);
         if(responseResult==null){
-            result.setCode(ReturnCode.ERROR_RESPONSE_NULL.code());
-            result.setMsg(ReturnCode.ERROR_RESPONSE_NULL.msg());
+            result.setCode(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.code());
+            result.setMsg(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.msg());
             return result;
         }
         String responseData = StringUtil.getStringOfObject(responseResult.getData());
@@ -63,7 +63,7 @@ public class BrResponseHandler extends AbstractResponseHandler {
             result.setData(data.getString("tokenid"));
             return result;
         }
-        result.setCode(ReturnCode.ERROR_THIRD_RESPONSE.code());
+        result.setCode(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.code());
         result.setMsg(StringUtil.getStringOfObject(data.get("code")));
         result.setData(responseData);
         return result;
@@ -99,8 +99,8 @@ public class BrResponseHandler extends AbstractResponseHandler {
         String responseData = StringUtil.getStringOfObject(responseResult.getData());
         if(ReturnCode.REQUEST_SUCCESS.code() != responseResult.getCode()
                 ||StringUtils.isBlank(responseData)){
-            result.setCode(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.code());
-            result.setMsg(ReturnCode.ERROR_THIRD_RRSPONSE_NULL.msg());
+            result.setCode(ReturnCode.ACTIVE_FAILURE.code());
+            result.setMsg(ReturnCode.ACTIVE_FAILURE.msg());
             return result;
         }
         JSONObject data = JSONObject.parseObject(responseData);

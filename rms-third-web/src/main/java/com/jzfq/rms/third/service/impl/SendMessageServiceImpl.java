@@ -70,9 +70,14 @@ public class SendMessageServiceImpl extends AbstractHandlerFactory implements IS
                 // 推送监控平台
                 monitorService.sendLogToMonitor(TraceIDThreadLocal.getTraceID(),newParams);
             }
-            if (null == result.getData()) {
+            if (result == null) {
                 return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.ACTIVE_FAILURE);
+            }else {
+                if (null == result.getData()) {
+                    return new ResponseResult(TraceIDThreadLocal.getTraceID(), ReturnCode.ACTIVE_FAILURE);
+                }
             }
+
             if(error==null){
                 return handlerResult;
             }

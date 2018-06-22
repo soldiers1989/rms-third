@@ -37,6 +37,9 @@ public class JiguangParser {
                 map.put("code", code);
                 return map;
             }
+            boolean wycount = true;
+            boolean yqcount = true;
+            boolean gxfxcount = true;
             if (null != jsonObject0) {
                 map = new HashMap<String, String>();
                 //判断是否是黑名单
@@ -48,17 +51,14 @@ public class JiguangParser {
                         if (null != job) {
                             String name = job.get("name").toString();
                             if ("逾期分".equals(name)) {
+                                yqcount=false;
                                 map.put("yqScore",job.get("score").toString());
                             }else if ("违约分".equals(name)) {
+                                wycount=false;
                                 map.put("wyScore",job.get("score").toString());
                             }else if ("关系圈风险分".equals(name)) {
+                                gxfxcount=false;
                                 map.put("gxfxScore",job.get("score").toString());
-                            }else if (!"逾期分".equals(name)) {
-                                map.put("yqScore","0");
-                            }else if (!"违约分".equals(name)) {
-                                map.put("wyScore","0");
-                            }else if (!"关系圈风险分".equals(name)) {
-                                map.put("gxfxScore","0");
                             }
 
                         }
@@ -66,6 +66,15 @@ public class JiguangParser {
                 }else {
                     map.put("yqScore","0");
                     map.put("wyScore","0");
+                    map.put("gxfxScore","0");
+                }
+                if (!wycount) {
+                    map.put("wyScore","0");
+                }
+                if (!yqcount) {
+                    map.put("yqScore","0");
+                }
+                if (!gxfxcount) {
                     map.put("gxfxScore","0");
                 }
                 map.put("description", (String) jsonObject0.get("description"));

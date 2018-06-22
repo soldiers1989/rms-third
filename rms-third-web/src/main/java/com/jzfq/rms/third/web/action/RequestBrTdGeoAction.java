@@ -12,6 +12,7 @@ import com.jzfq.rms.third.service.IJaoService;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.ITdDataService;
 import com.jzfq.rms.third.service.impl.BrPostService;
+import com.jzfq.rms.third.support.cache.ICountCache;
 import com.jzfq.rms.third.web.action.masterWork.Master;
 import com.jzfq.rms.third.web.action.masterWork.Worker;
 import com.jzfq.rms.third.web.action.model.BrScoreModel;
@@ -63,6 +64,14 @@ public class RequestBrTdGeoAction {
     @Autowired
     BrPostService brPostService;
 
+    @Autowired
+    ICountCache interfaceCountCache;
+
+    /**
+     * 超时时间 三天
+     */
+    private static final Long time = 30 * 24 * 60 * 60L;
+
     /**
      * 导出excel数据信息
      *
@@ -91,6 +100,41 @@ public class RequestBrTdGeoAction {
         responseResult.setData(result);
         responseResult.setMsg("共执行excel数据：" + result + "条！");
         logger.info("共执行excel数据：" + result + "条！");
+        MDC.remove("traceID");
+        TraceIDThreadLocal.removeTraceID();
+        return responseResult;
+    }
+
+
+
+    /**
+     * 导出excel数据信息
+     *
+     * @param
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "brTdGeoRequestWWData.json", method = RequestMethod.POST)
+    public ResponseResult brTdGeoRequestWWData(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        MDC.put("traceID", "1234567890");
+        TraceIDThreadLocal.setTraceID("1234567890");
+        logger.info("comein...................");
+        ResponseResult responseResult = new ResponseResult();
+        String root = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/0621ww.xlsx").getPath();
+        File file = new File(root);
+        //生成数据 old
+        List<Run200Model> result = readExcelXLSXWW(new FileInputStream(file));
+
+        //生成数据 old
+//        List<Run200Model> resultNew = readExcelXLSXNew(new FileInputStream(file));
+
+        String rootExport = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/0621.xlsx").getPath();
+        //导出数据
+        ExportExcelUtil.export0621(result, null, rootExport);
+        responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
+        responseResult.setData(result);
+        responseResult.setMsg("共执行excel数据：" + result.size() + "条！");
+        logger.info("共执行excel数据：" + result.size() + "条！");
         MDC.remove("traceID");
         TraceIDThreadLocal.removeTraceID();
         return responseResult;
@@ -195,6 +239,88 @@ public class RequestBrTdGeoAction {
         }
         return list;
     }
+
+
+
+
+    public List<Run200Model> readExcelXLSXWW(FileInputStream in) {
+        // TODO Auto-generated method stub
+        int input = 0;
+        try {
+            //通过得到的文件输入流inputstream创建一个HSSFWordbook对象
+            XSSFWorkbook hssfworkbook = new XSSFWorkbook(in);
+            XSSFSheet hssfsheet = hssfworkbook.getSheetAt(0);//第一个工作表
+            XSSFRow hssfrow = hssfsheet.getRow(0);//第一行
+            //遍历该表格中所有的工作表，i表示工作表的数量 getNumberOfSheets表示工作表的总数
+            hssfsheet = hssfworkbook.getSheetAt(0);
+            int rowNumCount = hssfsheet.getPhysicalNumberOfRows();
+            //执行递归操作
+//            input = updateScore(0, 1000, page, input, hssfrow, hssfsheet,riskPostDataService);
+            //取历史数据
+            List<Run200Model> list = saveScoreMaster(rowNumCount, hssfrow, hssfsheet, "1");
+            return list;
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * @ClassName: updateScoreMaster
+     * @Description: TODO()
+     * @author xuliang
+     * @date 2018-06-13
+     */
+
+    public List<Run200Model> saveScoreMaster(int rowNumCount, XSSFRow hssfrow, XSSFSheet hssfsheet, String flag) {
+        List<Run200Model> list = new ArrayList<Run200Model>();
+        for (int j = 1; j < rowNumCount; j++) {
+            Run200Model info = new Run200Model();
+            try {
+                hssfrow = hssfsheet.getRow(j);
+
+                /**将EXCEL中的第 j 行，第五列的值插入到实例中*/
+                //电话
+                info.setPhone(getCellXLSXValue(hssfrow.getCell((short) 1), null));
+
+                /**将EXCEL中的第 j 行，第二列的值插入到实例中*/
+                //姓名
+                info.setName(getCellXLSXValue(hssfrow.getCell((short) 0), null));
+
+                /**将EXCEL中的第 j 行，第三列的值插入到实例中*/
+                //身份证
+                info.setIdCard(getCellXLSXValue(hssfrow.getCell((short) 2), null));
+
+                //同盾分
+//                info.setTdScore(getTdScore(getCommonParamsTd(info), flag));
+                /**将EXCEL中的第 j 行，第四列的值插入到实例中*/
+                //百融分
+                info.setBrScore(saveBrScore(getCommonParamsBr(info)));
+//                //三要素
+//                info.setThree(getThree(getJaoCommonParams(info), flag));
+//                //在网时长
+//                info.setLength(getLength(getJaoCommonParams(info), flag));
+                //在网状态
+                info.setStatus(getStatus(getJaoCommonParams(info), flag));
+                logger.info("当前行：" + j + "当前数据：【" + info.toString() + "】");
+                list.add(info);
+                //添加任务
+                //更新成功加1
+//                input++;
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+                break;
+            }
+        }
+        return list;
+    }
+
+
+
+
 
     //封装请求三方参数
     public Map<String, Object> getCommonParamsTd(Run200Model info) {
@@ -307,6 +433,66 @@ public class RequestBrTdGeoAction {
         }
         return null;
     }
+
+
+
+
+
+    //百融分
+    public String saveBrScore(Map<String, Object> commonParams) {
+        // 3.远程拉取
+        ResponseResult result = null;
+        RiskPersonalInfo info = (RiskPersonalInfo) commonParams.get("personalInfo");
+        try {
+            result = brPostService.getApiDataByParams(info, commonParams);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (result == null || result.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
+            logger.info("traceId={} 拉取百融分失败,返回结果={}", commonParams, result); //失败
+            return null;
+        }
+
+        String brResponse = (String) result.getData();
+        String isRepeatKey = getKeyPersonalInfo(info,"STR0000187");
+        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
+        try {
+//            riskPostDataService.saveRmsData(orderNo, brResponse, customerType);
+            riskPostDataService.saveRmsThirdData(info, "1", "STR0000187", brResponse);
+        } catch (Exception e) {
+            logger.error("traceId={} 保存数据失败", null, e);
+            interfaceCountCache.setFailure(isRepeatKey);
+        }
+        JSONObject resultJson = new JSONObject();
+        JSONObject tempResult = JSONObject.parseObject(brResponse);
+//        resultJson.put("weight", tempResult.getString("Rule_final_weight"));
+        if (StringUtils.isNotBlank(riskPostDataService.getScoreByJson(tempResult))) {
+            logger.info("traceId={} 拉取三方百融成功,返回结果={}", null, riskPostDataService.getScoreByJson(tempResult)); //成功
+            return riskPostDataService.getScoreByJson(tempResult);
+        }
+        return null;
+    }
+
+
+
+    /**
+     * 获取 唯一Key
+     *
+     * @return
+     */
+    private String getKeyPersonalInfo(RiskPersonalInfo info, String strategyId) {
+        StringBuilder sb = new StringBuilder("rms_third_1011_");
+        sb.append(strategyId);
+        sb.append("_");
+        sb.append(info.getName());
+        sb.append("_");
+        sb.append(info.getCertCardNo());
+        sb.append("_");
+        sb.append(info.getMobile());
+        return sb.toString();
+    }
+
 
 
     //三要素

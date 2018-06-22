@@ -53,7 +53,14 @@ public class JiguangParser {
                                 map.put("wyScore",job.get("score").toString());
                             }else if ("关系圈风险分".equals(name)) {
                                 map.put("gxfxScore",job.get("score").toString());
+                            }else if (!"逾期分".equals(name)) {
+                                map.put("yqScore","0");
+                            }else if (!"违约分".equals(name)) {
+                                map.put("wyScore","0");
+                            }else if (!"关系圈风险分".equals(name)) {
+                                map.put("gxfxScore","0");
                             }
+
                         }
                     }
                 }else {

@@ -23,4 +23,6 @@ public interface IJiguangService {
     ResponseResult getHttpData(String name, String idcard, String phone, String channelId);
 
 
+    void saveErrorData(RiskPersonalInfo info, JSONObject data, String orderNo, String channelId, String traceId
+            , Map<String,String> resultMap,String errorCode);
 }

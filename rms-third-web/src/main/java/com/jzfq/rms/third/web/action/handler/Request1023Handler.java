@@ -101,7 +101,7 @@ public class Request1023Handler extends AbstractRequestHandler {
         if (!isRpc) {
             JSONObject value = iJiguangService.getData(info.getName(), info.getCertCardNo(), info.getMobile(), orderNo, channelId);
             if (null != value) {
-                log.info("traceId={} 获取极光反欺诈数据成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null)); //成功
+                log.info("traceId={} 获取极光反欺诈数据成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, value)); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, value);
             } else {
                 log.info("traceId={}，获取极光反欺诈数据失败(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
@@ -123,8 +123,8 @@ public class Request1023Handler extends AbstractRequestHandler {
             return new ResponseResult(traceId, ReturnCode.ERROR_RESPONSE_NULL, result);
         }
         String brResponse = "";
-        if (null !=  result.getData()) {
-             brResponse = (String) result.getData();
+        if (null != result.getData()) {
+            brResponse = (String) result.getData();
         }
         if (StringUtils.isBlank(brResponse)) {
             interfaceCountCache.setFailure(isRepeatKey);
@@ -137,8 +137,15 @@ public class Request1023Handler extends AbstractRequestHandler {
         if (null != resultMap) {
             String code = resultMap.get("code");
             if (StringUtils.isNotBlank(code)) {
-                interfaceCountCache.setFailure(isRepeatKey);
-                return new ResponseResult(traceId, Integer.parseInt(code), null);
+//                interfaceCountCache.setFailure(isRepeatKey);
+                //添加错误记录
+                iJiguangService.saveErrorData(info, jsonObject, orderNo, channelId, traceId, resultMap,code);
+                resultMap = new HashMap<>();
+                resultMap.put("yqScore", "0");
+                resultMap.put("wyScore", "0");
+                resultMap.put("gxfxScore", "0");
+                resultMap.put("sumScore", "0");//总分
+                return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultMap);
             }
         } else {
             interfaceCountCache.setFailure(isRepeatKey);

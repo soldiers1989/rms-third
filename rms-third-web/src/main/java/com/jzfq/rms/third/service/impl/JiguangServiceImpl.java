@@ -5,6 +5,7 @@ import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.httpclient.HttpConnectionManager;
 import com.jzfq.rms.third.common.mongo.JiguangData;
+import com.jzfq.rms.third.common.mongo.JiguangErrorData;
 import com.jzfq.rms.third.common.utils.MD5Helper;
 import com.jzfq.rms.third.service.IJiguangService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
@@ -77,6 +78,23 @@ public class JiguangServiceImpl implements IJiguangService {
     }
 
 
+    public JiguangErrorData getErrorJiguangData(RiskPersonalInfo info, JSONObject data, String orderNo, String channelId, String traceId
+            , Map<String,String> resultMap,String errorCode) {
+        JiguangErrorData jiguangData = new JiguangErrorData();
+        jiguangData.setName(info.getName());
+        jiguangData.setPhone(info.getMobile());
+        jiguangData.setIdCard(info.getCertCardNo());
+        jiguangData.setChannel(channelId);
+        jiguangData.setCreateTime(new Date());
+        jiguangData.setData(data);
+        jiguangData.setTraceId(traceId);
+        jiguangData.setOrderNo(orderNo);
+        jiguangData.setErrorCode(errorCode);
+        return jiguangData;
+    }
+
+
+
     @Override
     public ResponseResult getHttpData(String name, String idcard, String phone, String channelId) {
         phone = MD5Helper.encrypt(phone);//MD5加密手机号
@@ -110,6 +128,13 @@ public class JiguangServiceImpl implements IJiguangService {
     }
 
 
+    @Override
+    public void saveErrorData(RiskPersonalInfo info, JSONObject data, String orderNo, String channelId, String traceId, Map<String, String> resultMap,String errorCode) {
+        ThreadProvider.getThreadPool().execute(() -> {
+            saveErrorDataMongo(getErrorJiguangData(info, data, orderNo, channelId, traceId,resultMap,errorCode));
+        });
+    }
+
     private void saveData(JiguangData data) {
         logger.info("极光 数据开始入库......");
         try {
@@ -118,6 +143,16 @@ public class JiguangServiceImpl implements IJiguangService {
             logger.error("极光入库失败......", e);
         }
         logger.info("极光 数据入库结束......");
+    }
+
+    private void saveErrorDataMongo(JiguangErrorData data) {
+        logger.info("极光 错误数据开始入库......");
+        try {
+            mongoTemplate.insert(data);
+        } catch (Exception e) {
+            logger.error("极光错误数据入库失败......", e);
+        }
+        logger.info("极光 错误数据入库结束......");
     }
 
 

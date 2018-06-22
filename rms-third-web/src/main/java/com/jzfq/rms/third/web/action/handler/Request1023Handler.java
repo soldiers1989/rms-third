@@ -137,7 +137,7 @@ public class Request1023Handler extends AbstractRequestHandler {
         if (null != resultMap) {
             String code = resultMap.get("code");
             if (StringUtils.isNotBlank(code)) {
-//                interfaceCountCache.setFailure(isRepeatKey);
+                interfaceCountCache.setFailure(isRepeatKey);
                 //添加错误记录
                 iJiguangService.saveErrorData(info, jsonObject, orderNo, channelId, traceId, resultMap,code);
                 resultMap = new HashMap<>();

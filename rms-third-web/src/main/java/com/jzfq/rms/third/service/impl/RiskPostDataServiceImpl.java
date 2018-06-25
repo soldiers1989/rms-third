@@ -331,6 +331,9 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         if (StringUtils.isBlank(score)) {
             score = json.getString("rs_Score_scorelargecashv2");
         }
+        if (StringUtils.isBlank(score)) {
+            score = "";
+        }
         return score;
     }
 

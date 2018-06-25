@@ -48,17 +48,17 @@ public class BrScoreUpdateAction {
      * @return
      */
     @RequestMapping(value = "updateScore.json", method = RequestMethod.POST)
-    public ResponseResult updateScore(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        logger.info("comein...................");
+    public ResponseResult updateScore(HttpServletRequest request, HttpServletResponse response, String version) throws Exception {
+        logger.info("comein..................." + version);
         ResponseResult responseResult = new ResponseResult();
-        String root = BrScoreUpdateAction.class.getClassLoader().getResource("excel/brscore02.xlsx").getPath();
+        String root = BrScoreUpdateAction.class.getClassLoader().getResource("excel/brscore0"+version+".xlsx").getPath();
         logger.info(root);
         File file = new File(root);
-        int result = ReadExcelUtil.getInstance().readExcelXLSX(new FileInputStream(file),riskPostDataService);
+        int result = ReadExcelUtil.getInstance().readExcelXLSX(new FileInputStream(file), riskPostDataService);
         responseResult.setCode(ReturnCode.ACTIVE_SUCCESS.code());
         responseResult.setData(result);
-        responseResult.setMsg("共执行excel数据："+result+"条！");
-        logger.info("共执行excel数据："+result+"条！");
+        responseResult.setMsg("共执行excel数据：" + result + "条！");
+        logger.info("共执行excel数据：" + result + "条！");
         return responseResult;
     }
 

@@ -332,7 +332,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
             score = json.getString("rs_Score_scorelargecashv2");
         }
         if (StringUtils.isBlank(score)) {
-            score = "";
+            score = "-1";
         }
         return score;
     }

@@ -157,9 +157,18 @@ public class Request1011Handler extends AbstractRequestHandler {
         }
         JSONObject resultJson = new JSONObject();
         JSONObject tempResult = JSONObject.parseObject(brResponse);
-        resultJson.put("score", riskPostDataService.getScoreByJson(tempResult));
-        resultJson.put("weight", tempResult.getString("Rule_final_weight"));
+
+
+        //上线恢复
+
+//        resultJson.put("score", riskPostDataService.getScoreByJson(tempResult));
+//        resultJson.put("weight", tempResult.getString("Rule_final_weight"));
         //push推送riskPostDataService.getScoreByJson(tempResult)
+
+        resultJson.put("score", "");
+        resultJson.put("weight", "");
+
+
         pushDataService.pushData(traceId, "brscore", riskPostDataService.getScoreByJson(tempResult), idCard, orderNo);
         log.info("traceId={} 拉取三方百融分成功,返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //失败
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);

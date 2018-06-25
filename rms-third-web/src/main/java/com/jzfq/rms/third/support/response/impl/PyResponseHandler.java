@@ -64,7 +64,7 @@ public class PyResponseHandler extends AbstractResponseHandler {
         logger.info("鹏元数据 traceId=[" + traceId + "]\r\n data:" + data);
         JSONObject checkInfo = data.getJSONObject("carCheckInfo");
         if (checkInfo.containsKey("errorCode")) {
-            result = new ResponseResult(traceId,ReturnCode.ERROR_THIRD_RESPONSE,data);
+            result = new ResponseResult(traceId,ReturnCode.REQUEST_SUCCESS, CarCheckEnum.UNCHECK.getCode());
             result.setMsg(checkInfo.getString("errorCode")
                     + ":" + checkInfo.getString("errorMessage"));
             return result;

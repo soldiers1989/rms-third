@@ -99,14 +99,6 @@ public class Request1011Handler extends AbstractRequestHandler {
      */
     private ResponseResult handler01(AbstractRequest request) throws Exception {
         String traceId = TraceIDThreadLocal.getTraceID();
-        if (1 == 1) {
-            JSONObject resultJson = new JSONObject();
-            resultJson.put("score", "-1");
-            resultJson.put("weight", "-1");
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
-        }
-
-
         String orderNo = request.getParam("orderNo").toString();
         String customerType = (String) request.getParam("customerType");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),

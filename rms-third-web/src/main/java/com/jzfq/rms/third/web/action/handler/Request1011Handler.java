@@ -101,8 +101,8 @@ public class Request1011Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         if (1 == 1) {
             JSONObject resultJson = new JSONObject();
-            resultJson.put("score", "");
-            resultJson.put("weight", "");
+            resultJson.put("score", "null");
+            resultJson.put("weight", "null");
             return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
         }
 

@@ -120,6 +120,36 @@ public class HttpConnectionManager {
 		
 		return send(request, charset);
 	}
+
+
+	/**
+	 * @param url 请求路径
+	 * @param userName 用户名
+	 * @param password 密码
+	 * @param charset 字符集
+	 * @return ResponseResult  返回结果  code :状态码   attach : 返回内容
+	 */
+	public static ResponseResult doGet(String url ,String userName ,String password , String charset,String contentType) {
+		if(StringUtils.isBlank(url))
+			throw new IllegalAccessError("入参url 为空");
+
+		if(StringUtils.isBlank(charset))
+			charset = CHARSET;
+
+		HttpGet request = new HttpGet(url);
+
+		if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)) {
+			byte[] credentials = Base64.encodeBase64((userName + ":" + password).getBytes(StandardCharsets.UTF_8));
+			LOG.info(new String(credentials, StandardCharsets.UTF_8));
+			request.setHeader("Authorization", "Basic " + new String(credentials, StandardCharsets.UTF_8));
+		}
+		request.setHeader("Content-Type",contentType);
+		return send(request, charset);
+	}
+
+
+
+
 	/**
 	 * @param url 请求路径
 	 * @param authorization jwt串

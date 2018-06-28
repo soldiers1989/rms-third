@@ -120,10 +120,10 @@ public class JiguangServiceImpl implements IJiguangService {
             return null;
         }
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("yqScore", datas.get(0).getYqScore());
-        jsonObject.put("wyScore", datas.get(0).getWyScore());
-        jsonObject.put("gxfxScore", datas.get(0).getGxfxScore());
-        jsonObject.put("sumScore", datas.get(0).getSumScore());
+        jsonObject.put("yqScore", datas.get(0).getYqScore() == null ? "0" :datas.get(0).getYqScore() );
+        jsonObject.put("wyScore", datas.get(0).getWyScore() == null ? "0" : datas.get(0).getWyScore());
+        jsonObject.put("gxfxScore", datas.get(0).getGxfxScore() == null ? "0" : datas.get(0).getGxfxScore());
+        jsonObject.put("sumScore", datas.get(0).getSumScore() == null ? "0" : datas.get(0).getSumScore());
         return jsonObject;
     }
 

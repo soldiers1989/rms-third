@@ -68,13 +68,13 @@ public class JiguangParser {
                     map.put("wyScore","0");
                     map.put("gxfxScore","0");
                 }
-                if (!wycount) {
+                if (wycount) {
                     map.put("wyScore","0");
                 }
-                if (!yqcount) {
+                if (yqcount) {
                     map.put("yqScore","0");
                 }
-                if (!gxfxcount) {
+                if (gxfxcount) {
                     map.put("gxfxScore","0");
                 }
                 map.put("description", (String) jsonObject0.get("description"));

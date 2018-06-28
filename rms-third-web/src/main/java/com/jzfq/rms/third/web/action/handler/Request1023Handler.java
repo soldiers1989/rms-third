@@ -104,7 +104,8 @@ public class Request1023Handler extends AbstractRequestHandler {
                 log.info("traceId={} 获取极光反欺诈数据成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, value)); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, value);
             } else {
-                log.info("traceId={}，获取极光反欺诈数据失败(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
+                interfaceCountCache.setFailure(isRepeatKey);
+                log.info("traceId={}，获取极光反欺诈数据失败(mongodb不存在此数据，请删除缓存重新拉取),{}", traceId,isRepeatKey); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
             }
         }

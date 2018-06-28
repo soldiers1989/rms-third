@@ -51,7 +51,7 @@ public class BrScoreUpdateAction {
     public ResponseResult updateScore(HttpServletRequest request, HttpServletResponse response, String version) throws Exception {
         logger.info("comein..................." + version);
         ResponseResult responseResult = new ResponseResult();
-        String root = BrScoreUpdateAction.class.getClassLoader().getResource("excel/brscore0"+version+".xlsx").getPath();
+        String root = BrScoreUpdateAction.class.getClassLoader().getResource("excel/brscore10"+version+".xlsx").getPath();
         logger.info(root);
         File file = new File(root);
         int result = ReadExcelUtil.getInstance().readExcelXLSX(new FileInputStream(file), riskPostDataService);

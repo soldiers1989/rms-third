@@ -149,6 +149,7 @@ public class ReadExcelUtil {
             //执行递归操作
 //            input = updateScore(0, 1000, page, input, hssfrow, hssfsheet,riskPostDataService);
             updateScoreMaster(rowNumCount, hssfrow, hssfsheet, riskPostDataService);
+
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
@@ -166,6 +167,7 @@ public class ReadExcelUtil {
 
     public int updateScoreMaster(int rowNumCount, XSSFRow hssfrow, XSSFSheet hssfsheet, IRiskPostDataService riskPostDataService) {
         Master master = new Master(new Worker(riskPostDataService), 50);
+
         for (int j = 1; j < rowNumCount; j++) {
             BrScoreModel info = new BrScoreModel();
             try {

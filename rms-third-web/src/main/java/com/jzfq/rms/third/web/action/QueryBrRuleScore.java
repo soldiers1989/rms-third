@@ -122,6 +122,8 @@ public class QueryBrRuleScore {
                 //百融分
                 info.setBrScore(getBrScore(getCommonParamsBr(info)));
 
+                info.setTdScore(getBrRuleScore(getCommonParamsBr(info)));
+
                 logger.info("当前行：" + j + "当前数据：【" + info.toString() + "】");
                 list.add(info);
                 //添加任务
@@ -156,7 +158,7 @@ public class QueryBrRuleScore {
 
 
     //百融分权重
-    public String getBrScore(Map<String, Object> commonParams) {
+    public String getBrRuleScore(Map<String, Object> commonParams) {
         // 3.远程拉取
         ResponseResult result = null;
         RiskPersonalInfo info = (RiskPersonalInfo) commonParams.get("personalInfo");
@@ -164,6 +166,19 @@ public class QueryBrRuleScore {
         //取历史数据
         if (null != jsonObject) {
             return jsonObject.getString("Rule_final_weight");
+        }
+        return "";
+    }
+
+    //百融分
+    public String getBrScore(Map<String, Object> commonParams) {
+        // 3.远程拉取
+        ResponseResult result = null;
+        RiskPersonalInfo info = (RiskPersonalInfo) commonParams.get("personalInfo");
+        JSONObject jsonObject = riskPostDataService.getHBBairongData(info.getName(), info.getCertCardNo(), info.getMobile());
+        //取历史数据
+        if (null != jsonObject) {
+            return riskPostDataService.getScoreByJson(jsonObject);
         }
         return "";
     }

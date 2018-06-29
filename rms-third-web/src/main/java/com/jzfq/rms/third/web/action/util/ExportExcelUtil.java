@@ -322,6 +322,10 @@ public class ExportExcelUtil {
         cell.setCellStyle(style);
 
         cell = row.createCell(3);         //第二个单元格
+        cell.setCellValue("百融分");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(4);         //第二个单元格
         cell.setCellValue("百融权重分");
         cell.setCellStyle(style);
 
@@ -336,7 +340,9 @@ public class ExportExcelUtil {
                 row.createCell(0).setCellValue(info.getPhone());//手机号
                 row.createCell(1).setCellValue(info.getName());//姓名
                 row.createCell(2).setCellValue(info.getIdCard());//身份证
-                row.createCell(3).setCellValue(info.getBrScore());//同盾分
+                row.createCell(3).setCellValue(info.getBrScore());//百融
+                row.createCell(4).setCellValue(info.getTdScore());//百融权重
+
             }
         }
 

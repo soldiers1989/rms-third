@@ -121,4 +121,13 @@ public interface IRiskPostDataService {
 
 
 
+    /**
+     *
+     * @param name
+     * @param certCardNo
+     * @param mobile
+     * @return
+     */
+    JSONObject getHBBairongData(String name,String certCardNo,String mobile);
+
 }

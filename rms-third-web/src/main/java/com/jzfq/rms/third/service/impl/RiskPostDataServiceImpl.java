@@ -378,6 +378,23 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
         return JSONObject.parseObject(data);
     }
 
+
+    @Override
+    public JSONObject getHBBairongData(String name, String certCardNo, String mobile) {
+        Integer outTime = configCacheDao.getOutTimeUnit(InterfaceIdEnum.THIRD_BR01.getCode());
+        List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
+                .and("certCardNo").is(certCardNo).and("mobile").is(mobile)
+                .and("createTime").gte(getMinTime(outTime))).with(new Sort(Sort.Direction.DESC, "createTime")), BairongData.class);
+        if (CollectionUtils.isEmpty(datas)) {
+            return null;
+        }
+        String data = datas.get(0).getData();
+        if (StringUtils.isBlank(data)) {
+            return null;
+        }
+        return JSONObject.parseObject(data);
+    }
+
     private Date getMinTime(Integer time) {
         Calendar calendar = Calendar.getInstance();//使用默认时区和语言环境获得一个日历。
         calendar.add(Calendar.DAY_OF_MONTH, -1 * time);//取当前日期的前一天.

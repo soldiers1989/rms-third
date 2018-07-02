@@ -103,7 +103,7 @@ public class Request1011Handler extends AbstractRequestHandler {
             JSONObject resultJson = new JSONObject();
             resultJson.put("score", "");
             resultJson.put("weight", "");
-            new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
+            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
         }
 
         String orderNo = request.getParam("orderNo").toString();

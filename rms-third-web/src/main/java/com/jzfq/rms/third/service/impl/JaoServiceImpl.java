@@ -253,11 +253,22 @@ public class JaoServiceImpl implements IJaoService {
 
 
     @Override
-    public List<JiaoErrorData> getData(String interfaceId,PhoneDataTypeEnum type) {
+    public List<JiaoErrorData> getData(String interfaceId, PhoneDataTypeEnum type) {
         Integer outTime = configCacheDao.getOutTimeUnit(interfaceId);
         List<JiaoErrorData> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
                         .and("createTime").gte(DateUtils.lastDayWholePointDate(new Date())).lt(new Date())).with(new Sort(Sort.Direction.DESC, "createTime")),
                 JiaoErrorData.class);
+        if (CollectionUtils.isEmpty(report)) {
+            return null;
+        }
+        return report;
+    }
+
+    @Override
+    public List<JiaoData> getJaoData(String interfaceId, PhoneDataTypeEnum type) {
+        List<JiaoData> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
+        ).with(new Sort(Sort.Direction.DESC, "createTime")),
+                JiaoData.class);
         if (CollectionUtils.isEmpty(report)) {
             return null;
         }

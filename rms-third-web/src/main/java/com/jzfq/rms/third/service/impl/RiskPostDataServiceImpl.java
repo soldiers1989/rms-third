@@ -342,7 +342,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
      * @return
      */
     @Override
-    public String getScoreByJson(JSONObject json,String channelId) {
+    public String getScoreByJson(JSONObject json, String channelId) {
         String score = json.getString("rs_Score_scorecust");
         if (StringUtils.isBlank(score)) {
             score = json.getString("rs_Score_scorelargecashv1");
@@ -351,13 +351,7 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
             score = json.getString("rs_Score_scorelargecashv2");
         }
         if (StringUtils.isBlank(score)) {
-            if ("1".equals(channelId)) {
-                //如果是商城
-                score = "-1";
-            }else if ("2".equals(channelId)) {
-                //如果是车主返回空
-                score = "";
-            }
+            score = "";
         }
         return score;
     }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.mongo.GongPingJiaData;
+import com.jzfq.rms.third.common.mongo.JiaoData;
 import com.jzfq.rms.third.persistence.dao.impl.GongpingjiaDao;
 import com.jzfq.rms.third.web.action.model.Run200Model;
 import org.apache.commons.io.FileUtils;
@@ -288,8 +289,6 @@ public class ExportExcelUtil {
     }
 
 
-
-
     /*
      * 导出数据
      * */
@@ -428,12 +427,71 @@ public class ExportExcelUtil {
     }
 
 
+    /*
+     * 导出数据
+     * */
+    public static void exportBy(List<JiaoData> data, String file) throws Exception {
 
 
+        //第一步创建workbook
+        XSSFWorkbook wb = new XSSFWorkbook();
+
+        //第二步创建sheet
+        XSSFSheet sheet = wb.createSheet("集奥在网状态数据0615-0630");
+
+        //第三步创建行row:添加表头0行
+        XSSFRow row = sheet.createRow(0);
+        XSSFCellStyle style = wb.createCellStyle();
+        //style.setAlignment(HSSFCellStyle.ALIGN_CENTER);  //居中
 
 
+        //第四步创建单元格
+        XSSFCell cell = row.createCell(0); //第一个单元格
+        cell.setCellValue("姓名");
+        cell.setCellStyle(style);
 
+        cell = row.createCell(1);         //第二个单元格
+        cell.setCellValue("手机号");
+        cell.setCellStyle(style);
 
+        cell = row.createCell(2);         //第二个单元格
+        cell.setCellValue("身份证");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(3);         //第二个单元格
+        cell.setCellValue("值");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(4);         //第二个单元格
+        cell.setCellValue("创建时间");
+        cell.setCellStyle(style);
+
+        //第五步插入数据
+        if (null != data && data.size() > 0) {
+            int count = 0;
+            for (JiaoData info : data) {
+                count++;
+                //创建行
+                row = sheet.createRow(count);
+                //创建单元格并且添加数据
+                row.createCell(0).setCellValue(info.getName());//姓名
+                row.createCell(1).setCellValue(info.getPhone());//手机号
+                row.createCell(2).setCellValue(info.getIdCard());//身份证
+                row.createCell(3).setCellValue(info.getValue());//值
+                row.createCell(3).setCellValue(info.getCreateTime());//创建时间
+            }
+        }
+        //第六步将生成excel文件保存到指定路径下
+        try {
+            FileOutputStream fout = new FileOutputStream(file);
+            wb.write(fout);
+            fout.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Excel文件生成成功...");
+
+    }
 
 
 

@@ -6,6 +6,7 @@ package com.jzfq.rms.third.service;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.PhoneDataTypeEnum;
+import com.jzfq.rms.third.common.mongo.JiaoData;
 import com.jzfq.rms.third.common.mongo.JiaoErrorData;
 
 import java.util.List;
@@ -39,4 +40,5 @@ public interface IJaoService {
     List<JiaoErrorData> getData(String interfaceId,PhoneDataTypeEnum type);
 
 
+    List<JiaoData> getJaoData(String interfaceId, PhoneDataTypeEnum type);
 }

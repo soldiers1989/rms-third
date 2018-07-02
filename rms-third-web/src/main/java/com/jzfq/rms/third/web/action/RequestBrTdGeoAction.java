@@ -402,8 +402,8 @@ public class RequestBrTdGeoAction {
         if ("1".equals(flag)) {
             //取历史数据
             if (null != jsonObject) {
-                logger.info("traceId={} 获取百融分成功(mongodb),返回结果={}", null, riskPostDataService.getScoreByJson(jsonObject)); //成功
-                return riskPostDataService.getScoreByJson(jsonObject);
+                logger.info("traceId={} 获取百融分成功(mongodb),返回结果={}", null, riskPostDataService.getScoreByJson(jsonObject,null)); //成功
+                return riskPostDataService.getScoreByJson(jsonObject,null);
             }else {
                 return "";
             }
@@ -427,9 +427,9 @@ public class RequestBrTdGeoAction {
         JSONObject resultJson = new JSONObject();
         JSONObject tempResult = JSONObject.parseObject(brResponse);
 //        resultJson.put("weight", tempResult.getString("Rule_final_weight"));
-        if (StringUtils.isNotBlank(riskPostDataService.getScoreByJson(tempResult))) {
-            logger.info("traceId={} 拉取三方百融成功,返回结果={}", null, riskPostDataService.getScoreByJson(tempResult)); //成功
-            return riskPostDataService.getScoreByJson(tempResult);
+        if (StringUtils.isNotBlank(riskPostDataService.getScoreByJson(tempResult,null))) {
+            logger.info("traceId={} 拉取三方百融成功,返回结果={}", null, riskPostDataService.getScoreByJson(tempResult,null)); //成功
+            return riskPostDataService.getScoreByJson(tempResult,null);
         }
         return null;
     }
@@ -467,9 +467,9 @@ public class RequestBrTdGeoAction {
         JSONObject resultJson = new JSONObject();
         JSONObject tempResult = JSONObject.parseObject(brResponse);
 //        resultJson.put("weight", tempResult.getString("Rule_final_weight"));
-        if (StringUtils.isNotBlank(riskPostDataService.getScoreByJson(tempResult))) {
-            logger.info("traceId={} 拉取三方百融成功,返回结果={}", null, riskPostDataService.getScoreByJson(tempResult)); //成功
-            return riskPostDataService.getScoreByJson(tempResult);
+        if (StringUtils.isNotBlank(riskPostDataService.getScoreByJson(tempResult,null))) {
+            logger.info("traceId={} 拉取三方百融成功,返回结果={}", null, riskPostDataService.getScoreByJson(tempResult,null)); //成功
+            return riskPostDataService.getScoreByJson(tempResult,null);
         }
         return null;
     }

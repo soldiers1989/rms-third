@@ -7,6 +7,7 @@ import com.jzfq.rms.third.common.enums.ReturnCode;
 import com.jzfq.rms.third.common.mongo.TongDunStringData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.common.utils.StringUtil;
+import com.jzfq.rms.third.constant.Constants;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.service.IPushDataService;
@@ -69,7 +70,7 @@ public class Request1008Handler extends AbstractRequestHandler {
     /**
      * 超时时间 三天
      */
-    private static final Long time = 30 * 24 * 60 * 60L;
+    private static final Long time = 3 * 24 * 60 * 60L;
 
     @Override
     protected boolean isRpc(Map<String, Serializable> params) {
@@ -100,7 +101,7 @@ public class Request1008Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         Map<String, Object> commonParams = getCommonParams(request);
-        RiskPersonalInfo personInfo = (RiskPersonalInfo)commonParams.get("personalInfo");
+        RiskPersonalInfo personInfo = (RiskPersonalInfo) commonParams.get("personalInfo");
         String mobile = "";
         String idCard = "";
         if (null != personInfo) {
@@ -112,35 +113,44 @@ public class Request1008Handler extends AbstractRequestHandler {
         if (StringUtils.isBlank(eventId)) {
             return new ResponseResult(traceId, ReturnCode.ERROR_NOT_FOUNT_EVENT_ID, null);
         }
+        String isRepeatKey = "";
+        //如果为借款事件，则取缓存数据
+        if (Constants.LOAN_IOS_20170509.equals(eventId) || Constants.LOAN_ANDRIOD_20170509.equals(eventId) || Constants.LOAN_WEB_20170509.equals(eventId)) {
+            isRepeatKey = getKeyByOrderNo(orderNo, eventId);
+            boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
+            log.info("traceId={} 获取借款同盾分,缓存isRepeatKey={},是否重新拉取={}", traceId, isRepeatKey, isRpc);
+            if (!isRpc) {
+                List<TongDunStringData> datas = tdDataService.getDataByEvent(orderNo, eventId);
+                if (!CollectionUtils.isEmpty(datas)) {
+                    ResponseResult responseResult = new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
+                    TongDunStringData data = datas.get(0);
+                    responseResult.setData(data.getValue());
+                    log.info("traceId={} 获取借款同盾分成功(mongodb),返回结果={}", traceId, responseResult.toString()); //成功
+                    return responseResult;
+                } else {
+                    log.info("traceId={}，获取借款同盾分成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
+                    return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
+                }
+            }
+        }
 
-//        String isRepeatKey = getKeyByOrderNo(orderNo, eventId);
-//        boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
-//        log.info("traceId={} 获取同盾分,缓存isRepeatKey={},是否重新拉取={}",traceId, isRepeatKey,isRpc);
-//        if (!isRpc) {
-//            List<TongDunStringData> datas = tdDataService.getDataByEvent(orderNo, eventId);
-//            if (!CollectionUtils.isEmpty(datas)) {
-//                ResponseResult responseResult = new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, null);
-//                TongDunStringData data = datas.get(0);
-//                responseResult.setData(data.getValue());
-////                responseResult.setData(20);
-//                log.info("traceId={} 获取同盾分成功(mongodb),返回结果={}", traceId, responseResult.toString()); //成功
-//                return responseResult;
-//            }else {
-//                log.info("traceId={}，获取同盾分成功(mongodb不存在此数据，请删除缓存重新拉取),", traceId); //成功
-//                return new ResponseResult(traceId, ReturnCode.REQUEST_NO_EXIST_DATA, null);
-//            }
-//        }
         try {
             ResponseResult response = new ResponseResult();
             response = tdDataService.queryTdDatas(commonParams);
             if (response == null) {
                 log.info("traceId={} 同盾拉取无效：false ", commonParams.get("traceId"));     //失败
-//                interfaceCountCache.setFailure(isRepeatKey);
+                if (Constants.LOAN_IOS_20170509.equals(eventId) || Constants.LOAN_ANDRIOD_20170509.equals(eventId) || Constants.LOAN_WEB_20170509.equals(eventId)) {
+                    //借款同盾
+                    interfaceCountCache.setFailure(isRepeatKey);
+                }
                 throw new BusinessException("traceId={} 同盾拉取无效：false", true);
             }
             if (response.getCode() != ReturnCode.REQUEST_SUCCESS.code()) {
-                log.info("traceId={} 同盾拉取失败：false ,同盾返回结果={}", commonParams.get("traceId"),response);     //失败
-//                interfaceCountCache.setFailure(isRepeatKey);
+                log.info("traceId={} 同盾拉取失败：false ,同盾返回结果={}", commonParams.get("traceId"), response);     //失败
+                if (Constants.LOAN_IOS_20170509.equals(eventId) || Constants.LOAN_ANDRIOD_20170509.equals(eventId) || Constants.LOAN_WEB_20170509.equals(eventId)) {
+                    //借款同盾
+                    interfaceCountCache.setFailure(isRepeatKey);
+                }
                 return response;
             }
             FraudApiResponse apiResp = (FraudApiResponse) response.getData();
@@ -149,15 +159,18 @@ public class Request1008Handler extends AbstractRequestHandler {
             tdDataService.saveResult(orderNo, eventId, apiResp, commonParams);
             //push推送
             if (null != apiResp.getFinal_score()) {
-                pushDataService.pushData(traceId,"tdscore", String.valueOf(apiResp.getFinal_score()), idCard, orderNo);
-            }else {
-                log.info("traceId={} 同盾拉取失败：false ，同盾分为空",traceId);     //失败
+                pushDataService.pushData(traceId, "tdscore", String.valueOf(apiResp.getFinal_score()), idCard, orderNo);
+            } else {
+                log.info("traceId={} 同盾拉取失败：false ，同盾分为空", traceId);     //失败
             }
-            log.info("traceId={} 拉取三方同盾分成功,返回结果={}",traceId,response.toString()); //成功
+            log.info("traceId={} 拉取三方同盾分成功,返回结果={}", traceId, response.toString()); //成功
             return response;
         } catch (Exception e) {
             log.info("traceId={} 同盾拉取无效：false ", TraceIDThreadLocal.getTraceID());     //失败
-//            interfaceCountCache.setFailure(isRepeatKey);
+            if (Constants.LOAN_IOS_20170509.equals(eventId) || Constants.LOAN_ANDRIOD_20170509.equals(eventId) || Constants.LOAN_WEB_20170509.equals(eventId)) {
+                //借款同盾
+                interfaceCountCache.setFailure(isRepeatKey);
+            }
             throw e;
         }
 
@@ -169,13 +182,13 @@ public class Request1008Handler extends AbstractRequestHandler {
      * @return
      */
 
-    private  Map<String,String> getPushParams(String orderNo,String responseResult,String score ) {
-        Map<String,String> pushParams = new HashMap<String,String>();
-        pushParams.put("orderNo",orderNo);
-        pushParams.put("responseResult",responseResult);
-        pushParams.put("scoreType","tdscore");
-        pushParams.put("score",score);
-        pushParams.put("apiId","1008");
+    private Map<String, String> getPushParams(String orderNo, String responseResult, String score) {
+        Map<String, String> pushParams = new HashMap<String, String>();
+        pushParams.put("orderNo", orderNo);
+        pushParams.put("responseResult", responseResult);
+        pushParams.put("scoreType", "tdscore");
+        pushParams.put("score", score);
+        pushParams.put("apiId", "1008");
         return pushParams;
     }
 

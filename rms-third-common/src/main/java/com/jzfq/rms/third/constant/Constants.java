@@ -149,5 +149,14 @@ public class Constants
     public final static Long JAO_TOKEN_KEY_OUT_TIME = 1*23*60*60L;
 
 
+    //同盾借款同盾分 IOS
+    public final static String LOAN_IOS_20170509 = "Loan_ios_20170509";
+
+    //同盾借款同盾分 android
+    public final static String LOAN_ANDRIOD_20170509 = "Loan_android_20170509";
+
+    //同盾借款同盾分 web
+    public final static String LOAN_WEB_20170509 = "Loan_web_20170509";
+
 
 }

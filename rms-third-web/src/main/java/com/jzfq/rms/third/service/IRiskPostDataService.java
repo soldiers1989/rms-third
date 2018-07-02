@@ -80,7 +80,7 @@ public interface IRiskPostDataService {
      * @param json
      * @return
      */
-    String getScoreByJson(JSONObject json);
+    String getScoreByJson(JSONObject json,String channelId);
 
     /**
      *

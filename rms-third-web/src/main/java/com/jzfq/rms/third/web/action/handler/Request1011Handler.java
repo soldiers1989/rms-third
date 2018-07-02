@@ -101,6 +101,7 @@ public class Request1011Handler extends AbstractRequestHandler {
         String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String customerType = (String) request.getParam("customerType");
+        String channelId = (String) request.getParam("channelId");
         RiskPersonalInfo info = JSONObject.parseObject(request.getParam("personInfo").toString(),
                 RiskPersonalInfo.class);
         // 1.搜索mongo中是否存在
@@ -124,7 +125,7 @@ public class Request1011Handler extends AbstractRequestHandler {
             if (null != jsonObject) {
                 riskPostDataService.saveRmsData(orderNo, jsonObject.toJSONString(), customerType);
                 JSONObject resultJson = new JSONObject();
-                resultJson.put("score", riskPostDataService.getScoreByJson(jsonObject));
+                resultJson.put("score", riskPostDataService.getScoreByJson(jsonObject,channelId));
                 resultJson.put("weight", jsonObject.getString("Rule_final_weight"));
                 log.info("traceId={} 获取百融分成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
@@ -158,10 +159,10 @@ public class Request1011Handler extends AbstractRequestHandler {
         JSONObject resultJson = new JSONObject();
         JSONObject tempResult = JSONObject.parseObject(brResponse);
         //上线恢复
-        resultJson.put("score", riskPostDataService.getScoreByJson(tempResult));
+        resultJson.put("score", riskPostDataService.getScoreByJson(tempResult,channelId));
         resultJson.put("weight", tempResult.getString("Rule_final_weight"));
         //push推送riskPostDataService.getScoreByJson(tempResult)
-        pushDataService.pushData(traceId, "brscore", riskPostDataService.getScoreByJson(tempResult), idCard, orderNo);
+        pushDataService.pushData(traceId, "brscore", riskPostDataService.getScoreByJson(tempResult,channelId), idCard, orderNo);
         log.info("traceId={} 拉取三方百融分成功,返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson)); //失败
         return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
 

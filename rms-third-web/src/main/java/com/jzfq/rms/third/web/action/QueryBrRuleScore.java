@@ -178,7 +178,7 @@ public class QueryBrRuleScore {
         JSONObject jsonObject = riskPostDataService.getHBBairongData(info.getName(), info.getCertCardNo(), info.getMobile());
         //取历史数据
         if (null != jsonObject) {
-            return riskPostDataService.getScoreByJson(jsonObject);
+            return riskPostDataService.getScoreByJson(jsonObject,null);
         }
         return "";
     }

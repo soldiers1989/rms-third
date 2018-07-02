@@ -267,7 +267,7 @@ public class JaoServiceImpl implements IJaoService {
     @Override
     public List<JiaoData> getJaoData(String interfaceId, PhoneDataTypeEnum type) {
         List<JiaoData> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
-        ).with(new Sort(Sort.Direction.DESC, "createTime")),
+                        .and("createTime").gte(DateUtils.str2Date("2018-06-15", DateUtils.DATE_FORMAT_LONG)).lt(new Date())).with(new Sort(Sort.Direction.DESC, "createTime")),
                 JiaoData.class);
         if (CollectionUtils.isEmpty(report)) {
             return null;

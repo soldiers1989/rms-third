@@ -1,0 +1,1312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdBrExecutInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdBrExecutInfo" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="swift_number" property="swiftNumber" jdbcType="VARCHAR" />
+    <result column="c_flag_execution" property="cFlagExecution" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_name" property="cExBad1Name" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_cid" property="cExBad1Cid" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_cidtype" property="cExBad1Cidtype" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_datatime" property="cExBad1Datatime" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_datatypeid" property="cExBad1Datatypeid" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_datatype" property="cExBad1Datatype" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_leader" property="cExBad1Leader" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_address" property="cExBad1Address" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_court" property="cExBad1Court" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_time" property="cExBad1Time" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_casenum" property="cExBad1Casenum" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_money" property="cExBad1Money" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_base" property="cExBad1Base" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_basecompany" property="cExBad1Basecompany" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_obligation" property="cExBad1Obligation" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_lasttime" property="cExBad1Lasttime" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_performance" property="cExBad1Performance" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_concretesituation" property="cExBad1Concretesituation" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_breaktime" property="cExBad1Breaktime" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_posttime" property="cExBad1Posttime" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_performedpart" property="cExBad1Performedpart" jdbcType="VARCHAR" />
+    <result column="c_ex_bad1_unperformpart" property="cExBad1Unperformpart" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_name" property="cExExecut1Name" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_cid" property="cExExecut1Cid" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_cidtype" property="cExExecut1Cidtype" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_datatime" property="cExExecut1Datatime" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_datatypeid" property="cExExecut1Datatypeid" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_datatype" property="cExExecut1Datatype" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_court" property="cExExecut1Court" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_time" property="cExExecut1Time" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_casenum" property="cExExecut1Casenum" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_money" property="cExExecut1Money" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_statute" property="cExExecut1Statute" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_basic" property="cExExecut1Basic" jdbcType="VARCHAR" />
+    <result column="c_ex_execut1_basiccourt" property="cExExecut1Basiccourt" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_name" property="cExBad10Name" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_cid" property="cExBad10Cid" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_cidtype" property="cExBad10Cidtype" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_datatime" property="cExBad10Datatime" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_datatypeid" property="cExBad10Datatypeid" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_datatype" property="cExBad10Datatype" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_leader" property="cExBad10Leader" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_address" property="cExBad10Address" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_court" property="cExBad10Court" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_time" property="cExBad10Time" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_casenum" property="cExBad10Casenum" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_money" property="cExBad10Money" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_base" property="cExBad10Base" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_basecompany" property="cExBad10Basecompany" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_obligation" property="cExBad10Obligation" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_lasttime" property="cExBad10Lasttime" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_performance" property="cExBad10Performance" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_concretesituation" property="cExBad10Concretesituation" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_breaktime" property="cExBad10Breaktime" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_posttime" property="cExBad10Posttime" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_performedpart" property="cExBad10Performedpart" jdbcType="VARCHAR" />
+    <result column="c_ex_bad10_unperformpart" property="cExBad10Unperformpart" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_name" property="cExExecut10Name" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_cid" property="cExExecut10Cid" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_cidtype" property="cExExecut10Cidtype" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_datatime" property="cExExecut10Datatime" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_datatypeid" property="cExExecut10Datatypeid" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_datatype" property="cExExecut10Datatype" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_court" property="cExExecut10Court" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_time" property="cExExecut10Time" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_casenum" property="cExExecut10Casenum" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_money" property="cExExecut10Money" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_statute" property="cExExecut10Statute" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_basic" property="cExExecut10Basic" jdbcType="VARCHAR" />
+    <result column="c_ex_execut10_basiccourt" property="cExExecut10Basiccourt" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, swift_number, c_flag_execution, c_ex_bad1_name, c_ex_bad1_cid, c_ex_bad1_cidtype, 
+    c_ex_bad1_datatime, c_ex_bad1_datatypeid, c_ex_bad1_datatype, c_ex_bad1_leader, c_ex_bad1_address, 
+    c_ex_bad1_court, c_ex_bad1_time, c_ex_bad1_casenum, c_ex_bad1_money, c_ex_bad1_base, 
+    c_ex_bad1_basecompany, c_ex_bad1_obligation, c_ex_bad1_lasttime, c_ex_bad1_performance, 
+    c_ex_bad1_concretesituation, c_ex_bad1_breaktime, c_ex_bad1_posttime, c_ex_bad1_performedpart, 
+    c_ex_bad1_unperformpart, c_ex_execut1_name, c_ex_execut1_cid, c_ex_execut1_cidtype, 
+    c_ex_execut1_datatime, c_ex_execut1_datatypeid, c_ex_execut1_datatype, c_ex_execut1_court, 
+    c_ex_execut1_time, c_ex_execut1_casenum, c_ex_execut1_money, c_ex_execut1_statute, 
+    c_ex_execut1_basic, c_ex_execut1_basiccourt, c_ex_bad10_name, c_ex_bad10_cid, c_ex_bad10_cidtype, 
+    c_ex_bad10_datatime, c_ex_bad10_datatypeid, c_ex_bad10_datatype, c_ex_bad10_leader, 
+    c_ex_bad10_address, c_ex_bad10_court, c_ex_bad10_time, c_ex_bad10_casenum, c_ex_bad10_money, 
+    c_ex_bad10_base, c_ex_bad10_basecompany, c_ex_bad10_obligation, c_ex_bad10_lasttime, 
+    c_ex_bad10_performance, c_ex_bad10_concretesituation, c_ex_bad10_breaktime, c_ex_bad10_posttime, 
+    c_ex_bad10_performedpart, c_ex_bad10_unperformpart, c_ex_execut10_name, c_ex_execut10_cid, 
+    c_ex_execut10_cidtype, c_ex_execut10_datatime, c_ex_execut10_datatypeid, c_ex_execut10_datatype, 
+    c_ex_execut10_court, c_ex_execut10_time, c_ex_execut10_casenum, c_ex_execut10_money, 
+    c_ex_execut10_statute, c_ex_execut10_basic, c_ex_execut10_basiccourt, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrExecutInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_br_execut_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_br_execut_info
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_br_execut_info
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrExecutInfoExample" >
+    delete from t_third_br_execut_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdBrExecutInfo" >
+    insert into t_third_br_execut_info (c_id, swift_number, c_flag_execution, 
+      c_ex_bad1_name, c_ex_bad1_cid, c_ex_bad1_cidtype, 
+      c_ex_bad1_datatime, c_ex_bad1_datatypeid, c_ex_bad1_datatype, 
+      c_ex_bad1_leader, c_ex_bad1_address, c_ex_bad1_court, 
+      c_ex_bad1_time, c_ex_bad1_casenum, c_ex_bad1_money, 
+      c_ex_bad1_base, c_ex_bad1_basecompany, c_ex_bad1_obligation, 
+      c_ex_bad1_lasttime, c_ex_bad1_performance, c_ex_bad1_concretesituation, 
+      c_ex_bad1_breaktime, c_ex_bad1_posttime, c_ex_bad1_performedpart, 
+      c_ex_bad1_unperformpart, c_ex_execut1_name, c_ex_execut1_cid, 
+      c_ex_execut1_cidtype, c_ex_execut1_datatime, 
+      c_ex_execut1_datatypeid, c_ex_execut1_datatype, 
+      c_ex_execut1_court, c_ex_execut1_time, c_ex_execut1_casenum, 
+      c_ex_execut1_money, c_ex_execut1_statute, c_ex_execut1_basic, 
+      c_ex_execut1_basiccourt, c_ex_bad10_name, c_ex_bad10_cid, 
+      c_ex_bad10_cidtype, c_ex_bad10_datatime, c_ex_bad10_datatypeid, 
+      c_ex_bad10_datatype, c_ex_bad10_leader, c_ex_bad10_address, 
+      c_ex_bad10_court, c_ex_bad10_time, c_ex_bad10_casenum, 
+      c_ex_bad10_money, c_ex_bad10_base, c_ex_bad10_basecompany, 
+      c_ex_bad10_obligation, c_ex_bad10_lasttime, c_ex_bad10_performance, 
+      c_ex_bad10_concretesituation, c_ex_bad10_breaktime, 
+      c_ex_bad10_posttime, c_ex_bad10_performedpart, 
+      c_ex_bad10_unperformpart, c_ex_execut10_name, 
+      c_ex_execut10_cid, c_ex_execut10_cidtype, c_ex_execut10_datatime, 
+      c_ex_execut10_datatypeid, c_ex_execut10_datatype, 
+      c_ex_execut10_court, c_ex_execut10_time, c_ex_execut10_casenum, 
+      c_ex_execut10_money, c_ex_execut10_statute, c_ex_execut10_basic, 
+      c_ex_execut10_basiccourt, c_creatTime)
+    values (#{cId,jdbcType=VARCHAR}, #{swiftNumber,jdbcType=VARCHAR}, #{cFlagExecution,jdbcType=VARCHAR}, 
+      #{cExBad1Name,jdbcType=VARCHAR}, #{cExBad1Cid,jdbcType=VARCHAR}, #{cExBad1Cidtype,jdbcType=VARCHAR}, 
+      #{cExBad1Datatime,jdbcType=VARCHAR}, #{cExBad1Datatypeid,jdbcType=VARCHAR}, #{cExBad1Datatype,jdbcType=VARCHAR}, 
+      #{cExBad1Leader,jdbcType=VARCHAR}, #{cExBad1Address,jdbcType=VARCHAR}, #{cExBad1Court,jdbcType=VARCHAR}, 
+      #{cExBad1Time,jdbcType=VARCHAR}, #{cExBad1Casenum,jdbcType=VARCHAR}, #{cExBad1Money,jdbcType=VARCHAR}, 
+      #{cExBad1Base,jdbcType=VARCHAR}, #{cExBad1Basecompany,jdbcType=VARCHAR}, #{cExBad1Obligation,jdbcType=VARCHAR}, 
+      #{cExBad1Lasttime,jdbcType=VARCHAR}, #{cExBad1Performance,jdbcType=VARCHAR}, #{cExBad1Concretesituation,jdbcType=VARCHAR}, 
+      #{cExBad1Breaktime,jdbcType=VARCHAR}, #{cExBad1Posttime,jdbcType=VARCHAR}, #{cExBad1Performedpart,jdbcType=VARCHAR}, 
+      #{cExBad1Unperformpart,jdbcType=VARCHAR}, #{cExExecut1Name,jdbcType=VARCHAR}, #{cExExecut1Cid,jdbcType=VARCHAR}, 
+      #{cExExecut1Cidtype,jdbcType=VARCHAR}, #{cExExecut1Datatime,jdbcType=VARCHAR}, 
+      #{cExExecut1Datatypeid,jdbcType=VARCHAR}, #{cExExecut1Datatype,jdbcType=VARCHAR}, 
+      #{cExExecut1Court,jdbcType=VARCHAR}, #{cExExecut1Time,jdbcType=VARCHAR}, #{cExExecut1Casenum,jdbcType=VARCHAR}, 
+      #{cExExecut1Money,jdbcType=VARCHAR}, #{cExExecut1Statute,jdbcType=VARCHAR}, #{cExExecut1Basic,jdbcType=VARCHAR}, 
+      #{cExExecut1Basiccourt,jdbcType=VARCHAR}, #{cExBad10Name,jdbcType=VARCHAR}, #{cExBad10Cid,jdbcType=VARCHAR}, 
+      #{cExBad10Cidtype,jdbcType=VARCHAR}, #{cExBad10Datatime,jdbcType=VARCHAR}, #{cExBad10Datatypeid,jdbcType=VARCHAR}, 
+      #{cExBad10Datatype,jdbcType=VARCHAR}, #{cExBad10Leader,jdbcType=VARCHAR}, #{cExBad10Address,jdbcType=VARCHAR}, 
+      #{cExBad10Court,jdbcType=VARCHAR}, #{cExBad10Time,jdbcType=VARCHAR}, #{cExBad10Casenum,jdbcType=VARCHAR}, 
+      #{cExBad10Money,jdbcType=VARCHAR}, #{cExBad10Base,jdbcType=VARCHAR}, #{cExBad10Basecompany,jdbcType=VARCHAR}, 
+      #{cExBad10Obligation,jdbcType=VARCHAR}, #{cExBad10Lasttime,jdbcType=VARCHAR}, #{cExBad10Performance,jdbcType=VARCHAR}, 
+      #{cExBad10Concretesituation,jdbcType=VARCHAR}, #{cExBad10Breaktime,jdbcType=VARCHAR}, 
+      #{cExBad10Posttime,jdbcType=VARCHAR}, #{cExBad10Performedpart,jdbcType=VARCHAR}, 
+      #{cExBad10Unperformpart,jdbcType=VARCHAR}, #{cExExecut10Name,jdbcType=VARCHAR}, 
+      #{cExExecut10Cid,jdbcType=VARCHAR}, #{cExExecut10Cidtype,jdbcType=VARCHAR}, #{cExExecut10Datatime,jdbcType=VARCHAR}, 
+      #{cExExecut10Datatypeid,jdbcType=VARCHAR}, #{cExExecut10Datatype,jdbcType=VARCHAR}, 
+      #{cExExecut10Court,jdbcType=VARCHAR}, #{cExExecut10Time,jdbcType=VARCHAR}, #{cExExecut10Casenum,jdbcType=VARCHAR}, 
+      #{cExExecut10Money,jdbcType=VARCHAR}, #{cExExecut10Statute,jdbcType=VARCHAR}, #{cExExecut10Basic,jdbcType=VARCHAR}, 
+      #{cExExecut10Basiccourt,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrExecutInfo" >
+    insert into t_third_br_execut_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="swiftNumber != null" >
+        swift_number,
+      </if>
+      <if test="cFlagExecution != null" >
+        c_flag_execution,
+      </if>
+      <if test="cExBad1Name != null" >
+        c_ex_bad1_name,
+      </if>
+      <if test="cExBad1Cid != null" >
+        c_ex_bad1_cid,
+      </if>
+      <if test="cExBad1Cidtype != null" >
+        c_ex_bad1_cidtype,
+      </if>
+      <if test="cExBad1Datatime != null" >
+        c_ex_bad1_datatime,
+      </if>
+      <if test="cExBad1Datatypeid != null" >
+        c_ex_bad1_datatypeid,
+      </if>
+      <if test="cExBad1Datatype != null" >
+        c_ex_bad1_datatype,
+      </if>
+      <if test="cExBad1Leader != null" >
+        c_ex_bad1_leader,
+      </if>
+      <if test="cExBad1Address != null" >
+        c_ex_bad1_address,
+      </if>
+      <if test="cExBad1Court != null" >
+        c_ex_bad1_court,
+      </if>
+      <if test="cExBad1Time != null" >
+        c_ex_bad1_time,
+      </if>
+      <if test="cExBad1Casenum != null" >
+        c_ex_bad1_casenum,
+      </if>
+      <if test="cExBad1Money != null" >
+        c_ex_bad1_money,
+      </if>
+      <if test="cExBad1Base != null" >
+        c_ex_bad1_base,
+      </if>
+      <if test="cExBad1Basecompany != null" >
+        c_ex_bad1_basecompany,
+      </if>
+      <if test="cExBad1Obligation != null" >
+        c_ex_bad1_obligation,
+      </if>
+      <if test="cExBad1Lasttime != null" >
+        c_ex_bad1_lasttime,
+      </if>
+      <if test="cExBad1Performance != null" >
+        c_ex_bad1_performance,
+      </if>
+      <if test="cExBad1Concretesituation != null" >
+        c_ex_bad1_concretesituation,
+      </if>
+      <if test="cExBad1Breaktime != null" >
+        c_ex_bad1_breaktime,
+      </if>
+      <if test="cExBad1Posttime != null" >
+        c_ex_bad1_posttime,
+      </if>
+      <if test="cExBad1Performedpart != null" >
+        c_ex_bad1_performedpart,
+      </if>
+      <if test="cExBad1Unperformpart != null" >
+        c_ex_bad1_unperformpart,
+      </if>
+      <if test="cExExecut1Name != null" >
+        c_ex_execut1_name,
+      </if>
+      <if test="cExExecut1Cid != null" >
+        c_ex_execut1_cid,
+      </if>
+      <if test="cExExecut1Cidtype != null" >
+        c_ex_execut1_cidtype,
+      </if>
+      <if test="cExExecut1Datatime != null" >
+        c_ex_execut1_datatime,
+      </if>
+      <if test="cExExecut1Datatypeid != null" >
+        c_ex_execut1_datatypeid,
+      </if>
+      <if test="cExExecut1Datatype != null" >
+        c_ex_execut1_datatype,
+      </if>
+      <if test="cExExecut1Court != null" >
+        c_ex_execut1_court,
+      </if>
+      <if test="cExExecut1Time != null" >
+        c_ex_execut1_time,
+      </if>
+      <if test="cExExecut1Casenum != null" >
+        c_ex_execut1_casenum,
+      </if>
+      <if test="cExExecut1Money != null" >
+        c_ex_execut1_money,
+      </if>
+      <if test="cExExecut1Statute != null" >
+        c_ex_execut1_statute,
+      </if>
+      <if test="cExExecut1Basic != null" >
+        c_ex_execut1_basic,
+      </if>
+      <if test="cExExecut1Basiccourt != null" >
+        c_ex_execut1_basiccourt,
+      </if>
+      <if test="cExBad10Name != null" >
+        c_ex_bad10_name,
+      </if>
+      <if test="cExBad10Cid != null" >
+        c_ex_bad10_cid,
+      </if>
+      <if test="cExBad10Cidtype != null" >
+        c_ex_bad10_cidtype,
+      </if>
+      <if test="cExBad10Datatime != null" >
+        c_ex_bad10_datatime,
+      </if>
+      <if test="cExBad10Datatypeid != null" >
+        c_ex_bad10_datatypeid,
+      </if>
+      <if test="cExBad10Datatype != null" >
+        c_ex_bad10_datatype,
+      </if>
+      <if test="cExBad10Leader != null" >
+        c_ex_bad10_leader,
+      </if>
+      <if test="cExBad10Address != null" >
+        c_ex_bad10_address,
+      </if>
+      <if test="cExBad10Court != null" >
+        c_ex_bad10_court,
+      </if>
+      <if test="cExBad10Time != null" >
+        c_ex_bad10_time,
+      </if>
+      <if test="cExBad10Casenum != null" >
+        c_ex_bad10_casenum,
+      </if>
+      <if test="cExBad10Money != null" >
+        c_ex_bad10_money,
+      </if>
+      <if test="cExBad10Base != null" >
+        c_ex_bad10_base,
+      </if>
+      <if test="cExBad10Basecompany != null" >
+        c_ex_bad10_basecompany,
+      </if>
+      <if test="cExBad10Obligation != null" >
+        c_ex_bad10_obligation,
+      </if>
+      <if test="cExBad10Lasttime != null" >
+        c_ex_bad10_lasttime,
+      </if>
+      <if test="cExBad10Performance != null" >
+        c_ex_bad10_performance,
+      </if>
+      <if test="cExBad10Concretesituation != null" >
+        c_ex_bad10_concretesituation,
+      </if>
+      <if test="cExBad10Breaktime != null" >
+        c_ex_bad10_breaktime,
+      </if>
+      <if test="cExBad10Posttime != null" >
+        c_ex_bad10_posttime,
+      </if>
+      <if test="cExBad10Performedpart != null" >
+        c_ex_bad10_performedpart,
+      </if>
+      <if test="cExBad10Unperformpart != null" >
+        c_ex_bad10_unperformpart,
+      </if>
+      <if test="cExExecut10Name != null" >
+        c_ex_execut10_name,
+      </if>
+      <if test="cExExecut10Cid != null" >
+        c_ex_execut10_cid,
+      </if>
+      <if test="cExExecut10Cidtype != null" >
+        c_ex_execut10_cidtype,
+      </if>
+      <if test="cExExecut10Datatime != null" >
+        c_ex_execut10_datatime,
+      </if>
+      <if test="cExExecut10Datatypeid != null" >
+        c_ex_execut10_datatypeid,
+      </if>
+      <if test="cExExecut10Datatype != null" >
+        c_ex_execut10_datatype,
+      </if>
+      <if test="cExExecut10Court != null" >
+        c_ex_execut10_court,
+      </if>
+      <if test="cExExecut10Time != null" >
+        c_ex_execut10_time,
+      </if>
+      <if test="cExExecut10Casenum != null" >
+        c_ex_execut10_casenum,
+      </if>
+      <if test="cExExecut10Money != null" >
+        c_ex_execut10_money,
+      </if>
+      <if test="cExExecut10Statute != null" >
+        c_ex_execut10_statute,
+      </if>
+      <if test="cExExecut10Basic != null" >
+        c_ex_execut10_basic,
+      </if>
+      <if test="cExExecut10Basiccourt != null" >
+        c_ex_execut10_basiccourt,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="swiftNumber != null" >
+        #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagExecution != null" >
+        #{cFlagExecution,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Name != null" >
+        #{cExBad1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Cid != null" >
+        #{cExBad1Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Cidtype != null" >
+        #{cExBad1Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Datatime != null" >
+        #{cExBad1Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Datatypeid != null" >
+        #{cExBad1Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Datatype != null" >
+        #{cExBad1Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Leader != null" >
+        #{cExBad1Leader,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Address != null" >
+        #{cExBad1Address,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Court != null" >
+        #{cExBad1Court,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Time != null" >
+        #{cExBad1Time,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Casenum != null" >
+        #{cExBad1Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Money != null" >
+        #{cExBad1Money,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Base != null" >
+        #{cExBad1Base,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Basecompany != null" >
+        #{cExBad1Basecompany,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Obligation != null" >
+        #{cExBad1Obligation,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Lasttime != null" >
+        #{cExBad1Lasttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Performance != null" >
+        #{cExBad1Performance,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Concretesituation != null" >
+        #{cExBad1Concretesituation,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Breaktime != null" >
+        #{cExBad1Breaktime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Posttime != null" >
+        #{cExBad1Posttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Performedpart != null" >
+        #{cExBad1Performedpart,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Unperformpart != null" >
+        #{cExBad1Unperformpart,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Name != null" >
+        #{cExExecut1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Cid != null" >
+        #{cExExecut1Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Cidtype != null" >
+        #{cExExecut1Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Datatime != null" >
+        #{cExExecut1Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Datatypeid != null" >
+        #{cExExecut1Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Datatype != null" >
+        #{cExExecut1Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Court != null" >
+        #{cExExecut1Court,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Time != null" >
+        #{cExExecut1Time,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Casenum != null" >
+        #{cExExecut1Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Money != null" >
+        #{cExExecut1Money,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Statute != null" >
+        #{cExExecut1Statute,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Basic != null" >
+        #{cExExecut1Basic,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Basiccourt != null" >
+        #{cExExecut1Basiccourt,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Name != null" >
+        #{cExBad10Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Cid != null" >
+        #{cExBad10Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Cidtype != null" >
+        #{cExBad10Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Datatime != null" >
+        #{cExBad10Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Datatypeid != null" >
+        #{cExBad10Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Datatype != null" >
+        #{cExBad10Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Leader != null" >
+        #{cExBad10Leader,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Address != null" >
+        #{cExBad10Address,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Court != null" >
+        #{cExBad10Court,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Time != null" >
+        #{cExBad10Time,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Casenum != null" >
+        #{cExBad10Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Money != null" >
+        #{cExBad10Money,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Base != null" >
+        #{cExBad10Base,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Basecompany != null" >
+        #{cExBad10Basecompany,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Obligation != null" >
+        #{cExBad10Obligation,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Lasttime != null" >
+        #{cExBad10Lasttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Performance != null" >
+        #{cExBad10Performance,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Concretesituation != null" >
+        #{cExBad10Concretesituation,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Breaktime != null" >
+        #{cExBad10Breaktime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Posttime != null" >
+        #{cExBad10Posttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Performedpart != null" >
+        #{cExBad10Performedpart,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Unperformpart != null" >
+        #{cExBad10Unperformpart,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Name != null" >
+        #{cExExecut10Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Cid != null" >
+        #{cExExecut10Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Cidtype != null" >
+        #{cExExecut10Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Datatime != null" >
+        #{cExExecut10Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Datatypeid != null" >
+        #{cExExecut10Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Datatype != null" >
+        #{cExExecut10Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Court != null" >
+        #{cExExecut10Court,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Time != null" >
+        #{cExExecut10Time,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Casenum != null" >
+        #{cExExecut10Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Money != null" >
+        #{cExExecut10Money,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Statute != null" >
+        #{cExExecut10Statute,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Basic != null" >
+        #{cExExecut10Basic,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Basiccourt != null" >
+        #{cExExecut10Basiccourt,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrExecutInfoExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_br_execut_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_br_execut_info
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.swiftNumber != null" >
+        swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagExecution != null" >
+        c_flag_execution = #{record.cFlagExecution,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Name != null" >
+        c_ex_bad1_name = #{record.cExBad1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Cid != null" >
+        c_ex_bad1_cid = #{record.cExBad1Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Cidtype != null" >
+        c_ex_bad1_cidtype = #{record.cExBad1Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Datatime != null" >
+        c_ex_bad1_datatime = #{record.cExBad1Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Datatypeid != null" >
+        c_ex_bad1_datatypeid = #{record.cExBad1Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Datatype != null" >
+        c_ex_bad1_datatype = #{record.cExBad1Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Leader != null" >
+        c_ex_bad1_leader = #{record.cExBad1Leader,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Address != null" >
+        c_ex_bad1_address = #{record.cExBad1Address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Court != null" >
+        c_ex_bad1_court = #{record.cExBad1Court,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Time != null" >
+        c_ex_bad1_time = #{record.cExBad1Time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Casenum != null" >
+        c_ex_bad1_casenum = #{record.cExBad1Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Money != null" >
+        c_ex_bad1_money = #{record.cExBad1Money,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Base != null" >
+        c_ex_bad1_base = #{record.cExBad1Base,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Basecompany != null" >
+        c_ex_bad1_basecompany = #{record.cExBad1Basecompany,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Obligation != null" >
+        c_ex_bad1_obligation = #{record.cExBad1Obligation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Lasttime != null" >
+        c_ex_bad1_lasttime = #{record.cExBad1Lasttime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Performance != null" >
+        c_ex_bad1_performance = #{record.cExBad1Performance,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Concretesituation != null" >
+        c_ex_bad1_concretesituation = #{record.cExBad1Concretesituation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Breaktime != null" >
+        c_ex_bad1_breaktime = #{record.cExBad1Breaktime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Posttime != null" >
+        c_ex_bad1_posttime = #{record.cExBad1Posttime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Performedpart != null" >
+        c_ex_bad1_performedpart = #{record.cExBad1Performedpart,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad1Unperformpart != null" >
+        c_ex_bad1_unperformpart = #{record.cExBad1Unperformpart,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Name != null" >
+        c_ex_execut1_name = #{record.cExExecut1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Cid != null" >
+        c_ex_execut1_cid = #{record.cExExecut1Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Cidtype != null" >
+        c_ex_execut1_cidtype = #{record.cExExecut1Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Datatime != null" >
+        c_ex_execut1_datatime = #{record.cExExecut1Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Datatypeid != null" >
+        c_ex_execut1_datatypeid = #{record.cExExecut1Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Datatype != null" >
+        c_ex_execut1_datatype = #{record.cExExecut1Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Court != null" >
+        c_ex_execut1_court = #{record.cExExecut1Court,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Time != null" >
+        c_ex_execut1_time = #{record.cExExecut1Time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Casenum != null" >
+        c_ex_execut1_casenum = #{record.cExExecut1Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Money != null" >
+        c_ex_execut1_money = #{record.cExExecut1Money,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Statute != null" >
+        c_ex_execut1_statute = #{record.cExExecut1Statute,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Basic != null" >
+        c_ex_execut1_basic = #{record.cExExecut1Basic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut1Basiccourt != null" >
+        c_ex_execut1_basiccourt = #{record.cExExecut1Basiccourt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Name != null" >
+        c_ex_bad10_name = #{record.cExBad10Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Cid != null" >
+        c_ex_bad10_cid = #{record.cExBad10Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Cidtype != null" >
+        c_ex_bad10_cidtype = #{record.cExBad10Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Datatime != null" >
+        c_ex_bad10_datatime = #{record.cExBad10Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Datatypeid != null" >
+        c_ex_bad10_datatypeid = #{record.cExBad10Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Datatype != null" >
+        c_ex_bad10_datatype = #{record.cExBad10Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Leader != null" >
+        c_ex_bad10_leader = #{record.cExBad10Leader,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Address != null" >
+        c_ex_bad10_address = #{record.cExBad10Address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Court != null" >
+        c_ex_bad10_court = #{record.cExBad10Court,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Time != null" >
+        c_ex_bad10_time = #{record.cExBad10Time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Casenum != null" >
+        c_ex_bad10_casenum = #{record.cExBad10Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Money != null" >
+        c_ex_bad10_money = #{record.cExBad10Money,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Base != null" >
+        c_ex_bad10_base = #{record.cExBad10Base,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Basecompany != null" >
+        c_ex_bad10_basecompany = #{record.cExBad10Basecompany,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Obligation != null" >
+        c_ex_bad10_obligation = #{record.cExBad10Obligation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Lasttime != null" >
+        c_ex_bad10_lasttime = #{record.cExBad10Lasttime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Performance != null" >
+        c_ex_bad10_performance = #{record.cExBad10Performance,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Concretesituation != null" >
+        c_ex_bad10_concretesituation = #{record.cExBad10Concretesituation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Breaktime != null" >
+        c_ex_bad10_breaktime = #{record.cExBad10Breaktime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Posttime != null" >
+        c_ex_bad10_posttime = #{record.cExBad10Posttime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Performedpart != null" >
+        c_ex_bad10_performedpart = #{record.cExBad10Performedpart,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExBad10Unperformpart != null" >
+        c_ex_bad10_unperformpart = #{record.cExBad10Unperformpart,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Name != null" >
+        c_ex_execut10_name = #{record.cExExecut10Name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Cid != null" >
+        c_ex_execut10_cid = #{record.cExExecut10Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Cidtype != null" >
+        c_ex_execut10_cidtype = #{record.cExExecut10Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Datatime != null" >
+        c_ex_execut10_datatime = #{record.cExExecut10Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Datatypeid != null" >
+        c_ex_execut10_datatypeid = #{record.cExExecut10Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Datatype != null" >
+        c_ex_execut10_datatype = #{record.cExExecut10Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Court != null" >
+        c_ex_execut10_court = #{record.cExExecut10Court,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Time != null" >
+        c_ex_execut10_time = #{record.cExExecut10Time,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Casenum != null" >
+        c_ex_execut10_casenum = #{record.cExExecut10Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Money != null" >
+        c_ex_execut10_money = #{record.cExExecut10Money,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Statute != null" >
+        c_ex_execut10_statute = #{record.cExExecut10Statute,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Basic != null" >
+        c_ex_execut10_basic = #{record.cExExecut10Basic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cExExecut10Basiccourt != null" >
+        c_ex_execut10_basiccourt = #{record.cExExecut10Basiccourt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_br_execut_info
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      c_flag_execution = #{record.cFlagExecution,jdbcType=VARCHAR},
+      c_ex_bad1_name = #{record.cExBad1Name,jdbcType=VARCHAR},
+      c_ex_bad1_cid = #{record.cExBad1Cid,jdbcType=VARCHAR},
+      c_ex_bad1_cidtype = #{record.cExBad1Cidtype,jdbcType=VARCHAR},
+      c_ex_bad1_datatime = #{record.cExBad1Datatime,jdbcType=VARCHAR},
+      c_ex_bad1_datatypeid = #{record.cExBad1Datatypeid,jdbcType=VARCHAR},
+      c_ex_bad1_datatype = #{record.cExBad1Datatype,jdbcType=VARCHAR},
+      c_ex_bad1_leader = #{record.cExBad1Leader,jdbcType=VARCHAR},
+      c_ex_bad1_address = #{record.cExBad1Address,jdbcType=VARCHAR},
+      c_ex_bad1_court = #{record.cExBad1Court,jdbcType=VARCHAR},
+      c_ex_bad1_time = #{record.cExBad1Time,jdbcType=VARCHAR},
+      c_ex_bad1_casenum = #{record.cExBad1Casenum,jdbcType=VARCHAR},
+      c_ex_bad1_money = #{record.cExBad1Money,jdbcType=VARCHAR},
+      c_ex_bad1_base = #{record.cExBad1Base,jdbcType=VARCHAR},
+      c_ex_bad1_basecompany = #{record.cExBad1Basecompany,jdbcType=VARCHAR},
+      c_ex_bad1_obligation = #{record.cExBad1Obligation,jdbcType=VARCHAR},
+      c_ex_bad1_lasttime = #{record.cExBad1Lasttime,jdbcType=VARCHAR},
+      c_ex_bad1_performance = #{record.cExBad1Performance,jdbcType=VARCHAR},
+      c_ex_bad1_concretesituation = #{record.cExBad1Concretesituation,jdbcType=VARCHAR},
+      c_ex_bad1_breaktime = #{record.cExBad1Breaktime,jdbcType=VARCHAR},
+      c_ex_bad1_posttime = #{record.cExBad1Posttime,jdbcType=VARCHAR},
+      c_ex_bad1_performedpart = #{record.cExBad1Performedpart,jdbcType=VARCHAR},
+      c_ex_bad1_unperformpart = #{record.cExBad1Unperformpart,jdbcType=VARCHAR},
+      c_ex_execut1_name = #{record.cExExecut1Name,jdbcType=VARCHAR},
+      c_ex_execut1_cid = #{record.cExExecut1Cid,jdbcType=VARCHAR},
+      c_ex_execut1_cidtype = #{record.cExExecut1Cidtype,jdbcType=VARCHAR},
+      c_ex_execut1_datatime = #{record.cExExecut1Datatime,jdbcType=VARCHAR},
+      c_ex_execut1_datatypeid = #{record.cExExecut1Datatypeid,jdbcType=VARCHAR},
+      c_ex_execut1_datatype = #{record.cExExecut1Datatype,jdbcType=VARCHAR},
+      c_ex_execut1_court = #{record.cExExecut1Court,jdbcType=VARCHAR},
+      c_ex_execut1_time = #{record.cExExecut1Time,jdbcType=VARCHAR},
+      c_ex_execut1_casenum = #{record.cExExecut1Casenum,jdbcType=VARCHAR},
+      c_ex_execut1_money = #{record.cExExecut1Money,jdbcType=VARCHAR},
+      c_ex_execut1_statute = #{record.cExExecut1Statute,jdbcType=VARCHAR},
+      c_ex_execut1_basic = #{record.cExExecut1Basic,jdbcType=VARCHAR},
+      c_ex_execut1_basiccourt = #{record.cExExecut1Basiccourt,jdbcType=VARCHAR},
+      c_ex_bad10_name = #{record.cExBad10Name,jdbcType=VARCHAR},
+      c_ex_bad10_cid = #{record.cExBad10Cid,jdbcType=VARCHAR},
+      c_ex_bad10_cidtype = #{record.cExBad10Cidtype,jdbcType=VARCHAR},
+      c_ex_bad10_datatime = #{record.cExBad10Datatime,jdbcType=VARCHAR},
+      c_ex_bad10_datatypeid = #{record.cExBad10Datatypeid,jdbcType=VARCHAR},
+      c_ex_bad10_datatype = #{record.cExBad10Datatype,jdbcType=VARCHAR},
+      c_ex_bad10_leader = #{record.cExBad10Leader,jdbcType=VARCHAR},
+      c_ex_bad10_address = #{record.cExBad10Address,jdbcType=VARCHAR},
+      c_ex_bad10_court = #{record.cExBad10Court,jdbcType=VARCHAR},
+      c_ex_bad10_time = #{record.cExBad10Time,jdbcType=VARCHAR},
+      c_ex_bad10_casenum = #{record.cExBad10Casenum,jdbcType=VARCHAR},
+      c_ex_bad10_money = #{record.cExBad10Money,jdbcType=VARCHAR},
+      c_ex_bad10_base = #{record.cExBad10Base,jdbcType=VARCHAR},
+      c_ex_bad10_basecompany = #{record.cExBad10Basecompany,jdbcType=VARCHAR},
+      c_ex_bad10_obligation = #{record.cExBad10Obligation,jdbcType=VARCHAR},
+      c_ex_bad10_lasttime = #{record.cExBad10Lasttime,jdbcType=VARCHAR},
+      c_ex_bad10_performance = #{record.cExBad10Performance,jdbcType=VARCHAR},
+      c_ex_bad10_concretesituation = #{record.cExBad10Concretesituation,jdbcType=VARCHAR},
+      c_ex_bad10_breaktime = #{record.cExBad10Breaktime,jdbcType=VARCHAR},
+      c_ex_bad10_posttime = #{record.cExBad10Posttime,jdbcType=VARCHAR},
+      c_ex_bad10_performedpart = #{record.cExBad10Performedpart,jdbcType=VARCHAR},
+      c_ex_bad10_unperformpart = #{record.cExBad10Unperformpart,jdbcType=VARCHAR},
+      c_ex_execut10_name = #{record.cExExecut10Name,jdbcType=VARCHAR},
+      c_ex_execut10_cid = #{record.cExExecut10Cid,jdbcType=VARCHAR},
+      c_ex_execut10_cidtype = #{record.cExExecut10Cidtype,jdbcType=VARCHAR},
+      c_ex_execut10_datatime = #{record.cExExecut10Datatime,jdbcType=VARCHAR},
+      c_ex_execut10_datatypeid = #{record.cExExecut10Datatypeid,jdbcType=VARCHAR},
+      c_ex_execut10_datatype = #{record.cExExecut10Datatype,jdbcType=VARCHAR},
+      c_ex_execut10_court = #{record.cExExecut10Court,jdbcType=VARCHAR},
+      c_ex_execut10_time = #{record.cExExecut10Time,jdbcType=VARCHAR},
+      c_ex_execut10_casenum = #{record.cExExecut10Casenum,jdbcType=VARCHAR},
+      c_ex_execut10_money = #{record.cExExecut10Money,jdbcType=VARCHAR},
+      c_ex_execut10_statute = #{record.cExExecut10Statute,jdbcType=VARCHAR},
+      c_ex_execut10_basic = #{record.cExExecut10Basic,jdbcType=VARCHAR},
+      c_ex_execut10_basiccourt = #{record.cExExecut10Basiccourt,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrExecutInfo" >
+    update t_third_br_execut_info
+    <set >
+      <if test="swiftNumber != null" >
+        swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagExecution != null" >
+        c_flag_execution = #{cFlagExecution,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Name != null" >
+        c_ex_bad1_name = #{cExBad1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Cid != null" >
+        c_ex_bad1_cid = #{cExBad1Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Cidtype != null" >
+        c_ex_bad1_cidtype = #{cExBad1Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Datatime != null" >
+        c_ex_bad1_datatime = #{cExBad1Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Datatypeid != null" >
+        c_ex_bad1_datatypeid = #{cExBad1Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Datatype != null" >
+        c_ex_bad1_datatype = #{cExBad1Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Leader != null" >
+        c_ex_bad1_leader = #{cExBad1Leader,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Address != null" >
+        c_ex_bad1_address = #{cExBad1Address,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Court != null" >
+        c_ex_bad1_court = #{cExBad1Court,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Time != null" >
+        c_ex_bad1_time = #{cExBad1Time,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Casenum != null" >
+        c_ex_bad1_casenum = #{cExBad1Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Money != null" >
+        c_ex_bad1_money = #{cExBad1Money,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Base != null" >
+        c_ex_bad1_base = #{cExBad1Base,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Basecompany != null" >
+        c_ex_bad1_basecompany = #{cExBad1Basecompany,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Obligation != null" >
+        c_ex_bad1_obligation = #{cExBad1Obligation,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Lasttime != null" >
+        c_ex_bad1_lasttime = #{cExBad1Lasttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Performance != null" >
+        c_ex_bad1_performance = #{cExBad1Performance,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Concretesituation != null" >
+        c_ex_bad1_concretesituation = #{cExBad1Concretesituation,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Breaktime != null" >
+        c_ex_bad1_breaktime = #{cExBad1Breaktime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Posttime != null" >
+        c_ex_bad1_posttime = #{cExBad1Posttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Performedpart != null" >
+        c_ex_bad1_performedpart = #{cExBad1Performedpart,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad1Unperformpart != null" >
+        c_ex_bad1_unperformpart = #{cExBad1Unperformpart,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Name != null" >
+        c_ex_execut1_name = #{cExExecut1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Cid != null" >
+        c_ex_execut1_cid = #{cExExecut1Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Cidtype != null" >
+        c_ex_execut1_cidtype = #{cExExecut1Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Datatime != null" >
+        c_ex_execut1_datatime = #{cExExecut1Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Datatypeid != null" >
+        c_ex_execut1_datatypeid = #{cExExecut1Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Datatype != null" >
+        c_ex_execut1_datatype = #{cExExecut1Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Court != null" >
+        c_ex_execut1_court = #{cExExecut1Court,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Time != null" >
+        c_ex_execut1_time = #{cExExecut1Time,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Casenum != null" >
+        c_ex_execut1_casenum = #{cExExecut1Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Money != null" >
+        c_ex_execut1_money = #{cExExecut1Money,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Statute != null" >
+        c_ex_execut1_statute = #{cExExecut1Statute,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Basic != null" >
+        c_ex_execut1_basic = #{cExExecut1Basic,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut1Basiccourt != null" >
+        c_ex_execut1_basiccourt = #{cExExecut1Basiccourt,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Name != null" >
+        c_ex_bad10_name = #{cExBad10Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Cid != null" >
+        c_ex_bad10_cid = #{cExBad10Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Cidtype != null" >
+        c_ex_bad10_cidtype = #{cExBad10Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Datatime != null" >
+        c_ex_bad10_datatime = #{cExBad10Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Datatypeid != null" >
+        c_ex_bad10_datatypeid = #{cExBad10Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Datatype != null" >
+        c_ex_bad10_datatype = #{cExBad10Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Leader != null" >
+        c_ex_bad10_leader = #{cExBad10Leader,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Address != null" >
+        c_ex_bad10_address = #{cExBad10Address,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Court != null" >
+        c_ex_bad10_court = #{cExBad10Court,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Time != null" >
+        c_ex_bad10_time = #{cExBad10Time,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Casenum != null" >
+        c_ex_bad10_casenum = #{cExBad10Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Money != null" >
+        c_ex_bad10_money = #{cExBad10Money,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Base != null" >
+        c_ex_bad10_base = #{cExBad10Base,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Basecompany != null" >
+        c_ex_bad10_basecompany = #{cExBad10Basecompany,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Obligation != null" >
+        c_ex_bad10_obligation = #{cExBad10Obligation,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Lasttime != null" >
+        c_ex_bad10_lasttime = #{cExBad10Lasttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Performance != null" >
+        c_ex_bad10_performance = #{cExBad10Performance,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Concretesituation != null" >
+        c_ex_bad10_concretesituation = #{cExBad10Concretesituation,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Breaktime != null" >
+        c_ex_bad10_breaktime = #{cExBad10Breaktime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Posttime != null" >
+        c_ex_bad10_posttime = #{cExBad10Posttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Performedpart != null" >
+        c_ex_bad10_performedpart = #{cExBad10Performedpart,jdbcType=VARCHAR},
+      </if>
+      <if test="cExBad10Unperformpart != null" >
+        c_ex_bad10_unperformpart = #{cExBad10Unperformpart,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Name != null" >
+        c_ex_execut10_name = #{cExExecut10Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Cid != null" >
+        c_ex_execut10_cid = #{cExExecut10Cid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Cidtype != null" >
+        c_ex_execut10_cidtype = #{cExExecut10Cidtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Datatime != null" >
+        c_ex_execut10_datatime = #{cExExecut10Datatime,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Datatypeid != null" >
+        c_ex_execut10_datatypeid = #{cExExecut10Datatypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Datatype != null" >
+        c_ex_execut10_datatype = #{cExExecut10Datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Court != null" >
+        c_ex_execut10_court = #{cExExecut10Court,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Time != null" >
+        c_ex_execut10_time = #{cExExecut10Time,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Casenum != null" >
+        c_ex_execut10_casenum = #{cExExecut10Casenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Money != null" >
+        c_ex_execut10_money = #{cExExecut10Money,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Statute != null" >
+        c_ex_execut10_statute = #{cExExecut10Statute,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Basic != null" >
+        c_ex_execut10_basic = #{cExExecut10Basic,jdbcType=VARCHAR},
+      </if>
+      <if test="cExExecut10Basiccourt != null" >
+        c_ex_execut10_basiccourt = #{cExExecut10Basiccourt,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdBrExecutInfo" >
+    update t_third_br_execut_info
+    set swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      c_flag_execution = #{cFlagExecution,jdbcType=VARCHAR},
+      c_ex_bad1_name = #{cExBad1Name,jdbcType=VARCHAR},
+      c_ex_bad1_cid = #{cExBad1Cid,jdbcType=VARCHAR},
+      c_ex_bad1_cidtype = #{cExBad1Cidtype,jdbcType=VARCHAR},
+      c_ex_bad1_datatime = #{cExBad1Datatime,jdbcType=VARCHAR},
+      c_ex_bad1_datatypeid = #{cExBad1Datatypeid,jdbcType=VARCHAR},
+      c_ex_bad1_datatype = #{cExBad1Datatype,jdbcType=VARCHAR},
+      c_ex_bad1_leader = #{cExBad1Leader,jdbcType=VARCHAR},
+      c_ex_bad1_address = #{cExBad1Address,jdbcType=VARCHAR},
+      c_ex_bad1_court = #{cExBad1Court,jdbcType=VARCHAR},
+      c_ex_bad1_time = #{cExBad1Time,jdbcType=VARCHAR},
+      c_ex_bad1_casenum = #{cExBad1Casenum,jdbcType=VARCHAR},
+      c_ex_bad1_money = #{cExBad1Money,jdbcType=VARCHAR},
+      c_ex_bad1_base = #{cExBad1Base,jdbcType=VARCHAR},
+      c_ex_bad1_basecompany = #{cExBad1Basecompany,jdbcType=VARCHAR},
+      c_ex_bad1_obligation = #{cExBad1Obligation,jdbcType=VARCHAR},
+      c_ex_bad1_lasttime = #{cExBad1Lasttime,jdbcType=VARCHAR},
+      c_ex_bad1_performance = #{cExBad1Performance,jdbcType=VARCHAR},
+      c_ex_bad1_concretesituation = #{cExBad1Concretesituation,jdbcType=VARCHAR},
+      c_ex_bad1_breaktime = #{cExBad1Breaktime,jdbcType=VARCHAR},
+      c_ex_bad1_posttime = #{cExBad1Posttime,jdbcType=VARCHAR},
+      c_ex_bad1_performedpart = #{cExBad1Performedpart,jdbcType=VARCHAR},
+      c_ex_bad1_unperformpart = #{cExBad1Unperformpart,jdbcType=VARCHAR},
+      c_ex_execut1_name = #{cExExecut1Name,jdbcType=VARCHAR},
+      c_ex_execut1_cid = #{cExExecut1Cid,jdbcType=VARCHAR},
+      c_ex_execut1_cidtype = #{cExExecut1Cidtype,jdbcType=VARCHAR},
+      c_ex_execut1_datatime = #{cExExecut1Datatime,jdbcType=VARCHAR},
+      c_ex_execut1_datatypeid = #{cExExecut1Datatypeid,jdbcType=VARCHAR},
+      c_ex_execut1_datatype = #{cExExecut1Datatype,jdbcType=VARCHAR},
+      c_ex_execut1_court = #{cExExecut1Court,jdbcType=VARCHAR},
+      c_ex_execut1_time = #{cExExecut1Time,jdbcType=VARCHAR},
+      c_ex_execut1_casenum = #{cExExecut1Casenum,jdbcType=VARCHAR},
+      c_ex_execut1_money = #{cExExecut1Money,jdbcType=VARCHAR},
+      c_ex_execut1_statute = #{cExExecut1Statute,jdbcType=VARCHAR},
+      c_ex_execut1_basic = #{cExExecut1Basic,jdbcType=VARCHAR},
+      c_ex_execut1_basiccourt = #{cExExecut1Basiccourt,jdbcType=VARCHAR},
+      c_ex_bad10_name = #{cExBad10Name,jdbcType=VARCHAR},
+      c_ex_bad10_cid = #{cExBad10Cid,jdbcType=VARCHAR},
+      c_ex_bad10_cidtype = #{cExBad10Cidtype,jdbcType=VARCHAR},
+      c_ex_bad10_datatime = #{cExBad10Datatime,jdbcType=VARCHAR},
+      c_ex_bad10_datatypeid = #{cExBad10Datatypeid,jdbcType=VARCHAR},
+      c_ex_bad10_datatype = #{cExBad10Datatype,jdbcType=VARCHAR},
+      c_ex_bad10_leader = #{cExBad10Leader,jdbcType=VARCHAR},
+      c_ex_bad10_address = #{cExBad10Address,jdbcType=VARCHAR},
+      c_ex_bad10_court = #{cExBad10Court,jdbcType=VARCHAR},
+      c_ex_bad10_time = #{cExBad10Time,jdbcType=VARCHAR},
+      c_ex_bad10_casenum = #{cExBad10Casenum,jdbcType=VARCHAR},
+      c_ex_bad10_money = #{cExBad10Money,jdbcType=VARCHAR},
+      c_ex_bad10_base = #{cExBad10Base,jdbcType=VARCHAR},
+      c_ex_bad10_basecompany = #{cExBad10Basecompany,jdbcType=VARCHAR},
+      c_ex_bad10_obligation = #{cExBad10Obligation,jdbcType=VARCHAR},
+      c_ex_bad10_lasttime = #{cExBad10Lasttime,jdbcType=VARCHAR},
+      c_ex_bad10_performance = #{cExBad10Performance,jdbcType=VARCHAR},
+      c_ex_bad10_concretesituation = #{cExBad10Concretesituation,jdbcType=VARCHAR},
+      c_ex_bad10_breaktime = #{cExBad10Breaktime,jdbcType=VARCHAR},
+      c_ex_bad10_posttime = #{cExBad10Posttime,jdbcType=VARCHAR},
+      c_ex_bad10_performedpart = #{cExBad10Performedpart,jdbcType=VARCHAR},
+      c_ex_bad10_unperformpart = #{cExBad10Unperformpart,jdbcType=VARCHAR},
+      c_ex_execut10_name = #{cExExecut10Name,jdbcType=VARCHAR},
+      c_ex_execut10_cid = #{cExExecut10Cid,jdbcType=VARCHAR},
+      c_ex_execut10_cidtype = #{cExExecut10Cidtype,jdbcType=VARCHAR},
+      c_ex_execut10_datatime = #{cExExecut10Datatime,jdbcType=VARCHAR},
+      c_ex_execut10_datatypeid = #{cExExecut10Datatypeid,jdbcType=VARCHAR},
+      c_ex_execut10_datatype = #{cExExecut10Datatype,jdbcType=VARCHAR},
+      c_ex_execut10_court = #{cExExecut10Court,jdbcType=VARCHAR},
+      c_ex_execut10_time = #{cExExecut10Time,jdbcType=VARCHAR},
+      c_ex_execut10_casenum = #{cExExecut10Casenum,jdbcType=VARCHAR},
+      c_ex_execut10_money = #{cExExecut10Money,jdbcType=VARCHAR},
+      c_ex_execut10_statute = #{cExExecut10Statute,jdbcType=VARCHAR},
+      c_ex_execut10_basic = #{cExExecut10Basic,jdbcType=VARCHAR},
+      c_ex_execut10_basiccourt = #{cExExecut10Basiccourt,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

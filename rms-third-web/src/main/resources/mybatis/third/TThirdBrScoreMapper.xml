@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdBrScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdBrScore" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="swift_number" property="swiftNumber" jdbcType="VARCHAR" />
+    <result column="c_flag_score" property="cFlagScore" jdbcType="VARCHAR" />
+    <result column="c_scoreafpdl" property="cScoreafpdl" jdbcType="VARCHAR" />
+    <result column="c_scoreafcashon" property="cScoreafcashon" jdbcType="VARCHAR" />
+    <result column="c_scoreafautofin" property="cScoreafautofin" jdbcType="VARCHAR" />
+    <result column="c_scoreafcashoff" property="cScoreafcashoff" jdbcType="VARCHAR" />
+    <result column="c_scoreafconsoff" property="cScoreafconsoff" jdbcType="VARCHAR" />
+    <result column="c_scoreafrevoloan" property="cScoreafrevoloan" jdbcType="VARCHAR" />
+    <result column="c_Score_scoreafcust" property="cScoreScoreafcust" jdbcType="VARCHAR" />
+    <result column="c_scorebankv2" property="cScorebankv2" jdbcType="VARCHAR" />
+    <result column="c_scoreconsoffv2" property="cScoreconsoffv2" jdbcType="VARCHAR" />
+    <result column="c_scorepettycashv1" property="cScorepettycashv1" jdbcType="VARCHAR" />
+    <result column="c_scorelargecashv1" property="cScorelargecashv1" jdbcType="VARCHAR" />
+    <result column="c_scorelargecashv2" property="cScorelargecashv2" jdbcType="VARCHAR" />
+    <result column="c_scorecust" property="cScorecust" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, swift_number, c_flag_score, c_scoreafpdl, c_scoreafcashon, c_scoreafautofin, 
+    c_scoreafcashoff, c_scoreafconsoff, c_scoreafrevoloan, c_Score_scoreafcust, c_scorebankv2, 
+    c_scoreconsoffv2, c_scorepettycashv1, c_scorelargecashv1, c_scorelargecashv2, c_scorecust, 
+    c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrScoreExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_br_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_br_score
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_br_score
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrScoreExample" >
+    delete from t_third_br_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdBrScore" >
+    insert into t_third_br_score (c_id, swift_number, c_flag_score, 
+      c_scoreafpdl, c_scoreafcashon, c_scoreafautofin, 
+      c_scoreafcashoff, c_scoreafconsoff, c_scoreafrevoloan, 
+      c_Score_scoreafcust, c_scorebankv2, c_scoreconsoffv2, 
+      c_scorepettycashv1, c_scorelargecashv1, c_scorelargecashv2, 
+      c_scorecust, c_creatTime)
+    values (#{cId,jdbcType=VARCHAR}, #{swiftNumber,jdbcType=VARCHAR}, #{cFlagScore,jdbcType=VARCHAR}, 
+      #{cScoreafpdl,jdbcType=VARCHAR}, #{cScoreafcashon,jdbcType=VARCHAR}, #{cScoreafautofin,jdbcType=VARCHAR}, 
+      #{cScoreafcashoff,jdbcType=VARCHAR}, #{cScoreafconsoff,jdbcType=VARCHAR}, #{cScoreafrevoloan,jdbcType=VARCHAR}, 
+      #{cScoreScoreafcust,jdbcType=VARCHAR}, #{cScorebankv2,jdbcType=VARCHAR}, #{cScoreconsoffv2,jdbcType=VARCHAR}, 
+      #{cScorepettycashv1,jdbcType=VARCHAR}, #{cScorelargecashv1,jdbcType=VARCHAR}, #{cScorelargecashv2,jdbcType=VARCHAR}, 
+      #{cScorecust,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrScore" >
+    insert into t_third_br_score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="swiftNumber != null" >
+        swift_number,
+      </if>
+      <if test="cFlagScore != null" >
+        c_flag_score,
+      </if>
+      <if test="cScoreafpdl != null" >
+        c_scoreafpdl,
+      </if>
+      <if test="cScoreafcashon != null" >
+        c_scoreafcashon,
+      </if>
+      <if test="cScoreafautofin != null" >
+        c_scoreafautofin,
+      </if>
+      <if test="cScoreafcashoff != null" >
+        c_scoreafcashoff,
+      </if>
+      <if test="cScoreafconsoff != null" >
+        c_scoreafconsoff,
+      </if>
+      <if test="cScoreafrevoloan != null" >
+        c_scoreafrevoloan,
+      </if>
+      <if test="cScoreScoreafcust != null" >
+        c_Score_scoreafcust,
+      </if>
+      <if test="cScorebankv2 != null" >
+        c_scorebankv2,
+      </if>
+      <if test="cScoreconsoffv2 != null" >
+        c_scoreconsoffv2,
+      </if>
+      <if test="cScorepettycashv1 != null" >
+        c_scorepettycashv1,
+      </if>
+      <if test="cScorelargecashv1 != null" >
+        c_scorelargecashv1,
+      </if>
+      <if test="cScorelargecashv2 != null" >
+        c_scorelargecashv2,
+      </if>
+      <if test="cScorecust != null" >
+        c_scorecust,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="swiftNumber != null" >
+        #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagScore != null" >
+        #{cFlagScore,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafpdl != null" >
+        #{cScoreafpdl,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafcashon != null" >
+        #{cScoreafcashon,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafautofin != null" >
+        #{cScoreafautofin,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafcashoff != null" >
+        #{cScoreafcashoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafconsoff != null" >
+        #{cScoreafconsoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafrevoloan != null" >
+        #{cScoreafrevoloan,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreScoreafcust != null" >
+        #{cScoreScoreafcust,jdbcType=VARCHAR},
+      </if>
+      <if test="cScorebankv2 != null" >
+        #{cScorebankv2,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreconsoffv2 != null" >
+        #{cScoreconsoffv2,jdbcType=VARCHAR},
+      </if>
+      <if test="cScorepettycashv1 != null" >
+        #{cScorepettycashv1,jdbcType=VARCHAR},
+      </if>
+      <if test="cScorelargecashv1 != null" >
+        #{cScorelargecashv1,jdbcType=VARCHAR},
+      </if>
+      <if test="cScorelargecashv2 != null" >
+        #{cScorelargecashv2,jdbcType=VARCHAR},
+      </if>
+      <if test="cScorecust != null" >
+        #{cScorecust,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrScoreExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_br_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_br_score
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.swiftNumber != null" >
+        swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagScore != null" >
+        c_flag_score = #{record.cFlagScore,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScoreafpdl != null" >
+        c_scoreafpdl = #{record.cScoreafpdl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScoreafcashon != null" >
+        c_scoreafcashon = #{record.cScoreafcashon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScoreafautofin != null" >
+        c_scoreafautofin = #{record.cScoreafautofin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScoreafcashoff != null" >
+        c_scoreafcashoff = #{record.cScoreafcashoff,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScoreafconsoff != null" >
+        c_scoreafconsoff = #{record.cScoreafconsoff,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScoreafrevoloan != null" >
+        c_scoreafrevoloan = #{record.cScoreafrevoloan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScoreScoreafcust != null" >
+        c_Score_scoreafcust = #{record.cScoreScoreafcust,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScorebankv2 != null" >
+        c_scorebankv2 = #{record.cScorebankv2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScoreconsoffv2 != null" >
+        c_scoreconsoffv2 = #{record.cScoreconsoffv2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScorepettycashv1 != null" >
+        c_scorepettycashv1 = #{record.cScorepettycashv1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScorelargecashv1 != null" >
+        c_scorelargecashv1 = #{record.cScorelargecashv1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScorelargecashv2 != null" >
+        c_scorelargecashv2 = #{record.cScorelargecashv2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScorecust != null" >
+        c_scorecust = #{record.cScorecust,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_br_score
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      c_flag_score = #{record.cFlagScore,jdbcType=VARCHAR},
+      c_scoreafpdl = #{record.cScoreafpdl,jdbcType=VARCHAR},
+      c_scoreafcashon = #{record.cScoreafcashon,jdbcType=VARCHAR},
+      c_scoreafautofin = #{record.cScoreafautofin,jdbcType=VARCHAR},
+      c_scoreafcashoff = #{record.cScoreafcashoff,jdbcType=VARCHAR},
+      c_scoreafconsoff = #{record.cScoreafconsoff,jdbcType=VARCHAR},
+      c_scoreafrevoloan = #{record.cScoreafrevoloan,jdbcType=VARCHAR},
+      c_Score_scoreafcust = #{record.cScoreScoreafcust,jdbcType=VARCHAR},
+      c_scorebankv2 = #{record.cScorebankv2,jdbcType=VARCHAR},
+      c_scoreconsoffv2 = #{record.cScoreconsoffv2,jdbcType=VARCHAR},
+      c_scorepettycashv1 = #{record.cScorepettycashv1,jdbcType=VARCHAR},
+      c_scorelargecashv1 = #{record.cScorelargecashv1,jdbcType=VARCHAR},
+      c_scorelargecashv2 = #{record.cScorelargecashv2,jdbcType=VARCHAR},
+      c_scorecust = #{record.cScorecust,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrScore" >
+    update t_third_br_score
+    <set >
+      <if test="swiftNumber != null" >
+        swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagScore != null" >
+        c_flag_score = #{cFlagScore,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafpdl != null" >
+        c_scoreafpdl = #{cScoreafpdl,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafcashon != null" >
+        c_scoreafcashon = #{cScoreafcashon,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafautofin != null" >
+        c_scoreafautofin = #{cScoreafautofin,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafcashoff != null" >
+        c_scoreafcashoff = #{cScoreafcashoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafconsoff != null" >
+        c_scoreafconsoff = #{cScoreafconsoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreafrevoloan != null" >
+        c_scoreafrevoloan = #{cScoreafrevoloan,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreScoreafcust != null" >
+        c_Score_scoreafcust = #{cScoreScoreafcust,jdbcType=VARCHAR},
+      </if>
+      <if test="cScorebankv2 != null" >
+        c_scorebankv2 = #{cScorebankv2,jdbcType=VARCHAR},
+      </if>
+      <if test="cScoreconsoffv2 != null" >
+        c_scoreconsoffv2 = #{cScoreconsoffv2,jdbcType=VARCHAR},
+      </if>
+      <if test="cScorepettycashv1 != null" >
+        c_scorepettycashv1 = #{cScorepettycashv1,jdbcType=VARCHAR},
+      </if>
+      <if test="cScorelargecashv1 != null" >
+        c_scorelargecashv1 = #{cScorelargecashv1,jdbcType=VARCHAR},
+      </if>
+      <if test="cScorelargecashv2 != null" >
+        c_scorelargecashv2 = #{cScorelargecashv2,jdbcType=VARCHAR},
+      </if>
+      <if test="cScorecust != null" >
+        c_scorecust = #{cScorecust,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdBrScore" >
+    update t_third_br_score
+    set swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      c_flag_score = #{cFlagScore,jdbcType=VARCHAR},
+      c_scoreafpdl = #{cScoreafpdl,jdbcType=VARCHAR},
+      c_scoreafcashon = #{cScoreafcashon,jdbcType=VARCHAR},
+      c_scoreafautofin = #{cScoreafautofin,jdbcType=VARCHAR},
+      c_scoreafcashoff = #{cScoreafcashoff,jdbcType=VARCHAR},
+      c_scoreafconsoff = #{cScoreafconsoff,jdbcType=VARCHAR},
+      c_scoreafrevoloan = #{cScoreafrevoloan,jdbcType=VARCHAR},
+      c_Score_scoreafcust = #{cScoreScoreafcust,jdbcType=VARCHAR},
+      c_scorebankv2 = #{cScorebankv2,jdbcType=VARCHAR},
+      c_scoreconsoffv2 = #{cScoreconsoffv2,jdbcType=VARCHAR},
+      c_scorepettycashv1 = #{cScorepettycashv1,jdbcType=VARCHAR},
+      c_scorelargecashv1 = #{cScorelargecashv1,jdbcType=VARCHAR},
+      c_scorelargecashv2 = #{cScorelargecashv2,jdbcType=VARCHAR},
+      c_scorecust = #{cScorecust,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

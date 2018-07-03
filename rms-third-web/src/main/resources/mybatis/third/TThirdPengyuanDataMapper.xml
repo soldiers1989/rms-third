@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdPengyuanDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdPengyuanData" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_order_no" property="cOrderNo" jdbcType="VARCHAR" />
+    <result column="c_trace_id" property="cTraceId" jdbcType="VARCHAR" />
+    <result column="c_name" property="cName" jdbcType="VARCHAR" />
+    <result column="c_id_card" property="cIdCard" jdbcType="VARCHAR" />
+    <result column="c_license_no" property="cLicenseNo" jdbcType="VARCHAR" />
+    <result column="c_car_type" property="cCarType" jdbcType="CHAR" />
+    <result column="c_query_reason_id" property="cQueryReasonId" jdbcType="VARCHAR" />
+    <result column="c_subreport_ids" property="cSubreportIds" jdbcType="VARCHAR" />
+    <result column="c_ref_id" property="cRefId" jdbcType="VARCHAR" />
+    <result column="c_bat_no" property="cBatNo" jdbcType="VARCHAR" />
+    <result column="c_treat_esult" property="cTreatEsult" jdbcType="VARCHAR" />
+    <result column="c_error_message" property="cErrorMessage" jdbcType="VARCHAR" />
+    <result column="c_treat_errorCode" property="cTreatErrorcode" jdbcType="VARCHAR" />
+    <result column="c_name_check_result" property="cNameCheckResult" jdbcType="VARCHAR" />
+    <result column="c_document_no_check_result" property="cDocumentNoCheckResult" jdbcType="VARCHAR" />
+    <result column="c_license_no_check_result" property="cLicenseNoCheckResult" jdbcType="VARCHAR" />
+    <result column="c_car_type_check_result" property="cCarTypeCheckResult" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_order_no, c_trace_id, c_name, c_id_card, c_license_no, c_car_type, c_query_reason_id, 
+    c_subreport_ids, c_ref_id, c_bat_no, c_treat_esult, c_error_message, c_treat_errorCode, 
+    c_name_check_result, c_document_no_check_result, c_license_no_check_result, c_car_type_check_result, 
+    c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdPengyuanDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_pengyuan_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_pengyuan_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_pengyuan_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdPengyuanDataExample" >
+    delete from t_third_pengyuan_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdPengyuanData" >
+    insert into t_third_pengyuan_data (c_id, c_order_no, c_trace_id, 
+      c_name, c_id_card, c_license_no, 
+      c_car_type, c_query_reason_id, c_subreport_ids, 
+      c_ref_id, c_bat_no, c_treat_esult, 
+      c_error_message, c_treat_errorCode, c_name_check_result, 
+      c_document_no_check_result, c_license_no_check_result, 
+      c_car_type_check_result, c_creatTime)
+    values (#{cId,jdbcType=VARCHAR}, #{cOrderNo,jdbcType=VARCHAR}, #{cTraceId,jdbcType=VARCHAR}, 
+      #{cName,jdbcType=VARCHAR}, #{cIdCard,jdbcType=VARCHAR}, #{cLicenseNo,jdbcType=VARCHAR}, 
+      #{cCarType,jdbcType=CHAR}, #{cQueryReasonId,jdbcType=VARCHAR}, #{cSubreportIds,jdbcType=VARCHAR}, 
+      #{cRefId,jdbcType=VARCHAR}, #{cBatNo,jdbcType=VARCHAR}, #{cTreatEsult,jdbcType=VARCHAR}, 
+      #{cErrorMessage,jdbcType=VARCHAR}, #{cTreatErrorcode,jdbcType=VARCHAR}, #{cNameCheckResult,jdbcType=VARCHAR}, 
+      #{cDocumentNoCheckResult,jdbcType=VARCHAR}, #{cLicenseNoCheckResult,jdbcType=VARCHAR}, 
+      #{cCarTypeCheckResult,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdPengyuanData" >
+    insert into t_third_pengyuan_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cOrderNo != null" >
+        c_order_no,
+      </if>
+      <if test="cTraceId != null" >
+        c_trace_id,
+      </if>
+      <if test="cName != null" >
+        c_name,
+      </if>
+      <if test="cIdCard != null" >
+        c_id_card,
+      </if>
+      <if test="cLicenseNo != null" >
+        c_license_no,
+      </if>
+      <if test="cCarType != null" >
+        c_car_type,
+      </if>
+      <if test="cQueryReasonId != null" >
+        c_query_reason_id,
+      </if>
+      <if test="cSubreportIds != null" >
+        c_subreport_ids,
+      </if>
+      <if test="cRefId != null" >
+        c_ref_id,
+      </if>
+      <if test="cBatNo != null" >
+        c_bat_no,
+      </if>
+      <if test="cTreatEsult != null" >
+        c_treat_esult,
+      </if>
+      <if test="cErrorMessage != null" >
+        c_error_message,
+      </if>
+      <if test="cTreatErrorcode != null" >
+        c_treat_errorCode,
+      </if>
+      <if test="cNameCheckResult != null" >
+        c_name_check_result,
+      </if>
+      <if test="cDocumentNoCheckResult != null" >
+        c_document_no_check_result,
+      </if>
+      <if test="cLicenseNoCheckResult != null" >
+        c_license_no_check_result,
+      </if>
+      <if test="cCarTypeCheckResult != null" >
+        c_car_type_check_result,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cOrderNo != null" >
+        #{cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cTraceId != null" >
+        #{cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null" >
+        #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdCard != null" >
+        #{cIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="cLicenseNo != null" >
+        #{cLicenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cCarType != null" >
+        #{cCarType,jdbcType=CHAR},
+      </if>
+      <if test="cQueryReasonId != null" >
+        #{cQueryReasonId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSubreportIds != null" >
+        #{cSubreportIds,jdbcType=VARCHAR},
+      </if>
+      <if test="cRefId != null" >
+        #{cRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="cBatNo != null" >
+        #{cBatNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cTreatEsult != null" >
+        #{cTreatEsult,jdbcType=VARCHAR},
+      </if>
+      <if test="cErrorMessage != null" >
+        #{cErrorMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="cTreatErrorcode != null" >
+        #{cTreatErrorcode,jdbcType=VARCHAR},
+      </if>
+      <if test="cNameCheckResult != null" >
+        #{cNameCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="cDocumentNoCheckResult != null" >
+        #{cDocumentNoCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="cLicenseNoCheckResult != null" >
+        #{cLicenseNoCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="cCarTypeCheckResult != null" >
+        #{cCarTypeCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdPengyuanDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_pengyuan_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_pengyuan_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cOrderNo != null" >
+        c_order_no = #{record.cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTraceId != null" >
+        c_trace_id = #{record.cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cName != null" >
+        c_name = #{record.cName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIdCard != null" >
+        c_id_card = #{record.cIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLicenseNo != null" >
+        c_license_no = #{record.cLicenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCarType != null" >
+        c_car_type = #{record.cCarType,jdbcType=CHAR},
+      </if>
+      <if test="record.cQueryReasonId != null" >
+        c_query_reason_id = #{record.cQueryReasonId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSubreportIds != null" >
+        c_subreport_ids = #{record.cSubreportIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRefId != null" >
+        c_ref_id = #{record.cRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBatNo != null" >
+        c_bat_no = #{record.cBatNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTreatEsult != null" >
+        c_treat_esult = #{record.cTreatEsult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cErrorMessage != null" >
+        c_error_message = #{record.cErrorMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTreatErrorcode != null" >
+        c_treat_errorCode = #{record.cTreatErrorcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cNameCheckResult != null" >
+        c_name_check_result = #{record.cNameCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cDocumentNoCheckResult != null" >
+        c_document_no_check_result = #{record.cDocumentNoCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLicenseNoCheckResult != null" >
+        c_license_no_check_result = #{record.cLicenseNoCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCarTypeCheckResult != null" >
+        c_car_type_check_result = #{record.cCarTypeCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_pengyuan_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_order_no = #{record.cOrderNo,jdbcType=VARCHAR},
+      c_trace_id = #{record.cTraceId,jdbcType=VARCHAR},
+      c_name = #{record.cName,jdbcType=VARCHAR},
+      c_id_card = #{record.cIdCard,jdbcType=VARCHAR},
+      c_license_no = #{record.cLicenseNo,jdbcType=VARCHAR},
+      c_car_type = #{record.cCarType,jdbcType=CHAR},
+      c_query_reason_id = #{record.cQueryReasonId,jdbcType=VARCHAR},
+      c_subreport_ids = #{record.cSubreportIds,jdbcType=VARCHAR},
+      c_ref_id = #{record.cRefId,jdbcType=VARCHAR},
+      c_bat_no = #{record.cBatNo,jdbcType=VARCHAR},
+      c_treat_esult = #{record.cTreatEsult,jdbcType=VARCHAR},
+      c_error_message = #{record.cErrorMessage,jdbcType=VARCHAR},
+      c_treat_errorCode = #{record.cTreatErrorcode,jdbcType=VARCHAR},
+      c_name_check_result = #{record.cNameCheckResult,jdbcType=VARCHAR},
+      c_document_no_check_result = #{record.cDocumentNoCheckResult,jdbcType=VARCHAR},
+      c_license_no_check_result = #{record.cLicenseNoCheckResult,jdbcType=VARCHAR},
+      c_car_type_check_result = #{record.cCarTypeCheckResult,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdPengyuanData" >
+    update t_third_pengyuan_data
+    <set >
+      <if test="cOrderNo != null" >
+        c_order_no = #{cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cTraceId != null" >
+        c_trace_id = #{cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null" >
+        c_name = #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdCard != null" >
+        c_id_card = #{cIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="cLicenseNo != null" >
+        c_license_no = #{cLicenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cCarType != null" >
+        c_car_type = #{cCarType,jdbcType=CHAR},
+      </if>
+      <if test="cQueryReasonId != null" >
+        c_query_reason_id = #{cQueryReasonId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSubreportIds != null" >
+        c_subreport_ids = #{cSubreportIds,jdbcType=VARCHAR},
+      </if>
+      <if test="cRefId != null" >
+        c_ref_id = #{cRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="cBatNo != null" >
+        c_bat_no = #{cBatNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cTreatEsult != null" >
+        c_treat_esult = #{cTreatEsult,jdbcType=VARCHAR},
+      </if>
+      <if test="cErrorMessage != null" >
+        c_error_message = #{cErrorMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="cTreatErrorcode != null" >
+        c_treat_errorCode = #{cTreatErrorcode,jdbcType=VARCHAR},
+      </if>
+      <if test="cNameCheckResult != null" >
+        c_name_check_result = #{cNameCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="cDocumentNoCheckResult != null" >
+        c_document_no_check_result = #{cDocumentNoCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="cLicenseNoCheckResult != null" >
+        c_license_no_check_result = #{cLicenseNoCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="cCarTypeCheckResult != null" >
+        c_car_type_check_result = #{cCarTypeCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdPengyuanData" >
+    update t_third_pengyuan_data
+    set c_order_no = #{cOrderNo,jdbcType=VARCHAR},
+      c_trace_id = #{cTraceId,jdbcType=VARCHAR},
+      c_name = #{cName,jdbcType=VARCHAR},
+      c_id_card = #{cIdCard,jdbcType=VARCHAR},
+      c_license_no = #{cLicenseNo,jdbcType=VARCHAR},
+      c_car_type = #{cCarType,jdbcType=CHAR},
+      c_query_reason_id = #{cQueryReasonId,jdbcType=VARCHAR},
+      c_subreport_ids = #{cSubreportIds,jdbcType=VARCHAR},
+      c_ref_id = #{cRefId,jdbcType=VARCHAR},
+      c_bat_no = #{cBatNo,jdbcType=VARCHAR},
+      c_treat_esult = #{cTreatEsult,jdbcType=VARCHAR},
+      c_error_message = #{cErrorMessage,jdbcType=VARCHAR},
+      c_treat_errorCode = #{cTreatErrorcode,jdbcType=VARCHAR},
+      c_name_check_result = #{cNameCheckResult,jdbcType=VARCHAR},
+      c_document_no_check_result = #{cDocumentNoCheckResult,jdbcType=VARCHAR},
+      c_license_no_check_result = #{cLicenseNoCheckResult,jdbcType=VARCHAR},
+      c_car_type_check_result = #{cCarTypeCheckResult,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

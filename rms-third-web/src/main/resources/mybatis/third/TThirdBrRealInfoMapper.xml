@@ -1,0 +1,1865 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdBrRealInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdBrRealInfo" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="swift_number" property="swiftNumber" jdbcType="VARCHAR" />
+    <result column="c_linkman_cell" property="cLinkmanCell" jdbcType="VARCHAR" />
+    <result column="c_tel_home" property="cTelHome" jdbcType="VARCHAR" />
+    <result column="c_home_addr" property="cHomeAddr" jdbcType="VARCHAR" />
+    <result column="c_flag_inforelation" property="cFlagInforelation" jdbcType="VARCHAR" />
+    <result column="c_ir_id_x_cell_cnt" property="cIrIdXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_id_x_mail_cnt" property="cIrIdXMailCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_id_x_name_cnt" property="cIrIdXNameCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_cell_x_id_cnt" property="cIrCellXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_cell_x_mail_cnt" property="cIrCellXMailCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_cell_x_name_cnt" property="cIrCellXNameCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_id_inlistwith_cell" property="cIrIdInlistwithCell" jdbcType="VARCHAR" />
+    <result column="c_ir_cell_inlistwith_id" property="cIrCellInlistwithId" jdbcType="VARCHAR" />
+    <result column="c_ir_allmatch_days" property="cIrAllmatchDays" jdbcType="VARCHAR" />
+    <result column="c_ir_id_x_cell_notmat_days" property="cIrIdXCellNotmatDays" jdbcType="VARCHAR" />
+    <result column="c_ir_cell_x_id_notmat_days" property="cIrCellXIdNotmatDays" jdbcType="VARCHAR" />
+    <result column="c_ir_id_x_cell_lastchg_days" property="cIrIdXCellLastchgDays" jdbcType="VARCHAR" />
+    <result column="c_ir_cell_x_id_lastchg_days" property="cIrCellXIdLastchgDays" jdbcType="VARCHAR" />
+    <result column="c_ir_id_is_reabnormal" property="cIrIdIsReabnormal" jdbcType="VARCHAR" />
+    <result column="c_ir_cell_is_reabnormal" property="cIrCellIsReabnormal" jdbcType="VARCHAR" />
+    <result column="c_ir_mail_is_reabnormal" property="cIrMailIsReabnormal" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_id_x_cell_cnt" property="cIrM1IdXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_id_x_mail_cnt" property="cIrM1IdXMailCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_id_x_name_cnt" property="cIrM1IdXNameCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_cell_x_id_cnt" property="cIrM1CellXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_cell_x_mail_cnt" property="cIrM1CellXMailCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_cell_x_name_cnt" property="cIrM1CellXNameCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_id_x_tel_home_cnt" property="cIrM1IdXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_id_x_home_addr_cnt" property="cIrM1IdXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_id_x_biz_addr_cnt" property="cIrM1IdXBizAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_cell_x_tel_home_cnt" property="cIrM1CellXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_cell_x_home_addr_cnt" property="cIrM1CellXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_cell_x_biz_addr_cnt" property="cIrM1CellXBizAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_linkman_cell_x_id_cnt" property="cIrM1LinkmanCellXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_linkman_cell_x_cell_cnt" property="cIrM1LinkmanCellXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_linkman_cell_x_tel_home_cnt" property="cIrM1LinkmanCellXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_tel_home_x_cell_cnt" property="cIrM1TelHomeXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_tel_home_x_id_cnt" property="cIrM1TelHomeXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_home_addr_x_cell_cnt" property="cIrM1HomeAddrXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_home_addr_x_id_cnt" property="cIrM1HomeAddrXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_tel_home_x_home_addr_cnt" property="cIrM1TelHomeXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m1_home_addr_x_tel_home_cnt" property="cIrM1HomeAddrXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_id_x_cell_cnt" property="cIrM3IdXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_id_x_mail_cnt" property="cIrM3IdXMailCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_id_x_name_cnt" property="cIrM3IdXNameCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_cell_x_id_cnt" property="cIrM3CellXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_cell_x_mail_cnt" property="cIrM3CellXMailCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_cell_x_name_cnt" property="cIrM3CellXNameCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_id_x_tel_home_cnt" property="cIrM3IdXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_id_x_home_addr_cnt" property="cIrM3IdXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_id_x_biz_addr_cnt" property="cIrM3IdXBizAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_cell_x_tel_home_cnt" property="cIrM3CellXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_cell_x_home_addr_cnt" property="cIrM3CellXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_cell_x_biz_addr_cnt" property="cIrM3CellXBizAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_linkman_cell_x_id_cnt" property="cIrM3LinkmanCellXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_linkman_cell_x_cell_cnt" property="cIrM3LinkmanCellXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_linkman_cell_x_tel_home_cnt" property="cIrM3LinkmanCellXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_tel_home_x_cell_cnt" property="cIrM3TelHomeXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_tel_home_x_id_cnt" property="cIrM3TelHomeXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_home_addr_x_cell_cnt" property="cIrM3HomeAddrXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_home_addr_x_id_cnt" property="cIrM3HomeAddrXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_tel_home_x_home_addr_cnt" property="cIrM3TelHomeXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m3_home_addr_x_tel_home_cnt" property="cIrM3HomeAddrXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_id_x_cell_cnt" property="cIrM6IdXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_id_x_mail_cnt" property="cIrM6IdXMailCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_id_x_name_cnt" property="cIrM6IdXNameCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_cell_x_id_cnt" property="cIrM6CellXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_cell_x_mail_cnt" property="cIrM6CellXMailCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_cell_x_name_cnt" property="cIrM6CellXNameCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_id_x_tel_home_cnt" property="cIrM6IdXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_id_x_home_addr_cnt" property="cIrM6IdXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_id_x_biz_addr_cnt" property="cIrM6IdXBizAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_cell_x_tel_home_cnt" property="cIrM6CellXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_cell_x_home_addr_cnt" property="cIrM6CellXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_cell_x_biz_addr_cnt" property="cIrM6CellXBizAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_linkman_cell_x_id_cnt" property="cIrM6LinkmanCellXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_linkman_cell_x_cell_cnt" property="cIrM6LinkmanCellXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_linkman_cell_x_tel_home_cnt" property="cIrM6LinkmanCellXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_tel_home_x_cell_cnt" property="cIrM6TelHomeXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_tel_home_x_id_cnt" property="cIrM6TelHomeXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_home_addr_x_cell_cnt" property="cIrM6HomeAddrXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_home_addr_x_id_cnt" property="cIrM6HomeAddrXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_tel_home_x_home_addr_cnt" property="cIrM6TelHomeXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m6_home_addr_x_tel_home_cnt" property="cIrM6HomeAddrXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_id_x_cell_cnt" property="cIrM12IdXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_id_x_mail_cnt" property="cIrM12IdXMailCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_id_x_name_cnt" property="cIrM12IdXNameCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_cell_x_id_cnt" property="cIrM12CellXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_cell_x_mail_cnt" property="cIrM12CellXMailCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_cell_x_name_cnt" property="cIrM12CellXNameCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_id_x_tel_home_cnt" property="cIrM12IdXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_id_x_home_addr_cnt" property="cIrM12IdXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_id_x_biz_addr_cnt" property="cIrM12IdXBizAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_cell_x_tel_home_cnt" property="cIrM12CellXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_cell_x_home_addr_cnt" property="cIrM12CellXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_cell_x_biz_addr_cnt" property="cIrM12CellXBizAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_linkman_cell_x_id_cnt" property="cIrM12LinkmanCellXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_linkman_cell_x_cell_cnt" property="cIrM12LinkmanCellXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_linkman_cell_x_tel_home_cnt" property="cIrM12LinkmanCellXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_tel_home_x_cell_cnt" property="cIrM12TelHomeXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_tel_home_x_id_cnt" property="cIrM12TelHomeXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_home_addr_x_cell_cnt" property="cIrM12HomeAddrXCellCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_home_addr_x_id_cnt" property="cIrM12HomeAddrXIdCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_tel_home_x_home_addr_cnt" property="cIrM12TelHomeXHomeAddrCnt" jdbcType="VARCHAR" />
+    <result column="c_ir_m12_home_addr_x_tel_home_cnt" property="cIrM12HomeAddrXTelHomeCnt" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, swift_number, c_linkman_cell, c_tel_home, c_home_addr, c_flag_inforelation, 
+    c_ir_id_x_cell_cnt, c_ir_id_x_mail_cnt, c_ir_id_x_name_cnt, c_ir_cell_x_id_cnt, c_ir_cell_x_mail_cnt, 
+    c_ir_cell_x_name_cnt, c_ir_id_inlistwith_cell, c_ir_cell_inlistwith_id, c_ir_allmatch_days, 
+    c_ir_id_x_cell_notmat_days, c_ir_cell_x_id_notmat_days, c_ir_id_x_cell_lastchg_days, 
+    c_ir_cell_x_id_lastchg_days, c_ir_id_is_reabnormal, c_ir_cell_is_reabnormal, c_ir_mail_is_reabnormal, 
+    c_ir_m1_id_x_cell_cnt, c_ir_m1_id_x_mail_cnt, c_ir_m1_id_x_name_cnt, c_ir_m1_cell_x_id_cnt, 
+    c_ir_m1_cell_x_mail_cnt, c_ir_m1_cell_x_name_cnt, c_ir_m1_id_x_tel_home_cnt, c_ir_m1_id_x_home_addr_cnt, 
+    c_ir_m1_id_x_biz_addr_cnt, c_ir_m1_cell_x_tel_home_cnt, c_ir_m1_cell_x_home_addr_cnt, 
+    c_ir_m1_cell_x_biz_addr_cnt, c_ir_m1_linkman_cell_x_id_cnt, c_ir_m1_linkman_cell_x_cell_cnt, 
+    c_ir_m1_linkman_cell_x_tel_home_cnt, c_ir_m1_tel_home_x_cell_cnt, c_ir_m1_tel_home_x_id_cnt, 
+    c_ir_m1_home_addr_x_cell_cnt, c_ir_m1_home_addr_x_id_cnt, c_ir_m1_tel_home_x_home_addr_cnt, 
+    c_ir_m1_home_addr_x_tel_home_cnt, c_ir_m3_id_x_cell_cnt, c_ir_m3_id_x_mail_cnt, c_ir_m3_id_x_name_cnt, 
+    c_ir_m3_cell_x_id_cnt, c_ir_m3_cell_x_mail_cnt, c_ir_m3_cell_x_name_cnt, c_ir_m3_id_x_tel_home_cnt, 
+    c_ir_m3_id_x_home_addr_cnt, c_ir_m3_id_x_biz_addr_cnt, c_ir_m3_cell_x_tel_home_cnt, 
+    c_ir_m3_cell_x_home_addr_cnt, c_ir_m3_cell_x_biz_addr_cnt, c_ir_m3_linkman_cell_x_id_cnt, 
+    c_ir_m3_linkman_cell_x_cell_cnt, c_ir_m3_linkman_cell_x_tel_home_cnt, c_ir_m3_tel_home_x_cell_cnt, 
+    c_ir_m3_tel_home_x_id_cnt, c_ir_m3_home_addr_x_cell_cnt, c_ir_m3_home_addr_x_id_cnt, 
+    c_ir_m3_tel_home_x_home_addr_cnt, c_ir_m3_home_addr_x_tel_home_cnt, c_ir_m6_id_x_cell_cnt, 
+    c_ir_m6_id_x_mail_cnt, c_ir_m6_id_x_name_cnt, c_ir_m6_cell_x_id_cnt, c_ir_m6_cell_x_mail_cnt, 
+    c_ir_m6_cell_x_name_cnt, c_ir_m6_id_x_tel_home_cnt, c_ir_m6_id_x_home_addr_cnt, c_ir_m6_id_x_biz_addr_cnt, 
+    c_ir_m6_cell_x_tel_home_cnt, c_ir_m6_cell_x_home_addr_cnt, c_ir_m6_cell_x_biz_addr_cnt, 
+    c_ir_m6_linkman_cell_x_id_cnt, c_ir_m6_linkman_cell_x_cell_cnt, c_ir_m6_linkman_cell_x_tel_home_cnt, 
+    c_ir_m6_tel_home_x_cell_cnt, c_ir_m6_tel_home_x_id_cnt, c_ir_m6_home_addr_x_cell_cnt, 
+    c_ir_m6_home_addr_x_id_cnt, c_ir_m6_tel_home_x_home_addr_cnt, c_ir_m6_home_addr_x_tel_home_cnt, 
+    c_ir_m12_id_x_cell_cnt, c_ir_m12_id_x_mail_cnt, c_ir_m12_id_x_name_cnt, c_ir_m12_cell_x_id_cnt, 
+    c_ir_m12_cell_x_mail_cnt, c_ir_m12_cell_x_name_cnt, c_ir_m12_id_x_tel_home_cnt, c_ir_m12_id_x_home_addr_cnt, 
+    c_ir_m12_id_x_biz_addr_cnt, c_ir_m12_cell_x_tel_home_cnt, c_ir_m12_cell_x_home_addr_cnt, 
+    c_ir_m12_cell_x_biz_addr_cnt, c_ir_m12_linkman_cell_x_id_cnt, c_ir_m12_linkman_cell_x_cell_cnt, 
+    c_ir_m12_linkman_cell_x_tel_home_cnt, c_ir_m12_tel_home_x_cell_cnt, c_ir_m12_tel_home_x_id_cnt, 
+    c_ir_m12_home_addr_x_cell_cnt, c_ir_m12_home_addr_x_id_cnt, c_ir_m12_tel_home_x_home_addr_cnt, 
+    c_ir_m12_home_addr_x_tel_home_cnt, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrRealInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_br_real_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_br_real_info
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_br_real_info
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrRealInfoExample" >
+    delete from t_third_br_real_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdBrRealInfo" >
+    insert into t_third_br_real_info (c_id, swift_number, c_linkman_cell, 
+      c_tel_home, c_home_addr, c_flag_inforelation, 
+      c_ir_id_x_cell_cnt, c_ir_id_x_mail_cnt, c_ir_id_x_name_cnt, 
+      c_ir_cell_x_id_cnt, c_ir_cell_x_mail_cnt, c_ir_cell_x_name_cnt, 
+      c_ir_id_inlistwith_cell, c_ir_cell_inlistwith_id, 
+      c_ir_allmatch_days, c_ir_id_x_cell_notmat_days, 
+      c_ir_cell_x_id_notmat_days, c_ir_id_x_cell_lastchg_days, 
+      c_ir_cell_x_id_lastchg_days, c_ir_id_is_reabnormal, 
+      c_ir_cell_is_reabnormal, c_ir_mail_is_reabnormal, 
+      c_ir_m1_id_x_cell_cnt, c_ir_m1_id_x_mail_cnt, c_ir_m1_id_x_name_cnt, 
+      c_ir_m1_cell_x_id_cnt, c_ir_m1_cell_x_mail_cnt, c_ir_m1_cell_x_name_cnt, 
+      c_ir_m1_id_x_tel_home_cnt, c_ir_m1_id_x_home_addr_cnt, 
+      c_ir_m1_id_x_biz_addr_cnt, c_ir_m1_cell_x_tel_home_cnt, 
+      c_ir_m1_cell_x_home_addr_cnt, c_ir_m1_cell_x_biz_addr_cnt, 
+      c_ir_m1_linkman_cell_x_id_cnt, c_ir_m1_linkman_cell_x_cell_cnt, 
+      c_ir_m1_linkman_cell_x_tel_home_cnt, c_ir_m1_tel_home_x_cell_cnt, 
+      c_ir_m1_tel_home_x_id_cnt, c_ir_m1_home_addr_x_cell_cnt, 
+      c_ir_m1_home_addr_x_id_cnt, c_ir_m1_tel_home_x_home_addr_cnt, 
+      c_ir_m1_home_addr_x_tel_home_cnt, c_ir_m3_id_x_cell_cnt, 
+      c_ir_m3_id_x_mail_cnt, c_ir_m3_id_x_name_cnt, c_ir_m3_cell_x_id_cnt, 
+      c_ir_m3_cell_x_mail_cnt, c_ir_m3_cell_x_name_cnt, c_ir_m3_id_x_tel_home_cnt, 
+      c_ir_m3_id_x_home_addr_cnt, c_ir_m3_id_x_biz_addr_cnt, 
+      c_ir_m3_cell_x_tel_home_cnt, c_ir_m3_cell_x_home_addr_cnt, 
+      c_ir_m3_cell_x_biz_addr_cnt, c_ir_m3_linkman_cell_x_id_cnt, 
+      c_ir_m3_linkman_cell_x_cell_cnt, c_ir_m3_linkman_cell_x_tel_home_cnt, 
+      c_ir_m3_tel_home_x_cell_cnt, c_ir_m3_tel_home_x_id_cnt, 
+      c_ir_m3_home_addr_x_cell_cnt, c_ir_m3_home_addr_x_id_cnt, 
+      c_ir_m3_tel_home_x_home_addr_cnt, c_ir_m3_home_addr_x_tel_home_cnt, 
+      c_ir_m6_id_x_cell_cnt, c_ir_m6_id_x_mail_cnt, c_ir_m6_id_x_name_cnt, 
+      c_ir_m6_cell_x_id_cnt, c_ir_m6_cell_x_mail_cnt, c_ir_m6_cell_x_name_cnt, 
+      c_ir_m6_id_x_tel_home_cnt, c_ir_m6_id_x_home_addr_cnt, 
+      c_ir_m6_id_x_biz_addr_cnt, c_ir_m6_cell_x_tel_home_cnt, 
+      c_ir_m6_cell_x_home_addr_cnt, c_ir_m6_cell_x_biz_addr_cnt, 
+      c_ir_m6_linkman_cell_x_id_cnt, c_ir_m6_linkman_cell_x_cell_cnt, 
+      c_ir_m6_linkman_cell_x_tel_home_cnt, c_ir_m6_tel_home_x_cell_cnt, 
+      c_ir_m6_tel_home_x_id_cnt, c_ir_m6_home_addr_x_cell_cnt, 
+      c_ir_m6_home_addr_x_id_cnt, c_ir_m6_tel_home_x_home_addr_cnt, 
+      c_ir_m6_home_addr_x_tel_home_cnt, c_ir_m12_id_x_cell_cnt, 
+      c_ir_m12_id_x_mail_cnt, c_ir_m12_id_x_name_cnt, c_ir_m12_cell_x_id_cnt, 
+      c_ir_m12_cell_x_mail_cnt, c_ir_m12_cell_x_name_cnt, 
+      c_ir_m12_id_x_tel_home_cnt, c_ir_m12_id_x_home_addr_cnt, 
+      c_ir_m12_id_x_biz_addr_cnt, c_ir_m12_cell_x_tel_home_cnt, 
+      c_ir_m12_cell_x_home_addr_cnt, c_ir_m12_cell_x_biz_addr_cnt, 
+      c_ir_m12_linkman_cell_x_id_cnt, c_ir_m12_linkman_cell_x_cell_cnt, 
+      c_ir_m12_linkman_cell_x_tel_home_cnt, c_ir_m12_tel_home_x_cell_cnt, 
+      c_ir_m12_tel_home_x_id_cnt, c_ir_m12_home_addr_x_cell_cnt, 
+      c_ir_m12_home_addr_x_id_cnt, c_ir_m12_tel_home_x_home_addr_cnt, 
+      c_ir_m12_home_addr_x_tel_home_cnt, c_creatTime
+      )
+    values (#{cId,jdbcType=VARCHAR}, #{swiftNumber,jdbcType=VARCHAR}, #{cLinkmanCell,jdbcType=VARCHAR}, 
+      #{cTelHome,jdbcType=VARCHAR}, #{cHomeAddr,jdbcType=VARCHAR}, #{cFlagInforelation,jdbcType=VARCHAR}, 
+      #{cIrIdXCellCnt,jdbcType=VARCHAR}, #{cIrIdXMailCnt,jdbcType=VARCHAR}, #{cIrIdXNameCnt,jdbcType=VARCHAR}, 
+      #{cIrCellXIdCnt,jdbcType=VARCHAR}, #{cIrCellXMailCnt,jdbcType=VARCHAR}, #{cIrCellXNameCnt,jdbcType=VARCHAR}, 
+      #{cIrIdInlistwithCell,jdbcType=VARCHAR}, #{cIrCellInlistwithId,jdbcType=VARCHAR}, 
+      #{cIrAllmatchDays,jdbcType=VARCHAR}, #{cIrIdXCellNotmatDays,jdbcType=VARCHAR}, 
+      #{cIrCellXIdNotmatDays,jdbcType=VARCHAR}, #{cIrIdXCellLastchgDays,jdbcType=VARCHAR}, 
+      #{cIrCellXIdLastchgDays,jdbcType=VARCHAR}, #{cIrIdIsReabnormal,jdbcType=VARCHAR}, 
+      #{cIrCellIsReabnormal,jdbcType=VARCHAR}, #{cIrMailIsReabnormal,jdbcType=VARCHAR}, 
+      #{cIrM1IdXCellCnt,jdbcType=VARCHAR}, #{cIrM1IdXMailCnt,jdbcType=VARCHAR}, #{cIrM1IdXNameCnt,jdbcType=VARCHAR}, 
+      #{cIrM1CellXIdCnt,jdbcType=VARCHAR}, #{cIrM1CellXMailCnt,jdbcType=VARCHAR}, #{cIrM1CellXNameCnt,jdbcType=VARCHAR}, 
+      #{cIrM1IdXTelHomeCnt,jdbcType=VARCHAR}, #{cIrM1IdXHomeAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM1IdXBizAddrCnt,jdbcType=VARCHAR}, #{cIrM1CellXTelHomeCnt,jdbcType=VARCHAR}, 
+      #{cIrM1CellXHomeAddrCnt,jdbcType=VARCHAR}, #{cIrM1CellXBizAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM1LinkmanCellXIdCnt,jdbcType=VARCHAR}, #{cIrM1LinkmanCellXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM1LinkmanCellXTelHomeCnt,jdbcType=VARCHAR}, #{cIrM1TelHomeXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM1TelHomeXIdCnt,jdbcType=VARCHAR}, #{cIrM1HomeAddrXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM1HomeAddrXIdCnt,jdbcType=VARCHAR}, #{cIrM1TelHomeXHomeAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM1HomeAddrXTelHomeCnt,jdbcType=VARCHAR}, #{cIrM3IdXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM3IdXMailCnt,jdbcType=VARCHAR}, #{cIrM3IdXNameCnt,jdbcType=VARCHAR}, #{cIrM3CellXIdCnt,jdbcType=VARCHAR}, 
+      #{cIrM3CellXMailCnt,jdbcType=VARCHAR}, #{cIrM3CellXNameCnt,jdbcType=VARCHAR}, #{cIrM3IdXTelHomeCnt,jdbcType=VARCHAR}, 
+      #{cIrM3IdXHomeAddrCnt,jdbcType=VARCHAR}, #{cIrM3IdXBizAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM3CellXTelHomeCnt,jdbcType=VARCHAR}, #{cIrM3CellXHomeAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM3CellXBizAddrCnt,jdbcType=VARCHAR}, #{cIrM3LinkmanCellXIdCnt,jdbcType=VARCHAR}, 
+      #{cIrM3LinkmanCellXCellCnt,jdbcType=VARCHAR}, #{cIrM3LinkmanCellXTelHomeCnt,jdbcType=VARCHAR}, 
+      #{cIrM3TelHomeXCellCnt,jdbcType=VARCHAR}, #{cIrM3TelHomeXIdCnt,jdbcType=VARCHAR}, 
+      #{cIrM3HomeAddrXCellCnt,jdbcType=VARCHAR}, #{cIrM3HomeAddrXIdCnt,jdbcType=VARCHAR}, 
+      #{cIrM3TelHomeXHomeAddrCnt,jdbcType=VARCHAR}, #{cIrM3HomeAddrXTelHomeCnt,jdbcType=VARCHAR}, 
+      #{cIrM6IdXCellCnt,jdbcType=VARCHAR}, #{cIrM6IdXMailCnt,jdbcType=VARCHAR}, #{cIrM6IdXNameCnt,jdbcType=VARCHAR}, 
+      #{cIrM6CellXIdCnt,jdbcType=VARCHAR}, #{cIrM6CellXMailCnt,jdbcType=VARCHAR}, #{cIrM6CellXNameCnt,jdbcType=VARCHAR}, 
+      #{cIrM6IdXTelHomeCnt,jdbcType=VARCHAR}, #{cIrM6IdXHomeAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM6IdXBizAddrCnt,jdbcType=VARCHAR}, #{cIrM6CellXTelHomeCnt,jdbcType=VARCHAR}, 
+      #{cIrM6CellXHomeAddrCnt,jdbcType=VARCHAR}, #{cIrM6CellXBizAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM6LinkmanCellXIdCnt,jdbcType=VARCHAR}, #{cIrM6LinkmanCellXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM6LinkmanCellXTelHomeCnt,jdbcType=VARCHAR}, #{cIrM6TelHomeXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM6TelHomeXIdCnt,jdbcType=VARCHAR}, #{cIrM6HomeAddrXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM6HomeAddrXIdCnt,jdbcType=VARCHAR}, #{cIrM6TelHomeXHomeAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM6HomeAddrXTelHomeCnt,jdbcType=VARCHAR}, #{cIrM12IdXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM12IdXMailCnt,jdbcType=VARCHAR}, #{cIrM12IdXNameCnt,jdbcType=VARCHAR}, #{cIrM12CellXIdCnt,jdbcType=VARCHAR}, 
+      #{cIrM12CellXMailCnt,jdbcType=VARCHAR}, #{cIrM12CellXNameCnt,jdbcType=VARCHAR}, 
+      #{cIrM12IdXTelHomeCnt,jdbcType=VARCHAR}, #{cIrM12IdXHomeAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM12IdXBizAddrCnt,jdbcType=VARCHAR}, #{cIrM12CellXTelHomeCnt,jdbcType=VARCHAR}, 
+      #{cIrM12CellXHomeAddrCnt,jdbcType=VARCHAR}, #{cIrM12CellXBizAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM12LinkmanCellXIdCnt,jdbcType=VARCHAR}, #{cIrM12LinkmanCellXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM12LinkmanCellXTelHomeCnt,jdbcType=VARCHAR}, #{cIrM12TelHomeXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM12TelHomeXIdCnt,jdbcType=VARCHAR}, #{cIrM12HomeAddrXCellCnt,jdbcType=VARCHAR}, 
+      #{cIrM12HomeAddrXIdCnt,jdbcType=VARCHAR}, #{cIrM12TelHomeXHomeAddrCnt,jdbcType=VARCHAR}, 
+      #{cIrM12HomeAddrXTelHomeCnt,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrRealInfo" >
+    insert into t_third_br_real_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="swiftNumber != null" >
+        swift_number,
+      </if>
+      <if test="cLinkmanCell != null" >
+        c_linkman_cell,
+      </if>
+      <if test="cTelHome != null" >
+        c_tel_home,
+      </if>
+      <if test="cHomeAddr != null" >
+        c_home_addr,
+      </if>
+      <if test="cFlagInforelation != null" >
+        c_flag_inforelation,
+      </if>
+      <if test="cIrIdXCellCnt != null" >
+        c_ir_id_x_cell_cnt,
+      </if>
+      <if test="cIrIdXMailCnt != null" >
+        c_ir_id_x_mail_cnt,
+      </if>
+      <if test="cIrIdXNameCnt != null" >
+        c_ir_id_x_name_cnt,
+      </if>
+      <if test="cIrCellXIdCnt != null" >
+        c_ir_cell_x_id_cnt,
+      </if>
+      <if test="cIrCellXMailCnt != null" >
+        c_ir_cell_x_mail_cnt,
+      </if>
+      <if test="cIrCellXNameCnt != null" >
+        c_ir_cell_x_name_cnt,
+      </if>
+      <if test="cIrIdInlistwithCell != null" >
+        c_ir_id_inlistwith_cell,
+      </if>
+      <if test="cIrCellInlistwithId != null" >
+        c_ir_cell_inlistwith_id,
+      </if>
+      <if test="cIrAllmatchDays != null" >
+        c_ir_allmatch_days,
+      </if>
+      <if test="cIrIdXCellNotmatDays != null" >
+        c_ir_id_x_cell_notmat_days,
+      </if>
+      <if test="cIrCellXIdNotmatDays != null" >
+        c_ir_cell_x_id_notmat_days,
+      </if>
+      <if test="cIrIdXCellLastchgDays != null" >
+        c_ir_id_x_cell_lastchg_days,
+      </if>
+      <if test="cIrCellXIdLastchgDays != null" >
+        c_ir_cell_x_id_lastchg_days,
+      </if>
+      <if test="cIrIdIsReabnormal != null" >
+        c_ir_id_is_reabnormal,
+      </if>
+      <if test="cIrCellIsReabnormal != null" >
+        c_ir_cell_is_reabnormal,
+      </if>
+      <if test="cIrMailIsReabnormal != null" >
+        c_ir_mail_is_reabnormal,
+      </if>
+      <if test="cIrM1IdXCellCnt != null" >
+        c_ir_m1_id_x_cell_cnt,
+      </if>
+      <if test="cIrM1IdXMailCnt != null" >
+        c_ir_m1_id_x_mail_cnt,
+      </if>
+      <if test="cIrM1IdXNameCnt != null" >
+        c_ir_m1_id_x_name_cnt,
+      </if>
+      <if test="cIrM1CellXIdCnt != null" >
+        c_ir_m1_cell_x_id_cnt,
+      </if>
+      <if test="cIrM1CellXMailCnt != null" >
+        c_ir_m1_cell_x_mail_cnt,
+      </if>
+      <if test="cIrM1CellXNameCnt != null" >
+        c_ir_m1_cell_x_name_cnt,
+      </if>
+      <if test="cIrM1IdXTelHomeCnt != null" >
+        c_ir_m1_id_x_tel_home_cnt,
+      </if>
+      <if test="cIrM1IdXHomeAddrCnt != null" >
+        c_ir_m1_id_x_home_addr_cnt,
+      </if>
+      <if test="cIrM1IdXBizAddrCnt != null" >
+        c_ir_m1_id_x_biz_addr_cnt,
+      </if>
+      <if test="cIrM1CellXTelHomeCnt != null" >
+        c_ir_m1_cell_x_tel_home_cnt,
+      </if>
+      <if test="cIrM1CellXHomeAddrCnt != null" >
+        c_ir_m1_cell_x_home_addr_cnt,
+      </if>
+      <if test="cIrM1CellXBizAddrCnt != null" >
+        c_ir_m1_cell_x_biz_addr_cnt,
+      </if>
+      <if test="cIrM1LinkmanCellXIdCnt != null" >
+        c_ir_m1_linkman_cell_x_id_cnt,
+      </if>
+      <if test="cIrM1LinkmanCellXCellCnt != null" >
+        c_ir_m1_linkman_cell_x_cell_cnt,
+      </if>
+      <if test="cIrM1LinkmanCellXTelHomeCnt != null" >
+        c_ir_m1_linkman_cell_x_tel_home_cnt,
+      </if>
+      <if test="cIrM1TelHomeXCellCnt != null" >
+        c_ir_m1_tel_home_x_cell_cnt,
+      </if>
+      <if test="cIrM1TelHomeXIdCnt != null" >
+        c_ir_m1_tel_home_x_id_cnt,
+      </if>
+      <if test="cIrM1HomeAddrXCellCnt != null" >
+        c_ir_m1_home_addr_x_cell_cnt,
+      </if>
+      <if test="cIrM1HomeAddrXIdCnt != null" >
+        c_ir_m1_home_addr_x_id_cnt,
+      </if>
+      <if test="cIrM1TelHomeXHomeAddrCnt != null" >
+        c_ir_m1_tel_home_x_home_addr_cnt,
+      </if>
+      <if test="cIrM1HomeAddrXTelHomeCnt != null" >
+        c_ir_m1_home_addr_x_tel_home_cnt,
+      </if>
+      <if test="cIrM3IdXCellCnt != null" >
+        c_ir_m3_id_x_cell_cnt,
+      </if>
+      <if test="cIrM3IdXMailCnt != null" >
+        c_ir_m3_id_x_mail_cnt,
+      </if>
+      <if test="cIrM3IdXNameCnt != null" >
+        c_ir_m3_id_x_name_cnt,
+      </if>
+      <if test="cIrM3CellXIdCnt != null" >
+        c_ir_m3_cell_x_id_cnt,
+      </if>
+      <if test="cIrM3CellXMailCnt != null" >
+        c_ir_m3_cell_x_mail_cnt,
+      </if>
+      <if test="cIrM3CellXNameCnt != null" >
+        c_ir_m3_cell_x_name_cnt,
+      </if>
+      <if test="cIrM3IdXTelHomeCnt != null" >
+        c_ir_m3_id_x_tel_home_cnt,
+      </if>
+      <if test="cIrM3IdXHomeAddrCnt != null" >
+        c_ir_m3_id_x_home_addr_cnt,
+      </if>
+      <if test="cIrM3IdXBizAddrCnt != null" >
+        c_ir_m3_id_x_biz_addr_cnt,
+      </if>
+      <if test="cIrM3CellXTelHomeCnt != null" >
+        c_ir_m3_cell_x_tel_home_cnt,
+      </if>
+      <if test="cIrM3CellXHomeAddrCnt != null" >
+        c_ir_m3_cell_x_home_addr_cnt,
+      </if>
+      <if test="cIrM3CellXBizAddrCnt != null" >
+        c_ir_m3_cell_x_biz_addr_cnt,
+      </if>
+      <if test="cIrM3LinkmanCellXIdCnt != null" >
+        c_ir_m3_linkman_cell_x_id_cnt,
+      </if>
+      <if test="cIrM3LinkmanCellXCellCnt != null" >
+        c_ir_m3_linkman_cell_x_cell_cnt,
+      </if>
+      <if test="cIrM3LinkmanCellXTelHomeCnt != null" >
+        c_ir_m3_linkman_cell_x_tel_home_cnt,
+      </if>
+      <if test="cIrM3TelHomeXCellCnt != null" >
+        c_ir_m3_tel_home_x_cell_cnt,
+      </if>
+      <if test="cIrM3TelHomeXIdCnt != null" >
+        c_ir_m3_tel_home_x_id_cnt,
+      </if>
+      <if test="cIrM3HomeAddrXCellCnt != null" >
+        c_ir_m3_home_addr_x_cell_cnt,
+      </if>
+      <if test="cIrM3HomeAddrXIdCnt != null" >
+        c_ir_m3_home_addr_x_id_cnt,
+      </if>
+      <if test="cIrM3TelHomeXHomeAddrCnt != null" >
+        c_ir_m3_tel_home_x_home_addr_cnt,
+      </if>
+      <if test="cIrM3HomeAddrXTelHomeCnt != null" >
+        c_ir_m3_home_addr_x_tel_home_cnt,
+      </if>
+      <if test="cIrM6IdXCellCnt != null" >
+        c_ir_m6_id_x_cell_cnt,
+      </if>
+      <if test="cIrM6IdXMailCnt != null" >
+        c_ir_m6_id_x_mail_cnt,
+      </if>
+      <if test="cIrM6IdXNameCnt != null" >
+        c_ir_m6_id_x_name_cnt,
+      </if>
+      <if test="cIrM6CellXIdCnt != null" >
+        c_ir_m6_cell_x_id_cnt,
+      </if>
+      <if test="cIrM6CellXMailCnt != null" >
+        c_ir_m6_cell_x_mail_cnt,
+      </if>
+      <if test="cIrM6CellXNameCnt != null" >
+        c_ir_m6_cell_x_name_cnt,
+      </if>
+      <if test="cIrM6IdXTelHomeCnt != null" >
+        c_ir_m6_id_x_tel_home_cnt,
+      </if>
+      <if test="cIrM6IdXHomeAddrCnt != null" >
+        c_ir_m6_id_x_home_addr_cnt,
+      </if>
+      <if test="cIrM6IdXBizAddrCnt != null" >
+        c_ir_m6_id_x_biz_addr_cnt,
+      </if>
+      <if test="cIrM6CellXTelHomeCnt != null" >
+        c_ir_m6_cell_x_tel_home_cnt,
+      </if>
+      <if test="cIrM6CellXHomeAddrCnt != null" >
+        c_ir_m6_cell_x_home_addr_cnt,
+      </if>
+      <if test="cIrM6CellXBizAddrCnt != null" >
+        c_ir_m6_cell_x_biz_addr_cnt,
+      </if>
+      <if test="cIrM6LinkmanCellXIdCnt != null" >
+        c_ir_m6_linkman_cell_x_id_cnt,
+      </if>
+      <if test="cIrM6LinkmanCellXCellCnt != null" >
+        c_ir_m6_linkman_cell_x_cell_cnt,
+      </if>
+      <if test="cIrM6LinkmanCellXTelHomeCnt != null" >
+        c_ir_m6_linkman_cell_x_tel_home_cnt,
+      </if>
+      <if test="cIrM6TelHomeXCellCnt != null" >
+        c_ir_m6_tel_home_x_cell_cnt,
+      </if>
+      <if test="cIrM6TelHomeXIdCnt != null" >
+        c_ir_m6_tel_home_x_id_cnt,
+      </if>
+      <if test="cIrM6HomeAddrXCellCnt != null" >
+        c_ir_m6_home_addr_x_cell_cnt,
+      </if>
+      <if test="cIrM6HomeAddrXIdCnt != null" >
+        c_ir_m6_home_addr_x_id_cnt,
+      </if>
+      <if test="cIrM6TelHomeXHomeAddrCnt != null" >
+        c_ir_m6_tel_home_x_home_addr_cnt,
+      </if>
+      <if test="cIrM6HomeAddrXTelHomeCnt != null" >
+        c_ir_m6_home_addr_x_tel_home_cnt,
+      </if>
+      <if test="cIrM12IdXCellCnt != null" >
+        c_ir_m12_id_x_cell_cnt,
+      </if>
+      <if test="cIrM12IdXMailCnt != null" >
+        c_ir_m12_id_x_mail_cnt,
+      </if>
+      <if test="cIrM12IdXNameCnt != null" >
+        c_ir_m12_id_x_name_cnt,
+      </if>
+      <if test="cIrM12CellXIdCnt != null" >
+        c_ir_m12_cell_x_id_cnt,
+      </if>
+      <if test="cIrM12CellXMailCnt != null" >
+        c_ir_m12_cell_x_mail_cnt,
+      </if>
+      <if test="cIrM12CellXNameCnt != null" >
+        c_ir_m12_cell_x_name_cnt,
+      </if>
+      <if test="cIrM12IdXTelHomeCnt != null" >
+        c_ir_m12_id_x_tel_home_cnt,
+      </if>
+      <if test="cIrM12IdXHomeAddrCnt != null" >
+        c_ir_m12_id_x_home_addr_cnt,
+      </if>
+      <if test="cIrM12IdXBizAddrCnt != null" >
+        c_ir_m12_id_x_biz_addr_cnt,
+      </if>
+      <if test="cIrM12CellXTelHomeCnt != null" >
+        c_ir_m12_cell_x_tel_home_cnt,
+      </if>
+      <if test="cIrM12CellXHomeAddrCnt != null" >
+        c_ir_m12_cell_x_home_addr_cnt,
+      </if>
+      <if test="cIrM12CellXBizAddrCnt != null" >
+        c_ir_m12_cell_x_biz_addr_cnt,
+      </if>
+      <if test="cIrM12LinkmanCellXIdCnt != null" >
+        c_ir_m12_linkman_cell_x_id_cnt,
+      </if>
+      <if test="cIrM12LinkmanCellXCellCnt != null" >
+        c_ir_m12_linkman_cell_x_cell_cnt,
+      </if>
+      <if test="cIrM12LinkmanCellXTelHomeCnt != null" >
+        c_ir_m12_linkman_cell_x_tel_home_cnt,
+      </if>
+      <if test="cIrM12TelHomeXCellCnt != null" >
+        c_ir_m12_tel_home_x_cell_cnt,
+      </if>
+      <if test="cIrM12TelHomeXIdCnt != null" >
+        c_ir_m12_tel_home_x_id_cnt,
+      </if>
+      <if test="cIrM12HomeAddrXCellCnt != null" >
+        c_ir_m12_home_addr_x_cell_cnt,
+      </if>
+      <if test="cIrM12HomeAddrXIdCnt != null" >
+        c_ir_m12_home_addr_x_id_cnt,
+      </if>
+      <if test="cIrM12TelHomeXHomeAddrCnt != null" >
+        c_ir_m12_tel_home_x_home_addr_cnt,
+      </if>
+      <if test="cIrM12HomeAddrXTelHomeCnt != null" >
+        c_ir_m12_home_addr_x_tel_home_cnt,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="swiftNumber != null" >
+        #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cLinkmanCell != null" >
+        #{cLinkmanCell,jdbcType=VARCHAR},
+      </if>
+      <if test="cTelHome != null" >
+        #{cTelHome,jdbcType=VARCHAR},
+      </if>
+      <if test="cHomeAddr != null" >
+        #{cHomeAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagInforelation != null" >
+        #{cFlagInforelation,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdXCellCnt != null" >
+        #{cIrIdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdXMailCnt != null" >
+        #{cIrIdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdXNameCnt != null" >
+        #{cIrIdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellXIdCnt != null" >
+        #{cIrCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellXMailCnt != null" >
+        #{cIrCellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellXNameCnt != null" >
+        #{cIrCellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdInlistwithCell != null" >
+        #{cIrIdInlistwithCell,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellInlistwithId != null" >
+        #{cIrCellInlistwithId,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrAllmatchDays != null" >
+        #{cIrAllmatchDays,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdXCellNotmatDays != null" >
+        #{cIrIdXCellNotmatDays,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellXIdNotmatDays != null" >
+        #{cIrCellXIdNotmatDays,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdXCellLastchgDays != null" >
+        #{cIrIdXCellLastchgDays,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellXIdLastchgDays != null" >
+        #{cIrCellXIdLastchgDays,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdIsReabnormal != null" >
+        #{cIrIdIsReabnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellIsReabnormal != null" >
+        #{cIrCellIsReabnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrMailIsReabnormal != null" >
+        #{cIrMailIsReabnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXCellCnt != null" >
+        #{cIrM1IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXMailCnt != null" >
+        #{cIrM1IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXNameCnt != null" >
+        #{cIrM1IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXIdCnt != null" >
+        #{cIrM1CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXMailCnt != null" >
+        #{cIrM1CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXNameCnt != null" >
+        #{cIrM1CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXTelHomeCnt != null" >
+        #{cIrM1IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXHomeAddrCnt != null" >
+        #{cIrM1IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXBizAddrCnt != null" >
+        #{cIrM1IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXTelHomeCnt != null" >
+        #{cIrM1CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXHomeAddrCnt != null" >
+        #{cIrM1CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXBizAddrCnt != null" >
+        #{cIrM1CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1LinkmanCellXIdCnt != null" >
+        #{cIrM1LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1LinkmanCellXCellCnt != null" >
+        #{cIrM1LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1LinkmanCellXTelHomeCnt != null" >
+        #{cIrM1LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1TelHomeXCellCnt != null" >
+        #{cIrM1TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1TelHomeXIdCnt != null" >
+        #{cIrM1TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1HomeAddrXCellCnt != null" >
+        #{cIrM1HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1HomeAddrXIdCnt != null" >
+        #{cIrM1HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1TelHomeXHomeAddrCnt != null" >
+        #{cIrM1TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1HomeAddrXTelHomeCnt != null" >
+        #{cIrM1HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXCellCnt != null" >
+        #{cIrM3IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXMailCnt != null" >
+        #{cIrM3IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXNameCnt != null" >
+        #{cIrM3IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXIdCnt != null" >
+        #{cIrM3CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXMailCnt != null" >
+        #{cIrM3CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXNameCnt != null" >
+        #{cIrM3CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXTelHomeCnt != null" >
+        #{cIrM3IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXHomeAddrCnt != null" >
+        #{cIrM3IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXBizAddrCnt != null" >
+        #{cIrM3IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXTelHomeCnt != null" >
+        #{cIrM3CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXHomeAddrCnt != null" >
+        #{cIrM3CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXBizAddrCnt != null" >
+        #{cIrM3CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3LinkmanCellXIdCnt != null" >
+        #{cIrM3LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3LinkmanCellXCellCnt != null" >
+        #{cIrM3LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3LinkmanCellXTelHomeCnt != null" >
+        #{cIrM3LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3TelHomeXCellCnt != null" >
+        #{cIrM3TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3TelHomeXIdCnt != null" >
+        #{cIrM3TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3HomeAddrXCellCnt != null" >
+        #{cIrM3HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3HomeAddrXIdCnt != null" >
+        #{cIrM3HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3TelHomeXHomeAddrCnt != null" >
+        #{cIrM3TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3HomeAddrXTelHomeCnt != null" >
+        #{cIrM3HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXCellCnt != null" >
+        #{cIrM6IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXMailCnt != null" >
+        #{cIrM6IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXNameCnt != null" >
+        #{cIrM6IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXIdCnt != null" >
+        #{cIrM6CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXMailCnt != null" >
+        #{cIrM6CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXNameCnt != null" >
+        #{cIrM6CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXTelHomeCnt != null" >
+        #{cIrM6IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXHomeAddrCnt != null" >
+        #{cIrM6IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXBizAddrCnt != null" >
+        #{cIrM6IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXTelHomeCnt != null" >
+        #{cIrM6CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXHomeAddrCnt != null" >
+        #{cIrM6CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXBizAddrCnt != null" >
+        #{cIrM6CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6LinkmanCellXIdCnt != null" >
+        #{cIrM6LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6LinkmanCellXCellCnt != null" >
+        #{cIrM6LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6LinkmanCellXTelHomeCnt != null" >
+        #{cIrM6LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6TelHomeXCellCnt != null" >
+        #{cIrM6TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6TelHomeXIdCnt != null" >
+        #{cIrM6TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6HomeAddrXCellCnt != null" >
+        #{cIrM6HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6HomeAddrXIdCnt != null" >
+        #{cIrM6HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6TelHomeXHomeAddrCnt != null" >
+        #{cIrM6TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6HomeAddrXTelHomeCnt != null" >
+        #{cIrM6HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXCellCnt != null" >
+        #{cIrM12IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXMailCnt != null" >
+        #{cIrM12IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXNameCnt != null" >
+        #{cIrM12IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXIdCnt != null" >
+        #{cIrM12CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXMailCnt != null" >
+        #{cIrM12CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXNameCnt != null" >
+        #{cIrM12CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXTelHomeCnt != null" >
+        #{cIrM12IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXHomeAddrCnt != null" >
+        #{cIrM12IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXBizAddrCnt != null" >
+        #{cIrM12IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXTelHomeCnt != null" >
+        #{cIrM12CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXHomeAddrCnt != null" >
+        #{cIrM12CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXBizAddrCnt != null" >
+        #{cIrM12CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12LinkmanCellXIdCnt != null" >
+        #{cIrM12LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12LinkmanCellXCellCnt != null" >
+        #{cIrM12LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12LinkmanCellXTelHomeCnt != null" >
+        #{cIrM12LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12TelHomeXCellCnt != null" >
+        #{cIrM12TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12TelHomeXIdCnt != null" >
+        #{cIrM12TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12HomeAddrXCellCnt != null" >
+        #{cIrM12HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12HomeAddrXIdCnt != null" >
+        #{cIrM12HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12TelHomeXHomeAddrCnt != null" >
+        #{cIrM12TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12HomeAddrXTelHomeCnt != null" >
+        #{cIrM12HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrRealInfoExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_br_real_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_br_real_info
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.swiftNumber != null" >
+        swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLinkmanCell != null" >
+        c_linkman_cell = #{record.cLinkmanCell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTelHome != null" >
+        c_tel_home = #{record.cTelHome,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cHomeAddr != null" >
+        c_home_addr = #{record.cHomeAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagInforelation != null" >
+        c_flag_inforelation = #{record.cFlagInforelation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrIdXCellCnt != null" >
+        c_ir_id_x_cell_cnt = #{record.cIrIdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrIdXMailCnt != null" >
+        c_ir_id_x_mail_cnt = #{record.cIrIdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrIdXNameCnt != null" >
+        c_ir_id_x_name_cnt = #{record.cIrIdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrCellXIdCnt != null" >
+        c_ir_cell_x_id_cnt = #{record.cIrCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrCellXMailCnt != null" >
+        c_ir_cell_x_mail_cnt = #{record.cIrCellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrCellXNameCnt != null" >
+        c_ir_cell_x_name_cnt = #{record.cIrCellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrIdInlistwithCell != null" >
+        c_ir_id_inlistwith_cell = #{record.cIrIdInlistwithCell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrCellInlistwithId != null" >
+        c_ir_cell_inlistwith_id = #{record.cIrCellInlistwithId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrAllmatchDays != null" >
+        c_ir_allmatch_days = #{record.cIrAllmatchDays,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrIdXCellNotmatDays != null" >
+        c_ir_id_x_cell_notmat_days = #{record.cIrIdXCellNotmatDays,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrCellXIdNotmatDays != null" >
+        c_ir_cell_x_id_notmat_days = #{record.cIrCellXIdNotmatDays,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrIdXCellLastchgDays != null" >
+        c_ir_id_x_cell_lastchg_days = #{record.cIrIdXCellLastchgDays,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrCellXIdLastchgDays != null" >
+        c_ir_cell_x_id_lastchg_days = #{record.cIrCellXIdLastchgDays,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrIdIsReabnormal != null" >
+        c_ir_id_is_reabnormal = #{record.cIrIdIsReabnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrCellIsReabnormal != null" >
+        c_ir_cell_is_reabnormal = #{record.cIrCellIsReabnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrMailIsReabnormal != null" >
+        c_ir_mail_is_reabnormal = #{record.cIrMailIsReabnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1IdXCellCnt != null" >
+        c_ir_m1_id_x_cell_cnt = #{record.cIrM1IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1IdXMailCnt != null" >
+        c_ir_m1_id_x_mail_cnt = #{record.cIrM1IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1IdXNameCnt != null" >
+        c_ir_m1_id_x_name_cnt = #{record.cIrM1IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1CellXIdCnt != null" >
+        c_ir_m1_cell_x_id_cnt = #{record.cIrM1CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1CellXMailCnt != null" >
+        c_ir_m1_cell_x_mail_cnt = #{record.cIrM1CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1CellXNameCnt != null" >
+        c_ir_m1_cell_x_name_cnt = #{record.cIrM1CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1IdXTelHomeCnt != null" >
+        c_ir_m1_id_x_tel_home_cnt = #{record.cIrM1IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1IdXHomeAddrCnt != null" >
+        c_ir_m1_id_x_home_addr_cnt = #{record.cIrM1IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1IdXBizAddrCnt != null" >
+        c_ir_m1_id_x_biz_addr_cnt = #{record.cIrM1IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1CellXTelHomeCnt != null" >
+        c_ir_m1_cell_x_tel_home_cnt = #{record.cIrM1CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1CellXHomeAddrCnt != null" >
+        c_ir_m1_cell_x_home_addr_cnt = #{record.cIrM1CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1CellXBizAddrCnt != null" >
+        c_ir_m1_cell_x_biz_addr_cnt = #{record.cIrM1CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1LinkmanCellXIdCnt != null" >
+        c_ir_m1_linkman_cell_x_id_cnt = #{record.cIrM1LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1LinkmanCellXCellCnt != null" >
+        c_ir_m1_linkman_cell_x_cell_cnt = #{record.cIrM1LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1LinkmanCellXTelHomeCnt != null" >
+        c_ir_m1_linkman_cell_x_tel_home_cnt = #{record.cIrM1LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1TelHomeXCellCnt != null" >
+        c_ir_m1_tel_home_x_cell_cnt = #{record.cIrM1TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1TelHomeXIdCnt != null" >
+        c_ir_m1_tel_home_x_id_cnt = #{record.cIrM1TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1HomeAddrXCellCnt != null" >
+        c_ir_m1_home_addr_x_cell_cnt = #{record.cIrM1HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1HomeAddrXIdCnt != null" >
+        c_ir_m1_home_addr_x_id_cnt = #{record.cIrM1HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1TelHomeXHomeAddrCnt != null" >
+        c_ir_m1_tel_home_x_home_addr_cnt = #{record.cIrM1TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM1HomeAddrXTelHomeCnt != null" >
+        c_ir_m1_home_addr_x_tel_home_cnt = #{record.cIrM1HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3IdXCellCnt != null" >
+        c_ir_m3_id_x_cell_cnt = #{record.cIrM3IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3IdXMailCnt != null" >
+        c_ir_m3_id_x_mail_cnt = #{record.cIrM3IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3IdXNameCnt != null" >
+        c_ir_m3_id_x_name_cnt = #{record.cIrM3IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3CellXIdCnt != null" >
+        c_ir_m3_cell_x_id_cnt = #{record.cIrM3CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3CellXMailCnt != null" >
+        c_ir_m3_cell_x_mail_cnt = #{record.cIrM3CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3CellXNameCnt != null" >
+        c_ir_m3_cell_x_name_cnt = #{record.cIrM3CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3IdXTelHomeCnt != null" >
+        c_ir_m3_id_x_tel_home_cnt = #{record.cIrM3IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3IdXHomeAddrCnt != null" >
+        c_ir_m3_id_x_home_addr_cnt = #{record.cIrM3IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3IdXBizAddrCnt != null" >
+        c_ir_m3_id_x_biz_addr_cnt = #{record.cIrM3IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3CellXTelHomeCnt != null" >
+        c_ir_m3_cell_x_tel_home_cnt = #{record.cIrM3CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3CellXHomeAddrCnt != null" >
+        c_ir_m3_cell_x_home_addr_cnt = #{record.cIrM3CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3CellXBizAddrCnt != null" >
+        c_ir_m3_cell_x_biz_addr_cnt = #{record.cIrM3CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3LinkmanCellXIdCnt != null" >
+        c_ir_m3_linkman_cell_x_id_cnt = #{record.cIrM3LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3LinkmanCellXCellCnt != null" >
+        c_ir_m3_linkman_cell_x_cell_cnt = #{record.cIrM3LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3LinkmanCellXTelHomeCnt != null" >
+        c_ir_m3_linkman_cell_x_tel_home_cnt = #{record.cIrM3LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3TelHomeXCellCnt != null" >
+        c_ir_m3_tel_home_x_cell_cnt = #{record.cIrM3TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3TelHomeXIdCnt != null" >
+        c_ir_m3_tel_home_x_id_cnt = #{record.cIrM3TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3HomeAddrXCellCnt != null" >
+        c_ir_m3_home_addr_x_cell_cnt = #{record.cIrM3HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3HomeAddrXIdCnt != null" >
+        c_ir_m3_home_addr_x_id_cnt = #{record.cIrM3HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3TelHomeXHomeAddrCnt != null" >
+        c_ir_m3_tel_home_x_home_addr_cnt = #{record.cIrM3TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM3HomeAddrXTelHomeCnt != null" >
+        c_ir_m3_home_addr_x_tel_home_cnt = #{record.cIrM3HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6IdXCellCnt != null" >
+        c_ir_m6_id_x_cell_cnt = #{record.cIrM6IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6IdXMailCnt != null" >
+        c_ir_m6_id_x_mail_cnt = #{record.cIrM6IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6IdXNameCnt != null" >
+        c_ir_m6_id_x_name_cnt = #{record.cIrM6IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6CellXIdCnt != null" >
+        c_ir_m6_cell_x_id_cnt = #{record.cIrM6CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6CellXMailCnt != null" >
+        c_ir_m6_cell_x_mail_cnt = #{record.cIrM6CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6CellXNameCnt != null" >
+        c_ir_m6_cell_x_name_cnt = #{record.cIrM6CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6IdXTelHomeCnt != null" >
+        c_ir_m6_id_x_tel_home_cnt = #{record.cIrM6IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6IdXHomeAddrCnt != null" >
+        c_ir_m6_id_x_home_addr_cnt = #{record.cIrM6IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6IdXBizAddrCnt != null" >
+        c_ir_m6_id_x_biz_addr_cnt = #{record.cIrM6IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6CellXTelHomeCnt != null" >
+        c_ir_m6_cell_x_tel_home_cnt = #{record.cIrM6CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6CellXHomeAddrCnt != null" >
+        c_ir_m6_cell_x_home_addr_cnt = #{record.cIrM6CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6CellXBizAddrCnt != null" >
+        c_ir_m6_cell_x_biz_addr_cnt = #{record.cIrM6CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6LinkmanCellXIdCnt != null" >
+        c_ir_m6_linkman_cell_x_id_cnt = #{record.cIrM6LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6LinkmanCellXCellCnt != null" >
+        c_ir_m6_linkman_cell_x_cell_cnt = #{record.cIrM6LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6LinkmanCellXTelHomeCnt != null" >
+        c_ir_m6_linkman_cell_x_tel_home_cnt = #{record.cIrM6LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6TelHomeXCellCnt != null" >
+        c_ir_m6_tel_home_x_cell_cnt = #{record.cIrM6TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6TelHomeXIdCnt != null" >
+        c_ir_m6_tel_home_x_id_cnt = #{record.cIrM6TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6HomeAddrXCellCnt != null" >
+        c_ir_m6_home_addr_x_cell_cnt = #{record.cIrM6HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6HomeAddrXIdCnt != null" >
+        c_ir_m6_home_addr_x_id_cnt = #{record.cIrM6HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6TelHomeXHomeAddrCnt != null" >
+        c_ir_m6_tel_home_x_home_addr_cnt = #{record.cIrM6TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM6HomeAddrXTelHomeCnt != null" >
+        c_ir_m6_home_addr_x_tel_home_cnt = #{record.cIrM6HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12IdXCellCnt != null" >
+        c_ir_m12_id_x_cell_cnt = #{record.cIrM12IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12IdXMailCnt != null" >
+        c_ir_m12_id_x_mail_cnt = #{record.cIrM12IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12IdXNameCnt != null" >
+        c_ir_m12_id_x_name_cnt = #{record.cIrM12IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12CellXIdCnt != null" >
+        c_ir_m12_cell_x_id_cnt = #{record.cIrM12CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12CellXMailCnt != null" >
+        c_ir_m12_cell_x_mail_cnt = #{record.cIrM12CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12CellXNameCnt != null" >
+        c_ir_m12_cell_x_name_cnt = #{record.cIrM12CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12IdXTelHomeCnt != null" >
+        c_ir_m12_id_x_tel_home_cnt = #{record.cIrM12IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12IdXHomeAddrCnt != null" >
+        c_ir_m12_id_x_home_addr_cnt = #{record.cIrM12IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12IdXBizAddrCnt != null" >
+        c_ir_m12_id_x_biz_addr_cnt = #{record.cIrM12IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12CellXTelHomeCnt != null" >
+        c_ir_m12_cell_x_tel_home_cnt = #{record.cIrM12CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12CellXHomeAddrCnt != null" >
+        c_ir_m12_cell_x_home_addr_cnt = #{record.cIrM12CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12CellXBizAddrCnt != null" >
+        c_ir_m12_cell_x_biz_addr_cnt = #{record.cIrM12CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12LinkmanCellXIdCnt != null" >
+        c_ir_m12_linkman_cell_x_id_cnt = #{record.cIrM12LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12LinkmanCellXCellCnt != null" >
+        c_ir_m12_linkman_cell_x_cell_cnt = #{record.cIrM12LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12LinkmanCellXTelHomeCnt != null" >
+        c_ir_m12_linkman_cell_x_tel_home_cnt = #{record.cIrM12LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12TelHomeXCellCnt != null" >
+        c_ir_m12_tel_home_x_cell_cnt = #{record.cIrM12TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12TelHomeXIdCnt != null" >
+        c_ir_m12_tel_home_x_id_cnt = #{record.cIrM12TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12HomeAddrXCellCnt != null" >
+        c_ir_m12_home_addr_x_cell_cnt = #{record.cIrM12HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12HomeAddrXIdCnt != null" >
+        c_ir_m12_home_addr_x_id_cnt = #{record.cIrM12HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12TelHomeXHomeAddrCnt != null" >
+        c_ir_m12_tel_home_x_home_addr_cnt = #{record.cIrM12TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIrM12HomeAddrXTelHomeCnt != null" >
+        c_ir_m12_home_addr_x_tel_home_cnt = #{record.cIrM12HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_br_real_info
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      c_linkman_cell = #{record.cLinkmanCell,jdbcType=VARCHAR},
+      c_tel_home = #{record.cTelHome,jdbcType=VARCHAR},
+      c_home_addr = #{record.cHomeAddr,jdbcType=VARCHAR},
+      c_flag_inforelation = #{record.cFlagInforelation,jdbcType=VARCHAR},
+      c_ir_id_x_cell_cnt = #{record.cIrIdXCellCnt,jdbcType=VARCHAR},
+      c_ir_id_x_mail_cnt = #{record.cIrIdXMailCnt,jdbcType=VARCHAR},
+      c_ir_id_x_name_cnt = #{record.cIrIdXNameCnt,jdbcType=VARCHAR},
+      c_ir_cell_x_id_cnt = #{record.cIrCellXIdCnt,jdbcType=VARCHAR},
+      c_ir_cell_x_mail_cnt = #{record.cIrCellXMailCnt,jdbcType=VARCHAR},
+      c_ir_cell_x_name_cnt = #{record.cIrCellXNameCnt,jdbcType=VARCHAR},
+      c_ir_id_inlistwith_cell = #{record.cIrIdInlistwithCell,jdbcType=VARCHAR},
+      c_ir_cell_inlistwith_id = #{record.cIrCellInlistwithId,jdbcType=VARCHAR},
+      c_ir_allmatch_days = #{record.cIrAllmatchDays,jdbcType=VARCHAR},
+      c_ir_id_x_cell_notmat_days = #{record.cIrIdXCellNotmatDays,jdbcType=VARCHAR},
+      c_ir_cell_x_id_notmat_days = #{record.cIrCellXIdNotmatDays,jdbcType=VARCHAR},
+      c_ir_id_x_cell_lastchg_days = #{record.cIrIdXCellLastchgDays,jdbcType=VARCHAR},
+      c_ir_cell_x_id_lastchg_days = #{record.cIrCellXIdLastchgDays,jdbcType=VARCHAR},
+      c_ir_id_is_reabnormal = #{record.cIrIdIsReabnormal,jdbcType=VARCHAR},
+      c_ir_cell_is_reabnormal = #{record.cIrCellIsReabnormal,jdbcType=VARCHAR},
+      c_ir_mail_is_reabnormal = #{record.cIrMailIsReabnormal,jdbcType=VARCHAR},
+      c_ir_m1_id_x_cell_cnt = #{record.cIrM1IdXCellCnt,jdbcType=VARCHAR},
+      c_ir_m1_id_x_mail_cnt = #{record.cIrM1IdXMailCnt,jdbcType=VARCHAR},
+      c_ir_m1_id_x_name_cnt = #{record.cIrM1IdXNameCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_id_cnt = #{record.cIrM1CellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_mail_cnt = #{record.cIrM1CellXMailCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_name_cnt = #{record.cIrM1CellXNameCnt,jdbcType=VARCHAR},
+      c_ir_m1_id_x_tel_home_cnt = #{record.cIrM1IdXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m1_id_x_home_addr_cnt = #{record.cIrM1IdXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m1_id_x_biz_addr_cnt = #{record.cIrM1IdXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_tel_home_cnt = #{record.cIrM1CellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_home_addr_cnt = #{record.cIrM1CellXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_biz_addr_cnt = #{record.cIrM1CellXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m1_linkman_cell_x_id_cnt = #{record.cIrM1LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m1_linkman_cell_x_cell_cnt = #{record.cIrM1LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      c_ir_m1_linkman_cell_x_tel_home_cnt = #{record.cIrM1LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m1_tel_home_x_cell_cnt = #{record.cIrM1TelHomeXCellCnt,jdbcType=VARCHAR},
+      c_ir_m1_tel_home_x_id_cnt = #{record.cIrM1TelHomeXIdCnt,jdbcType=VARCHAR},
+      c_ir_m1_home_addr_x_cell_cnt = #{record.cIrM1HomeAddrXCellCnt,jdbcType=VARCHAR},
+      c_ir_m1_home_addr_x_id_cnt = #{record.cIrM1HomeAddrXIdCnt,jdbcType=VARCHAR},
+      c_ir_m1_tel_home_x_home_addr_cnt = #{record.cIrM1TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m1_home_addr_x_tel_home_cnt = #{record.cIrM1HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_cell_cnt = #{record.cIrM3IdXCellCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_mail_cnt = #{record.cIrM3IdXMailCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_name_cnt = #{record.cIrM3IdXNameCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_id_cnt = #{record.cIrM3CellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_mail_cnt = #{record.cIrM3CellXMailCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_name_cnt = #{record.cIrM3CellXNameCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_tel_home_cnt = #{record.cIrM3IdXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_home_addr_cnt = #{record.cIrM3IdXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_biz_addr_cnt = #{record.cIrM3IdXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_tel_home_cnt = #{record.cIrM3CellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_home_addr_cnt = #{record.cIrM3CellXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_biz_addr_cnt = #{record.cIrM3CellXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m3_linkman_cell_x_id_cnt = #{record.cIrM3LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m3_linkman_cell_x_cell_cnt = #{record.cIrM3LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      c_ir_m3_linkman_cell_x_tel_home_cnt = #{record.cIrM3LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m3_tel_home_x_cell_cnt = #{record.cIrM3TelHomeXCellCnt,jdbcType=VARCHAR},
+      c_ir_m3_tel_home_x_id_cnt = #{record.cIrM3TelHomeXIdCnt,jdbcType=VARCHAR},
+      c_ir_m3_home_addr_x_cell_cnt = #{record.cIrM3HomeAddrXCellCnt,jdbcType=VARCHAR},
+      c_ir_m3_home_addr_x_id_cnt = #{record.cIrM3HomeAddrXIdCnt,jdbcType=VARCHAR},
+      c_ir_m3_tel_home_x_home_addr_cnt = #{record.cIrM3TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m3_home_addr_x_tel_home_cnt = #{record.cIrM3HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_cell_cnt = #{record.cIrM6IdXCellCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_mail_cnt = #{record.cIrM6IdXMailCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_name_cnt = #{record.cIrM6IdXNameCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_id_cnt = #{record.cIrM6CellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_mail_cnt = #{record.cIrM6CellXMailCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_name_cnt = #{record.cIrM6CellXNameCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_tel_home_cnt = #{record.cIrM6IdXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_home_addr_cnt = #{record.cIrM6IdXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_biz_addr_cnt = #{record.cIrM6IdXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_tel_home_cnt = #{record.cIrM6CellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_home_addr_cnt = #{record.cIrM6CellXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_biz_addr_cnt = #{record.cIrM6CellXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m6_linkman_cell_x_id_cnt = #{record.cIrM6LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m6_linkman_cell_x_cell_cnt = #{record.cIrM6LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      c_ir_m6_linkman_cell_x_tel_home_cnt = #{record.cIrM6LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m6_tel_home_x_cell_cnt = #{record.cIrM6TelHomeXCellCnt,jdbcType=VARCHAR},
+      c_ir_m6_tel_home_x_id_cnt = #{record.cIrM6TelHomeXIdCnt,jdbcType=VARCHAR},
+      c_ir_m6_home_addr_x_cell_cnt = #{record.cIrM6HomeAddrXCellCnt,jdbcType=VARCHAR},
+      c_ir_m6_home_addr_x_id_cnt = #{record.cIrM6HomeAddrXIdCnt,jdbcType=VARCHAR},
+      c_ir_m6_tel_home_x_home_addr_cnt = #{record.cIrM6TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m6_home_addr_x_tel_home_cnt = #{record.cIrM6HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_cell_cnt = #{record.cIrM12IdXCellCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_mail_cnt = #{record.cIrM12IdXMailCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_name_cnt = #{record.cIrM12IdXNameCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_id_cnt = #{record.cIrM12CellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_mail_cnt = #{record.cIrM12CellXMailCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_name_cnt = #{record.cIrM12CellXNameCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_tel_home_cnt = #{record.cIrM12IdXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_home_addr_cnt = #{record.cIrM12IdXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_biz_addr_cnt = #{record.cIrM12IdXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_tel_home_cnt = #{record.cIrM12CellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_home_addr_cnt = #{record.cIrM12CellXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_biz_addr_cnt = #{record.cIrM12CellXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m12_linkman_cell_x_id_cnt = #{record.cIrM12LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m12_linkman_cell_x_cell_cnt = #{record.cIrM12LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      c_ir_m12_linkman_cell_x_tel_home_cnt = #{record.cIrM12LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m12_tel_home_x_cell_cnt = #{record.cIrM12TelHomeXCellCnt,jdbcType=VARCHAR},
+      c_ir_m12_tel_home_x_id_cnt = #{record.cIrM12TelHomeXIdCnt,jdbcType=VARCHAR},
+      c_ir_m12_home_addr_x_cell_cnt = #{record.cIrM12HomeAddrXCellCnt,jdbcType=VARCHAR},
+      c_ir_m12_home_addr_x_id_cnt = #{record.cIrM12HomeAddrXIdCnt,jdbcType=VARCHAR},
+      c_ir_m12_tel_home_x_home_addr_cnt = #{record.cIrM12TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m12_home_addr_x_tel_home_cnt = #{record.cIrM12HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrRealInfo" >
+    update t_third_br_real_info
+    <set >
+      <if test="swiftNumber != null" >
+        swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cLinkmanCell != null" >
+        c_linkman_cell = #{cLinkmanCell,jdbcType=VARCHAR},
+      </if>
+      <if test="cTelHome != null" >
+        c_tel_home = #{cTelHome,jdbcType=VARCHAR},
+      </if>
+      <if test="cHomeAddr != null" >
+        c_home_addr = #{cHomeAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagInforelation != null" >
+        c_flag_inforelation = #{cFlagInforelation,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdXCellCnt != null" >
+        c_ir_id_x_cell_cnt = #{cIrIdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdXMailCnt != null" >
+        c_ir_id_x_mail_cnt = #{cIrIdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdXNameCnt != null" >
+        c_ir_id_x_name_cnt = #{cIrIdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellXIdCnt != null" >
+        c_ir_cell_x_id_cnt = #{cIrCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellXMailCnt != null" >
+        c_ir_cell_x_mail_cnt = #{cIrCellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellXNameCnt != null" >
+        c_ir_cell_x_name_cnt = #{cIrCellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdInlistwithCell != null" >
+        c_ir_id_inlistwith_cell = #{cIrIdInlistwithCell,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellInlistwithId != null" >
+        c_ir_cell_inlistwith_id = #{cIrCellInlistwithId,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrAllmatchDays != null" >
+        c_ir_allmatch_days = #{cIrAllmatchDays,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdXCellNotmatDays != null" >
+        c_ir_id_x_cell_notmat_days = #{cIrIdXCellNotmatDays,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellXIdNotmatDays != null" >
+        c_ir_cell_x_id_notmat_days = #{cIrCellXIdNotmatDays,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdXCellLastchgDays != null" >
+        c_ir_id_x_cell_lastchg_days = #{cIrIdXCellLastchgDays,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellXIdLastchgDays != null" >
+        c_ir_cell_x_id_lastchg_days = #{cIrCellXIdLastchgDays,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrIdIsReabnormal != null" >
+        c_ir_id_is_reabnormal = #{cIrIdIsReabnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrCellIsReabnormal != null" >
+        c_ir_cell_is_reabnormal = #{cIrCellIsReabnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrMailIsReabnormal != null" >
+        c_ir_mail_is_reabnormal = #{cIrMailIsReabnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXCellCnt != null" >
+        c_ir_m1_id_x_cell_cnt = #{cIrM1IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXMailCnt != null" >
+        c_ir_m1_id_x_mail_cnt = #{cIrM1IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXNameCnt != null" >
+        c_ir_m1_id_x_name_cnt = #{cIrM1IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXIdCnt != null" >
+        c_ir_m1_cell_x_id_cnt = #{cIrM1CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXMailCnt != null" >
+        c_ir_m1_cell_x_mail_cnt = #{cIrM1CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXNameCnt != null" >
+        c_ir_m1_cell_x_name_cnt = #{cIrM1CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXTelHomeCnt != null" >
+        c_ir_m1_id_x_tel_home_cnt = #{cIrM1IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXHomeAddrCnt != null" >
+        c_ir_m1_id_x_home_addr_cnt = #{cIrM1IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1IdXBizAddrCnt != null" >
+        c_ir_m1_id_x_biz_addr_cnt = #{cIrM1IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXTelHomeCnt != null" >
+        c_ir_m1_cell_x_tel_home_cnt = #{cIrM1CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXHomeAddrCnt != null" >
+        c_ir_m1_cell_x_home_addr_cnt = #{cIrM1CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1CellXBizAddrCnt != null" >
+        c_ir_m1_cell_x_biz_addr_cnt = #{cIrM1CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1LinkmanCellXIdCnt != null" >
+        c_ir_m1_linkman_cell_x_id_cnt = #{cIrM1LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1LinkmanCellXCellCnt != null" >
+        c_ir_m1_linkman_cell_x_cell_cnt = #{cIrM1LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1LinkmanCellXTelHomeCnt != null" >
+        c_ir_m1_linkman_cell_x_tel_home_cnt = #{cIrM1LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1TelHomeXCellCnt != null" >
+        c_ir_m1_tel_home_x_cell_cnt = #{cIrM1TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1TelHomeXIdCnt != null" >
+        c_ir_m1_tel_home_x_id_cnt = #{cIrM1TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1HomeAddrXCellCnt != null" >
+        c_ir_m1_home_addr_x_cell_cnt = #{cIrM1HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1HomeAddrXIdCnt != null" >
+        c_ir_m1_home_addr_x_id_cnt = #{cIrM1HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1TelHomeXHomeAddrCnt != null" >
+        c_ir_m1_tel_home_x_home_addr_cnt = #{cIrM1TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM1HomeAddrXTelHomeCnt != null" >
+        c_ir_m1_home_addr_x_tel_home_cnt = #{cIrM1HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXCellCnt != null" >
+        c_ir_m3_id_x_cell_cnt = #{cIrM3IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXMailCnt != null" >
+        c_ir_m3_id_x_mail_cnt = #{cIrM3IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXNameCnt != null" >
+        c_ir_m3_id_x_name_cnt = #{cIrM3IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXIdCnt != null" >
+        c_ir_m3_cell_x_id_cnt = #{cIrM3CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXMailCnt != null" >
+        c_ir_m3_cell_x_mail_cnt = #{cIrM3CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXNameCnt != null" >
+        c_ir_m3_cell_x_name_cnt = #{cIrM3CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXTelHomeCnt != null" >
+        c_ir_m3_id_x_tel_home_cnt = #{cIrM3IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXHomeAddrCnt != null" >
+        c_ir_m3_id_x_home_addr_cnt = #{cIrM3IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3IdXBizAddrCnt != null" >
+        c_ir_m3_id_x_biz_addr_cnt = #{cIrM3IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXTelHomeCnt != null" >
+        c_ir_m3_cell_x_tel_home_cnt = #{cIrM3CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXHomeAddrCnt != null" >
+        c_ir_m3_cell_x_home_addr_cnt = #{cIrM3CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3CellXBizAddrCnt != null" >
+        c_ir_m3_cell_x_biz_addr_cnt = #{cIrM3CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3LinkmanCellXIdCnt != null" >
+        c_ir_m3_linkman_cell_x_id_cnt = #{cIrM3LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3LinkmanCellXCellCnt != null" >
+        c_ir_m3_linkman_cell_x_cell_cnt = #{cIrM3LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3LinkmanCellXTelHomeCnt != null" >
+        c_ir_m3_linkman_cell_x_tel_home_cnt = #{cIrM3LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3TelHomeXCellCnt != null" >
+        c_ir_m3_tel_home_x_cell_cnt = #{cIrM3TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3TelHomeXIdCnt != null" >
+        c_ir_m3_tel_home_x_id_cnt = #{cIrM3TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3HomeAddrXCellCnt != null" >
+        c_ir_m3_home_addr_x_cell_cnt = #{cIrM3HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3HomeAddrXIdCnt != null" >
+        c_ir_m3_home_addr_x_id_cnt = #{cIrM3HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3TelHomeXHomeAddrCnt != null" >
+        c_ir_m3_tel_home_x_home_addr_cnt = #{cIrM3TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM3HomeAddrXTelHomeCnt != null" >
+        c_ir_m3_home_addr_x_tel_home_cnt = #{cIrM3HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXCellCnt != null" >
+        c_ir_m6_id_x_cell_cnt = #{cIrM6IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXMailCnt != null" >
+        c_ir_m6_id_x_mail_cnt = #{cIrM6IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXNameCnt != null" >
+        c_ir_m6_id_x_name_cnt = #{cIrM6IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXIdCnt != null" >
+        c_ir_m6_cell_x_id_cnt = #{cIrM6CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXMailCnt != null" >
+        c_ir_m6_cell_x_mail_cnt = #{cIrM6CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXNameCnt != null" >
+        c_ir_m6_cell_x_name_cnt = #{cIrM6CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXTelHomeCnt != null" >
+        c_ir_m6_id_x_tel_home_cnt = #{cIrM6IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXHomeAddrCnt != null" >
+        c_ir_m6_id_x_home_addr_cnt = #{cIrM6IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6IdXBizAddrCnt != null" >
+        c_ir_m6_id_x_biz_addr_cnt = #{cIrM6IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXTelHomeCnt != null" >
+        c_ir_m6_cell_x_tel_home_cnt = #{cIrM6CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXHomeAddrCnt != null" >
+        c_ir_m6_cell_x_home_addr_cnt = #{cIrM6CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6CellXBizAddrCnt != null" >
+        c_ir_m6_cell_x_biz_addr_cnt = #{cIrM6CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6LinkmanCellXIdCnt != null" >
+        c_ir_m6_linkman_cell_x_id_cnt = #{cIrM6LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6LinkmanCellXCellCnt != null" >
+        c_ir_m6_linkman_cell_x_cell_cnt = #{cIrM6LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6LinkmanCellXTelHomeCnt != null" >
+        c_ir_m6_linkman_cell_x_tel_home_cnt = #{cIrM6LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6TelHomeXCellCnt != null" >
+        c_ir_m6_tel_home_x_cell_cnt = #{cIrM6TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6TelHomeXIdCnt != null" >
+        c_ir_m6_tel_home_x_id_cnt = #{cIrM6TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6HomeAddrXCellCnt != null" >
+        c_ir_m6_home_addr_x_cell_cnt = #{cIrM6HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6HomeAddrXIdCnt != null" >
+        c_ir_m6_home_addr_x_id_cnt = #{cIrM6HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6TelHomeXHomeAddrCnt != null" >
+        c_ir_m6_tel_home_x_home_addr_cnt = #{cIrM6TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM6HomeAddrXTelHomeCnt != null" >
+        c_ir_m6_home_addr_x_tel_home_cnt = #{cIrM6HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXCellCnt != null" >
+        c_ir_m12_id_x_cell_cnt = #{cIrM12IdXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXMailCnt != null" >
+        c_ir_m12_id_x_mail_cnt = #{cIrM12IdXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXNameCnt != null" >
+        c_ir_m12_id_x_name_cnt = #{cIrM12IdXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXIdCnt != null" >
+        c_ir_m12_cell_x_id_cnt = #{cIrM12CellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXMailCnt != null" >
+        c_ir_m12_cell_x_mail_cnt = #{cIrM12CellXMailCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXNameCnt != null" >
+        c_ir_m12_cell_x_name_cnt = #{cIrM12CellXNameCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXTelHomeCnt != null" >
+        c_ir_m12_id_x_tel_home_cnt = #{cIrM12IdXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXHomeAddrCnt != null" >
+        c_ir_m12_id_x_home_addr_cnt = #{cIrM12IdXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12IdXBizAddrCnt != null" >
+        c_ir_m12_id_x_biz_addr_cnt = #{cIrM12IdXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXTelHomeCnt != null" >
+        c_ir_m12_cell_x_tel_home_cnt = #{cIrM12CellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXHomeAddrCnt != null" >
+        c_ir_m12_cell_x_home_addr_cnt = #{cIrM12CellXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12CellXBizAddrCnt != null" >
+        c_ir_m12_cell_x_biz_addr_cnt = #{cIrM12CellXBizAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12LinkmanCellXIdCnt != null" >
+        c_ir_m12_linkman_cell_x_id_cnt = #{cIrM12LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12LinkmanCellXCellCnt != null" >
+        c_ir_m12_linkman_cell_x_cell_cnt = #{cIrM12LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12LinkmanCellXTelHomeCnt != null" >
+        c_ir_m12_linkman_cell_x_tel_home_cnt = #{cIrM12LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12TelHomeXCellCnt != null" >
+        c_ir_m12_tel_home_x_cell_cnt = #{cIrM12TelHomeXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12TelHomeXIdCnt != null" >
+        c_ir_m12_tel_home_x_id_cnt = #{cIrM12TelHomeXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12HomeAddrXCellCnt != null" >
+        c_ir_m12_home_addr_x_cell_cnt = #{cIrM12HomeAddrXCellCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12HomeAddrXIdCnt != null" >
+        c_ir_m12_home_addr_x_id_cnt = #{cIrM12HomeAddrXIdCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12TelHomeXHomeAddrCnt != null" >
+        c_ir_m12_tel_home_x_home_addr_cnt = #{cIrM12TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cIrM12HomeAddrXTelHomeCnt != null" >
+        c_ir_m12_home_addr_x_tel_home_cnt = #{cIrM12HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdBrRealInfo" >
+    update t_third_br_real_info
+    set swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      c_linkman_cell = #{cLinkmanCell,jdbcType=VARCHAR},
+      c_tel_home = #{cTelHome,jdbcType=VARCHAR},
+      c_home_addr = #{cHomeAddr,jdbcType=VARCHAR},
+      c_flag_inforelation = #{cFlagInforelation,jdbcType=VARCHAR},
+      c_ir_id_x_cell_cnt = #{cIrIdXCellCnt,jdbcType=VARCHAR},
+      c_ir_id_x_mail_cnt = #{cIrIdXMailCnt,jdbcType=VARCHAR},
+      c_ir_id_x_name_cnt = #{cIrIdXNameCnt,jdbcType=VARCHAR},
+      c_ir_cell_x_id_cnt = #{cIrCellXIdCnt,jdbcType=VARCHAR},
+      c_ir_cell_x_mail_cnt = #{cIrCellXMailCnt,jdbcType=VARCHAR},
+      c_ir_cell_x_name_cnt = #{cIrCellXNameCnt,jdbcType=VARCHAR},
+      c_ir_id_inlistwith_cell = #{cIrIdInlistwithCell,jdbcType=VARCHAR},
+      c_ir_cell_inlistwith_id = #{cIrCellInlistwithId,jdbcType=VARCHAR},
+      c_ir_allmatch_days = #{cIrAllmatchDays,jdbcType=VARCHAR},
+      c_ir_id_x_cell_notmat_days = #{cIrIdXCellNotmatDays,jdbcType=VARCHAR},
+      c_ir_cell_x_id_notmat_days = #{cIrCellXIdNotmatDays,jdbcType=VARCHAR},
+      c_ir_id_x_cell_lastchg_days = #{cIrIdXCellLastchgDays,jdbcType=VARCHAR},
+      c_ir_cell_x_id_lastchg_days = #{cIrCellXIdLastchgDays,jdbcType=VARCHAR},
+      c_ir_id_is_reabnormal = #{cIrIdIsReabnormal,jdbcType=VARCHAR},
+      c_ir_cell_is_reabnormal = #{cIrCellIsReabnormal,jdbcType=VARCHAR},
+      c_ir_mail_is_reabnormal = #{cIrMailIsReabnormal,jdbcType=VARCHAR},
+      c_ir_m1_id_x_cell_cnt = #{cIrM1IdXCellCnt,jdbcType=VARCHAR},
+      c_ir_m1_id_x_mail_cnt = #{cIrM1IdXMailCnt,jdbcType=VARCHAR},
+      c_ir_m1_id_x_name_cnt = #{cIrM1IdXNameCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_id_cnt = #{cIrM1CellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_mail_cnt = #{cIrM1CellXMailCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_name_cnt = #{cIrM1CellXNameCnt,jdbcType=VARCHAR},
+      c_ir_m1_id_x_tel_home_cnt = #{cIrM1IdXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m1_id_x_home_addr_cnt = #{cIrM1IdXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m1_id_x_biz_addr_cnt = #{cIrM1IdXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_tel_home_cnt = #{cIrM1CellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_home_addr_cnt = #{cIrM1CellXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m1_cell_x_biz_addr_cnt = #{cIrM1CellXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m1_linkman_cell_x_id_cnt = #{cIrM1LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m1_linkman_cell_x_cell_cnt = #{cIrM1LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      c_ir_m1_linkman_cell_x_tel_home_cnt = #{cIrM1LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m1_tel_home_x_cell_cnt = #{cIrM1TelHomeXCellCnt,jdbcType=VARCHAR},
+      c_ir_m1_tel_home_x_id_cnt = #{cIrM1TelHomeXIdCnt,jdbcType=VARCHAR},
+      c_ir_m1_home_addr_x_cell_cnt = #{cIrM1HomeAddrXCellCnt,jdbcType=VARCHAR},
+      c_ir_m1_home_addr_x_id_cnt = #{cIrM1HomeAddrXIdCnt,jdbcType=VARCHAR},
+      c_ir_m1_tel_home_x_home_addr_cnt = #{cIrM1TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m1_home_addr_x_tel_home_cnt = #{cIrM1HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_cell_cnt = #{cIrM3IdXCellCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_mail_cnt = #{cIrM3IdXMailCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_name_cnt = #{cIrM3IdXNameCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_id_cnt = #{cIrM3CellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_mail_cnt = #{cIrM3CellXMailCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_name_cnt = #{cIrM3CellXNameCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_tel_home_cnt = #{cIrM3IdXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_home_addr_cnt = #{cIrM3IdXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m3_id_x_biz_addr_cnt = #{cIrM3IdXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_tel_home_cnt = #{cIrM3CellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_home_addr_cnt = #{cIrM3CellXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m3_cell_x_biz_addr_cnt = #{cIrM3CellXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m3_linkman_cell_x_id_cnt = #{cIrM3LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m3_linkman_cell_x_cell_cnt = #{cIrM3LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      c_ir_m3_linkman_cell_x_tel_home_cnt = #{cIrM3LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m3_tel_home_x_cell_cnt = #{cIrM3TelHomeXCellCnt,jdbcType=VARCHAR},
+      c_ir_m3_tel_home_x_id_cnt = #{cIrM3TelHomeXIdCnt,jdbcType=VARCHAR},
+      c_ir_m3_home_addr_x_cell_cnt = #{cIrM3HomeAddrXCellCnt,jdbcType=VARCHAR},
+      c_ir_m3_home_addr_x_id_cnt = #{cIrM3HomeAddrXIdCnt,jdbcType=VARCHAR},
+      c_ir_m3_tel_home_x_home_addr_cnt = #{cIrM3TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m3_home_addr_x_tel_home_cnt = #{cIrM3HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_cell_cnt = #{cIrM6IdXCellCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_mail_cnt = #{cIrM6IdXMailCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_name_cnt = #{cIrM6IdXNameCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_id_cnt = #{cIrM6CellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_mail_cnt = #{cIrM6CellXMailCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_name_cnt = #{cIrM6CellXNameCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_tel_home_cnt = #{cIrM6IdXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_home_addr_cnt = #{cIrM6IdXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m6_id_x_biz_addr_cnt = #{cIrM6IdXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_tel_home_cnt = #{cIrM6CellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_home_addr_cnt = #{cIrM6CellXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m6_cell_x_biz_addr_cnt = #{cIrM6CellXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m6_linkman_cell_x_id_cnt = #{cIrM6LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m6_linkman_cell_x_cell_cnt = #{cIrM6LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      c_ir_m6_linkman_cell_x_tel_home_cnt = #{cIrM6LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m6_tel_home_x_cell_cnt = #{cIrM6TelHomeXCellCnt,jdbcType=VARCHAR},
+      c_ir_m6_tel_home_x_id_cnt = #{cIrM6TelHomeXIdCnt,jdbcType=VARCHAR},
+      c_ir_m6_home_addr_x_cell_cnt = #{cIrM6HomeAddrXCellCnt,jdbcType=VARCHAR},
+      c_ir_m6_home_addr_x_id_cnt = #{cIrM6HomeAddrXIdCnt,jdbcType=VARCHAR},
+      c_ir_m6_tel_home_x_home_addr_cnt = #{cIrM6TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m6_home_addr_x_tel_home_cnt = #{cIrM6HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_cell_cnt = #{cIrM12IdXCellCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_mail_cnt = #{cIrM12IdXMailCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_name_cnt = #{cIrM12IdXNameCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_id_cnt = #{cIrM12CellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_mail_cnt = #{cIrM12CellXMailCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_name_cnt = #{cIrM12CellXNameCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_tel_home_cnt = #{cIrM12IdXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_home_addr_cnt = #{cIrM12IdXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m12_id_x_biz_addr_cnt = #{cIrM12IdXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_tel_home_cnt = #{cIrM12CellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_home_addr_cnt = #{cIrM12CellXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m12_cell_x_biz_addr_cnt = #{cIrM12CellXBizAddrCnt,jdbcType=VARCHAR},
+      c_ir_m12_linkman_cell_x_id_cnt = #{cIrM12LinkmanCellXIdCnt,jdbcType=VARCHAR},
+      c_ir_m12_linkman_cell_x_cell_cnt = #{cIrM12LinkmanCellXCellCnt,jdbcType=VARCHAR},
+      c_ir_m12_linkman_cell_x_tel_home_cnt = #{cIrM12LinkmanCellXTelHomeCnt,jdbcType=VARCHAR},
+      c_ir_m12_tel_home_x_cell_cnt = #{cIrM12TelHomeXCellCnt,jdbcType=VARCHAR},
+      c_ir_m12_tel_home_x_id_cnt = #{cIrM12TelHomeXIdCnt,jdbcType=VARCHAR},
+      c_ir_m12_home_addr_x_cell_cnt = #{cIrM12HomeAddrXCellCnt,jdbcType=VARCHAR},
+      c_ir_m12_home_addr_x_id_cnt = #{cIrM12HomeAddrXIdCnt,jdbcType=VARCHAR},
+      c_ir_m12_tel_home_x_home_addr_cnt = #{cIrM12TelHomeXHomeAddrCnt,jdbcType=VARCHAR},
+      c_ir_m12_home_addr_x_tel_home_cnt = #{cIrM12HomeAddrXTelHomeCnt,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

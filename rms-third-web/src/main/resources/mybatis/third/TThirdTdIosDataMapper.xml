@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdTdIosDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdTdIosData" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_seq_id" property="cSeqId" jdbcType="VARCHAR" />
+    <result column="c_version" property="cVersion" jdbcType="VARCHAR" />
+    <result column="c_os" property="cOs" jdbcType="VARCHAR" />
+    <result column="c_tokenId" property="cTokenid" jdbcType="VARCHAR" />
+    <result column="c_deviceId" property="cDeviceid" jdbcType="VARCHAR" />
+    <result column="c_idfa" property="cIdfa" jdbcType="VARCHAR" />
+    <result column="c_idfv" property="cIdfv" jdbcType="VARCHAR" />
+    <result column="c_uuid" property="cUuid" jdbcType="VARCHAR" />
+    <result column="c_bootTime" property="cBoottime" jdbcType="VARCHAR" />
+    <result column="c_currentTime" property="cCurrenttime" jdbcType="VARCHAR" />
+    <result column="c_totalSpace" property="cTotalspace" jdbcType="VARCHAR" />
+    <result column="c_freeSpace" property="cFreespace" jdbcType="VARCHAR" />
+    <result column="c_memory" property="cMemory" jdbcType="VARCHAR" />
+    <result column="c_flash_enabled" property="cFlashEnabled" jdbcType="VARCHAR" />
+    <result column="brightness" property="brightness" jdbcType="VARCHAR" />
+    <result column="battery" property="battery" jdbcType="VARCHAR" />
+    <result column="cellIp" property="cellip" jdbcType="VARCHAR" />
+    <result column="wifiIp" property="wifiip" jdbcType="VARCHAR" />
+    <result column="wifiNetmask" property="wifinetmask" jdbcType="VARCHAR" />
+    <result column="vpnIp" property="vpnip" jdbcType="VARCHAR" />
+    <result column="vpnNetmask" property="vpnnetmask" jdbcType="VARCHAR" />
+    <result column="mac" property="mac" jdbcType="VARCHAR" />
+    <result column="networkType" property="networktype" jdbcType="VARCHAR" />
+    <result column="ssid" property="ssid" jdbcType="VARCHAR" />
+    <result column="bssid" property="bssid" jdbcType="VARCHAR" />
+    <result column="proxyType" property="proxytype" jdbcType="VARCHAR" />
+    <result column="proxyUrl" property="proxyurl" jdbcType="VARCHAR" />
+    <result column="dns" property="dns" jdbcType="VARCHAR" />
+    <result column="jailbreak" property="jailbreak" jdbcType="VARCHAR" />
+    <result column="platform" property="platform" jdbcType="VARCHAR" />
+    <result column="osVersion" property="osversion" jdbcType="VARCHAR" />
+    <result column="deviceName" property="devicename" jdbcType="VARCHAR" />
+    <result column="carrier" property="carrier" jdbcType="VARCHAR" />
+    <result column="countryIso" property="countryiso" jdbcType="VARCHAR" />
+    <result column="mcc" property="mcc" jdbcType="VARCHAR" />
+    <result column="mnc" property="mnc" jdbcType="VARCHAR" />
+    <result column="bundleId" property="bundleid" jdbcType="VARCHAR" />
+    <result column="languages" property="languages" jdbcType="VARCHAR" />
+    <result column="trueIp" property="trueip" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_seq_id, c_version, c_os, c_tokenId, c_deviceId, c_idfa, c_idfv, c_uuid, c_bootTime, 
+    c_currentTime, c_totalSpace, c_freeSpace, c_memory, c_flash_enabled, brightness, 
+    battery, cellIp, wifiIp, wifiNetmask, vpnIp, vpnNetmask, mac, networkType, ssid, 
+    bssid, proxyType, proxyUrl, dns, jailbreak, platform, osVersion, deviceName, carrier, 
+    countryIso, mcc, mnc, bundleId, languages, trueIp, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdIosDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_td_ios_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_td_ios_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_td_ios_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdIosDataExample" >
+    delete from t_third_td_ios_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdTdIosData" >
+    insert into t_third_td_ios_data (c_id, c_seq_id, c_version, 
+      c_os, c_tokenId, c_deviceId, 
+      c_idfa, c_idfv, c_uuid, 
+      c_bootTime, c_currentTime, c_totalSpace, 
+      c_freeSpace, c_memory, c_flash_enabled, 
+      brightness, battery, cellIp, 
+      wifiIp, wifiNetmask, vpnIp, 
+      vpnNetmask, mac, networkType, 
+      ssid, bssid, proxyType, 
+      proxyUrl, dns, jailbreak, 
+      platform, osVersion, deviceName, 
+      carrier, countryIso, mcc, 
+      mnc, bundleId, languages, 
+      trueIp, c_creatTime)
+    values (#{cId,jdbcType=VARCHAR}, #{cSeqId,jdbcType=VARCHAR}, #{cVersion,jdbcType=VARCHAR}, 
+      #{cOs,jdbcType=VARCHAR}, #{cTokenid,jdbcType=VARCHAR}, #{cDeviceid,jdbcType=VARCHAR}, 
+      #{cIdfa,jdbcType=VARCHAR}, #{cIdfv,jdbcType=VARCHAR}, #{cUuid,jdbcType=VARCHAR}, 
+      #{cBoottime,jdbcType=VARCHAR}, #{cCurrenttime,jdbcType=VARCHAR}, #{cTotalspace,jdbcType=VARCHAR}, 
+      #{cFreespace,jdbcType=VARCHAR}, #{cMemory,jdbcType=VARCHAR}, #{cFlashEnabled,jdbcType=VARCHAR}, 
+      #{brightness,jdbcType=VARCHAR}, #{battery,jdbcType=VARCHAR}, #{cellip,jdbcType=VARCHAR}, 
+      #{wifiip,jdbcType=VARCHAR}, #{wifinetmask,jdbcType=VARCHAR}, #{vpnip,jdbcType=VARCHAR}, 
+      #{vpnnetmask,jdbcType=VARCHAR}, #{mac,jdbcType=VARCHAR}, #{networktype,jdbcType=VARCHAR}, 
+      #{ssid,jdbcType=VARCHAR}, #{bssid,jdbcType=VARCHAR}, #{proxytype,jdbcType=VARCHAR}, 
+      #{proxyurl,jdbcType=VARCHAR}, #{dns,jdbcType=VARCHAR}, #{jailbreak,jdbcType=VARCHAR}, 
+      #{platform,jdbcType=VARCHAR}, #{osversion,jdbcType=VARCHAR}, #{devicename,jdbcType=VARCHAR}, 
+      #{carrier,jdbcType=VARCHAR}, #{countryiso,jdbcType=VARCHAR}, #{mcc,jdbcType=VARCHAR}, 
+      #{mnc,jdbcType=VARCHAR}, #{bundleid,jdbcType=VARCHAR}, #{languages,jdbcType=VARCHAR}, 
+      #{trueip,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdIosData" >
+    insert into t_third_td_ios_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cSeqId != null" >
+        c_seq_id,
+      </if>
+      <if test="cVersion != null" >
+        c_version,
+      </if>
+      <if test="cOs != null" >
+        c_os,
+      </if>
+      <if test="cTokenid != null" >
+        c_tokenId,
+      </if>
+      <if test="cDeviceid != null" >
+        c_deviceId,
+      </if>
+      <if test="cIdfa != null" >
+        c_idfa,
+      </if>
+      <if test="cIdfv != null" >
+        c_idfv,
+      </if>
+      <if test="cUuid != null" >
+        c_uuid,
+      </if>
+      <if test="cBoottime != null" >
+        c_bootTime,
+      </if>
+      <if test="cCurrenttime != null" >
+        c_currentTime,
+      </if>
+      <if test="cTotalspace != null" >
+        c_totalSpace,
+      </if>
+      <if test="cFreespace != null" >
+        c_freeSpace,
+      </if>
+      <if test="cMemory != null" >
+        c_memory,
+      </if>
+      <if test="cFlashEnabled != null" >
+        c_flash_enabled,
+      </if>
+      <if test="brightness != null" >
+        brightness,
+      </if>
+      <if test="battery != null" >
+        battery,
+      </if>
+      <if test="cellip != null" >
+        cellIp,
+      </if>
+      <if test="wifiip != null" >
+        wifiIp,
+      </if>
+      <if test="wifinetmask != null" >
+        wifiNetmask,
+      </if>
+      <if test="vpnip != null" >
+        vpnIp,
+      </if>
+      <if test="vpnnetmask != null" >
+        vpnNetmask,
+      </if>
+      <if test="mac != null" >
+        mac,
+      </if>
+      <if test="networktype != null" >
+        networkType,
+      </if>
+      <if test="ssid != null" >
+        ssid,
+      </if>
+      <if test="bssid != null" >
+        bssid,
+      </if>
+      <if test="proxytype != null" >
+        proxyType,
+      </if>
+      <if test="proxyurl != null" >
+        proxyUrl,
+      </if>
+      <if test="dns != null" >
+        dns,
+      </if>
+      <if test="jailbreak != null" >
+        jailbreak,
+      </if>
+      <if test="platform != null" >
+        platform,
+      </if>
+      <if test="osversion != null" >
+        osVersion,
+      </if>
+      <if test="devicename != null" >
+        deviceName,
+      </if>
+      <if test="carrier != null" >
+        carrier,
+      </if>
+      <if test="countryiso != null" >
+        countryIso,
+      </if>
+      <if test="mcc != null" >
+        mcc,
+      </if>
+      <if test="mnc != null" >
+        mnc,
+      </if>
+      <if test="bundleid != null" >
+        bundleId,
+      </if>
+      <if test="languages != null" >
+        languages,
+      </if>
+      <if test="trueip != null" >
+        trueIp,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSeqId != null" >
+        #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cVersion != null" >
+        #{cVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="cOs != null" >
+        #{cOs,jdbcType=VARCHAR},
+      </if>
+      <if test="cTokenid != null" >
+        #{cTokenid,jdbcType=VARCHAR},
+      </if>
+      <if test="cDeviceid != null" >
+        #{cDeviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdfa != null" >
+        #{cIdfa,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdfv != null" >
+        #{cIdfv,jdbcType=VARCHAR},
+      </if>
+      <if test="cUuid != null" >
+        #{cUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="cBoottime != null" >
+        #{cBoottime,jdbcType=VARCHAR},
+      </if>
+      <if test="cCurrenttime != null" >
+        #{cCurrenttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cTotalspace != null" >
+        #{cTotalspace,jdbcType=VARCHAR},
+      </if>
+      <if test="cFreespace != null" >
+        #{cFreespace,jdbcType=VARCHAR},
+      </if>
+      <if test="cMemory != null" >
+        #{cMemory,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlashEnabled != null" >
+        #{cFlashEnabled,jdbcType=VARCHAR},
+      </if>
+      <if test="brightness != null" >
+        #{brightness,jdbcType=VARCHAR},
+      </if>
+      <if test="battery != null" >
+        #{battery,jdbcType=VARCHAR},
+      </if>
+      <if test="cellip != null" >
+        #{cellip,jdbcType=VARCHAR},
+      </if>
+      <if test="wifiip != null" >
+        #{wifiip,jdbcType=VARCHAR},
+      </if>
+      <if test="wifinetmask != null" >
+        #{wifinetmask,jdbcType=VARCHAR},
+      </if>
+      <if test="vpnip != null" >
+        #{vpnip,jdbcType=VARCHAR},
+      </if>
+      <if test="vpnnetmask != null" >
+        #{vpnnetmask,jdbcType=VARCHAR},
+      </if>
+      <if test="mac != null" >
+        #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="networktype != null" >
+        #{networktype,jdbcType=VARCHAR},
+      </if>
+      <if test="ssid != null" >
+        #{ssid,jdbcType=VARCHAR},
+      </if>
+      <if test="bssid != null" >
+        #{bssid,jdbcType=VARCHAR},
+      </if>
+      <if test="proxytype != null" >
+        #{proxytype,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyurl != null" >
+        #{proxyurl,jdbcType=VARCHAR},
+      </if>
+      <if test="dns != null" >
+        #{dns,jdbcType=VARCHAR},
+      </if>
+      <if test="jailbreak != null" >
+        #{jailbreak,jdbcType=VARCHAR},
+      </if>
+      <if test="platform != null" >
+        #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="osversion != null" >
+        #{osversion,jdbcType=VARCHAR},
+      </if>
+      <if test="devicename != null" >
+        #{devicename,jdbcType=VARCHAR},
+      </if>
+      <if test="carrier != null" >
+        #{carrier,jdbcType=VARCHAR},
+      </if>
+      <if test="countryiso != null" >
+        #{countryiso,jdbcType=VARCHAR},
+      </if>
+      <if test="mcc != null" >
+        #{mcc,jdbcType=VARCHAR},
+      </if>
+      <if test="mnc != null" >
+        #{mnc,jdbcType=VARCHAR},
+      </if>
+      <if test="bundleid != null" >
+        #{bundleid,jdbcType=VARCHAR},
+      </if>
+      <if test="languages != null" >
+        #{languages,jdbcType=VARCHAR},
+      </if>
+      <if test="trueip != null" >
+        #{trueip,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdIosDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_td_ios_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_td_ios_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSeqId != null" >
+        c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cVersion != null" >
+        c_version = #{record.cVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cOs != null" >
+        c_os = #{record.cOs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTokenid != null" >
+        c_tokenId = #{record.cTokenid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cDeviceid != null" >
+        c_deviceId = #{record.cDeviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIdfa != null" >
+        c_idfa = #{record.cIdfa,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIdfv != null" >
+        c_idfv = #{record.cIdfv,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cUuid != null" >
+        c_uuid = #{record.cUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBoottime != null" >
+        c_bootTime = #{record.cBoottime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCurrenttime != null" >
+        c_currentTime = #{record.cCurrenttime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTotalspace != null" >
+        c_totalSpace = #{record.cTotalspace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFreespace != null" >
+        c_freeSpace = #{record.cFreespace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMemory != null" >
+        c_memory = #{record.cMemory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlashEnabled != null" >
+        c_flash_enabled = #{record.cFlashEnabled,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brightness != null" >
+        brightness = #{record.brightness,jdbcType=VARCHAR},
+      </if>
+      <if test="record.battery != null" >
+        battery = #{record.battery,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cellip != null" >
+        cellIp = #{record.cellip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wifiip != null" >
+        wifiIp = #{record.wifiip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wifinetmask != null" >
+        wifiNetmask = #{record.wifinetmask,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vpnip != null" >
+        vpnIp = #{record.vpnip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vpnnetmask != null" >
+        vpnNetmask = #{record.vpnnetmask,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mac != null" >
+        mac = #{record.mac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.networktype != null" >
+        networkType = #{record.networktype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssid != null" >
+        ssid = #{record.ssid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bssid != null" >
+        bssid = #{record.bssid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proxytype != null" >
+        proxyType = #{record.proxytype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proxyurl != null" >
+        proxyUrl = #{record.proxyurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dns != null" >
+        dns = #{record.dns,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jailbreak != null" >
+        jailbreak = #{record.jailbreak,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platform != null" >
+        platform = #{record.platform,jdbcType=VARCHAR},
+      </if>
+      <if test="record.osversion != null" >
+        osVersion = #{record.osversion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.devicename != null" >
+        deviceName = #{record.devicename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carrier != null" >
+        carrier = #{record.carrier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countryiso != null" >
+        countryIso = #{record.countryiso,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mcc != null" >
+        mcc = #{record.mcc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mnc != null" >
+        mnc = #{record.mnc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bundleid != null" >
+        bundleId = #{record.bundleid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.languages != null" >
+        languages = #{record.languages,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trueip != null" >
+        trueIp = #{record.trueip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_td_ios_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      c_version = #{record.cVersion,jdbcType=VARCHAR},
+      c_os = #{record.cOs,jdbcType=VARCHAR},
+      c_tokenId = #{record.cTokenid,jdbcType=VARCHAR},
+      c_deviceId = #{record.cDeviceid,jdbcType=VARCHAR},
+      c_idfa = #{record.cIdfa,jdbcType=VARCHAR},
+      c_idfv = #{record.cIdfv,jdbcType=VARCHAR},
+      c_uuid = #{record.cUuid,jdbcType=VARCHAR},
+      c_bootTime = #{record.cBoottime,jdbcType=VARCHAR},
+      c_currentTime = #{record.cCurrenttime,jdbcType=VARCHAR},
+      c_totalSpace = #{record.cTotalspace,jdbcType=VARCHAR},
+      c_freeSpace = #{record.cFreespace,jdbcType=VARCHAR},
+      c_memory = #{record.cMemory,jdbcType=VARCHAR},
+      c_flash_enabled = #{record.cFlashEnabled,jdbcType=VARCHAR},
+      brightness = #{record.brightness,jdbcType=VARCHAR},
+      battery = #{record.battery,jdbcType=VARCHAR},
+      cellIp = #{record.cellip,jdbcType=VARCHAR},
+      wifiIp = #{record.wifiip,jdbcType=VARCHAR},
+      wifiNetmask = #{record.wifinetmask,jdbcType=VARCHAR},
+      vpnIp = #{record.vpnip,jdbcType=VARCHAR},
+      vpnNetmask = #{record.vpnnetmask,jdbcType=VARCHAR},
+      mac = #{record.mac,jdbcType=VARCHAR},
+      networkType = #{record.networktype,jdbcType=VARCHAR},
+      ssid = #{record.ssid,jdbcType=VARCHAR},
+      bssid = #{record.bssid,jdbcType=VARCHAR},
+      proxyType = #{record.proxytype,jdbcType=VARCHAR},
+      proxyUrl = #{record.proxyurl,jdbcType=VARCHAR},
+      dns = #{record.dns,jdbcType=VARCHAR},
+      jailbreak = #{record.jailbreak,jdbcType=VARCHAR},
+      platform = #{record.platform,jdbcType=VARCHAR},
+      osVersion = #{record.osversion,jdbcType=VARCHAR},
+      deviceName = #{record.devicename,jdbcType=VARCHAR},
+      carrier = #{record.carrier,jdbcType=VARCHAR},
+      countryIso = #{record.countryiso,jdbcType=VARCHAR},
+      mcc = #{record.mcc,jdbcType=VARCHAR},
+      mnc = #{record.mnc,jdbcType=VARCHAR},
+      bundleId = #{record.bundleid,jdbcType=VARCHAR},
+      languages = #{record.languages,jdbcType=VARCHAR},
+      trueIp = #{record.trueip,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdIosData" >
+    update t_third_td_ios_data
+    <set >
+      <if test="cSeqId != null" >
+        c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cVersion != null" >
+        c_version = #{cVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="cOs != null" >
+        c_os = #{cOs,jdbcType=VARCHAR},
+      </if>
+      <if test="cTokenid != null" >
+        c_tokenId = #{cTokenid,jdbcType=VARCHAR},
+      </if>
+      <if test="cDeviceid != null" >
+        c_deviceId = #{cDeviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdfa != null" >
+        c_idfa = #{cIdfa,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdfv != null" >
+        c_idfv = #{cIdfv,jdbcType=VARCHAR},
+      </if>
+      <if test="cUuid != null" >
+        c_uuid = #{cUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="cBoottime != null" >
+        c_bootTime = #{cBoottime,jdbcType=VARCHAR},
+      </if>
+      <if test="cCurrenttime != null" >
+        c_currentTime = #{cCurrenttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cTotalspace != null" >
+        c_totalSpace = #{cTotalspace,jdbcType=VARCHAR},
+      </if>
+      <if test="cFreespace != null" >
+        c_freeSpace = #{cFreespace,jdbcType=VARCHAR},
+      </if>
+      <if test="cMemory != null" >
+        c_memory = #{cMemory,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlashEnabled != null" >
+        c_flash_enabled = #{cFlashEnabled,jdbcType=VARCHAR},
+      </if>
+      <if test="brightness != null" >
+        brightness = #{brightness,jdbcType=VARCHAR},
+      </if>
+      <if test="battery != null" >
+        battery = #{battery,jdbcType=VARCHAR},
+      </if>
+      <if test="cellip != null" >
+        cellIp = #{cellip,jdbcType=VARCHAR},
+      </if>
+      <if test="wifiip != null" >
+        wifiIp = #{wifiip,jdbcType=VARCHAR},
+      </if>
+      <if test="wifinetmask != null" >
+        wifiNetmask = #{wifinetmask,jdbcType=VARCHAR},
+      </if>
+      <if test="vpnip != null" >
+        vpnIp = #{vpnip,jdbcType=VARCHAR},
+      </if>
+      <if test="vpnnetmask != null" >
+        vpnNetmask = #{vpnnetmask,jdbcType=VARCHAR},
+      </if>
+      <if test="mac != null" >
+        mac = #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="networktype != null" >
+        networkType = #{networktype,jdbcType=VARCHAR},
+      </if>
+      <if test="ssid != null" >
+        ssid = #{ssid,jdbcType=VARCHAR},
+      </if>
+      <if test="bssid != null" >
+        bssid = #{bssid,jdbcType=VARCHAR},
+      </if>
+      <if test="proxytype != null" >
+        proxyType = #{proxytype,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyurl != null" >
+        proxyUrl = #{proxyurl,jdbcType=VARCHAR},
+      </if>
+      <if test="dns != null" >
+        dns = #{dns,jdbcType=VARCHAR},
+      </if>
+      <if test="jailbreak != null" >
+        jailbreak = #{jailbreak,jdbcType=VARCHAR},
+      </if>
+      <if test="platform != null" >
+        platform = #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="osversion != null" >
+        osVersion = #{osversion,jdbcType=VARCHAR},
+      </if>
+      <if test="devicename != null" >
+        deviceName = #{devicename,jdbcType=VARCHAR},
+      </if>
+      <if test="carrier != null" >
+        carrier = #{carrier,jdbcType=VARCHAR},
+      </if>
+      <if test="countryiso != null" >
+        countryIso = #{countryiso,jdbcType=VARCHAR},
+      </if>
+      <if test="mcc != null" >
+        mcc = #{mcc,jdbcType=VARCHAR},
+      </if>
+      <if test="mnc != null" >
+        mnc = #{mnc,jdbcType=VARCHAR},
+      </if>
+      <if test="bundleid != null" >
+        bundleId = #{bundleid,jdbcType=VARCHAR},
+      </if>
+      <if test="languages != null" >
+        languages = #{languages,jdbcType=VARCHAR},
+      </if>
+      <if test="trueip != null" >
+        trueIp = #{trueip,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdTdIosData" >
+    update t_third_td_ios_data
+    set c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      c_version = #{cVersion,jdbcType=VARCHAR},
+      c_os = #{cOs,jdbcType=VARCHAR},
+      c_tokenId = #{cTokenid,jdbcType=VARCHAR},
+      c_deviceId = #{cDeviceid,jdbcType=VARCHAR},
+      c_idfa = #{cIdfa,jdbcType=VARCHAR},
+      c_idfv = #{cIdfv,jdbcType=VARCHAR},
+      c_uuid = #{cUuid,jdbcType=VARCHAR},
+      c_bootTime = #{cBoottime,jdbcType=VARCHAR},
+      c_currentTime = #{cCurrenttime,jdbcType=VARCHAR},
+      c_totalSpace = #{cTotalspace,jdbcType=VARCHAR},
+      c_freeSpace = #{cFreespace,jdbcType=VARCHAR},
+      c_memory = #{cMemory,jdbcType=VARCHAR},
+      c_flash_enabled = #{cFlashEnabled,jdbcType=VARCHAR},
+      brightness = #{brightness,jdbcType=VARCHAR},
+      battery = #{battery,jdbcType=VARCHAR},
+      cellIp = #{cellip,jdbcType=VARCHAR},
+      wifiIp = #{wifiip,jdbcType=VARCHAR},
+      wifiNetmask = #{wifinetmask,jdbcType=VARCHAR},
+      vpnIp = #{vpnip,jdbcType=VARCHAR},
+      vpnNetmask = #{vpnnetmask,jdbcType=VARCHAR},
+      mac = #{mac,jdbcType=VARCHAR},
+      networkType = #{networktype,jdbcType=VARCHAR},
+      ssid = #{ssid,jdbcType=VARCHAR},
+      bssid = #{bssid,jdbcType=VARCHAR},
+      proxyType = #{proxytype,jdbcType=VARCHAR},
+      proxyUrl = #{proxyurl,jdbcType=VARCHAR},
+      dns = #{dns,jdbcType=VARCHAR},
+      jailbreak = #{jailbreak,jdbcType=VARCHAR},
+      platform = #{platform,jdbcType=VARCHAR},
+      osVersion = #{osversion,jdbcType=VARCHAR},
+      deviceName = #{devicename,jdbcType=VARCHAR},
+      carrier = #{carrier,jdbcType=VARCHAR},
+      countryIso = #{countryiso,jdbcType=VARCHAR},
+      mcc = #{mcc,jdbcType=VARCHAR},
+      mnc = #{mnc,jdbcType=VARCHAR},
+      bundleId = #{bundleid,jdbcType=VARCHAR},
+      languages = #{languages,jdbcType=VARCHAR},
+      trueIp = #{trueip,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

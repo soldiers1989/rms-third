@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdTdPolicySetDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdTdPolicySetData" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_seq_id" property="cSeqId" jdbcType="VARCHAR" />
+    <result column="c_policy_uuid" property="cPolicyUuid" jdbcType="VARCHAR" />
+    <result column="c_policy_decision" property="cPolicyDecision" jdbcType="VARCHAR" />
+    <result column="c_policy_mode" property="cPolicyMode" jdbcType="VARCHAR" />
+    <result column="c_policy_score" property="cPolicyScore" jdbcType="VARCHAR" />
+    <result column="c_policy_name" property="cPolicyName" jdbcType="CHAR" />
+    <result column="c_risk_type" property="cRiskType" jdbcType="CHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_seq_id, c_policy_uuid, c_policy_decision, c_policy_mode, c_policy_score, 
+    c_policy_name, c_risk_type, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdPolicySetDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_td_policy_set_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_td_policy_set_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_td_policy_set_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdPolicySetDataExample" >
+    delete from t_third_td_policy_set_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdTdPolicySetData" >
+    insert into t_third_td_policy_set_data (c_id, c_seq_id, c_policy_uuid, 
+      c_policy_decision, c_policy_mode, c_policy_score, 
+      c_policy_name, c_risk_type, c_creatTime
+      )
+    values (#{cId,jdbcType=VARCHAR}, #{cSeqId,jdbcType=VARCHAR}, #{cPolicyUuid,jdbcType=VARCHAR}, 
+      #{cPolicyDecision,jdbcType=VARCHAR}, #{cPolicyMode,jdbcType=VARCHAR}, #{cPolicyScore,jdbcType=VARCHAR}, 
+      #{cPolicyName,jdbcType=CHAR}, #{cRiskType,jdbcType=CHAR}, #{cCreattime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdPolicySetData" >
+    insert into t_third_td_policy_set_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cSeqId != null" >
+        c_seq_id,
+      </if>
+      <if test="cPolicyUuid != null" >
+        c_policy_uuid,
+      </if>
+      <if test="cPolicyDecision != null" >
+        c_policy_decision,
+      </if>
+      <if test="cPolicyMode != null" >
+        c_policy_mode,
+      </if>
+      <if test="cPolicyScore != null" >
+        c_policy_score,
+      </if>
+      <if test="cPolicyName != null" >
+        c_policy_name,
+      </if>
+      <if test="cRiskType != null" >
+        c_risk_type,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSeqId != null" >
+        #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicyUuid != null" >
+        #{cPolicyUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicyDecision != null" >
+        #{cPolicyDecision,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicyMode != null" >
+        #{cPolicyMode,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicyScore != null" >
+        #{cPolicyScore,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicyName != null" >
+        #{cPolicyName,jdbcType=CHAR},
+      </if>
+      <if test="cRiskType != null" >
+        #{cRiskType,jdbcType=CHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdPolicySetDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_td_policy_set_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_td_policy_set_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSeqId != null" >
+        c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPolicyUuid != null" >
+        c_policy_uuid = #{record.cPolicyUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPolicyDecision != null" >
+        c_policy_decision = #{record.cPolicyDecision,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPolicyMode != null" >
+        c_policy_mode = #{record.cPolicyMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPolicyScore != null" >
+        c_policy_score = #{record.cPolicyScore,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPolicyName != null" >
+        c_policy_name = #{record.cPolicyName,jdbcType=CHAR},
+      </if>
+      <if test="record.cRiskType != null" >
+        c_risk_type = #{record.cRiskType,jdbcType=CHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_td_policy_set_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      c_policy_uuid = #{record.cPolicyUuid,jdbcType=VARCHAR},
+      c_policy_decision = #{record.cPolicyDecision,jdbcType=VARCHAR},
+      c_policy_mode = #{record.cPolicyMode,jdbcType=VARCHAR},
+      c_policy_score = #{record.cPolicyScore,jdbcType=VARCHAR},
+      c_policy_name = #{record.cPolicyName,jdbcType=CHAR},
+      c_risk_type = #{record.cRiskType,jdbcType=CHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdPolicySetData" >
+    update t_third_td_policy_set_data
+    <set >
+      <if test="cSeqId != null" >
+        c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicyUuid != null" >
+        c_policy_uuid = #{cPolicyUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicyDecision != null" >
+        c_policy_decision = #{cPolicyDecision,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicyMode != null" >
+        c_policy_mode = #{cPolicyMode,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicyScore != null" >
+        c_policy_score = #{cPolicyScore,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicyName != null" >
+        c_policy_name = #{cPolicyName,jdbcType=CHAR},
+      </if>
+      <if test="cRiskType != null" >
+        c_risk_type = #{cRiskType,jdbcType=CHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdTdPolicySetData" >
+    update t_third_td_policy_set_data
+    set c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      c_policy_uuid = #{cPolicyUuid,jdbcType=VARCHAR},
+      c_policy_decision = #{cPolicyDecision,jdbcType=VARCHAR},
+      c_policy_mode = #{cPolicyMode,jdbcType=VARCHAR},
+      c_policy_score = #{cPolicyScore,jdbcType=VARCHAR},
+      c_policy_name = #{cPolicyName,jdbcType=CHAR},
+      c_risk_type = #{cRiskType,jdbcType=CHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

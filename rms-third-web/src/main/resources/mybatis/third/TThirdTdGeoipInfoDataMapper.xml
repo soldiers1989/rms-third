@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdTdGeoipInfoDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdTdGeoipInfoData" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_seq_id" property="cSeqId" jdbcType="VARCHAR" />
+    <result column="c_city" property="cCity" jdbcType="VARCHAR" />
+    <result column="c_city_id" property="cCityId" jdbcType="VARCHAR" />
+    <result column="c_country" property="cCountry" jdbcType="VARCHAR" />
+    <result column="c_country_id" property="cCountryId" jdbcType="VARCHAR" />
+    <result column="c_province" property="cProvince" jdbcType="CHAR" />
+    <result column="c_province_id" property="cProvinceId" jdbcType="VARCHAR" />
+    <result column="c_county" property="cCounty" jdbcType="VARCHAR" />
+    <result column="c_street" property="cStreet" jdbcType="VARCHAR" />
+    <result column="c_isp" property="cIsp" jdbcType="VARCHAR" />
+    <result column="c_latitude" property="cLatitude" jdbcType="VARCHAR" />
+    <result column="c_longitude" property="cLongitude" jdbcType="VARCHAR" />
+    <result column="c_lip" property="cLip" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_seq_id, c_city, c_city_id, c_country, c_country_id, c_province, c_province_id, 
+    c_county, c_street, c_isp, c_latitude, c_longitude, c_lip, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdGeoipInfoDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_td_geoip_info_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_td_geoip_info_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_td_geoip_info_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdGeoipInfoDataExample" >
+    delete from t_third_td_geoip_info_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdTdGeoipInfoData" >
+    insert into t_third_td_geoip_info_data (c_id, c_seq_id, c_city, 
+      c_city_id, c_country, c_country_id, 
+      c_province, c_province_id, c_county, 
+      c_street, c_isp, c_latitude, 
+      c_longitude, c_lip, c_creatTime
+      )
+    values (#{cId,jdbcType=VARCHAR}, #{cSeqId,jdbcType=VARCHAR}, #{cCity,jdbcType=VARCHAR}, 
+      #{cCityId,jdbcType=VARCHAR}, #{cCountry,jdbcType=VARCHAR}, #{cCountryId,jdbcType=VARCHAR}, 
+      #{cProvince,jdbcType=CHAR}, #{cProvinceId,jdbcType=VARCHAR}, #{cCounty,jdbcType=VARCHAR}, 
+      #{cStreet,jdbcType=VARCHAR}, #{cIsp,jdbcType=VARCHAR}, #{cLatitude,jdbcType=VARCHAR}, 
+      #{cLongitude,jdbcType=VARCHAR}, #{cLip,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdGeoipInfoData" >
+    insert into t_third_td_geoip_info_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cSeqId != null" >
+        c_seq_id,
+      </if>
+      <if test="cCity != null" >
+        c_city,
+      </if>
+      <if test="cCityId != null" >
+        c_city_id,
+      </if>
+      <if test="cCountry != null" >
+        c_country,
+      </if>
+      <if test="cCountryId != null" >
+        c_country_id,
+      </if>
+      <if test="cProvince != null" >
+        c_province,
+      </if>
+      <if test="cProvinceId != null" >
+        c_province_id,
+      </if>
+      <if test="cCounty != null" >
+        c_county,
+      </if>
+      <if test="cStreet != null" >
+        c_street,
+      </if>
+      <if test="cIsp != null" >
+        c_isp,
+      </if>
+      <if test="cLatitude != null" >
+        c_latitude,
+      </if>
+      <if test="cLongitude != null" >
+        c_longitude,
+      </if>
+      <if test="cLip != null" >
+        c_lip,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSeqId != null" >
+        #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cCity != null" >
+        #{cCity,jdbcType=VARCHAR},
+      </if>
+      <if test="cCityId != null" >
+        #{cCityId,jdbcType=VARCHAR},
+      </if>
+      <if test="cCountry != null" >
+        #{cCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="cCountryId != null" >
+        #{cCountryId,jdbcType=VARCHAR},
+      </if>
+      <if test="cProvince != null" >
+        #{cProvince,jdbcType=CHAR},
+      </if>
+      <if test="cProvinceId != null" >
+        #{cProvinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cCounty != null" >
+        #{cCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="cStreet != null" >
+        #{cStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="cIsp != null" >
+        #{cIsp,jdbcType=VARCHAR},
+      </if>
+      <if test="cLatitude != null" >
+        #{cLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="cLongitude != null" >
+        #{cLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="cLip != null" >
+        #{cLip,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdGeoipInfoDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_td_geoip_info_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_td_geoip_info_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSeqId != null" >
+        c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCity != null" >
+        c_city = #{record.cCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCityId != null" >
+        c_city_id = #{record.cCityId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCountry != null" >
+        c_country = #{record.cCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCountryId != null" >
+        c_country_id = #{record.cCountryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cProvince != null" >
+        c_province = #{record.cProvince,jdbcType=CHAR},
+      </if>
+      <if test="record.cProvinceId != null" >
+        c_province_id = #{record.cProvinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCounty != null" >
+        c_county = #{record.cCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStreet != null" >
+        c_street = #{record.cStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIsp != null" >
+        c_isp = #{record.cIsp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLatitude != null" >
+        c_latitude = #{record.cLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLongitude != null" >
+        c_longitude = #{record.cLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLip != null" >
+        c_lip = #{record.cLip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_td_geoip_info_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      c_city = #{record.cCity,jdbcType=VARCHAR},
+      c_city_id = #{record.cCityId,jdbcType=VARCHAR},
+      c_country = #{record.cCountry,jdbcType=VARCHAR},
+      c_country_id = #{record.cCountryId,jdbcType=VARCHAR},
+      c_province = #{record.cProvince,jdbcType=CHAR},
+      c_province_id = #{record.cProvinceId,jdbcType=VARCHAR},
+      c_county = #{record.cCounty,jdbcType=VARCHAR},
+      c_street = #{record.cStreet,jdbcType=VARCHAR},
+      c_isp = #{record.cIsp,jdbcType=VARCHAR},
+      c_latitude = #{record.cLatitude,jdbcType=VARCHAR},
+      c_longitude = #{record.cLongitude,jdbcType=VARCHAR},
+      c_lip = #{record.cLip,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdGeoipInfoData" >
+    update t_third_td_geoip_info_data
+    <set >
+      <if test="cSeqId != null" >
+        c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cCity != null" >
+        c_city = #{cCity,jdbcType=VARCHAR},
+      </if>
+      <if test="cCityId != null" >
+        c_city_id = #{cCityId,jdbcType=VARCHAR},
+      </if>
+      <if test="cCountry != null" >
+        c_country = #{cCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="cCountryId != null" >
+        c_country_id = #{cCountryId,jdbcType=VARCHAR},
+      </if>
+      <if test="cProvince != null" >
+        c_province = #{cProvince,jdbcType=CHAR},
+      </if>
+      <if test="cProvinceId != null" >
+        c_province_id = #{cProvinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cCounty != null" >
+        c_county = #{cCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="cStreet != null" >
+        c_street = #{cStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="cIsp != null" >
+        c_isp = #{cIsp,jdbcType=VARCHAR},
+      </if>
+      <if test="cLatitude != null" >
+        c_latitude = #{cLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="cLongitude != null" >
+        c_longitude = #{cLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="cLip != null" >
+        c_lip = #{cLip,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdTdGeoipInfoData" >
+    update t_third_td_geoip_info_data
+    set c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      c_city = #{cCity,jdbcType=VARCHAR},
+      c_city_id = #{cCityId,jdbcType=VARCHAR},
+      c_country = #{cCountry,jdbcType=VARCHAR},
+      c_country_id = #{cCountryId,jdbcType=VARCHAR},
+      c_province = #{cProvince,jdbcType=CHAR},
+      c_province_id = #{cProvinceId,jdbcType=VARCHAR},
+      c_county = #{cCounty,jdbcType=VARCHAR},
+      c_street = #{cStreet,jdbcType=VARCHAR},
+      c_isp = #{cIsp,jdbcType=VARCHAR},
+      c_latitude = #{cLatitude,jdbcType=VARCHAR},
+      c_longitude = #{cLongitude,jdbcType=VARCHAR},
+      c_lip = #{cLip,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdGongpingjiaDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdGongpingjiaData" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_order_no" property="cOrderNo" jdbcType="VARCHAR" />
+    <result column="c_trace_id" property="cTraceId" jdbcType="VARCHAR" />
+    <result column="c_license_plate_num" property="cLicensePlateNum" jdbcType="VARCHAR" />
+    <result column="c_vin" property="cVin" jdbcType="VARCHAR" />
+    <result column="c_license_plat_header" property="cLicensePlatHeader" jdbcType="VARCHAR" />
+    <result column="c_status" property="cStatus" jdbcType="VARCHAR" />
+    <result column="c_message" property="cMessage" jdbcType="CHAR" />
+    <result column="c_min_sell_price" property="cMinSellPrice" jdbcType="VARCHAR" />
+    <result column="c_sell_price" property="cSellPrice" jdbcType="VARCHAR" />
+    <result column="c_max_sell_price" property="cMaxSellPrice" jdbcType="VARCHAR" />
+    <result column="c_sell_url" property="cSellUrl" jdbcType="VARCHAR" />
+    <result column="c_min_private_price" property="cMinPrivatePrice" jdbcType="VARCHAR" />
+    <result column="c_private_price" property="cPrivatePrice" jdbcType="VARCHAR" />
+    <result column="c_max_private_price" property="cMaxPrivatePrice" jdbcType="CHAR" />
+    <result column="c_private_url" property="cPrivateUrl" jdbcType="CHAR" />
+    <result column="c_min_buy_price" property="cMinBuyPrice" jdbcType="CHAR" />
+    <result column="c_buy_price" property="cBuyPrice" jdbcType="CHAR" />
+    <result column="c_max_buy_price" property="cMaxBuyPrice" jdbcType="CHAR" />
+    <result column="c_buy_url" property="cBuyUrl" jdbcType="CHAR" />
+    <result column="c_model_detail_slug" property="cModelDetailSlug" jdbcType="CHAR" />
+    <result column="c_create_time" property="cCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_order_no, c_trace_id, c_license_plate_num, c_vin, c_license_plat_header, 
+    c_status, c_message, c_min_sell_price, c_sell_price, c_max_sell_price, c_sell_url, 
+    c_min_private_price, c_private_price, c_max_private_price, c_private_url, c_min_buy_price, 
+    c_buy_price, c_max_buy_price, c_buy_url, c_model_detail_slug, c_create_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdGongpingjiaDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_gongpingjia_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_gongpingjia_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_gongpingjia_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdGongpingjiaDataExample" >
+    delete from t_third_gongpingjia_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdGongpingjiaData" >
+    insert into t_third_gongpingjia_data (c_id, c_order_no, c_trace_id, 
+      c_license_plate_num, c_vin, c_license_plat_header, 
+      c_status, c_message, c_min_sell_price, 
+      c_sell_price, c_max_sell_price, c_sell_url, 
+      c_min_private_price, c_private_price, c_max_private_price, 
+      c_private_url, c_min_buy_price, c_buy_price, 
+      c_max_buy_price, c_buy_url, c_model_detail_slug, 
+      c_create_time)
+    values (#{cId,jdbcType=VARCHAR}, #{cOrderNo,jdbcType=VARCHAR}, #{cTraceId,jdbcType=VARCHAR}, 
+      #{cLicensePlateNum,jdbcType=VARCHAR}, #{cVin,jdbcType=VARCHAR}, #{cLicensePlatHeader,jdbcType=VARCHAR}, 
+      #{cStatus,jdbcType=VARCHAR}, #{cMessage,jdbcType=CHAR}, #{cMinSellPrice,jdbcType=VARCHAR}, 
+      #{cSellPrice,jdbcType=VARCHAR}, #{cMaxSellPrice,jdbcType=VARCHAR}, #{cSellUrl,jdbcType=VARCHAR}, 
+      #{cMinPrivatePrice,jdbcType=VARCHAR}, #{cPrivatePrice,jdbcType=VARCHAR}, #{cMaxPrivatePrice,jdbcType=CHAR}, 
+      #{cPrivateUrl,jdbcType=CHAR}, #{cMinBuyPrice,jdbcType=CHAR}, #{cBuyPrice,jdbcType=CHAR}, 
+      #{cMaxBuyPrice,jdbcType=CHAR}, #{cBuyUrl,jdbcType=CHAR}, #{cModelDetailSlug,jdbcType=CHAR}, 
+      #{cCreateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdGongpingjiaData" >
+    insert into t_third_gongpingjia_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cOrderNo != null" >
+        c_order_no,
+      </if>
+      <if test="cTraceId != null" >
+        c_trace_id,
+      </if>
+      <if test="cLicensePlateNum != null" >
+        c_license_plate_num,
+      </if>
+      <if test="cVin != null" >
+        c_vin,
+      </if>
+      <if test="cLicensePlatHeader != null" >
+        c_license_plat_header,
+      </if>
+      <if test="cStatus != null" >
+        c_status,
+      </if>
+      <if test="cMessage != null" >
+        c_message,
+      </if>
+      <if test="cMinSellPrice != null" >
+        c_min_sell_price,
+      </if>
+      <if test="cSellPrice != null" >
+        c_sell_price,
+      </if>
+      <if test="cMaxSellPrice != null" >
+        c_max_sell_price,
+      </if>
+      <if test="cSellUrl != null" >
+        c_sell_url,
+      </if>
+      <if test="cMinPrivatePrice != null" >
+        c_min_private_price,
+      </if>
+      <if test="cPrivatePrice != null" >
+        c_private_price,
+      </if>
+      <if test="cMaxPrivatePrice != null" >
+        c_max_private_price,
+      </if>
+      <if test="cPrivateUrl != null" >
+        c_private_url,
+      </if>
+      <if test="cMinBuyPrice != null" >
+        c_min_buy_price,
+      </if>
+      <if test="cBuyPrice != null" >
+        c_buy_price,
+      </if>
+      <if test="cMaxBuyPrice != null" >
+        c_max_buy_price,
+      </if>
+      <if test="cBuyUrl != null" >
+        c_buy_url,
+      </if>
+      <if test="cModelDetailSlug != null" >
+        c_model_detail_slug,
+      </if>
+      <if test="cCreateTime != null" >
+        c_create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cOrderNo != null" >
+        #{cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cTraceId != null" >
+        #{cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cLicensePlateNum != null" >
+        #{cLicensePlateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cVin != null" >
+        #{cVin,jdbcType=VARCHAR},
+      </if>
+      <if test="cLicensePlatHeader != null" >
+        #{cLicensePlatHeader,jdbcType=VARCHAR},
+      </if>
+      <if test="cStatus != null" >
+        #{cStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cMessage != null" >
+        #{cMessage,jdbcType=CHAR},
+      </if>
+      <if test="cMinSellPrice != null" >
+        #{cMinSellPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="cSellPrice != null" >
+        #{cSellPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="cMaxSellPrice != null" >
+        #{cMaxSellPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="cSellUrl != null" >
+        #{cSellUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="cMinPrivatePrice != null" >
+        #{cMinPrivatePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="cPrivatePrice != null" >
+        #{cPrivatePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="cMaxPrivatePrice != null" >
+        #{cMaxPrivatePrice,jdbcType=CHAR},
+      </if>
+      <if test="cPrivateUrl != null" >
+        #{cPrivateUrl,jdbcType=CHAR},
+      </if>
+      <if test="cMinBuyPrice != null" >
+        #{cMinBuyPrice,jdbcType=CHAR},
+      </if>
+      <if test="cBuyPrice != null" >
+        #{cBuyPrice,jdbcType=CHAR},
+      </if>
+      <if test="cMaxBuyPrice != null" >
+        #{cMaxBuyPrice,jdbcType=CHAR},
+      </if>
+      <if test="cBuyUrl != null" >
+        #{cBuyUrl,jdbcType=CHAR},
+      </if>
+      <if test="cModelDetailSlug != null" >
+        #{cModelDetailSlug,jdbcType=CHAR},
+      </if>
+      <if test="cCreateTime != null" >
+        #{cCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdGongpingjiaDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_gongpingjia_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_gongpingjia_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cOrderNo != null" >
+        c_order_no = #{record.cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTraceId != null" >
+        c_trace_id = #{record.cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLicensePlateNum != null" >
+        c_license_plate_num = #{record.cLicensePlateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cVin != null" >
+        c_vin = #{record.cVin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLicensePlatHeader != null" >
+        c_license_plat_header = #{record.cLicensePlatHeader,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStatus != null" >
+        c_status = #{record.cStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMessage != null" >
+        c_message = #{record.cMessage,jdbcType=CHAR},
+      </if>
+      <if test="record.cMinSellPrice != null" >
+        c_min_sell_price = #{record.cMinSellPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSellPrice != null" >
+        c_sell_price = #{record.cSellPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMaxSellPrice != null" >
+        c_max_sell_price = #{record.cMaxSellPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSellUrl != null" >
+        c_sell_url = #{record.cSellUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMinPrivatePrice != null" >
+        c_min_private_price = #{record.cMinPrivatePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPrivatePrice != null" >
+        c_private_price = #{record.cPrivatePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMaxPrivatePrice != null" >
+        c_max_private_price = #{record.cMaxPrivatePrice,jdbcType=CHAR},
+      </if>
+      <if test="record.cPrivateUrl != null" >
+        c_private_url = #{record.cPrivateUrl,jdbcType=CHAR},
+      </if>
+      <if test="record.cMinBuyPrice != null" >
+        c_min_buy_price = #{record.cMinBuyPrice,jdbcType=CHAR},
+      </if>
+      <if test="record.cBuyPrice != null" >
+        c_buy_price = #{record.cBuyPrice,jdbcType=CHAR},
+      </if>
+      <if test="record.cMaxBuyPrice != null" >
+        c_max_buy_price = #{record.cMaxBuyPrice,jdbcType=CHAR},
+      </if>
+      <if test="record.cBuyUrl != null" >
+        c_buy_url = #{record.cBuyUrl,jdbcType=CHAR},
+      </if>
+      <if test="record.cModelDetailSlug != null" >
+        c_model_detail_slug = #{record.cModelDetailSlug,jdbcType=CHAR},
+      </if>
+      <if test="record.cCreateTime != null" >
+        c_create_time = #{record.cCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_gongpingjia_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_order_no = #{record.cOrderNo,jdbcType=VARCHAR},
+      c_trace_id = #{record.cTraceId,jdbcType=VARCHAR},
+      c_license_plate_num = #{record.cLicensePlateNum,jdbcType=VARCHAR},
+      c_vin = #{record.cVin,jdbcType=VARCHAR},
+      c_license_plat_header = #{record.cLicensePlatHeader,jdbcType=VARCHAR},
+      c_status = #{record.cStatus,jdbcType=VARCHAR},
+      c_message = #{record.cMessage,jdbcType=CHAR},
+      c_min_sell_price = #{record.cMinSellPrice,jdbcType=VARCHAR},
+      c_sell_price = #{record.cSellPrice,jdbcType=VARCHAR},
+      c_max_sell_price = #{record.cMaxSellPrice,jdbcType=VARCHAR},
+      c_sell_url = #{record.cSellUrl,jdbcType=VARCHAR},
+      c_min_private_price = #{record.cMinPrivatePrice,jdbcType=VARCHAR},
+      c_private_price = #{record.cPrivatePrice,jdbcType=VARCHAR},
+      c_max_private_price = #{record.cMaxPrivatePrice,jdbcType=CHAR},
+      c_private_url = #{record.cPrivateUrl,jdbcType=CHAR},
+      c_min_buy_price = #{record.cMinBuyPrice,jdbcType=CHAR},
+      c_buy_price = #{record.cBuyPrice,jdbcType=CHAR},
+      c_max_buy_price = #{record.cMaxBuyPrice,jdbcType=CHAR},
+      c_buy_url = #{record.cBuyUrl,jdbcType=CHAR},
+      c_model_detail_slug = #{record.cModelDetailSlug,jdbcType=CHAR},
+      c_create_time = #{record.cCreateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdGongpingjiaData" >
+    update t_third_gongpingjia_data
+    <set >
+      <if test="cOrderNo != null" >
+        c_order_no = #{cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cTraceId != null" >
+        c_trace_id = #{cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cLicensePlateNum != null" >
+        c_license_plate_num = #{cLicensePlateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cVin != null" >
+        c_vin = #{cVin,jdbcType=VARCHAR},
+      </if>
+      <if test="cLicensePlatHeader != null" >
+        c_license_plat_header = #{cLicensePlatHeader,jdbcType=VARCHAR},
+      </if>
+      <if test="cStatus != null" >
+        c_status = #{cStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cMessage != null" >
+        c_message = #{cMessage,jdbcType=CHAR},
+      </if>
+      <if test="cMinSellPrice != null" >
+        c_min_sell_price = #{cMinSellPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="cSellPrice != null" >
+        c_sell_price = #{cSellPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="cMaxSellPrice != null" >
+        c_max_sell_price = #{cMaxSellPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="cSellUrl != null" >
+        c_sell_url = #{cSellUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="cMinPrivatePrice != null" >
+        c_min_private_price = #{cMinPrivatePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="cPrivatePrice != null" >
+        c_private_price = #{cPrivatePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="cMaxPrivatePrice != null" >
+        c_max_private_price = #{cMaxPrivatePrice,jdbcType=CHAR},
+      </if>
+      <if test="cPrivateUrl != null" >
+        c_private_url = #{cPrivateUrl,jdbcType=CHAR},
+      </if>
+      <if test="cMinBuyPrice != null" >
+        c_min_buy_price = #{cMinBuyPrice,jdbcType=CHAR},
+      </if>
+      <if test="cBuyPrice != null" >
+        c_buy_price = #{cBuyPrice,jdbcType=CHAR},
+      </if>
+      <if test="cMaxBuyPrice != null" >
+        c_max_buy_price = #{cMaxBuyPrice,jdbcType=CHAR},
+      </if>
+      <if test="cBuyUrl != null" >
+        c_buy_url = #{cBuyUrl,jdbcType=CHAR},
+      </if>
+      <if test="cModelDetailSlug != null" >
+        c_model_detail_slug = #{cModelDetailSlug,jdbcType=CHAR},
+      </if>
+      <if test="cCreateTime != null" >
+        c_create_time = #{cCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdGongpingjiaData" >
+    update t_third_gongpingjia_data
+    set c_order_no = #{cOrderNo,jdbcType=VARCHAR},
+      c_trace_id = #{cTraceId,jdbcType=VARCHAR},
+      c_license_plate_num = #{cLicensePlateNum,jdbcType=VARCHAR},
+      c_vin = #{cVin,jdbcType=VARCHAR},
+      c_license_plat_header = #{cLicensePlatHeader,jdbcType=VARCHAR},
+      c_status = #{cStatus,jdbcType=VARCHAR},
+      c_message = #{cMessage,jdbcType=CHAR},
+      c_min_sell_price = #{cMinSellPrice,jdbcType=VARCHAR},
+      c_sell_price = #{cSellPrice,jdbcType=VARCHAR},
+      c_max_sell_price = #{cMaxSellPrice,jdbcType=VARCHAR},
+      c_sell_url = #{cSellUrl,jdbcType=VARCHAR},
+      c_min_private_price = #{cMinPrivatePrice,jdbcType=VARCHAR},
+      c_private_price = #{cPrivatePrice,jdbcType=VARCHAR},
+      c_max_private_price = #{cMaxPrivatePrice,jdbcType=CHAR},
+      c_private_url = #{cPrivateUrl,jdbcType=CHAR},
+      c_min_buy_price = #{cMinBuyPrice,jdbcType=CHAR},
+      c_buy_price = #{cBuyPrice,jdbcType=CHAR},
+      c_max_buy_price = #{cMaxBuyPrice,jdbcType=CHAR},
+      c_buy_url = #{cBuyUrl,jdbcType=CHAR},
+      c_model_detail_slug = #{cModelDetailSlug,jdbcType=CHAR},
+      c_create_time = #{cCreateTime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

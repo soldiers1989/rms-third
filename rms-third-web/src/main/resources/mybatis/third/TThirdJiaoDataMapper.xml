@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdJiaoDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdJiaoData" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_order_no" property="cOrderNo" jdbcType="VARCHAR" />
+    <result column="c_trace_id" property="cTraceId" jdbcType="VARCHAR" />
+    <result column="c_name" property="cName" jdbcType="VARCHAR" />
+    <result column="c_phone" property="cPhone" jdbcType="VARCHAR" />
+    <result column="c_id_card" property="cIdCard" jdbcType="VARCHAR" />
+    <result column="c_inner_type" property="cInnerType" jdbcType="CHAR" />
+    <result column="c_code" property="cCode" jdbcType="VARCHAR" />
+    <result column="c_province" property="cProvince" jdbcType="VARCHAR" />
+    <result column="c_city" property="cCity" jdbcType="VARCHAR" />
+    <result column="c_isp" property="cIsp" jdbcType="VARCHAR" />
+    <result column="c_rsl_code" property="cRslCode" jdbcType="VARCHAR" />
+    <result column="c_rsl_desc" property="cRslDesc" jdbcType="VARCHAR" />
+    <result column="c_msg" property="cMsg" jdbcType="CHAR" />
+    <result column="c_create_time" property="cCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_order_no, c_trace_id, c_name, c_phone, c_id_card, c_inner_type, c_code, c_province, 
+    c_city, c_isp, c_rsl_code, c_rsl_desc, c_msg, c_create_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdJiaoDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_jiao_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_jiao_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_jiao_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdJiaoDataExample" >
+    delete from t_third_jiao_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdJiaoData" >
+    insert into t_third_jiao_data (c_id, c_order_no, c_trace_id, 
+      c_name, c_phone, c_id_card, 
+      c_inner_type, c_code, c_province, 
+      c_city, c_isp, c_rsl_code, 
+      c_rsl_desc, c_msg, c_create_time
+      )
+    values (#{cId,jdbcType=VARCHAR}, #{cOrderNo,jdbcType=VARCHAR}, #{cTraceId,jdbcType=VARCHAR}, 
+      #{cName,jdbcType=VARCHAR}, #{cPhone,jdbcType=VARCHAR}, #{cIdCard,jdbcType=VARCHAR}, 
+      #{cInnerType,jdbcType=CHAR}, #{cCode,jdbcType=VARCHAR}, #{cProvince,jdbcType=VARCHAR}, 
+      #{cCity,jdbcType=VARCHAR}, #{cIsp,jdbcType=VARCHAR}, #{cRslCode,jdbcType=VARCHAR}, 
+      #{cRslDesc,jdbcType=VARCHAR}, #{cMsg,jdbcType=CHAR}, #{cCreateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdJiaoData" >
+    insert into t_third_jiao_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cOrderNo != null" >
+        c_order_no,
+      </if>
+      <if test="cTraceId != null" >
+        c_trace_id,
+      </if>
+      <if test="cName != null" >
+        c_name,
+      </if>
+      <if test="cPhone != null" >
+        c_phone,
+      </if>
+      <if test="cIdCard != null" >
+        c_id_card,
+      </if>
+      <if test="cInnerType != null" >
+        c_inner_type,
+      </if>
+      <if test="cCode != null" >
+        c_code,
+      </if>
+      <if test="cProvince != null" >
+        c_province,
+      </if>
+      <if test="cCity != null" >
+        c_city,
+      </if>
+      <if test="cIsp != null" >
+        c_isp,
+      </if>
+      <if test="cRslCode != null" >
+        c_rsl_code,
+      </if>
+      <if test="cRslDesc != null" >
+        c_rsl_desc,
+      </if>
+      <if test="cMsg != null" >
+        c_msg,
+      </if>
+      <if test="cCreateTime != null" >
+        c_create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cOrderNo != null" >
+        #{cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cTraceId != null" >
+        #{cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null" >
+        #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="cPhone != null" >
+        #{cPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdCard != null" >
+        #{cIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="cInnerType != null" >
+        #{cInnerType,jdbcType=CHAR},
+      </if>
+      <if test="cCode != null" >
+        #{cCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cProvince != null" >
+        #{cProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="cCity != null" >
+        #{cCity,jdbcType=VARCHAR},
+      </if>
+      <if test="cIsp != null" >
+        #{cIsp,jdbcType=VARCHAR},
+      </if>
+      <if test="cRslCode != null" >
+        #{cRslCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cRslDesc != null" >
+        #{cRslDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="cMsg != null" >
+        #{cMsg,jdbcType=CHAR},
+      </if>
+      <if test="cCreateTime != null" >
+        #{cCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdJiaoDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_jiao_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_jiao_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cOrderNo != null" >
+        c_order_no = #{record.cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTraceId != null" >
+        c_trace_id = #{record.cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cName != null" >
+        c_name = #{record.cName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPhone != null" >
+        c_phone = #{record.cPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIdCard != null" >
+        c_id_card = #{record.cIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cInnerType != null" >
+        c_inner_type = #{record.cInnerType,jdbcType=CHAR},
+      </if>
+      <if test="record.cCode != null" >
+        c_code = #{record.cCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cProvince != null" >
+        c_province = #{record.cProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCity != null" >
+        c_city = #{record.cCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIsp != null" >
+        c_isp = #{record.cIsp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRslCode != null" >
+        c_rsl_code = #{record.cRslCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRslDesc != null" >
+        c_rsl_desc = #{record.cRslDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMsg != null" >
+        c_msg = #{record.cMsg,jdbcType=CHAR},
+      </if>
+      <if test="record.cCreateTime != null" >
+        c_create_time = #{record.cCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_jiao_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_order_no = #{record.cOrderNo,jdbcType=VARCHAR},
+      c_trace_id = #{record.cTraceId,jdbcType=VARCHAR},
+      c_name = #{record.cName,jdbcType=VARCHAR},
+      c_phone = #{record.cPhone,jdbcType=VARCHAR},
+      c_id_card = #{record.cIdCard,jdbcType=VARCHAR},
+      c_inner_type = #{record.cInnerType,jdbcType=CHAR},
+      c_code = #{record.cCode,jdbcType=VARCHAR},
+      c_province = #{record.cProvince,jdbcType=VARCHAR},
+      c_city = #{record.cCity,jdbcType=VARCHAR},
+      c_isp = #{record.cIsp,jdbcType=VARCHAR},
+      c_rsl_code = #{record.cRslCode,jdbcType=VARCHAR},
+      c_rsl_desc = #{record.cRslDesc,jdbcType=VARCHAR},
+      c_msg = #{record.cMsg,jdbcType=CHAR},
+      c_create_time = #{record.cCreateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdJiaoData" >
+    update t_third_jiao_data
+    <set >
+      <if test="cOrderNo != null" >
+        c_order_no = #{cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cTraceId != null" >
+        c_trace_id = #{cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null" >
+        c_name = #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="cPhone != null" >
+        c_phone = #{cPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdCard != null" >
+        c_id_card = #{cIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="cInnerType != null" >
+        c_inner_type = #{cInnerType,jdbcType=CHAR},
+      </if>
+      <if test="cCode != null" >
+        c_code = #{cCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cProvince != null" >
+        c_province = #{cProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="cCity != null" >
+        c_city = #{cCity,jdbcType=VARCHAR},
+      </if>
+      <if test="cIsp != null" >
+        c_isp = #{cIsp,jdbcType=VARCHAR},
+      </if>
+      <if test="cRslCode != null" >
+        c_rsl_code = #{cRslCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cRslDesc != null" >
+        c_rsl_desc = #{cRslDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="cMsg != null" >
+        c_msg = #{cMsg,jdbcType=CHAR},
+      </if>
+      <if test="cCreateTime != null" >
+        c_create_time = #{cCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdJiaoData" >
+    update t_third_jiao_data
+    set c_order_no = #{cOrderNo,jdbcType=VARCHAR},
+      c_trace_id = #{cTraceId,jdbcType=VARCHAR},
+      c_name = #{cName,jdbcType=VARCHAR},
+      c_phone = #{cPhone,jdbcType=VARCHAR},
+      c_id_card = #{cIdCard,jdbcType=VARCHAR},
+      c_inner_type = #{cInnerType,jdbcType=CHAR},
+      c_code = #{cCode,jdbcType=VARCHAR},
+      c_province = #{cProvince,jdbcType=VARCHAR},
+      c_city = #{cCity,jdbcType=VARCHAR},
+      c_isp = #{cIsp,jdbcType=VARCHAR},
+      c_rsl_code = #{cRslCode,jdbcType=VARCHAR},
+      c_rsl_desc = #{cRslDesc,jdbcType=VARCHAR},
+      c_msg = #{cMsg,jdbcType=CHAR},
+      c_create_time = #{cCreateTime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

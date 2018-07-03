@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdBrConsInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdBrConsInfo" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="swift_number" property="swiftNumber" jdbcType="VARCHAR" />
+    <result column="c_mail" property="cMail" jdbcType="VARCHAR" />
+    <result column="c_flag_consumption_c" property="cFlagConsumptionC" jdbcType="VARCHAR" />
+    <result column="c_cons_cont" property="cConsCont" jdbcType="VARCHAR" />
+    <result column="c_cons_time_recent" property="cConsTimeRecent" jdbcType="VARCHAR" />
+    <result column="c_cons_tot_m3_visits" property="cConsTotM3Visits" jdbcType="VARCHAR" />
+    <result column="c_cons_tot_m3_num" property="cConsTotM3Num" jdbcType="VARCHAR" />
+    <result column="c_cons_tot_m3_pay" property="cConsTotM3Pay" jdbcType="VARCHAR" />
+    <result column="c_cons_tot_m3_p_catenum" property="cConsTotM3PCatenum" jdbcType="VARCHAR" />
+    <result column="c_cons_tot_m3_v_catenum" property="cConsTotM3VCatenum" jdbcType="VARCHAR" />
+    <result column="c_cons_tot_m12_visits" property="cConsTotM12Visits" jdbcType="VARCHAR" />
+    <result column="c_cons_tot_m12_num" property="cConsTotM12Num" jdbcType="VARCHAR" />
+    <result column="c_cons_tot_m12_pay" property="cConsTotM12Pay" jdbcType="VARCHAR" />
+    <result column="c_cons_tot_m12_p_catenum" property="cConsTotM12PCatenum" jdbcType="VARCHAR" />
+    <result column="c_cons_tot_m12_v_catenum" property="cConsTotM12VCatenum" jdbcType="VARCHAR" />
+    <result column="c_cons_max_m3_num" property="cConsMaxM3Num" jdbcType="VARCHAR" />
+    <result column="c_cons_max_m3_pay" property="cConsMaxM3Pay" jdbcType="VARCHAR" />
+    <result column="c_cons_max_m3_paycate" property="cConsMaxM3Paycate" jdbcType="VARCHAR" />
+    <result column="c_cons_max_m12_num" property="cConsMaxM12Num" jdbcType="VARCHAR" />
+    <result column="c_cons_max_m12_pay" property="cConsMaxM12Pay" jdbcType="VARCHAR" />
+    <result column="c_cons_max_m12_paycate" property="cConsMaxM12Paycate" jdbcType="VARCHAR" />
+    <result column="c_cons_m3_RYBH_num" property="cConsM3RybhNum" jdbcType="VARCHAR" />
+    <result column="c_cons_m3_RYBH_pay" property="cConsM3RybhPay" jdbcType="VARCHAR" />
+    <result column="c_cons_m3_JYDQ_num" property="cConsM3JydqNum" jdbcType="VARCHAR" />
+    <result column="c_cons_m3_JYDQ_pay" property="cConsM3JydqPay" jdbcType="VARCHAR" />
+    <result column="c_cons_m3_MYYP_num" property="cConsM3MyypNum" jdbcType="VARCHAR" />
+    <result column="c_cons_m3_MYYP_pay" property="cConsM3MyypPay" jdbcType="VARCHAR" />
+    <result column="c_cons_m12_RYBH_num" property="cConsM12RybhNum" jdbcType="VARCHAR" />
+    <result column="c_cons_m12_RYBH_pay" property="cConsM12RybhPay" jdbcType="VARCHAR" />
+    <result column="c_cons_m12_JYDQ_num" property="cConsM12JydqNum" jdbcType="VARCHAR" />
+    <result column="c_cons_m12_JYDQ_pay" property="cConsM12JydqPay" jdbcType="VARCHAR" />
+    <result column="c_cons_m12_MYYP_num" property="cConsM12MyypNum" jdbcType="VARCHAR" />
+    <result column="c_cons_m12_MYYP_pay" property="cConsM12MyypPay" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, swift_number, c_mail, c_flag_consumption_c, c_cons_cont, c_cons_time_recent, 
+    c_cons_tot_m3_visits, c_cons_tot_m3_num, c_cons_tot_m3_pay, c_cons_tot_m3_p_catenum, 
+    c_cons_tot_m3_v_catenum, c_cons_tot_m12_visits, c_cons_tot_m12_num, c_cons_tot_m12_pay, 
+    c_cons_tot_m12_p_catenum, c_cons_tot_m12_v_catenum, c_cons_max_m3_num, c_cons_max_m3_pay, 
+    c_cons_max_m3_paycate, c_cons_max_m12_num, c_cons_max_m12_pay, c_cons_max_m12_paycate, 
+    c_cons_m3_RYBH_num, c_cons_m3_RYBH_pay, c_cons_m3_JYDQ_num, c_cons_m3_JYDQ_pay, c_cons_m3_MYYP_num, 
+    c_cons_m3_MYYP_pay, c_cons_m12_RYBH_num, c_cons_m12_RYBH_pay, c_cons_m12_JYDQ_num, 
+    c_cons_m12_JYDQ_pay, c_cons_m12_MYYP_num, c_cons_m12_MYYP_pay, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrConsInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_br_cons_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_br_cons_info
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_br_cons_info
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrConsInfoExample" >
+    delete from t_third_br_cons_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdBrConsInfo" >
+    insert into t_third_br_cons_info (c_id, swift_number, c_mail, 
+      c_flag_consumption_c, c_cons_cont, c_cons_time_recent, 
+      c_cons_tot_m3_visits, c_cons_tot_m3_num, c_cons_tot_m3_pay, 
+      c_cons_tot_m3_p_catenum, c_cons_tot_m3_v_catenum, 
+      c_cons_tot_m12_visits, c_cons_tot_m12_num, c_cons_tot_m12_pay, 
+      c_cons_tot_m12_p_catenum, c_cons_tot_m12_v_catenum, 
+      c_cons_max_m3_num, c_cons_max_m3_pay, c_cons_max_m3_paycate, 
+      c_cons_max_m12_num, c_cons_max_m12_pay, c_cons_max_m12_paycate, 
+      c_cons_m3_RYBH_num, c_cons_m3_RYBH_pay, c_cons_m3_JYDQ_num, 
+      c_cons_m3_JYDQ_pay, c_cons_m3_MYYP_num, c_cons_m3_MYYP_pay, 
+      c_cons_m12_RYBH_num, c_cons_m12_RYBH_pay, c_cons_m12_JYDQ_num, 
+      c_cons_m12_JYDQ_pay, c_cons_m12_MYYP_num, c_cons_m12_MYYP_pay, 
+      c_creatTime)
+    values (#{cId,jdbcType=VARCHAR}, #{swiftNumber,jdbcType=VARCHAR}, #{cMail,jdbcType=VARCHAR}, 
+      #{cFlagConsumptionC,jdbcType=VARCHAR}, #{cConsCont,jdbcType=VARCHAR}, #{cConsTimeRecent,jdbcType=VARCHAR}, 
+      #{cConsTotM3Visits,jdbcType=VARCHAR}, #{cConsTotM3Num,jdbcType=VARCHAR}, #{cConsTotM3Pay,jdbcType=VARCHAR}, 
+      #{cConsTotM3PCatenum,jdbcType=VARCHAR}, #{cConsTotM3VCatenum,jdbcType=VARCHAR}, 
+      #{cConsTotM12Visits,jdbcType=VARCHAR}, #{cConsTotM12Num,jdbcType=VARCHAR}, #{cConsTotM12Pay,jdbcType=VARCHAR}, 
+      #{cConsTotM12PCatenum,jdbcType=VARCHAR}, #{cConsTotM12VCatenum,jdbcType=VARCHAR}, 
+      #{cConsMaxM3Num,jdbcType=VARCHAR}, #{cConsMaxM3Pay,jdbcType=VARCHAR}, #{cConsMaxM3Paycate,jdbcType=VARCHAR}, 
+      #{cConsMaxM12Num,jdbcType=VARCHAR}, #{cConsMaxM12Pay,jdbcType=VARCHAR}, #{cConsMaxM12Paycate,jdbcType=VARCHAR}, 
+      #{cConsM3RybhNum,jdbcType=VARCHAR}, #{cConsM3RybhPay,jdbcType=VARCHAR}, #{cConsM3JydqNum,jdbcType=VARCHAR}, 
+      #{cConsM3JydqPay,jdbcType=VARCHAR}, #{cConsM3MyypNum,jdbcType=VARCHAR}, #{cConsM3MyypPay,jdbcType=VARCHAR}, 
+      #{cConsM12RybhNum,jdbcType=VARCHAR}, #{cConsM12RybhPay,jdbcType=VARCHAR}, #{cConsM12JydqNum,jdbcType=VARCHAR}, 
+      #{cConsM12JydqPay,jdbcType=VARCHAR}, #{cConsM12MyypNum,jdbcType=VARCHAR}, #{cConsM12MyypPay,jdbcType=VARCHAR}, 
+      #{cCreattime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrConsInfo" >
+    insert into t_third_br_cons_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="swiftNumber != null" >
+        swift_number,
+      </if>
+      <if test="cMail != null" >
+        c_mail,
+      </if>
+      <if test="cFlagConsumptionC != null" >
+        c_flag_consumption_c,
+      </if>
+      <if test="cConsCont != null" >
+        c_cons_cont,
+      </if>
+      <if test="cConsTimeRecent != null" >
+        c_cons_time_recent,
+      </if>
+      <if test="cConsTotM3Visits != null" >
+        c_cons_tot_m3_visits,
+      </if>
+      <if test="cConsTotM3Num != null" >
+        c_cons_tot_m3_num,
+      </if>
+      <if test="cConsTotM3Pay != null" >
+        c_cons_tot_m3_pay,
+      </if>
+      <if test="cConsTotM3PCatenum != null" >
+        c_cons_tot_m3_p_catenum,
+      </if>
+      <if test="cConsTotM3VCatenum != null" >
+        c_cons_tot_m3_v_catenum,
+      </if>
+      <if test="cConsTotM12Visits != null" >
+        c_cons_tot_m12_visits,
+      </if>
+      <if test="cConsTotM12Num != null" >
+        c_cons_tot_m12_num,
+      </if>
+      <if test="cConsTotM12Pay != null" >
+        c_cons_tot_m12_pay,
+      </if>
+      <if test="cConsTotM12PCatenum != null" >
+        c_cons_tot_m12_p_catenum,
+      </if>
+      <if test="cConsTotM12VCatenum != null" >
+        c_cons_tot_m12_v_catenum,
+      </if>
+      <if test="cConsMaxM3Num != null" >
+        c_cons_max_m3_num,
+      </if>
+      <if test="cConsMaxM3Pay != null" >
+        c_cons_max_m3_pay,
+      </if>
+      <if test="cConsMaxM3Paycate != null" >
+        c_cons_max_m3_paycate,
+      </if>
+      <if test="cConsMaxM12Num != null" >
+        c_cons_max_m12_num,
+      </if>
+      <if test="cConsMaxM12Pay != null" >
+        c_cons_max_m12_pay,
+      </if>
+      <if test="cConsMaxM12Paycate != null" >
+        c_cons_max_m12_paycate,
+      </if>
+      <if test="cConsM3RybhNum != null" >
+        c_cons_m3_RYBH_num,
+      </if>
+      <if test="cConsM3RybhPay != null" >
+        c_cons_m3_RYBH_pay,
+      </if>
+      <if test="cConsM3JydqNum != null" >
+        c_cons_m3_JYDQ_num,
+      </if>
+      <if test="cConsM3JydqPay != null" >
+        c_cons_m3_JYDQ_pay,
+      </if>
+      <if test="cConsM3MyypNum != null" >
+        c_cons_m3_MYYP_num,
+      </if>
+      <if test="cConsM3MyypPay != null" >
+        c_cons_m3_MYYP_pay,
+      </if>
+      <if test="cConsM12RybhNum != null" >
+        c_cons_m12_RYBH_num,
+      </if>
+      <if test="cConsM12RybhPay != null" >
+        c_cons_m12_RYBH_pay,
+      </if>
+      <if test="cConsM12JydqNum != null" >
+        c_cons_m12_JYDQ_num,
+      </if>
+      <if test="cConsM12JydqPay != null" >
+        c_cons_m12_JYDQ_pay,
+      </if>
+      <if test="cConsM12MyypNum != null" >
+        c_cons_m12_MYYP_num,
+      </if>
+      <if test="cConsM12MyypPay != null" >
+        c_cons_m12_MYYP_pay,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="swiftNumber != null" >
+        #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cMail != null" >
+        #{cMail,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagConsumptionC != null" >
+        #{cFlagConsumptionC,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsCont != null" >
+        #{cConsCont,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTimeRecent != null" >
+        #{cConsTimeRecent,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM3Visits != null" >
+        #{cConsTotM3Visits,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM3Num != null" >
+        #{cConsTotM3Num,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM3Pay != null" >
+        #{cConsTotM3Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM3PCatenum != null" >
+        #{cConsTotM3PCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM3VCatenum != null" >
+        #{cConsTotM3VCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM12Visits != null" >
+        #{cConsTotM12Visits,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM12Num != null" >
+        #{cConsTotM12Num,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM12Pay != null" >
+        #{cConsTotM12Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM12PCatenum != null" >
+        #{cConsTotM12PCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM12VCatenum != null" >
+        #{cConsTotM12VCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM3Num != null" >
+        #{cConsMaxM3Num,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM3Pay != null" >
+        #{cConsMaxM3Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM3Paycate != null" >
+        #{cConsMaxM3Paycate,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM12Num != null" >
+        #{cConsMaxM12Num,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM12Pay != null" >
+        #{cConsMaxM12Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM12Paycate != null" >
+        #{cConsMaxM12Paycate,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3RybhNum != null" >
+        #{cConsM3RybhNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3RybhPay != null" >
+        #{cConsM3RybhPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3JydqNum != null" >
+        #{cConsM3JydqNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3JydqPay != null" >
+        #{cConsM3JydqPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3MyypNum != null" >
+        #{cConsM3MyypNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3MyypPay != null" >
+        #{cConsM3MyypPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12RybhNum != null" >
+        #{cConsM12RybhNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12RybhPay != null" >
+        #{cConsM12RybhPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12JydqNum != null" >
+        #{cConsM12JydqNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12JydqPay != null" >
+        #{cConsM12JydqPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12MyypNum != null" >
+        #{cConsM12MyypNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12MyypPay != null" >
+        #{cConsM12MyypPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrConsInfoExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_br_cons_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_br_cons_info
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.swiftNumber != null" >
+        swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMail != null" >
+        c_mail = #{record.cMail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagConsumptionC != null" >
+        c_flag_consumption_c = #{record.cFlagConsumptionC,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsCont != null" >
+        c_cons_cont = #{record.cConsCont,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTimeRecent != null" >
+        c_cons_time_recent = #{record.cConsTimeRecent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTotM3Visits != null" >
+        c_cons_tot_m3_visits = #{record.cConsTotM3Visits,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTotM3Num != null" >
+        c_cons_tot_m3_num = #{record.cConsTotM3Num,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTotM3Pay != null" >
+        c_cons_tot_m3_pay = #{record.cConsTotM3Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTotM3PCatenum != null" >
+        c_cons_tot_m3_p_catenum = #{record.cConsTotM3PCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTotM3VCatenum != null" >
+        c_cons_tot_m3_v_catenum = #{record.cConsTotM3VCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTotM12Visits != null" >
+        c_cons_tot_m12_visits = #{record.cConsTotM12Visits,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTotM12Num != null" >
+        c_cons_tot_m12_num = #{record.cConsTotM12Num,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTotM12Pay != null" >
+        c_cons_tot_m12_pay = #{record.cConsTotM12Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTotM12PCatenum != null" >
+        c_cons_tot_m12_p_catenum = #{record.cConsTotM12PCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsTotM12VCatenum != null" >
+        c_cons_tot_m12_v_catenum = #{record.cConsTotM12VCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsMaxM3Num != null" >
+        c_cons_max_m3_num = #{record.cConsMaxM3Num,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsMaxM3Pay != null" >
+        c_cons_max_m3_pay = #{record.cConsMaxM3Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsMaxM3Paycate != null" >
+        c_cons_max_m3_paycate = #{record.cConsMaxM3Paycate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsMaxM12Num != null" >
+        c_cons_max_m12_num = #{record.cConsMaxM12Num,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsMaxM12Pay != null" >
+        c_cons_max_m12_pay = #{record.cConsMaxM12Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsMaxM12Paycate != null" >
+        c_cons_max_m12_paycate = #{record.cConsMaxM12Paycate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM3RybhNum != null" >
+        c_cons_m3_RYBH_num = #{record.cConsM3RybhNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM3RybhPay != null" >
+        c_cons_m3_RYBH_pay = #{record.cConsM3RybhPay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM3JydqNum != null" >
+        c_cons_m3_JYDQ_num = #{record.cConsM3JydqNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM3JydqPay != null" >
+        c_cons_m3_JYDQ_pay = #{record.cConsM3JydqPay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM3MyypNum != null" >
+        c_cons_m3_MYYP_num = #{record.cConsM3MyypNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM3MyypPay != null" >
+        c_cons_m3_MYYP_pay = #{record.cConsM3MyypPay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM12RybhNum != null" >
+        c_cons_m12_RYBH_num = #{record.cConsM12RybhNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM12RybhPay != null" >
+        c_cons_m12_RYBH_pay = #{record.cConsM12RybhPay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM12JydqNum != null" >
+        c_cons_m12_JYDQ_num = #{record.cConsM12JydqNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM12JydqPay != null" >
+        c_cons_m12_JYDQ_pay = #{record.cConsM12JydqPay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM12MyypNum != null" >
+        c_cons_m12_MYYP_num = #{record.cConsM12MyypNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cConsM12MyypPay != null" >
+        c_cons_m12_MYYP_pay = #{record.cConsM12MyypPay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_br_cons_info
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      c_mail = #{record.cMail,jdbcType=VARCHAR},
+      c_flag_consumption_c = #{record.cFlagConsumptionC,jdbcType=VARCHAR},
+      c_cons_cont = #{record.cConsCont,jdbcType=VARCHAR},
+      c_cons_time_recent = #{record.cConsTimeRecent,jdbcType=VARCHAR},
+      c_cons_tot_m3_visits = #{record.cConsTotM3Visits,jdbcType=VARCHAR},
+      c_cons_tot_m3_num = #{record.cConsTotM3Num,jdbcType=VARCHAR},
+      c_cons_tot_m3_pay = #{record.cConsTotM3Pay,jdbcType=VARCHAR},
+      c_cons_tot_m3_p_catenum = #{record.cConsTotM3PCatenum,jdbcType=VARCHAR},
+      c_cons_tot_m3_v_catenum = #{record.cConsTotM3VCatenum,jdbcType=VARCHAR},
+      c_cons_tot_m12_visits = #{record.cConsTotM12Visits,jdbcType=VARCHAR},
+      c_cons_tot_m12_num = #{record.cConsTotM12Num,jdbcType=VARCHAR},
+      c_cons_tot_m12_pay = #{record.cConsTotM12Pay,jdbcType=VARCHAR},
+      c_cons_tot_m12_p_catenum = #{record.cConsTotM12PCatenum,jdbcType=VARCHAR},
+      c_cons_tot_m12_v_catenum = #{record.cConsTotM12VCatenum,jdbcType=VARCHAR},
+      c_cons_max_m3_num = #{record.cConsMaxM3Num,jdbcType=VARCHAR},
+      c_cons_max_m3_pay = #{record.cConsMaxM3Pay,jdbcType=VARCHAR},
+      c_cons_max_m3_paycate = #{record.cConsMaxM3Paycate,jdbcType=VARCHAR},
+      c_cons_max_m12_num = #{record.cConsMaxM12Num,jdbcType=VARCHAR},
+      c_cons_max_m12_pay = #{record.cConsMaxM12Pay,jdbcType=VARCHAR},
+      c_cons_max_m12_paycate = #{record.cConsMaxM12Paycate,jdbcType=VARCHAR},
+      c_cons_m3_RYBH_num = #{record.cConsM3RybhNum,jdbcType=VARCHAR},
+      c_cons_m3_RYBH_pay = #{record.cConsM3RybhPay,jdbcType=VARCHAR},
+      c_cons_m3_JYDQ_num = #{record.cConsM3JydqNum,jdbcType=VARCHAR},
+      c_cons_m3_JYDQ_pay = #{record.cConsM3JydqPay,jdbcType=VARCHAR},
+      c_cons_m3_MYYP_num = #{record.cConsM3MyypNum,jdbcType=VARCHAR},
+      c_cons_m3_MYYP_pay = #{record.cConsM3MyypPay,jdbcType=VARCHAR},
+      c_cons_m12_RYBH_num = #{record.cConsM12RybhNum,jdbcType=VARCHAR},
+      c_cons_m12_RYBH_pay = #{record.cConsM12RybhPay,jdbcType=VARCHAR},
+      c_cons_m12_JYDQ_num = #{record.cConsM12JydqNum,jdbcType=VARCHAR},
+      c_cons_m12_JYDQ_pay = #{record.cConsM12JydqPay,jdbcType=VARCHAR},
+      c_cons_m12_MYYP_num = #{record.cConsM12MyypNum,jdbcType=VARCHAR},
+      c_cons_m12_MYYP_pay = #{record.cConsM12MyypPay,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrConsInfo" >
+    update t_third_br_cons_info
+    <set >
+      <if test="swiftNumber != null" >
+        swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cMail != null" >
+        c_mail = #{cMail,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagConsumptionC != null" >
+        c_flag_consumption_c = #{cFlagConsumptionC,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsCont != null" >
+        c_cons_cont = #{cConsCont,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTimeRecent != null" >
+        c_cons_time_recent = #{cConsTimeRecent,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM3Visits != null" >
+        c_cons_tot_m3_visits = #{cConsTotM3Visits,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM3Num != null" >
+        c_cons_tot_m3_num = #{cConsTotM3Num,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM3Pay != null" >
+        c_cons_tot_m3_pay = #{cConsTotM3Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM3PCatenum != null" >
+        c_cons_tot_m3_p_catenum = #{cConsTotM3PCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM3VCatenum != null" >
+        c_cons_tot_m3_v_catenum = #{cConsTotM3VCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM12Visits != null" >
+        c_cons_tot_m12_visits = #{cConsTotM12Visits,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM12Num != null" >
+        c_cons_tot_m12_num = #{cConsTotM12Num,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM12Pay != null" >
+        c_cons_tot_m12_pay = #{cConsTotM12Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM12PCatenum != null" >
+        c_cons_tot_m12_p_catenum = #{cConsTotM12PCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsTotM12VCatenum != null" >
+        c_cons_tot_m12_v_catenum = #{cConsTotM12VCatenum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM3Num != null" >
+        c_cons_max_m3_num = #{cConsMaxM3Num,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM3Pay != null" >
+        c_cons_max_m3_pay = #{cConsMaxM3Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM3Paycate != null" >
+        c_cons_max_m3_paycate = #{cConsMaxM3Paycate,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM12Num != null" >
+        c_cons_max_m12_num = #{cConsMaxM12Num,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM12Pay != null" >
+        c_cons_max_m12_pay = #{cConsMaxM12Pay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsMaxM12Paycate != null" >
+        c_cons_max_m12_paycate = #{cConsMaxM12Paycate,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3RybhNum != null" >
+        c_cons_m3_RYBH_num = #{cConsM3RybhNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3RybhPay != null" >
+        c_cons_m3_RYBH_pay = #{cConsM3RybhPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3JydqNum != null" >
+        c_cons_m3_JYDQ_num = #{cConsM3JydqNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3JydqPay != null" >
+        c_cons_m3_JYDQ_pay = #{cConsM3JydqPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3MyypNum != null" >
+        c_cons_m3_MYYP_num = #{cConsM3MyypNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM3MyypPay != null" >
+        c_cons_m3_MYYP_pay = #{cConsM3MyypPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12RybhNum != null" >
+        c_cons_m12_RYBH_num = #{cConsM12RybhNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12RybhPay != null" >
+        c_cons_m12_RYBH_pay = #{cConsM12RybhPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12JydqNum != null" >
+        c_cons_m12_JYDQ_num = #{cConsM12JydqNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12JydqPay != null" >
+        c_cons_m12_JYDQ_pay = #{cConsM12JydqPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12MyypNum != null" >
+        c_cons_m12_MYYP_num = #{cConsM12MyypNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cConsM12MyypPay != null" >
+        c_cons_m12_MYYP_pay = #{cConsM12MyypPay,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdBrConsInfo" >
+    update t_third_br_cons_info
+    set swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      c_mail = #{cMail,jdbcType=VARCHAR},
+      c_flag_consumption_c = #{cFlagConsumptionC,jdbcType=VARCHAR},
+      c_cons_cont = #{cConsCont,jdbcType=VARCHAR},
+      c_cons_time_recent = #{cConsTimeRecent,jdbcType=VARCHAR},
+      c_cons_tot_m3_visits = #{cConsTotM3Visits,jdbcType=VARCHAR},
+      c_cons_tot_m3_num = #{cConsTotM3Num,jdbcType=VARCHAR},
+      c_cons_tot_m3_pay = #{cConsTotM3Pay,jdbcType=VARCHAR},
+      c_cons_tot_m3_p_catenum = #{cConsTotM3PCatenum,jdbcType=VARCHAR},
+      c_cons_tot_m3_v_catenum = #{cConsTotM3VCatenum,jdbcType=VARCHAR},
+      c_cons_tot_m12_visits = #{cConsTotM12Visits,jdbcType=VARCHAR},
+      c_cons_tot_m12_num = #{cConsTotM12Num,jdbcType=VARCHAR},
+      c_cons_tot_m12_pay = #{cConsTotM12Pay,jdbcType=VARCHAR},
+      c_cons_tot_m12_p_catenum = #{cConsTotM12PCatenum,jdbcType=VARCHAR},
+      c_cons_tot_m12_v_catenum = #{cConsTotM12VCatenum,jdbcType=VARCHAR},
+      c_cons_max_m3_num = #{cConsMaxM3Num,jdbcType=VARCHAR},
+      c_cons_max_m3_pay = #{cConsMaxM3Pay,jdbcType=VARCHAR},
+      c_cons_max_m3_paycate = #{cConsMaxM3Paycate,jdbcType=VARCHAR},
+      c_cons_max_m12_num = #{cConsMaxM12Num,jdbcType=VARCHAR},
+      c_cons_max_m12_pay = #{cConsMaxM12Pay,jdbcType=VARCHAR},
+      c_cons_max_m12_paycate = #{cConsMaxM12Paycate,jdbcType=VARCHAR},
+      c_cons_m3_RYBH_num = #{cConsM3RybhNum,jdbcType=VARCHAR},
+      c_cons_m3_RYBH_pay = #{cConsM3RybhPay,jdbcType=VARCHAR},
+      c_cons_m3_JYDQ_num = #{cConsM3JydqNum,jdbcType=VARCHAR},
+      c_cons_m3_JYDQ_pay = #{cConsM3JydqPay,jdbcType=VARCHAR},
+      c_cons_m3_MYYP_num = #{cConsM3MyypNum,jdbcType=VARCHAR},
+      c_cons_m3_MYYP_pay = #{cConsM3MyypPay,jdbcType=VARCHAR},
+      c_cons_m12_RYBH_num = #{cConsM12RybhNum,jdbcType=VARCHAR},
+      c_cons_m12_RYBH_pay = #{cConsM12RybhPay,jdbcType=VARCHAR},
+      c_cons_m12_JYDQ_num = #{cConsM12JydqNum,jdbcType=VARCHAR},
+      c_cons_m12_JYDQ_pay = #{cConsM12JydqPay,jdbcType=VARCHAR},
+      c_cons_m12_MYYP_num = #{cConsM12MyypNum,jdbcType=VARCHAR},
+      c_cons_m12_MYYP_pay = #{cConsM12MyypPay,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

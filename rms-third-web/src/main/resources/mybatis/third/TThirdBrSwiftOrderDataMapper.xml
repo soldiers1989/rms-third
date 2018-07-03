@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdBrSwiftOrderDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdBrSwiftOrderData" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_order_no" property="cOrderNo" jdbcType="VARCHAR" />
+    <result column="c_trace_id" property="cTraceId" jdbcType="VARCHAR" />
+    <result column="c_swift_number" property="cSwiftNumber" jdbcType="VARCHAR" />
+    <result column="c_name" property="cName" jdbcType="VARCHAR" />
+    <result column="c_phone" property="cPhone" jdbcType="VARCHAR" />
+    <result column="c_id_card" property="cIdCard" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_order_no, c_trace_id, c_swift_number, c_name, c_phone, c_id_card, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrSwiftOrderDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_br_swift_order_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_br_swift_order_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_br_swift_order_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrSwiftOrderDataExample" >
+    delete from t_third_br_swift_order_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdBrSwiftOrderData" >
+    insert into t_third_br_swift_order_data (c_id, c_order_no, c_trace_id, 
+      c_swift_number, c_name, c_phone, 
+      c_id_card, c_creatTime)
+    values (#{cId,jdbcType=VARCHAR}, #{cOrderNo,jdbcType=VARCHAR}, #{cTraceId,jdbcType=VARCHAR}, 
+      #{cSwiftNumber,jdbcType=VARCHAR}, #{cName,jdbcType=VARCHAR}, #{cPhone,jdbcType=VARCHAR}, 
+      #{cIdCard,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrSwiftOrderData" >
+    insert into t_third_br_swift_order_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cOrderNo != null" >
+        c_order_no,
+      </if>
+      <if test="cTraceId != null" >
+        c_trace_id,
+      </if>
+      <if test="cSwiftNumber != null" >
+        c_swift_number,
+      </if>
+      <if test="cName != null" >
+        c_name,
+      </if>
+      <if test="cPhone != null" >
+        c_phone,
+      </if>
+      <if test="cIdCard != null" >
+        c_id_card,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cOrderNo != null" >
+        #{cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cTraceId != null" >
+        #{cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSwiftNumber != null" >
+        #{cSwiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null" >
+        #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="cPhone != null" >
+        #{cPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdCard != null" >
+        #{cIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrSwiftOrderDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_br_swift_order_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_br_swift_order_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cOrderNo != null" >
+        c_order_no = #{record.cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTraceId != null" >
+        c_trace_id = #{record.cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSwiftNumber != null" >
+        c_swift_number = #{record.cSwiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cName != null" >
+        c_name = #{record.cName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPhone != null" >
+        c_phone = #{record.cPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIdCard != null" >
+        c_id_card = #{record.cIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_br_swift_order_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_order_no = #{record.cOrderNo,jdbcType=VARCHAR},
+      c_trace_id = #{record.cTraceId,jdbcType=VARCHAR},
+      c_swift_number = #{record.cSwiftNumber,jdbcType=VARCHAR},
+      c_name = #{record.cName,jdbcType=VARCHAR},
+      c_phone = #{record.cPhone,jdbcType=VARCHAR},
+      c_id_card = #{record.cIdCard,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrSwiftOrderData" >
+    update t_third_br_swift_order_data
+    <set >
+      <if test="cOrderNo != null" >
+        c_order_no = #{cOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cTraceId != null" >
+        c_trace_id = #{cTraceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSwiftNumber != null" >
+        c_swift_number = #{cSwiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null" >
+        c_name = #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="cPhone != null" >
+        c_phone = #{cPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdCard != null" >
+        c_id_card = #{cIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdBrSwiftOrderData" >
+    update t_third_br_swift_order_data
+    set c_order_no = #{cOrderNo,jdbcType=VARCHAR},
+      c_trace_id = #{cTraceId,jdbcType=VARCHAR},
+      c_swift_number = #{cSwiftNumber,jdbcType=VARCHAR},
+      c_name = #{cName,jdbcType=VARCHAR},
+      c_phone = #{cPhone,jdbcType=VARCHAR},
+      c_id_card = #{cIdCard,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

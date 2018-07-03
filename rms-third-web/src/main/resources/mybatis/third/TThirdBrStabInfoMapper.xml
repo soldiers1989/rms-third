@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdBrStabInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdBrStabInfo" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="swift_number" property="swiftNumber" jdbcType="VARCHAR" />
+    <result column="c_mail" property="cMail" jdbcType="VARCHAR" />
+    <result column="c_tel_biz" property="cTelBiz" jdbcType="VARCHAR" />
+    <result column="c_tel_home" property="cTelHome" jdbcType="VARCHAR" />
+    <result column="c_flag_stability_c" property="cFlagStabilityC" jdbcType="VARCHAR" />
+    <result column="c_stab_auth_id" property="cStabAuthId" jdbcType="VARCHAR" />
+    <result column="c_stab_auth_cell" property="cStabAuthCell" jdbcType="VARCHAR" />
+    <result column="c_stab_auth_mail" property="cStabAuthMail" jdbcType="VARCHAR" />
+    <result column="c_stab_auth_key_relation" property="cStabAuthKeyRelation" jdbcType="VARCHAR" />
+    <result column="c_stab_auth_name" property="cStabAuthName" jdbcType="VARCHAR" />
+    <result column="c_stab_auth_id_name" property="cStabAuthIdName" jdbcType="VARCHAR" />
+    <result column="c_stab_auth_biz_tel" property="cStabAuthBizTel" jdbcType="VARCHAR" />
+    <result column="c_stab_auth_home_tel" property="cStabAuthHomeTel" jdbcType="VARCHAR" />
+    <result column="c_stab_id_num" property="cStabIdNum" jdbcType="VARCHAR" />
+    <result column="c_stab_cell_num" property="cStabCellNum" jdbcType="VARCHAR" />
+    <result column="c_stab_cell_firsttime" property="cStabCellFirsttime" jdbcType="VARCHAR" />
+    <result column="c_stab_mail_num" property="cStabMailNum" jdbcType="VARCHAR" />
+    <result column="c_stab_name_num" property="cStabNameNum" jdbcType="VARCHAR" />
+    <result column="c_stab_tel_num" property="cStabTelNum" jdbcType="VARCHAR" />
+    <result column="c_stab_addr_num" property="cStabAddrNum" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, swift_number, c_mail, c_tel_biz, c_tel_home, c_flag_stability_c, c_stab_auth_id, 
+    c_stab_auth_cell, c_stab_auth_mail, c_stab_auth_key_relation, c_stab_auth_name, c_stab_auth_id_name, 
+    c_stab_auth_biz_tel, c_stab_auth_home_tel, c_stab_id_num, c_stab_cell_num, c_stab_cell_firsttime, 
+    c_stab_mail_num, c_stab_name_num, c_stab_tel_num, c_stab_addr_num, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrStabInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_br_stab_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_br_stab_info
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_br_stab_info
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrStabInfoExample" >
+    delete from t_third_br_stab_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdBrStabInfo" >
+    insert into t_third_br_stab_info (c_id, swift_number, c_mail, 
+      c_tel_biz, c_tel_home, c_flag_stability_c, 
+      c_stab_auth_id, c_stab_auth_cell, c_stab_auth_mail, 
+      c_stab_auth_key_relation, c_stab_auth_name, c_stab_auth_id_name, 
+      c_stab_auth_biz_tel, c_stab_auth_home_tel, c_stab_id_num, 
+      c_stab_cell_num, c_stab_cell_firsttime, c_stab_mail_num, 
+      c_stab_name_num, c_stab_tel_num, c_stab_addr_num, 
+      c_creatTime)
+    values (#{cId,jdbcType=VARCHAR}, #{swiftNumber,jdbcType=VARCHAR}, #{cMail,jdbcType=VARCHAR}, 
+      #{cTelBiz,jdbcType=VARCHAR}, #{cTelHome,jdbcType=VARCHAR}, #{cFlagStabilityC,jdbcType=VARCHAR}, 
+      #{cStabAuthId,jdbcType=VARCHAR}, #{cStabAuthCell,jdbcType=VARCHAR}, #{cStabAuthMail,jdbcType=VARCHAR}, 
+      #{cStabAuthKeyRelation,jdbcType=VARCHAR}, #{cStabAuthName,jdbcType=VARCHAR}, #{cStabAuthIdName,jdbcType=VARCHAR}, 
+      #{cStabAuthBizTel,jdbcType=VARCHAR}, #{cStabAuthHomeTel,jdbcType=VARCHAR}, #{cStabIdNum,jdbcType=VARCHAR}, 
+      #{cStabCellNum,jdbcType=VARCHAR}, #{cStabCellFirsttime,jdbcType=VARCHAR}, #{cStabMailNum,jdbcType=VARCHAR}, 
+      #{cStabNameNum,jdbcType=VARCHAR}, #{cStabTelNum,jdbcType=VARCHAR}, #{cStabAddrNum,jdbcType=VARCHAR}, 
+      #{cCreattime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrStabInfo" >
+    insert into t_third_br_stab_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="swiftNumber != null" >
+        swift_number,
+      </if>
+      <if test="cMail != null" >
+        c_mail,
+      </if>
+      <if test="cTelBiz != null" >
+        c_tel_biz,
+      </if>
+      <if test="cTelHome != null" >
+        c_tel_home,
+      </if>
+      <if test="cFlagStabilityC != null" >
+        c_flag_stability_c,
+      </if>
+      <if test="cStabAuthId != null" >
+        c_stab_auth_id,
+      </if>
+      <if test="cStabAuthCell != null" >
+        c_stab_auth_cell,
+      </if>
+      <if test="cStabAuthMail != null" >
+        c_stab_auth_mail,
+      </if>
+      <if test="cStabAuthKeyRelation != null" >
+        c_stab_auth_key_relation,
+      </if>
+      <if test="cStabAuthName != null" >
+        c_stab_auth_name,
+      </if>
+      <if test="cStabAuthIdName != null" >
+        c_stab_auth_id_name,
+      </if>
+      <if test="cStabAuthBizTel != null" >
+        c_stab_auth_biz_tel,
+      </if>
+      <if test="cStabAuthHomeTel != null" >
+        c_stab_auth_home_tel,
+      </if>
+      <if test="cStabIdNum != null" >
+        c_stab_id_num,
+      </if>
+      <if test="cStabCellNum != null" >
+        c_stab_cell_num,
+      </if>
+      <if test="cStabCellFirsttime != null" >
+        c_stab_cell_firsttime,
+      </if>
+      <if test="cStabMailNum != null" >
+        c_stab_mail_num,
+      </if>
+      <if test="cStabNameNum != null" >
+        c_stab_name_num,
+      </if>
+      <if test="cStabTelNum != null" >
+        c_stab_tel_num,
+      </if>
+      <if test="cStabAddrNum != null" >
+        c_stab_addr_num,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="swiftNumber != null" >
+        #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cMail != null" >
+        #{cMail,jdbcType=VARCHAR},
+      </if>
+      <if test="cTelBiz != null" >
+        #{cTelBiz,jdbcType=VARCHAR},
+      </if>
+      <if test="cTelHome != null" >
+        #{cTelHome,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagStabilityC != null" >
+        #{cFlagStabilityC,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthId != null" >
+        #{cStabAuthId,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthCell != null" >
+        #{cStabAuthCell,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthMail != null" >
+        #{cStabAuthMail,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthKeyRelation != null" >
+        #{cStabAuthKeyRelation,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthName != null" >
+        #{cStabAuthName,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthIdName != null" >
+        #{cStabAuthIdName,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthBizTel != null" >
+        #{cStabAuthBizTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthHomeTel != null" >
+        #{cStabAuthHomeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabIdNum != null" >
+        #{cStabIdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabCellNum != null" >
+        #{cStabCellNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabCellFirsttime != null" >
+        #{cStabCellFirsttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabMailNum != null" >
+        #{cStabMailNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabNameNum != null" >
+        #{cStabNameNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabTelNum != null" >
+        #{cStabTelNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAddrNum != null" >
+        #{cStabAddrNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrStabInfoExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_br_stab_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_br_stab_info
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.swiftNumber != null" >
+        swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMail != null" >
+        c_mail = #{record.cMail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTelBiz != null" >
+        c_tel_biz = #{record.cTelBiz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTelHome != null" >
+        c_tel_home = #{record.cTelHome,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagStabilityC != null" >
+        c_flag_stability_c = #{record.cFlagStabilityC,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabAuthId != null" >
+        c_stab_auth_id = #{record.cStabAuthId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabAuthCell != null" >
+        c_stab_auth_cell = #{record.cStabAuthCell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabAuthMail != null" >
+        c_stab_auth_mail = #{record.cStabAuthMail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabAuthKeyRelation != null" >
+        c_stab_auth_key_relation = #{record.cStabAuthKeyRelation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabAuthName != null" >
+        c_stab_auth_name = #{record.cStabAuthName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabAuthIdName != null" >
+        c_stab_auth_id_name = #{record.cStabAuthIdName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabAuthBizTel != null" >
+        c_stab_auth_biz_tel = #{record.cStabAuthBizTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabAuthHomeTel != null" >
+        c_stab_auth_home_tel = #{record.cStabAuthHomeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabIdNum != null" >
+        c_stab_id_num = #{record.cStabIdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabCellNum != null" >
+        c_stab_cell_num = #{record.cStabCellNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabCellFirsttime != null" >
+        c_stab_cell_firsttime = #{record.cStabCellFirsttime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabMailNum != null" >
+        c_stab_mail_num = #{record.cStabMailNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabNameNum != null" >
+        c_stab_name_num = #{record.cStabNameNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabTelNum != null" >
+        c_stab_tel_num = #{record.cStabTelNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cStabAddrNum != null" >
+        c_stab_addr_num = #{record.cStabAddrNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_br_stab_info
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      c_mail = #{record.cMail,jdbcType=VARCHAR},
+      c_tel_biz = #{record.cTelBiz,jdbcType=VARCHAR},
+      c_tel_home = #{record.cTelHome,jdbcType=VARCHAR},
+      c_flag_stability_c = #{record.cFlagStabilityC,jdbcType=VARCHAR},
+      c_stab_auth_id = #{record.cStabAuthId,jdbcType=VARCHAR},
+      c_stab_auth_cell = #{record.cStabAuthCell,jdbcType=VARCHAR},
+      c_stab_auth_mail = #{record.cStabAuthMail,jdbcType=VARCHAR},
+      c_stab_auth_key_relation = #{record.cStabAuthKeyRelation,jdbcType=VARCHAR},
+      c_stab_auth_name = #{record.cStabAuthName,jdbcType=VARCHAR},
+      c_stab_auth_id_name = #{record.cStabAuthIdName,jdbcType=VARCHAR},
+      c_stab_auth_biz_tel = #{record.cStabAuthBizTel,jdbcType=VARCHAR},
+      c_stab_auth_home_tel = #{record.cStabAuthHomeTel,jdbcType=VARCHAR},
+      c_stab_id_num = #{record.cStabIdNum,jdbcType=VARCHAR},
+      c_stab_cell_num = #{record.cStabCellNum,jdbcType=VARCHAR},
+      c_stab_cell_firsttime = #{record.cStabCellFirsttime,jdbcType=VARCHAR},
+      c_stab_mail_num = #{record.cStabMailNum,jdbcType=VARCHAR},
+      c_stab_name_num = #{record.cStabNameNum,jdbcType=VARCHAR},
+      c_stab_tel_num = #{record.cStabTelNum,jdbcType=VARCHAR},
+      c_stab_addr_num = #{record.cStabAddrNum,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrStabInfo" >
+    update t_third_br_stab_info
+    <set >
+      <if test="swiftNumber != null" >
+        swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cMail != null" >
+        c_mail = #{cMail,jdbcType=VARCHAR},
+      </if>
+      <if test="cTelBiz != null" >
+        c_tel_biz = #{cTelBiz,jdbcType=VARCHAR},
+      </if>
+      <if test="cTelHome != null" >
+        c_tel_home = #{cTelHome,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagStabilityC != null" >
+        c_flag_stability_c = #{cFlagStabilityC,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthId != null" >
+        c_stab_auth_id = #{cStabAuthId,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthCell != null" >
+        c_stab_auth_cell = #{cStabAuthCell,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthMail != null" >
+        c_stab_auth_mail = #{cStabAuthMail,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthKeyRelation != null" >
+        c_stab_auth_key_relation = #{cStabAuthKeyRelation,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthName != null" >
+        c_stab_auth_name = #{cStabAuthName,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthIdName != null" >
+        c_stab_auth_id_name = #{cStabAuthIdName,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthBizTel != null" >
+        c_stab_auth_biz_tel = #{cStabAuthBizTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAuthHomeTel != null" >
+        c_stab_auth_home_tel = #{cStabAuthHomeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabIdNum != null" >
+        c_stab_id_num = #{cStabIdNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabCellNum != null" >
+        c_stab_cell_num = #{cStabCellNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabCellFirsttime != null" >
+        c_stab_cell_firsttime = #{cStabCellFirsttime,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabMailNum != null" >
+        c_stab_mail_num = #{cStabMailNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabNameNum != null" >
+        c_stab_name_num = #{cStabNameNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabTelNum != null" >
+        c_stab_tel_num = #{cStabTelNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cStabAddrNum != null" >
+        c_stab_addr_num = #{cStabAddrNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdBrStabInfo" >
+    update t_third_br_stab_info
+    set swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      c_mail = #{cMail,jdbcType=VARCHAR},
+      c_tel_biz = #{cTelBiz,jdbcType=VARCHAR},
+      c_tel_home = #{cTelHome,jdbcType=VARCHAR},
+      c_flag_stability_c = #{cFlagStabilityC,jdbcType=VARCHAR},
+      c_stab_auth_id = #{cStabAuthId,jdbcType=VARCHAR},
+      c_stab_auth_cell = #{cStabAuthCell,jdbcType=VARCHAR},
+      c_stab_auth_mail = #{cStabAuthMail,jdbcType=VARCHAR},
+      c_stab_auth_key_relation = #{cStabAuthKeyRelation,jdbcType=VARCHAR},
+      c_stab_auth_name = #{cStabAuthName,jdbcType=VARCHAR},
+      c_stab_auth_id_name = #{cStabAuthIdName,jdbcType=VARCHAR},
+      c_stab_auth_biz_tel = #{cStabAuthBizTel,jdbcType=VARCHAR},
+      c_stab_auth_home_tel = #{cStabAuthHomeTel,jdbcType=VARCHAR},
+      c_stab_id_num = #{cStabIdNum,jdbcType=VARCHAR},
+      c_stab_cell_num = #{cStabCellNum,jdbcType=VARCHAR},
+      c_stab_cell_firsttime = #{cStabCellFirsttime,jdbcType=VARCHAR},
+      c_stab_mail_num = #{cStabMailNum,jdbcType=VARCHAR},
+      c_stab_name_num = #{cStabNameNum,jdbcType=VARCHAR},
+      c_stab_tel_num = #{cStabTelNum,jdbcType=VARCHAR},
+      c_stab_addr_num = #{cStabAddrNum,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

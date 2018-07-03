@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdTdAttributionDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdTdAttributionData" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_seq_id" property="cSeqId" jdbcType="VARCHAR" />
+    <result column="c_idcard_province" property="cIdcardProvince" jdbcType="VARCHAR" />
+    <result column="c_idcard_city" property="cIdcardCity" jdbcType="VARCHAR" />
+    <result column="c_county" property="cCounty" jdbcType="VARCHAR" />
+    <result column="c_mobile_address_province" property="cMobileAddressProvince" jdbcType="VARCHAR" />
+    <result column="c_mobile_address_city" property="cMobileAddressCity" jdbcType="CHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_seq_id, c_idcard_province, c_idcard_city, c_county, c_mobile_address_province, 
+    c_mobile_address_city, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdAttributionDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_td_attribution_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_td_attribution_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_td_attribution_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdAttributionDataExample" >
+    delete from t_third_td_attribution_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdTdAttributionData" >
+    insert into t_third_td_attribution_data (c_id, c_seq_id, c_idcard_province, 
+      c_idcard_city, c_county, c_mobile_address_province, 
+      c_mobile_address_city, c_creatTime)
+    values (#{cId,jdbcType=VARCHAR}, #{cSeqId,jdbcType=VARCHAR}, #{cIdcardProvince,jdbcType=VARCHAR}, 
+      #{cIdcardCity,jdbcType=VARCHAR}, #{cCounty,jdbcType=VARCHAR}, #{cMobileAddressProvince,jdbcType=VARCHAR}, 
+      #{cMobileAddressCity,jdbcType=CHAR}, #{cCreattime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdAttributionData" >
+    insert into t_third_td_attribution_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cSeqId != null" >
+        c_seq_id,
+      </if>
+      <if test="cIdcardProvince != null" >
+        c_idcard_province,
+      </if>
+      <if test="cIdcardCity != null" >
+        c_idcard_city,
+      </if>
+      <if test="cCounty != null" >
+        c_county,
+      </if>
+      <if test="cMobileAddressProvince != null" >
+        c_mobile_address_province,
+      </if>
+      <if test="cMobileAddressCity != null" >
+        c_mobile_address_city,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSeqId != null" >
+        #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdcardProvince != null" >
+        #{cIdcardProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdcardCity != null" >
+        #{cIdcardCity,jdbcType=VARCHAR},
+      </if>
+      <if test="cCounty != null" >
+        #{cCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="cMobileAddressProvince != null" >
+        #{cMobileAddressProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="cMobileAddressCity != null" >
+        #{cMobileAddressCity,jdbcType=CHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdAttributionDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_td_attribution_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_td_attribution_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSeqId != null" >
+        c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIdcardProvince != null" >
+        c_idcard_province = #{record.cIdcardProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIdcardCity != null" >
+        c_idcard_city = #{record.cIdcardCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCounty != null" >
+        c_county = #{record.cCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMobileAddressProvince != null" >
+        c_mobile_address_province = #{record.cMobileAddressProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMobileAddressCity != null" >
+        c_mobile_address_city = #{record.cMobileAddressCity,jdbcType=CHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_td_attribution_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      c_idcard_province = #{record.cIdcardProvince,jdbcType=VARCHAR},
+      c_idcard_city = #{record.cIdcardCity,jdbcType=VARCHAR},
+      c_county = #{record.cCounty,jdbcType=VARCHAR},
+      c_mobile_address_province = #{record.cMobileAddressProvince,jdbcType=VARCHAR},
+      c_mobile_address_city = #{record.cMobileAddressCity,jdbcType=CHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdAttributionData" >
+    update t_third_td_attribution_data
+    <set >
+      <if test="cSeqId != null" >
+        c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdcardProvince != null" >
+        c_idcard_province = #{cIdcardProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="cIdcardCity != null" >
+        c_idcard_city = #{cIdcardCity,jdbcType=VARCHAR},
+      </if>
+      <if test="cCounty != null" >
+        c_county = #{cCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="cMobileAddressProvince != null" >
+        c_mobile_address_province = #{cMobileAddressProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="cMobileAddressCity != null" >
+        c_mobile_address_city = #{cMobileAddressCity,jdbcType=CHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdTdAttributionData" >
+    update t_third_td_attribution_data
+    set c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      c_idcard_province = #{cIdcardProvince,jdbcType=VARCHAR},
+      c_idcard_city = #{cIdcardCity,jdbcType=VARCHAR},
+      c_county = #{cCounty,jdbcType=VARCHAR},
+      c_mobile_address_province = #{cMobileAddressProvince,jdbcType=VARCHAR},
+      c_mobile_address_city = #{cMobileAddressCity,jdbcType=CHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

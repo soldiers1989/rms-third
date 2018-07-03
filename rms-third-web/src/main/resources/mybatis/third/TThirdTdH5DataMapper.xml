@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdTdH5DataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdTdH5Data" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_seq_id" property="cSeqId" jdbcType="VARCHAR" />
+    <result column="c_cookie_enabled" property="cCookieEnabled" jdbcType="VARCHAR" />
+    <result column="c_os" property="cOs" jdbcType="VARCHAR" />
+    <result column="c_true_ip" property="cTrueIp" jdbcType="VARCHAR" />
+    <result column="c_user_agent" property="cUserAgent" jdbcType="VARCHAR" />
+    <result column="c_smart_id" property="cSmartId" jdbcType="VARCHAR" />
+    <result column="c_canvas" property="cCanvas" jdbcType="VARCHAR" />
+    <result column="c_language_res" property="cLanguageRes" jdbcType="VARCHAR" />
+    <result column="c_screen_res" property="cScreenRes" jdbcType="VARCHAR" />
+    <result column="c_version" property="cVersion" jdbcType="VARCHAR" />
+    <result column="c_plugin_list" property="cPluginList" jdbcType="VARCHAR" />
+    <result column="c_token_id" property="cTokenId" jdbcType="VARCHAR" />
+    <result column="c_device_type" property="cDeviceType" jdbcType="VARCHAR" />
+    <result column="c_flash_enabled" property="cFlashEnabled" jdbcType="VARCHAR" />
+    <result column="c_referer" property="cReferer" jdbcType="VARCHAR" />
+    <result column="c_fontId" property="cFontid" jdbcType="VARCHAR" />
+    <result column="c_deviceId" property="cDeviceid" jdbcType="VARCHAR" />
+    <result column="c_browser" property="cBrowser" jdbcType="VARCHAR" />
+    <result column="c_browser_type" property="cBrowserType" jdbcType="VARCHAR" />
+    <result column="c_tcp_os" property="cTcpOs" jdbcType="VARCHAR" />
+    <result column="c_browser_version" property="cBrowserVersion" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_seq_id, c_cookie_enabled, c_os, c_true_ip, c_user_agent, c_smart_id, c_canvas, 
+    c_language_res, c_screen_res, c_version, c_plugin_list, c_token_id, c_device_type, 
+    c_flash_enabled, c_referer, c_fontId, c_deviceId, c_browser, c_browser_type, c_tcp_os, 
+    c_browser_version, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdH5DataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_td_h5_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_td_h5_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_td_h5_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdH5DataExample" >
+    delete from t_third_td_h5_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdTdH5Data" >
+    insert into t_third_td_h5_data (c_id, c_seq_id, c_cookie_enabled, 
+      c_os, c_true_ip, c_user_agent, 
+      c_smart_id, c_canvas, c_language_res, 
+      c_screen_res, c_version, c_plugin_list, 
+      c_token_id, c_device_type, c_flash_enabled, 
+      c_referer, c_fontId, c_deviceId, 
+      c_browser, c_browser_type, c_tcp_os, 
+      c_browser_version, c_creatTime)
+    values (#{cId,jdbcType=VARCHAR}, #{cSeqId,jdbcType=VARCHAR}, #{cCookieEnabled,jdbcType=VARCHAR}, 
+      #{cOs,jdbcType=VARCHAR}, #{cTrueIp,jdbcType=VARCHAR}, #{cUserAgent,jdbcType=VARCHAR}, 
+      #{cSmartId,jdbcType=VARCHAR}, #{cCanvas,jdbcType=VARCHAR}, #{cLanguageRes,jdbcType=VARCHAR}, 
+      #{cScreenRes,jdbcType=VARCHAR}, #{cVersion,jdbcType=VARCHAR}, #{cPluginList,jdbcType=VARCHAR}, 
+      #{cTokenId,jdbcType=VARCHAR}, #{cDeviceType,jdbcType=VARCHAR}, #{cFlashEnabled,jdbcType=VARCHAR}, 
+      #{cReferer,jdbcType=VARCHAR}, #{cFontid,jdbcType=VARCHAR}, #{cDeviceid,jdbcType=VARCHAR}, 
+      #{cBrowser,jdbcType=VARCHAR}, #{cBrowserType,jdbcType=VARCHAR}, #{cTcpOs,jdbcType=VARCHAR}, 
+      #{cBrowserVersion,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdH5Data" >
+    insert into t_third_td_h5_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cSeqId != null" >
+        c_seq_id,
+      </if>
+      <if test="cCookieEnabled != null" >
+        c_cookie_enabled,
+      </if>
+      <if test="cOs != null" >
+        c_os,
+      </if>
+      <if test="cTrueIp != null" >
+        c_true_ip,
+      </if>
+      <if test="cUserAgent != null" >
+        c_user_agent,
+      </if>
+      <if test="cSmartId != null" >
+        c_smart_id,
+      </if>
+      <if test="cCanvas != null" >
+        c_canvas,
+      </if>
+      <if test="cLanguageRes != null" >
+        c_language_res,
+      </if>
+      <if test="cScreenRes != null" >
+        c_screen_res,
+      </if>
+      <if test="cVersion != null" >
+        c_version,
+      </if>
+      <if test="cPluginList != null" >
+        c_plugin_list,
+      </if>
+      <if test="cTokenId != null" >
+        c_token_id,
+      </if>
+      <if test="cDeviceType != null" >
+        c_device_type,
+      </if>
+      <if test="cFlashEnabled != null" >
+        c_flash_enabled,
+      </if>
+      <if test="cReferer != null" >
+        c_referer,
+      </if>
+      <if test="cFontid != null" >
+        c_fontId,
+      </if>
+      <if test="cDeviceid != null" >
+        c_deviceId,
+      </if>
+      <if test="cBrowser != null" >
+        c_browser,
+      </if>
+      <if test="cBrowserType != null" >
+        c_browser_type,
+      </if>
+      <if test="cTcpOs != null" >
+        c_tcp_os,
+      </if>
+      <if test="cBrowserVersion != null" >
+        c_browser_version,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSeqId != null" >
+        #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cCookieEnabled != null" >
+        #{cCookieEnabled,jdbcType=VARCHAR},
+      </if>
+      <if test="cOs != null" >
+        #{cOs,jdbcType=VARCHAR},
+      </if>
+      <if test="cTrueIp != null" >
+        #{cTrueIp,jdbcType=VARCHAR},
+      </if>
+      <if test="cUserAgent != null" >
+        #{cUserAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="cSmartId != null" >
+        #{cSmartId,jdbcType=VARCHAR},
+      </if>
+      <if test="cCanvas != null" >
+        #{cCanvas,jdbcType=VARCHAR},
+      </if>
+      <if test="cLanguageRes != null" >
+        #{cLanguageRes,jdbcType=VARCHAR},
+      </if>
+      <if test="cScreenRes != null" >
+        #{cScreenRes,jdbcType=VARCHAR},
+      </if>
+      <if test="cVersion != null" >
+        #{cVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="cPluginList != null" >
+        #{cPluginList,jdbcType=VARCHAR},
+      </if>
+      <if test="cTokenId != null" >
+        #{cTokenId,jdbcType=VARCHAR},
+      </if>
+      <if test="cDeviceType != null" >
+        #{cDeviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlashEnabled != null" >
+        #{cFlashEnabled,jdbcType=VARCHAR},
+      </if>
+      <if test="cReferer != null" >
+        #{cReferer,jdbcType=VARCHAR},
+      </if>
+      <if test="cFontid != null" >
+        #{cFontid,jdbcType=VARCHAR},
+      </if>
+      <if test="cDeviceid != null" >
+        #{cDeviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="cBrowser != null" >
+        #{cBrowser,jdbcType=VARCHAR},
+      </if>
+      <if test="cBrowserType != null" >
+        #{cBrowserType,jdbcType=VARCHAR},
+      </if>
+      <if test="cTcpOs != null" >
+        #{cTcpOs,jdbcType=VARCHAR},
+      </if>
+      <if test="cBrowserVersion != null" >
+        #{cBrowserVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdH5DataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_td_h5_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_td_h5_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSeqId != null" >
+        c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCookieEnabled != null" >
+        c_cookie_enabled = #{record.cCookieEnabled,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cOs != null" >
+        c_os = #{record.cOs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTrueIp != null" >
+        c_true_ip = #{record.cTrueIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cUserAgent != null" >
+        c_user_agent = #{record.cUserAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSmartId != null" >
+        c_smart_id = #{record.cSmartId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCanvas != null" >
+        c_canvas = #{record.cCanvas,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLanguageRes != null" >
+        c_language_res = #{record.cLanguageRes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScreenRes != null" >
+        c_screen_res = #{record.cScreenRes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cVersion != null" >
+        c_version = #{record.cVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPluginList != null" >
+        c_plugin_list = #{record.cPluginList,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTokenId != null" >
+        c_token_id = #{record.cTokenId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cDeviceType != null" >
+        c_device_type = #{record.cDeviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlashEnabled != null" >
+        c_flash_enabled = #{record.cFlashEnabled,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cReferer != null" >
+        c_referer = #{record.cReferer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFontid != null" >
+        c_fontId = #{record.cFontid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cDeviceid != null" >
+        c_deviceId = #{record.cDeviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBrowser != null" >
+        c_browser = #{record.cBrowser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBrowserType != null" >
+        c_browser_type = #{record.cBrowserType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTcpOs != null" >
+        c_tcp_os = #{record.cTcpOs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBrowserVersion != null" >
+        c_browser_version = #{record.cBrowserVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_td_h5_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      c_cookie_enabled = #{record.cCookieEnabled,jdbcType=VARCHAR},
+      c_os = #{record.cOs,jdbcType=VARCHAR},
+      c_true_ip = #{record.cTrueIp,jdbcType=VARCHAR},
+      c_user_agent = #{record.cUserAgent,jdbcType=VARCHAR},
+      c_smart_id = #{record.cSmartId,jdbcType=VARCHAR},
+      c_canvas = #{record.cCanvas,jdbcType=VARCHAR},
+      c_language_res = #{record.cLanguageRes,jdbcType=VARCHAR},
+      c_screen_res = #{record.cScreenRes,jdbcType=VARCHAR},
+      c_version = #{record.cVersion,jdbcType=VARCHAR},
+      c_plugin_list = #{record.cPluginList,jdbcType=VARCHAR},
+      c_token_id = #{record.cTokenId,jdbcType=VARCHAR},
+      c_device_type = #{record.cDeviceType,jdbcType=VARCHAR},
+      c_flash_enabled = #{record.cFlashEnabled,jdbcType=VARCHAR},
+      c_referer = #{record.cReferer,jdbcType=VARCHAR},
+      c_fontId = #{record.cFontid,jdbcType=VARCHAR},
+      c_deviceId = #{record.cDeviceid,jdbcType=VARCHAR},
+      c_browser = #{record.cBrowser,jdbcType=VARCHAR},
+      c_browser_type = #{record.cBrowserType,jdbcType=VARCHAR},
+      c_tcp_os = #{record.cTcpOs,jdbcType=VARCHAR},
+      c_browser_version = #{record.cBrowserVersion,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdH5Data" >
+    update t_third_td_h5_data
+    <set >
+      <if test="cSeqId != null" >
+        c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cCookieEnabled != null" >
+        c_cookie_enabled = #{cCookieEnabled,jdbcType=VARCHAR},
+      </if>
+      <if test="cOs != null" >
+        c_os = #{cOs,jdbcType=VARCHAR},
+      </if>
+      <if test="cTrueIp != null" >
+        c_true_ip = #{cTrueIp,jdbcType=VARCHAR},
+      </if>
+      <if test="cUserAgent != null" >
+        c_user_agent = #{cUserAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="cSmartId != null" >
+        c_smart_id = #{cSmartId,jdbcType=VARCHAR},
+      </if>
+      <if test="cCanvas != null" >
+        c_canvas = #{cCanvas,jdbcType=VARCHAR},
+      </if>
+      <if test="cLanguageRes != null" >
+        c_language_res = #{cLanguageRes,jdbcType=VARCHAR},
+      </if>
+      <if test="cScreenRes != null" >
+        c_screen_res = #{cScreenRes,jdbcType=VARCHAR},
+      </if>
+      <if test="cVersion != null" >
+        c_version = #{cVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="cPluginList != null" >
+        c_plugin_list = #{cPluginList,jdbcType=VARCHAR},
+      </if>
+      <if test="cTokenId != null" >
+        c_token_id = #{cTokenId,jdbcType=VARCHAR},
+      </if>
+      <if test="cDeviceType != null" >
+        c_device_type = #{cDeviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlashEnabled != null" >
+        c_flash_enabled = #{cFlashEnabled,jdbcType=VARCHAR},
+      </if>
+      <if test="cReferer != null" >
+        c_referer = #{cReferer,jdbcType=VARCHAR},
+      </if>
+      <if test="cFontid != null" >
+        c_fontId = #{cFontid,jdbcType=VARCHAR},
+      </if>
+      <if test="cDeviceid != null" >
+        c_deviceId = #{cDeviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="cBrowser != null" >
+        c_browser = #{cBrowser,jdbcType=VARCHAR},
+      </if>
+      <if test="cBrowserType != null" >
+        c_browser_type = #{cBrowserType,jdbcType=VARCHAR},
+      </if>
+      <if test="cTcpOs != null" >
+        c_tcp_os = #{cTcpOs,jdbcType=VARCHAR},
+      </if>
+      <if test="cBrowserVersion != null" >
+        c_browser_version = #{cBrowserVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdTdH5Data" >
+    update t_third_td_h5_data
+    set c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      c_cookie_enabled = #{cCookieEnabled,jdbcType=VARCHAR},
+      c_os = #{cOs,jdbcType=VARCHAR},
+      c_true_ip = #{cTrueIp,jdbcType=VARCHAR},
+      c_user_agent = #{cUserAgent,jdbcType=VARCHAR},
+      c_smart_id = #{cSmartId,jdbcType=VARCHAR},
+      c_canvas = #{cCanvas,jdbcType=VARCHAR},
+      c_language_res = #{cLanguageRes,jdbcType=VARCHAR},
+      c_screen_res = #{cScreenRes,jdbcType=VARCHAR},
+      c_version = #{cVersion,jdbcType=VARCHAR},
+      c_plugin_list = #{cPluginList,jdbcType=VARCHAR},
+      c_token_id = #{cTokenId,jdbcType=VARCHAR},
+      c_device_type = #{cDeviceType,jdbcType=VARCHAR},
+      c_flash_enabled = #{cFlashEnabled,jdbcType=VARCHAR},
+      c_referer = #{cReferer,jdbcType=VARCHAR},
+      c_fontId = #{cFontid,jdbcType=VARCHAR},
+      c_deviceId = #{cDeviceid,jdbcType=VARCHAR},
+      c_browser = #{cBrowser,jdbcType=VARCHAR},
+      c_browser_type = #{cBrowserType,jdbcType=VARCHAR},
+      c_tcp_os = #{cTcpOs,jdbcType=VARCHAR},
+      c_browser_version = #{cBrowserVersion,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

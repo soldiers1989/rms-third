@@ -1,0 +1,1177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdTdAndriodDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdTdAndriodData" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_seq_id" property="cSeqId" jdbcType="VARCHAR" />
+    <result column="c_os" property="cOs" jdbcType="VARCHAR" />
+    <result column="c_fmVersion" property="cFmversion" jdbcType="VARCHAR" />
+    <result column="c_sessionId" property="cSessionid" jdbcType="VARCHAR" />
+    <result column="c_device_id" property="cDeviceId" jdbcType="VARCHAR" />
+    <result column="c_active_time" property="cActiveTime" jdbcType="VARCHAR" />
+    <result column="c_available_memery" property="cAvailableMemery" jdbcType="VARCHAR" />
+    <result column="c_available_storage" property="cAvailableStorage" jdbcType="VARCHAR" />
+    <result column="c_baseband_version" property="cBasebandVersion" jdbcType="VARCHAR" />
+    <result column="c_battery_level" property="cBatteryLevel" jdbcType="VARCHAR" />
+    <result column="c_battery_status" property="cBatteryStatus" jdbcType="VARCHAR" />
+    <result column="c_blue_mac" property="cBlueMac" jdbcType="VARCHAR" />
+    <result column="c_boot_time" property="cBootTime" jdbcType="VARCHAR" />
+    <result column="c_brand" property="cBrand" jdbcType="VARCHAR" />
+    <result column="c_carrier" property="cCarrier" jdbcType="VARCHAR" />
+    <result column="c_cell_ip" property="cCellIp" jdbcType="VARCHAR" />
+    <result column="c_cell_location" property="cCellLocation" jdbcType="VARCHAR" />
+    <result column="c_country_iso" property="cCountryIso" jdbcType="VARCHAR" />
+    <result column="c_cpuHardware" property="cCpuhardware" jdbcType="VARCHAR" />
+    <result column="c_cpuSerial" property="cCpuserial" jdbcType="VARCHAR" />
+    <result column="c_cpuSpeed" property="cCpuspeed" jdbcType="VARCHAR" />
+    <result column="c_cpuType" property="cCputype" jdbcType="VARCHAR" />
+    <result column="c_deviceConfig" property="cDeviceconfig" jdbcType="VARCHAR" />
+    <result column="c_deviceName" property="cDevicename" jdbcType="VARCHAR" />
+    <result column="c_display" property="cDisplay" jdbcType="VARCHAR" />
+    <result column="c_dnsAddress" property="cDnsaddress" jdbcType="VARCHAR" />
+    <result column="c_firmVersion" property="cFirmversion" jdbcType="VARCHAR" />
+    <result column="c_gateway" property="cGateway" jdbcType="VARCHAR" />
+    <result column="c_hardware" property="cHardware" jdbcType="VARCHAR" />
+    <result column="c_host" property="cHost" jdbcType="VARCHAR" />
+    <result column="c_imei" property="cImei" jdbcType="VARCHAR" />
+    <result column="c_isBatteryUsage" property="cIsbatteryusage" jdbcType="VARCHAR" />
+    <result column="c_isRoot" property="cIsroot" jdbcType="VARCHAR" />
+    <result column="c_language" property="cLanguage" jdbcType="VARCHAR" />
+    <result column="c_mcc" property="cMcc" jdbcType="VARCHAR" />
+    <result column="c_mnc" property="cMnc" jdbcType="VARCHAR" />
+    <result column="c_model" property="cModel" jdbcType="VARCHAR" />
+    <result column="c_musicHash" property="cMusichash" jdbcType="VARCHAR" />
+    <result column="c_phoneNumber" property="cPhonenumber" jdbcType="VARCHAR" />
+    <result column="c_phoneType" property="cPhonetype" jdbcType="VARCHAR" />
+    <result column="c_product" property="cProduct" jdbcType="VARCHAR" />
+    <result column="c_proxyStr" property="cProxystr" jdbcType="VARCHAR" />
+    <result column="c_roDevice" property="cRodevice" jdbcType="VARCHAR" />
+    <result column="c_roModel" property="cRomodel" jdbcType="VARCHAR" />
+    <result column="c_roName" property="cRoname" jdbcType="VARCHAR" />
+    <result column="c_screenRes" property="cScreenres" jdbcType="VARCHAR" />
+    <result column="c_sdkVersion" property="cSdkversion" jdbcType="VARCHAR" />
+    <result column="c_serialNo" property="cSerialno" jdbcType="VARCHAR" />
+    <result column="c_simOperator" property="cSimoperator" jdbcType="VARCHAR" />
+    <result column="c_simSerial" property="cSimserial" jdbcType="VARCHAR" />
+    <result column="c_subscriberId" property="cSubscriberid" jdbcType="VARCHAR" />
+    <result column="c_tags" property="cTags" jdbcType="VARCHAR" />
+    <result column="c_tdid" property="cTdid" jdbcType="VARCHAR" />
+    <result column="c_timeZone" property="cTimezone" jdbcType="VARCHAR" />
+    <result column="c_totalMemory" property="cTotalmemory" jdbcType="VARCHAR" />
+    <result column="c_totalStorage" property="cTotalstorage" jdbcType="VARCHAR" />
+    <result column="c_trueIp" property="cTrueip" jdbcType="VARCHAR" />
+    <result column="c_udid" property="cUdid" jdbcType="VARCHAR" />
+    <result column="c_upTime" property="cUptime" jdbcType="VARCHAR" />
+    <result column="c_userAgent" property="cUseragent" jdbcType="VARCHAR" />
+    <result column="c_voiceMail" property="cVoicemail" jdbcType="VARCHAR" />
+    <result column="c_vpnIp" property="cVpnip" jdbcType="VARCHAR" />
+    <result column="c_wifiIp" property="cWifiip" jdbcType="VARCHAR" />
+    <result column="c_wifiMac" property="cWifimac" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_seq_id, c_os, c_fmVersion, c_sessionId, c_device_id, c_active_time, c_available_memery, 
+    c_available_storage, c_baseband_version, c_battery_level, c_battery_status, c_blue_mac, 
+    c_boot_time, c_brand, c_carrier, c_cell_ip, c_cell_location, c_country_iso, c_cpuHardware, 
+    c_cpuSerial, c_cpuSpeed, c_cpuType, c_deviceConfig, c_deviceName, c_display, c_dnsAddress, 
+    c_firmVersion, c_gateway, c_hardware, c_host, c_imei, c_isBatteryUsage, c_isRoot, 
+    c_language, c_mcc, c_mnc, c_model, c_musicHash, c_phoneNumber, c_phoneType, c_product, 
+    c_proxyStr, c_roDevice, c_roModel, c_roName, c_screenRes, c_sdkVersion, c_serialNo, 
+    c_simOperator, c_simSerial, c_subscriberId, c_tags, c_tdid, c_timeZone, c_totalMemory, 
+    c_totalStorage, c_trueIp, c_udid, c_upTime, c_userAgent, c_voiceMail, c_vpnIp, c_wifiIp, 
+    c_wifiMac, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdAndriodDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_td_andriod_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_td_andriod_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_td_andriod_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdAndriodDataExample" >
+    delete from t_third_td_andriod_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdTdAndriodData" >
+    insert into t_third_td_andriod_data (c_id, c_seq_id, c_os, 
+      c_fmVersion, c_sessionId, c_device_id, 
+      c_active_time, c_available_memery, c_available_storage, 
+      c_baseband_version, c_battery_level, c_battery_status, 
+      c_blue_mac, c_boot_time, c_brand, 
+      c_carrier, c_cell_ip, c_cell_location, 
+      c_country_iso, c_cpuHardware, c_cpuSerial, 
+      c_cpuSpeed, c_cpuType, c_deviceConfig, 
+      c_deviceName, c_display, c_dnsAddress, 
+      c_firmVersion, c_gateway, c_hardware, 
+      c_host, c_imei, c_isBatteryUsage, 
+      c_isRoot, c_language, c_mcc, 
+      c_mnc, c_model, c_musicHash, 
+      c_phoneNumber, c_phoneType, c_product, 
+      c_proxyStr, c_roDevice, c_roModel, 
+      c_roName, c_screenRes, c_sdkVersion, 
+      c_serialNo, c_simOperator, c_simSerial, 
+      c_subscriberId, c_tags, c_tdid, 
+      c_timeZone, c_totalMemory, c_totalStorage, 
+      c_trueIp, c_udid, c_upTime, 
+      c_userAgent, c_voiceMail, c_vpnIp, 
+      c_wifiIp, c_wifiMac, c_creatTime
+      )
+    values (#{cId,jdbcType=VARCHAR}, #{cSeqId,jdbcType=VARCHAR}, #{cOs,jdbcType=VARCHAR}, 
+      #{cFmversion,jdbcType=VARCHAR}, #{cSessionid,jdbcType=VARCHAR}, #{cDeviceId,jdbcType=VARCHAR}, 
+      #{cActiveTime,jdbcType=VARCHAR}, #{cAvailableMemery,jdbcType=VARCHAR}, #{cAvailableStorage,jdbcType=VARCHAR}, 
+      #{cBasebandVersion,jdbcType=VARCHAR}, #{cBatteryLevel,jdbcType=VARCHAR}, #{cBatteryStatus,jdbcType=VARCHAR}, 
+      #{cBlueMac,jdbcType=VARCHAR}, #{cBootTime,jdbcType=VARCHAR}, #{cBrand,jdbcType=VARCHAR}, 
+      #{cCarrier,jdbcType=VARCHAR}, #{cCellIp,jdbcType=VARCHAR}, #{cCellLocation,jdbcType=VARCHAR}, 
+      #{cCountryIso,jdbcType=VARCHAR}, #{cCpuhardware,jdbcType=VARCHAR}, #{cCpuserial,jdbcType=VARCHAR}, 
+      #{cCpuspeed,jdbcType=VARCHAR}, #{cCputype,jdbcType=VARCHAR}, #{cDeviceconfig,jdbcType=VARCHAR}, 
+      #{cDevicename,jdbcType=VARCHAR}, #{cDisplay,jdbcType=VARCHAR}, #{cDnsaddress,jdbcType=VARCHAR}, 
+      #{cFirmversion,jdbcType=VARCHAR}, #{cGateway,jdbcType=VARCHAR}, #{cHardware,jdbcType=VARCHAR}, 
+      #{cHost,jdbcType=VARCHAR}, #{cImei,jdbcType=VARCHAR}, #{cIsbatteryusage,jdbcType=VARCHAR}, 
+      #{cIsroot,jdbcType=VARCHAR}, #{cLanguage,jdbcType=VARCHAR}, #{cMcc,jdbcType=VARCHAR}, 
+      #{cMnc,jdbcType=VARCHAR}, #{cModel,jdbcType=VARCHAR}, #{cMusichash,jdbcType=VARCHAR}, 
+      #{cPhonenumber,jdbcType=VARCHAR}, #{cPhonetype,jdbcType=VARCHAR}, #{cProduct,jdbcType=VARCHAR}, 
+      #{cProxystr,jdbcType=VARCHAR}, #{cRodevice,jdbcType=VARCHAR}, #{cRomodel,jdbcType=VARCHAR}, 
+      #{cRoname,jdbcType=VARCHAR}, #{cScreenres,jdbcType=VARCHAR}, #{cSdkversion,jdbcType=VARCHAR}, 
+      #{cSerialno,jdbcType=VARCHAR}, #{cSimoperator,jdbcType=VARCHAR}, #{cSimserial,jdbcType=VARCHAR}, 
+      #{cSubscriberid,jdbcType=VARCHAR}, #{cTags,jdbcType=VARCHAR}, #{cTdid,jdbcType=VARCHAR}, 
+      #{cTimezone,jdbcType=VARCHAR}, #{cTotalmemory,jdbcType=VARCHAR}, #{cTotalstorage,jdbcType=VARCHAR}, 
+      #{cTrueip,jdbcType=VARCHAR}, #{cUdid,jdbcType=VARCHAR}, #{cUptime,jdbcType=VARCHAR}, 
+      #{cUseragent,jdbcType=VARCHAR}, #{cVoicemail,jdbcType=VARCHAR}, #{cVpnip,jdbcType=VARCHAR}, 
+      #{cWifiip,jdbcType=VARCHAR}, #{cWifimac,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdAndriodData" >
+    insert into t_third_td_andriod_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cSeqId != null" >
+        c_seq_id,
+      </if>
+      <if test="cOs != null" >
+        c_os,
+      </if>
+      <if test="cFmversion != null" >
+        c_fmVersion,
+      </if>
+      <if test="cSessionid != null" >
+        c_sessionId,
+      </if>
+      <if test="cDeviceId != null" >
+        c_device_id,
+      </if>
+      <if test="cActiveTime != null" >
+        c_active_time,
+      </if>
+      <if test="cAvailableMemery != null" >
+        c_available_memery,
+      </if>
+      <if test="cAvailableStorage != null" >
+        c_available_storage,
+      </if>
+      <if test="cBasebandVersion != null" >
+        c_baseband_version,
+      </if>
+      <if test="cBatteryLevel != null" >
+        c_battery_level,
+      </if>
+      <if test="cBatteryStatus != null" >
+        c_battery_status,
+      </if>
+      <if test="cBlueMac != null" >
+        c_blue_mac,
+      </if>
+      <if test="cBootTime != null" >
+        c_boot_time,
+      </if>
+      <if test="cBrand != null" >
+        c_brand,
+      </if>
+      <if test="cCarrier != null" >
+        c_carrier,
+      </if>
+      <if test="cCellIp != null" >
+        c_cell_ip,
+      </if>
+      <if test="cCellLocation != null" >
+        c_cell_location,
+      </if>
+      <if test="cCountryIso != null" >
+        c_country_iso,
+      </if>
+      <if test="cCpuhardware != null" >
+        c_cpuHardware,
+      </if>
+      <if test="cCpuserial != null" >
+        c_cpuSerial,
+      </if>
+      <if test="cCpuspeed != null" >
+        c_cpuSpeed,
+      </if>
+      <if test="cCputype != null" >
+        c_cpuType,
+      </if>
+      <if test="cDeviceconfig != null" >
+        c_deviceConfig,
+      </if>
+      <if test="cDevicename != null" >
+        c_deviceName,
+      </if>
+      <if test="cDisplay != null" >
+        c_display,
+      </if>
+      <if test="cDnsaddress != null" >
+        c_dnsAddress,
+      </if>
+      <if test="cFirmversion != null" >
+        c_firmVersion,
+      </if>
+      <if test="cGateway != null" >
+        c_gateway,
+      </if>
+      <if test="cHardware != null" >
+        c_hardware,
+      </if>
+      <if test="cHost != null" >
+        c_host,
+      </if>
+      <if test="cImei != null" >
+        c_imei,
+      </if>
+      <if test="cIsbatteryusage != null" >
+        c_isBatteryUsage,
+      </if>
+      <if test="cIsroot != null" >
+        c_isRoot,
+      </if>
+      <if test="cLanguage != null" >
+        c_language,
+      </if>
+      <if test="cMcc != null" >
+        c_mcc,
+      </if>
+      <if test="cMnc != null" >
+        c_mnc,
+      </if>
+      <if test="cModel != null" >
+        c_model,
+      </if>
+      <if test="cMusichash != null" >
+        c_musicHash,
+      </if>
+      <if test="cPhonenumber != null" >
+        c_phoneNumber,
+      </if>
+      <if test="cPhonetype != null" >
+        c_phoneType,
+      </if>
+      <if test="cProduct != null" >
+        c_product,
+      </if>
+      <if test="cProxystr != null" >
+        c_proxyStr,
+      </if>
+      <if test="cRodevice != null" >
+        c_roDevice,
+      </if>
+      <if test="cRomodel != null" >
+        c_roModel,
+      </if>
+      <if test="cRoname != null" >
+        c_roName,
+      </if>
+      <if test="cScreenres != null" >
+        c_screenRes,
+      </if>
+      <if test="cSdkversion != null" >
+        c_sdkVersion,
+      </if>
+      <if test="cSerialno != null" >
+        c_serialNo,
+      </if>
+      <if test="cSimoperator != null" >
+        c_simOperator,
+      </if>
+      <if test="cSimserial != null" >
+        c_simSerial,
+      </if>
+      <if test="cSubscriberid != null" >
+        c_subscriberId,
+      </if>
+      <if test="cTags != null" >
+        c_tags,
+      </if>
+      <if test="cTdid != null" >
+        c_tdid,
+      </if>
+      <if test="cTimezone != null" >
+        c_timeZone,
+      </if>
+      <if test="cTotalmemory != null" >
+        c_totalMemory,
+      </if>
+      <if test="cTotalstorage != null" >
+        c_totalStorage,
+      </if>
+      <if test="cTrueip != null" >
+        c_trueIp,
+      </if>
+      <if test="cUdid != null" >
+        c_udid,
+      </if>
+      <if test="cUptime != null" >
+        c_upTime,
+      </if>
+      <if test="cUseragent != null" >
+        c_userAgent,
+      </if>
+      <if test="cVoicemail != null" >
+        c_voiceMail,
+      </if>
+      <if test="cVpnip != null" >
+        c_vpnIp,
+      </if>
+      <if test="cWifiip != null" >
+        c_wifiIp,
+      </if>
+      <if test="cWifimac != null" >
+        c_wifiMac,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSeqId != null" >
+        #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cOs != null" >
+        #{cOs,jdbcType=VARCHAR},
+      </if>
+      <if test="cFmversion != null" >
+        #{cFmversion,jdbcType=VARCHAR},
+      </if>
+      <if test="cSessionid != null" >
+        #{cSessionid,jdbcType=VARCHAR},
+      </if>
+      <if test="cDeviceId != null" >
+        #{cDeviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cActiveTime != null" >
+        #{cActiveTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cAvailableMemery != null" >
+        #{cAvailableMemery,jdbcType=VARCHAR},
+      </if>
+      <if test="cAvailableStorage != null" >
+        #{cAvailableStorage,jdbcType=VARCHAR},
+      </if>
+      <if test="cBasebandVersion != null" >
+        #{cBasebandVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="cBatteryLevel != null" >
+        #{cBatteryLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="cBatteryStatus != null" >
+        #{cBatteryStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cBlueMac != null" >
+        #{cBlueMac,jdbcType=VARCHAR},
+      </if>
+      <if test="cBootTime != null" >
+        #{cBootTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cBrand != null" >
+        #{cBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="cCarrier != null" >
+        #{cCarrier,jdbcType=VARCHAR},
+      </if>
+      <if test="cCellIp != null" >
+        #{cCellIp,jdbcType=VARCHAR},
+      </if>
+      <if test="cCellLocation != null" >
+        #{cCellLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="cCountryIso != null" >
+        #{cCountryIso,jdbcType=VARCHAR},
+      </if>
+      <if test="cCpuhardware != null" >
+        #{cCpuhardware,jdbcType=VARCHAR},
+      </if>
+      <if test="cCpuserial != null" >
+        #{cCpuserial,jdbcType=VARCHAR},
+      </if>
+      <if test="cCpuspeed != null" >
+        #{cCpuspeed,jdbcType=VARCHAR},
+      </if>
+      <if test="cCputype != null" >
+        #{cCputype,jdbcType=VARCHAR},
+      </if>
+      <if test="cDeviceconfig != null" >
+        #{cDeviceconfig,jdbcType=VARCHAR},
+      </if>
+      <if test="cDevicename != null" >
+        #{cDevicename,jdbcType=VARCHAR},
+      </if>
+      <if test="cDisplay != null" >
+        #{cDisplay,jdbcType=VARCHAR},
+      </if>
+      <if test="cDnsaddress != null" >
+        #{cDnsaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cFirmversion != null" >
+        #{cFirmversion,jdbcType=VARCHAR},
+      </if>
+      <if test="cGateway != null" >
+        #{cGateway,jdbcType=VARCHAR},
+      </if>
+      <if test="cHardware != null" >
+        #{cHardware,jdbcType=VARCHAR},
+      </if>
+      <if test="cHost != null" >
+        #{cHost,jdbcType=VARCHAR},
+      </if>
+      <if test="cImei != null" >
+        #{cImei,jdbcType=VARCHAR},
+      </if>
+      <if test="cIsbatteryusage != null" >
+        #{cIsbatteryusage,jdbcType=VARCHAR},
+      </if>
+      <if test="cIsroot != null" >
+        #{cIsroot,jdbcType=VARCHAR},
+      </if>
+      <if test="cLanguage != null" >
+        #{cLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="cMcc != null" >
+        #{cMcc,jdbcType=VARCHAR},
+      </if>
+      <if test="cMnc != null" >
+        #{cMnc,jdbcType=VARCHAR},
+      </if>
+      <if test="cModel != null" >
+        #{cModel,jdbcType=VARCHAR},
+      </if>
+      <if test="cMusichash != null" >
+        #{cMusichash,jdbcType=VARCHAR},
+      </if>
+      <if test="cPhonenumber != null" >
+        #{cPhonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cPhonetype != null" >
+        #{cPhonetype,jdbcType=VARCHAR},
+      </if>
+      <if test="cProduct != null" >
+        #{cProduct,jdbcType=VARCHAR},
+      </if>
+      <if test="cProxystr != null" >
+        #{cProxystr,jdbcType=VARCHAR},
+      </if>
+      <if test="cRodevice != null" >
+        #{cRodevice,jdbcType=VARCHAR},
+      </if>
+      <if test="cRomodel != null" >
+        #{cRomodel,jdbcType=VARCHAR},
+      </if>
+      <if test="cRoname != null" >
+        #{cRoname,jdbcType=VARCHAR},
+      </if>
+      <if test="cScreenres != null" >
+        #{cScreenres,jdbcType=VARCHAR},
+      </if>
+      <if test="cSdkversion != null" >
+        #{cSdkversion,jdbcType=VARCHAR},
+      </if>
+      <if test="cSerialno != null" >
+        #{cSerialno,jdbcType=VARCHAR},
+      </if>
+      <if test="cSimoperator != null" >
+        #{cSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="cSimserial != null" >
+        #{cSimserial,jdbcType=VARCHAR},
+      </if>
+      <if test="cSubscriberid != null" >
+        #{cSubscriberid,jdbcType=VARCHAR},
+      </if>
+      <if test="cTags != null" >
+        #{cTags,jdbcType=VARCHAR},
+      </if>
+      <if test="cTdid != null" >
+        #{cTdid,jdbcType=VARCHAR},
+      </if>
+      <if test="cTimezone != null" >
+        #{cTimezone,jdbcType=VARCHAR},
+      </if>
+      <if test="cTotalmemory != null" >
+        #{cTotalmemory,jdbcType=VARCHAR},
+      </if>
+      <if test="cTotalstorage != null" >
+        #{cTotalstorage,jdbcType=VARCHAR},
+      </if>
+      <if test="cTrueip != null" >
+        #{cTrueip,jdbcType=VARCHAR},
+      </if>
+      <if test="cUdid != null" >
+        #{cUdid,jdbcType=VARCHAR},
+      </if>
+      <if test="cUptime != null" >
+        #{cUptime,jdbcType=VARCHAR},
+      </if>
+      <if test="cUseragent != null" >
+        #{cUseragent,jdbcType=VARCHAR},
+      </if>
+      <if test="cVoicemail != null" >
+        #{cVoicemail,jdbcType=VARCHAR},
+      </if>
+      <if test="cVpnip != null" >
+        #{cVpnip,jdbcType=VARCHAR},
+      </if>
+      <if test="cWifiip != null" >
+        #{cWifiip,jdbcType=VARCHAR},
+      </if>
+      <if test="cWifimac != null" >
+        #{cWifimac,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdAndriodDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_td_andriod_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_td_andriod_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSeqId != null" >
+        c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cOs != null" >
+        c_os = #{record.cOs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFmversion != null" >
+        c_fmVersion = #{record.cFmversion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSessionid != null" >
+        c_sessionId = #{record.cSessionid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cDeviceId != null" >
+        c_device_id = #{record.cDeviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cActiveTime != null" >
+        c_active_time = #{record.cActiveTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cAvailableMemery != null" >
+        c_available_memery = #{record.cAvailableMemery,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cAvailableStorage != null" >
+        c_available_storage = #{record.cAvailableStorage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBasebandVersion != null" >
+        c_baseband_version = #{record.cBasebandVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBatteryLevel != null" >
+        c_battery_level = #{record.cBatteryLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBatteryStatus != null" >
+        c_battery_status = #{record.cBatteryStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBlueMac != null" >
+        c_blue_mac = #{record.cBlueMac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBootTime != null" >
+        c_boot_time = #{record.cBootTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cBrand != null" >
+        c_brand = #{record.cBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCarrier != null" >
+        c_carrier = #{record.cCarrier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCellIp != null" >
+        c_cell_ip = #{record.cCellIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCellLocation != null" >
+        c_cell_location = #{record.cCellLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCountryIso != null" >
+        c_country_iso = #{record.cCountryIso,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCpuhardware != null" >
+        c_cpuHardware = #{record.cCpuhardware,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCpuserial != null" >
+        c_cpuSerial = #{record.cCpuserial,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCpuspeed != null" >
+        c_cpuSpeed = #{record.cCpuspeed,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCputype != null" >
+        c_cpuType = #{record.cCputype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cDeviceconfig != null" >
+        c_deviceConfig = #{record.cDeviceconfig,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cDevicename != null" >
+        c_deviceName = #{record.cDevicename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cDisplay != null" >
+        c_display = #{record.cDisplay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cDnsaddress != null" >
+        c_dnsAddress = #{record.cDnsaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFirmversion != null" >
+        c_firmVersion = #{record.cFirmversion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cGateway != null" >
+        c_gateway = #{record.cGateway,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cHardware != null" >
+        c_hardware = #{record.cHardware,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cHost != null" >
+        c_host = #{record.cHost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cImei != null" >
+        c_imei = #{record.cImei,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIsbatteryusage != null" >
+        c_isBatteryUsage = #{record.cIsbatteryusage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cIsroot != null" >
+        c_isRoot = #{record.cIsroot,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLanguage != null" >
+        c_language = #{record.cLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMcc != null" >
+        c_mcc = #{record.cMcc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMnc != null" >
+        c_mnc = #{record.cMnc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cModel != null" >
+        c_model = #{record.cModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cMusichash != null" >
+        c_musicHash = #{record.cMusichash,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPhonenumber != null" >
+        c_phoneNumber = #{record.cPhonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPhonetype != null" >
+        c_phoneType = #{record.cPhonetype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cProduct != null" >
+        c_product = #{record.cProduct,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cProxystr != null" >
+        c_proxyStr = #{record.cProxystr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRodevice != null" >
+        c_roDevice = #{record.cRodevice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRomodel != null" >
+        c_roModel = #{record.cRomodel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRoname != null" >
+        c_roName = #{record.cRoname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cScreenres != null" >
+        c_screenRes = #{record.cScreenres,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSdkversion != null" >
+        c_sdkVersion = #{record.cSdkversion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSerialno != null" >
+        c_serialNo = #{record.cSerialno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSimoperator != null" >
+        c_simOperator = #{record.cSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSimserial != null" >
+        c_simSerial = #{record.cSimserial,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSubscriberid != null" >
+        c_subscriberId = #{record.cSubscriberid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTags != null" >
+        c_tags = #{record.cTags,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTdid != null" >
+        c_tdid = #{record.cTdid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTimezone != null" >
+        c_timeZone = #{record.cTimezone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTotalmemory != null" >
+        c_totalMemory = #{record.cTotalmemory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTotalstorage != null" >
+        c_totalStorage = #{record.cTotalstorage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTrueip != null" >
+        c_trueIp = #{record.cTrueip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cUdid != null" >
+        c_udid = #{record.cUdid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cUptime != null" >
+        c_upTime = #{record.cUptime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cUseragent != null" >
+        c_userAgent = #{record.cUseragent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cVoicemail != null" >
+        c_voiceMail = #{record.cVoicemail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cVpnip != null" >
+        c_vpnIp = #{record.cVpnip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cWifiip != null" >
+        c_wifiIp = #{record.cWifiip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cWifimac != null" >
+        c_wifiMac = #{record.cWifimac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_td_andriod_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      c_os = #{record.cOs,jdbcType=VARCHAR},
+      c_fmVersion = #{record.cFmversion,jdbcType=VARCHAR},
+      c_sessionId = #{record.cSessionid,jdbcType=VARCHAR},
+      c_device_id = #{record.cDeviceId,jdbcType=VARCHAR},
+      c_active_time = #{record.cActiveTime,jdbcType=VARCHAR},
+      c_available_memery = #{record.cAvailableMemery,jdbcType=VARCHAR},
+      c_available_storage = #{record.cAvailableStorage,jdbcType=VARCHAR},
+      c_baseband_version = #{record.cBasebandVersion,jdbcType=VARCHAR},
+      c_battery_level = #{record.cBatteryLevel,jdbcType=VARCHAR},
+      c_battery_status = #{record.cBatteryStatus,jdbcType=VARCHAR},
+      c_blue_mac = #{record.cBlueMac,jdbcType=VARCHAR},
+      c_boot_time = #{record.cBootTime,jdbcType=VARCHAR},
+      c_brand = #{record.cBrand,jdbcType=VARCHAR},
+      c_carrier = #{record.cCarrier,jdbcType=VARCHAR},
+      c_cell_ip = #{record.cCellIp,jdbcType=VARCHAR},
+      c_cell_location = #{record.cCellLocation,jdbcType=VARCHAR},
+      c_country_iso = #{record.cCountryIso,jdbcType=VARCHAR},
+      c_cpuHardware = #{record.cCpuhardware,jdbcType=VARCHAR},
+      c_cpuSerial = #{record.cCpuserial,jdbcType=VARCHAR},
+      c_cpuSpeed = #{record.cCpuspeed,jdbcType=VARCHAR},
+      c_cpuType = #{record.cCputype,jdbcType=VARCHAR},
+      c_deviceConfig = #{record.cDeviceconfig,jdbcType=VARCHAR},
+      c_deviceName = #{record.cDevicename,jdbcType=VARCHAR},
+      c_display = #{record.cDisplay,jdbcType=VARCHAR},
+      c_dnsAddress = #{record.cDnsaddress,jdbcType=VARCHAR},
+      c_firmVersion = #{record.cFirmversion,jdbcType=VARCHAR},
+      c_gateway = #{record.cGateway,jdbcType=VARCHAR},
+      c_hardware = #{record.cHardware,jdbcType=VARCHAR},
+      c_host = #{record.cHost,jdbcType=VARCHAR},
+      c_imei = #{record.cImei,jdbcType=VARCHAR},
+      c_isBatteryUsage = #{record.cIsbatteryusage,jdbcType=VARCHAR},
+      c_isRoot = #{record.cIsroot,jdbcType=VARCHAR},
+      c_language = #{record.cLanguage,jdbcType=VARCHAR},
+      c_mcc = #{record.cMcc,jdbcType=VARCHAR},
+      c_mnc = #{record.cMnc,jdbcType=VARCHAR},
+      c_model = #{record.cModel,jdbcType=VARCHAR},
+      c_musicHash = #{record.cMusichash,jdbcType=VARCHAR},
+      c_phoneNumber = #{record.cPhonenumber,jdbcType=VARCHAR},
+      c_phoneType = #{record.cPhonetype,jdbcType=VARCHAR},
+      c_product = #{record.cProduct,jdbcType=VARCHAR},
+      c_proxyStr = #{record.cProxystr,jdbcType=VARCHAR},
+      c_roDevice = #{record.cRodevice,jdbcType=VARCHAR},
+      c_roModel = #{record.cRomodel,jdbcType=VARCHAR},
+      c_roName = #{record.cRoname,jdbcType=VARCHAR},
+      c_screenRes = #{record.cScreenres,jdbcType=VARCHAR},
+      c_sdkVersion = #{record.cSdkversion,jdbcType=VARCHAR},
+      c_serialNo = #{record.cSerialno,jdbcType=VARCHAR},
+      c_simOperator = #{record.cSimoperator,jdbcType=VARCHAR},
+      c_simSerial = #{record.cSimserial,jdbcType=VARCHAR},
+      c_subscriberId = #{record.cSubscriberid,jdbcType=VARCHAR},
+      c_tags = #{record.cTags,jdbcType=VARCHAR},
+      c_tdid = #{record.cTdid,jdbcType=VARCHAR},
+      c_timeZone = #{record.cTimezone,jdbcType=VARCHAR},
+      c_totalMemory = #{record.cTotalmemory,jdbcType=VARCHAR},
+      c_totalStorage = #{record.cTotalstorage,jdbcType=VARCHAR},
+      c_trueIp = #{record.cTrueip,jdbcType=VARCHAR},
+      c_udid = #{record.cUdid,jdbcType=VARCHAR},
+      c_upTime = #{record.cUptime,jdbcType=VARCHAR},
+      c_userAgent = #{record.cUseragent,jdbcType=VARCHAR},
+      c_voiceMail = #{record.cVoicemail,jdbcType=VARCHAR},
+      c_vpnIp = #{record.cVpnip,jdbcType=VARCHAR},
+      c_wifiIp = #{record.cWifiip,jdbcType=VARCHAR},
+      c_wifiMac = #{record.cWifimac,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdAndriodData" >
+    update t_third_td_andriod_data
+    <set >
+      <if test="cSeqId != null" >
+        c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cOs != null" >
+        c_os = #{cOs,jdbcType=VARCHAR},
+      </if>
+      <if test="cFmversion != null" >
+        c_fmVersion = #{cFmversion,jdbcType=VARCHAR},
+      </if>
+      <if test="cSessionid != null" >
+        c_sessionId = #{cSessionid,jdbcType=VARCHAR},
+      </if>
+      <if test="cDeviceId != null" >
+        c_device_id = #{cDeviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cActiveTime != null" >
+        c_active_time = #{cActiveTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cAvailableMemery != null" >
+        c_available_memery = #{cAvailableMemery,jdbcType=VARCHAR},
+      </if>
+      <if test="cAvailableStorage != null" >
+        c_available_storage = #{cAvailableStorage,jdbcType=VARCHAR},
+      </if>
+      <if test="cBasebandVersion != null" >
+        c_baseband_version = #{cBasebandVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="cBatteryLevel != null" >
+        c_battery_level = #{cBatteryLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="cBatteryStatus != null" >
+        c_battery_status = #{cBatteryStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cBlueMac != null" >
+        c_blue_mac = #{cBlueMac,jdbcType=VARCHAR},
+      </if>
+      <if test="cBootTime != null" >
+        c_boot_time = #{cBootTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cBrand != null" >
+        c_brand = #{cBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="cCarrier != null" >
+        c_carrier = #{cCarrier,jdbcType=VARCHAR},
+      </if>
+      <if test="cCellIp != null" >
+        c_cell_ip = #{cCellIp,jdbcType=VARCHAR},
+      </if>
+      <if test="cCellLocation != null" >
+        c_cell_location = #{cCellLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="cCountryIso != null" >
+        c_country_iso = #{cCountryIso,jdbcType=VARCHAR},
+      </if>
+      <if test="cCpuhardware != null" >
+        c_cpuHardware = #{cCpuhardware,jdbcType=VARCHAR},
+      </if>
+      <if test="cCpuserial != null" >
+        c_cpuSerial = #{cCpuserial,jdbcType=VARCHAR},
+      </if>
+      <if test="cCpuspeed != null" >
+        c_cpuSpeed = #{cCpuspeed,jdbcType=VARCHAR},
+      </if>
+      <if test="cCputype != null" >
+        c_cpuType = #{cCputype,jdbcType=VARCHAR},
+      </if>
+      <if test="cDeviceconfig != null" >
+        c_deviceConfig = #{cDeviceconfig,jdbcType=VARCHAR},
+      </if>
+      <if test="cDevicename != null" >
+        c_deviceName = #{cDevicename,jdbcType=VARCHAR},
+      </if>
+      <if test="cDisplay != null" >
+        c_display = #{cDisplay,jdbcType=VARCHAR},
+      </if>
+      <if test="cDnsaddress != null" >
+        c_dnsAddress = #{cDnsaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cFirmversion != null" >
+        c_firmVersion = #{cFirmversion,jdbcType=VARCHAR},
+      </if>
+      <if test="cGateway != null" >
+        c_gateway = #{cGateway,jdbcType=VARCHAR},
+      </if>
+      <if test="cHardware != null" >
+        c_hardware = #{cHardware,jdbcType=VARCHAR},
+      </if>
+      <if test="cHost != null" >
+        c_host = #{cHost,jdbcType=VARCHAR},
+      </if>
+      <if test="cImei != null" >
+        c_imei = #{cImei,jdbcType=VARCHAR},
+      </if>
+      <if test="cIsbatteryusage != null" >
+        c_isBatteryUsage = #{cIsbatteryusage,jdbcType=VARCHAR},
+      </if>
+      <if test="cIsroot != null" >
+        c_isRoot = #{cIsroot,jdbcType=VARCHAR},
+      </if>
+      <if test="cLanguage != null" >
+        c_language = #{cLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="cMcc != null" >
+        c_mcc = #{cMcc,jdbcType=VARCHAR},
+      </if>
+      <if test="cMnc != null" >
+        c_mnc = #{cMnc,jdbcType=VARCHAR},
+      </if>
+      <if test="cModel != null" >
+        c_model = #{cModel,jdbcType=VARCHAR},
+      </if>
+      <if test="cMusichash != null" >
+        c_musicHash = #{cMusichash,jdbcType=VARCHAR},
+      </if>
+      <if test="cPhonenumber != null" >
+        c_phoneNumber = #{cPhonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cPhonetype != null" >
+        c_phoneType = #{cPhonetype,jdbcType=VARCHAR},
+      </if>
+      <if test="cProduct != null" >
+        c_product = #{cProduct,jdbcType=VARCHAR},
+      </if>
+      <if test="cProxystr != null" >
+        c_proxyStr = #{cProxystr,jdbcType=VARCHAR},
+      </if>
+      <if test="cRodevice != null" >
+        c_roDevice = #{cRodevice,jdbcType=VARCHAR},
+      </if>
+      <if test="cRomodel != null" >
+        c_roModel = #{cRomodel,jdbcType=VARCHAR},
+      </if>
+      <if test="cRoname != null" >
+        c_roName = #{cRoname,jdbcType=VARCHAR},
+      </if>
+      <if test="cScreenres != null" >
+        c_screenRes = #{cScreenres,jdbcType=VARCHAR},
+      </if>
+      <if test="cSdkversion != null" >
+        c_sdkVersion = #{cSdkversion,jdbcType=VARCHAR},
+      </if>
+      <if test="cSerialno != null" >
+        c_serialNo = #{cSerialno,jdbcType=VARCHAR},
+      </if>
+      <if test="cSimoperator != null" >
+        c_simOperator = #{cSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="cSimserial != null" >
+        c_simSerial = #{cSimserial,jdbcType=VARCHAR},
+      </if>
+      <if test="cSubscriberid != null" >
+        c_subscriberId = #{cSubscriberid,jdbcType=VARCHAR},
+      </if>
+      <if test="cTags != null" >
+        c_tags = #{cTags,jdbcType=VARCHAR},
+      </if>
+      <if test="cTdid != null" >
+        c_tdid = #{cTdid,jdbcType=VARCHAR},
+      </if>
+      <if test="cTimezone != null" >
+        c_timeZone = #{cTimezone,jdbcType=VARCHAR},
+      </if>
+      <if test="cTotalmemory != null" >
+        c_totalMemory = #{cTotalmemory,jdbcType=VARCHAR},
+      </if>
+      <if test="cTotalstorage != null" >
+        c_totalStorage = #{cTotalstorage,jdbcType=VARCHAR},
+      </if>
+      <if test="cTrueip != null" >
+        c_trueIp = #{cTrueip,jdbcType=VARCHAR},
+      </if>
+      <if test="cUdid != null" >
+        c_udid = #{cUdid,jdbcType=VARCHAR},
+      </if>
+      <if test="cUptime != null" >
+        c_upTime = #{cUptime,jdbcType=VARCHAR},
+      </if>
+      <if test="cUseragent != null" >
+        c_userAgent = #{cUseragent,jdbcType=VARCHAR},
+      </if>
+      <if test="cVoicemail != null" >
+        c_voiceMail = #{cVoicemail,jdbcType=VARCHAR},
+      </if>
+      <if test="cVpnip != null" >
+        c_vpnIp = #{cVpnip,jdbcType=VARCHAR},
+      </if>
+      <if test="cWifiip != null" >
+        c_wifiIp = #{cWifiip,jdbcType=VARCHAR},
+      </if>
+      <if test="cWifimac != null" >
+        c_wifiMac = #{cWifimac,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdTdAndriodData" >
+    update t_third_td_andriod_data
+    set c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      c_os = #{cOs,jdbcType=VARCHAR},
+      c_fmVersion = #{cFmversion,jdbcType=VARCHAR},
+      c_sessionId = #{cSessionid,jdbcType=VARCHAR},
+      c_device_id = #{cDeviceId,jdbcType=VARCHAR},
+      c_active_time = #{cActiveTime,jdbcType=VARCHAR},
+      c_available_memery = #{cAvailableMemery,jdbcType=VARCHAR},
+      c_available_storage = #{cAvailableStorage,jdbcType=VARCHAR},
+      c_baseband_version = #{cBasebandVersion,jdbcType=VARCHAR},
+      c_battery_level = #{cBatteryLevel,jdbcType=VARCHAR},
+      c_battery_status = #{cBatteryStatus,jdbcType=VARCHAR},
+      c_blue_mac = #{cBlueMac,jdbcType=VARCHAR},
+      c_boot_time = #{cBootTime,jdbcType=VARCHAR},
+      c_brand = #{cBrand,jdbcType=VARCHAR},
+      c_carrier = #{cCarrier,jdbcType=VARCHAR},
+      c_cell_ip = #{cCellIp,jdbcType=VARCHAR},
+      c_cell_location = #{cCellLocation,jdbcType=VARCHAR},
+      c_country_iso = #{cCountryIso,jdbcType=VARCHAR},
+      c_cpuHardware = #{cCpuhardware,jdbcType=VARCHAR},
+      c_cpuSerial = #{cCpuserial,jdbcType=VARCHAR},
+      c_cpuSpeed = #{cCpuspeed,jdbcType=VARCHAR},
+      c_cpuType = #{cCputype,jdbcType=VARCHAR},
+      c_deviceConfig = #{cDeviceconfig,jdbcType=VARCHAR},
+      c_deviceName = #{cDevicename,jdbcType=VARCHAR},
+      c_display = #{cDisplay,jdbcType=VARCHAR},
+      c_dnsAddress = #{cDnsaddress,jdbcType=VARCHAR},
+      c_firmVersion = #{cFirmversion,jdbcType=VARCHAR},
+      c_gateway = #{cGateway,jdbcType=VARCHAR},
+      c_hardware = #{cHardware,jdbcType=VARCHAR},
+      c_host = #{cHost,jdbcType=VARCHAR},
+      c_imei = #{cImei,jdbcType=VARCHAR},
+      c_isBatteryUsage = #{cIsbatteryusage,jdbcType=VARCHAR},
+      c_isRoot = #{cIsroot,jdbcType=VARCHAR},
+      c_language = #{cLanguage,jdbcType=VARCHAR},
+      c_mcc = #{cMcc,jdbcType=VARCHAR},
+      c_mnc = #{cMnc,jdbcType=VARCHAR},
+      c_model = #{cModel,jdbcType=VARCHAR},
+      c_musicHash = #{cMusichash,jdbcType=VARCHAR},
+      c_phoneNumber = #{cPhonenumber,jdbcType=VARCHAR},
+      c_phoneType = #{cPhonetype,jdbcType=VARCHAR},
+      c_product = #{cProduct,jdbcType=VARCHAR},
+      c_proxyStr = #{cProxystr,jdbcType=VARCHAR},
+      c_roDevice = #{cRodevice,jdbcType=VARCHAR},
+      c_roModel = #{cRomodel,jdbcType=VARCHAR},
+      c_roName = #{cRoname,jdbcType=VARCHAR},
+      c_screenRes = #{cScreenres,jdbcType=VARCHAR},
+      c_sdkVersion = #{cSdkversion,jdbcType=VARCHAR},
+      c_serialNo = #{cSerialno,jdbcType=VARCHAR},
+      c_simOperator = #{cSimoperator,jdbcType=VARCHAR},
+      c_simSerial = #{cSimserial,jdbcType=VARCHAR},
+      c_subscriberId = #{cSubscriberid,jdbcType=VARCHAR},
+      c_tags = #{cTags,jdbcType=VARCHAR},
+      c_tdid = #{cTdid,jdbcType=VARCHAR},
+      c_timeZone = #{cTimezone,jdbcType=VARCHAR},
+      c_totalMemory = #{cTotalmemory,jdbcType=VARCHAR},
+      c_totalStorage = #{cTotalstorage,jdbcType=VARCHAR},
+      c_trueIp = #{cTrueip,jdbcType=VARCHAR},
+      c_udid = #{cUdid,jdbcType=VARCHAR},
+      c_upTime = #{cUptime,jdbcType=VARCHAR},
+      c_userAgent = #{cUseragent,jdbcType=VARCHAR},
+      c_voiceMail = #{cVoicemail,jdbcType=VARCHAR},
+      c_vpnIp = #{cVpnip,jdbcType=VARCHAR},
+      c_wifiIp = #{cWifiip,jdbcType=VARCHAR},
+      c_wifiMac = #{cWifimac,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

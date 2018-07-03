@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdTdMainDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdTdMainData" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_seq_id" property="cSeqId" jdbcType="VARCHAR" />
+    <result column="c_success" property="cSuccess" jdbcType="VARCHAR" />
+    <result column="c_reason_code" property="cReasonCode" jdbcType="VARCHAR" />
+    <result column="c_spend_time" property="cSpendTime" jdbcType="VARCHAR" />
+    <result column="c_policy_set_name" property="cPolicySetName" jdbcType="VARCHAR" />
+    <result column="c_final_score" property="cFinalScore" jdbcType="CHAR" />
+    <result column="c_final_decision" property="cFinalDecision" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, c_seq_id, c_success, c_reason_code, c_spend_time, c_policy_set_name, c_final_score, 
+    c_final_decision, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdMainDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_td_main_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_td_main_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_td_main_data
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdMainDataExample" >
+    delete from t_third_td_main_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdTdMainData" >
+    insert into t_third_td_main_data (c_id, c_seq_id, c_success, 
+      c_reason_code, c_spend_time, c_policy_set_name, 
+      c_final_score, c_final_decision, c_creatTime
+      )
+    values (#{cId,jdbcType=VARCHAR}, #{cSeqId,jdbcType=VARCHAR}, #{cSuccess,jdbcType=VARCHAR}, 
+      #{cReasonCode,jdbcType=VARCHAR}, #{cSpendTime,jdbcType=VARCHAR}, #{cPolicySetName,jdbcType=VARCHAR}, 
+      #{cFinalScore,jdbcType=CHAR}, #{cFinalDecision,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdMainData" >
+    insert into t_third_td_main_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cSeqId != null" >
+        c_seq_id,
+      </if>
+      <if test="cSuccess != null" >
+        c_success,
+      </if>
+      <if test="cReasonCode != null" >
+        c_reason_code,
+      </if>
+      <if test="cSpendTime != null" >
+        c_spend_time,
+      </if>
+      <if test="cPolicySetName != null" >
+        c_policy_set_name,
+      </if>
+      <if test="cFinalScore != null" >
+        c_final_score,
+      </if>
+      <if test="cFinalDecision != null" >
+        c_final_decision,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSeqId != null" >
+        #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSuccess != null" >
+        #{cSuccess,jdbcType=VARCHAR},
+      </if>
+      <if test="cReasonCode != null" >
+        #{cReasonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cSpendTime != null" >
+        #{cSpendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicySetName != null" >
+        #{cPolicySetName,jdbcType=VARCHAR},
+      </if>
+      <if test="cFinalScore != null" >
+        #{cFinalScore,jdbcType=CHAR},
+      </if>
+      <if test="cFinalDecision != null" >
+        #{cFinalDecision,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdTdMainDataExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_td_main_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_td_main_data
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSeqId != null" >
+        c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSuccess != null" >
+        c_success = #{record.cSuccess,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cReasonCode != null" >
+        c_reason_code = #{record.cReasonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSpendTime != null" >
+        c_spend_time = #{record.cSpendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cPolicySetName != null" >
+        c_policy_set_name = #{record.cPolicySetName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFinalScore != null" >
+        c_final_score = #{record.cFinalScore,jdbcType=CHAR},
+      </if>
+      <if test="record.cFinalDecision != null" >
+        c_final_decision = #{record.cFinalDecision,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_td_main_data
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      c_seq_id = #{record.cSeqId,jdbcType=VARCHAR},
+      c_success = #{record.cSuccess,jdbcType=VARCHAR},
+      c_reason_code = #{record.cReasonCode,jdbcType=VARCHAR},
+      c_spend_time = #{record.cSpendTime,jdbcType=VARCHAR},
+      c_policy_set_name = #{record.cPolicySetName,jdbcType=VARCHAR},
+      c_final_score = #{record.cFinalScore,jdbcType=CHAR},
+      c_final_decision = #{record.cFinalDecision,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdTdMainData" >
+    update t_third_td_main_data
+    <set >
+      <if test="cSeqId != null" >
+        c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      </if>
+      <if test="cSuccess != null" >
+        c_success = #{cSuccess,jdbcType=VARCHAR},
+      </if>
+      <if test="cReasonCode != null" >
+        c_reason_code = #{cReasonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cSpendTime != null" >
+        c_spend_time = #{cSpendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cPolicySetName != null" >
+        c_policy_set_name = #{cPolicySetName,jdbcType=VARCHAR},
+      </if>
+      <if test="cFinalScore != null" >
+        c_final_score = #{cFinalScore,jdbcType=CHAR},
+      </if>
+      <if test="cFinalDecision != null" >
+        c_final_decision = #{cFinalDecision,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdTdMainData" >
+    update t_third_td_main_data
+    set c_seq_id = #{cSeqId,jdbcType=VARCHAR},
+      c_success = #{cSuccess,jdbcType=VARCHAR},
+      c_reason_code = #{cReasonCode,jdbcType=VARCHAR},
+      c_spend_time = #{cSpendTime,jdbcType=VARCHAR},
+      c_policy_set_name = #{cPolicySetName,jdbcType=VARCHAR},
+      c_final_score = #{cFinalScore,jdbcType=CHAR},
+      c_final_decision = #{cFinalDecision,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,2215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdBrSpecialListMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdBrSpecialList" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="swift_number" property="swiftNumber" jdbcType="VARCHAR" />
+    <result column="c_linkman_cell" property="cLinkmanCell" jdbcType="VARCHAR" />
+    <result column="c_time_range" property="cTimeRange" jdbcType="VARCHAR" />
+    <result column="c_flag_specialList_c" property="cFlagSpeciallistC" jdbcType="VARCHAR" />
+    <result column="c_sl_id_abnormal" property="cSlIdAbnormal" jdbcType="VARCHAR" />
+    <result column="c_sl_id_phone_overdue" property="cSlIdPhoneOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_id_court_bad" property="cSlIdCourtBad" jdbcType="VARCHAR" />
+    <result column="c_sl_id_court_executed" property="cSlIdCourtExecuted" jdbcType="VARCHAR" />
+    <result column="c_sl_id_bank_bad" property="cSlIdBankBad" jdbcType="VARCHAR" />
+    <result column="c_sl_id_bank_overdue" property="cSlIdBankOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_id_bank_fraud" property="cSlIdBankFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_id_bank_lost" property="cSlIdBankLost" jdbcType="VARCHAR" />
+    <result column="c_sl_id_bank_refuse" property="cSlIdBankRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_id_p2p_bad" property="cSlIdP2pBad" jdbcType="VARCHAR" />
+    <result column="c_sl_id_p2p_overdue" property="cSlIdP2pOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_id_p2p_fraud" property="cSlIdP2pFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_id_p2p_lost" property="cSlIdP2pLost" jdbcType="VARCHAR" />
+    <result column="c_sl_id_p2p_refuse" property="cSlIdP2pRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_p2p_bad" property="cSlIdNbankP2pBad" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_p2p_overdue" property="cSlIdNbankP2pOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_p2p_fraud" property="cSlIdNbankP2pFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_p2p_lost" property="cSlIdNbankP2pLost" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_p2p_refuse" property="cSlIdNbankP2pRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_mc_bad" property="cSlIdNbankMcBad" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_mc_overdue" property="cSlIdNbankMcOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_mc_fraud" property="cSlIdNbankMcFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_mc_lost" property="cSlIdNbankMcLost" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_mc_refuse" property="cSlIdNbankMcRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_ca_bad" property="cSlIdNbankCaBad" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_ca_overdue" property="cSlIdNbankCaOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_ca_fraud" property="cSlIdNbankCaFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_ca_lost" property="cSlIdNbankCaLost" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_ca_refuse" property="cSlIdNbankCaRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_com_bad" property="cSlIdNbankComBad" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_com_overdue" property="cSlIdNbankComOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_com_fraud" property="cSlIdNbankComFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_com_lost" property="cSlIdNbankComLost" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_com_refuse" property="cSlIdNbankComRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_cf_bad" property="cSlIdNbankCfBad" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_cf_overdue" property="cSlIdNbankCfOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_cf_fraud" property="cSlIdNbankCfFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_cf_lost" property="cSlIdNbankCfLost" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_cf_refuse" property="cSlIdNbankCfRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_other_bad" property="cSlIdNbankOtherBad" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_other_overdue" property="cSlIdNbankOtherOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_other_fraud" property="cSlIdNbankOtherFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_other_lost" property="cSlIdNbankOtherLost" jdbcType="VARCHAR" />
+    <result column="c_sl_id_nbank_other_refuse" property="cSlIdNbankOtherRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_abnormal" property="cSlCellAbnormal" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_phone_overdue" property="cSlCellPhoneOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_bank_bad" property="cSlCellBankBad" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_bank_overdue" property="cSlCellBankOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_bank_fraud" property="cSlCellBankFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_bank_lost" property="cSlCellBankLost" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_bank_refuse" property="cSlCellBankRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_p2p_bad" property="cSlCellP2pBad" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_p2p_overdue" property="cSlCellP2pOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_p2p_fraud" property="cSlCellP2pFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_p2p_lost" property="cSlCellP2pLost" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_p2p_refuse" property="cSlCellP2pRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_p2p_bad" property="cSlCellNbankP2pBad" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_p2p_overdue" property="cSlCellNbankP2pOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_p2p_fraud" property="cSlCellNbankP2pFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_p2p_lost" property="cSlCellNbankP2pLost" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_p2p_refuse" property="cSlCellNbankP2pRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_mc_bad" property="cSlCellNbankMcBad" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_mc_overdue" property="cSlCellNbankMcOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_mc_fraud" property="cSlCellNbankMcFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_mc_lost" property="cSlCellNbankMcLost" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_mc_refuse" property="cSlCellNbankMcRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_ca_bad" property="cSlCellNbankCaBad" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_ca_overdue" property="cSlCellNbankCaOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_ca_fraud" property="cSlCellNbankCaFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_ca_lost" property="cSlCellNbankCaLost" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_ca_refuse" property="cSlCellNbankCaRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_com_bad" property="cSlCellNbankComBad" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_com_overdue" property="cSlCellNbankComOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_com_fraud" property="cSlCellNbankComFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_com_lost" property="cSlCellNbankComLost" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_com_refuse" property="cSlCellNbankComRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_cf_bad" property="cSlCellNbankCfBad" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_cf_overdue" property="cSlCellNbankCfOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_cf_fraud" property="cSlCellNbankCfFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_cf_lost" property="cSlCellNbankCfLost" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_cf_refuse" property="cSlCellNbankCfRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_other_bad" property="cSlCellNbankOtherBad" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_other_overdue" property="cSlCellNbankOtherOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_other_fraud" property="cSlCellNbankOtherFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_other_lost" property="cSlCellNbankOtherLost" jdbcType="VARCHAR" />
+    <result column="c_sl_cell_nbank_other_refuse" property="cSlCellNbankOtherRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_abnormal" property="cSlLmCellAbnormal" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_phone_overdue" property="cSlLmCellPhoneOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_bank_bad" property="cSlLmCellBankBad" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_bank_overdue" property="cSlLmCellBankOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_bank_fraud" property="cSlLmCellBankFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_bank_lost" property="cSlLmCellBankLost" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_bank_refuse" property="cSlLmCellBankRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_p2p_bad" property="cSlLmCellNbankP2pBad" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_p2p_overdue" property="cSlLmCellNbankP2pOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_p2p_fraud" property="cSlLmCellNbankP2pFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_p2p_lost" property="cSlLmCellNbankP2pLost" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_p2p_refuse" property="cSlLmCellNbankP2pRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_mc_bad" property="cSlLmCellNbankMcBad" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_mc_overdue" property="cSlLmCellNbankMcOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_mc_fraud" property="cSlLmCellNbankMcFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_mc_lost" property="cSlLmCellNbankMcLost" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_mc_refuse" property="cSlLmCellNbankMcRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_ca_bad" property="cSlLmCellNbankCaBad" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_ca_overdue" property="cSlLmCellNbankCaOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_ca_fraud" property="cSlLmCellNbankCaFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_ca_lost" property="cSlLmCellNbankCaLost" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_ca_refuse" property="cSlLmCellNbankCaRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_com_bad" property="cSlLmCellNbankComBad" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_com_overdue" property="cSlLmCellNbankComOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_com_fraud" property="cSlLmCellNbankComFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_com_lost" property="cSlLmCellNbankComLost" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_com_refuse" property="cSlLmCellNbankComRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_cf_bad" property="cSlLmCellNbankCfBad" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_cf_overdue" property="cSlLmCellNbankCfOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_cf_fraud" property="cSlLmCellNbankCfFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_cf_lost" property="cSlLmCellNbankCfLost" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_cf_refuse" property="cSlLmCellNbankCfRefuse" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_other_bad" property="cSlLmCellNbankOtherBad" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_other_overdue" property="cSlLmCellNbankOtherOverdue" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_other_fraud" property="cSlLmCellNbankOtherFraud" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_other_lost" property="cSlLmCellNbankOtherLost" jdbcType="VARCHAR" />
+    <result column="c_sl_lm_cell_nbank_other_refuse" property="cSlLmCellNbankOtherRefuse" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, swift_number, c_linkman_cell, c_time_range, c_flag_specialList_c, c_sl_id_abnormal, 
+    c_sl_id_phone_overdue, c_sl_id_court_bad, c_sl_id_court_executed, c_sl_id_bank_bad, 
+    c_sl_id_bank_overdue, c_sl_id_bank_fraud, c_sl_id_bank_lost, c_sl_id_bank_refuse, 
+    c_sl_id_p2p_bad, c_sl_id_p2p_overdue, c_sl_id_p2p_fraud, c_sl_id_p2p_lost, c_sl_id_p2p_refuse, 
+    c_sl_id_nbank_p2p_bad, c_sl_id_nbank_p2p_overdue, c_sl_id_nbank_p2p_fraud, c_sl_id_nbank_p2p_lost, 
+    c_sl_id_nbank_p2p_refuse, c_sl_id_nbank_mc_bad, c_sl_id_nbank_mc_overdue, c_sl_id_nbank_mc_fraud, 
+    c_sl_id_nbank_mc_lost, c_sl_id_nbank_mc_refuse, c_sl_id_nbank_ca_bad, c_sl_id_nbank_ca_overdue, 
+    c_sl_id_nbank_ca_fraud, c_sl_id_nbank_ca_lost, c_sl_id_nbank_ca_refuse, c_sl_id_nbank_com_bad, 
+    c_sl_id_nbank_com_overdue, c_sl_id_nbank_com_fraud, c_sl_id_nbank_com_lost, c_sl_id_nbank_com_refuse, 
+    c_sl_id_nbank_cf_bad, c_sl_id_nbank_cf_overdue, c_sl_id_nbank_cf_fraud, c_sl_id_nbank_cf_lost, 
+    c_sl_id_nbank_cf_refuse, c_sl_id_nbank_other_bad, c_sl_id_nbank_other_overdue, c_sl_id_nbank_other_fraud, 
+    c_sl_id_nbank_other_lost, c_sl_id_nbank_other_refuse, c_sl_cell_abnormal, c_sl_cell_phone_overdue, 
+    c_sl_cell_bank_bad, c_sl_cell_bank_overdue, c_sl_cell_bank_fraud, c_sl_cell_bank_lost, 
+    c_sl_cell_bank_refuse, c_sl_cell_p2p_bad, c_sl_cell_p2p_overdue, c_sl_cell_p2p_fraud, 
+    c_sl_cell_p2p_lost, c_sl_cell_p2p_refuse, c_sl_cell_nbank_p2p_bad, c_sl_cell_nbank_p2p_overdue, 
+    c_sl_cell_nbank_p2p_fraud, c_sl_cell_nbank_p2p_lost, c_sl_cell_nbank_p2p_refuse, 
+    c_sl_cell_nbank_mc_bad, c_sl_cell_nbank_mc_overdue, c_sl_cell_nbank_mc_fraud, c_sl_cell_nbank_mc_lost, 
+    c_sl_cell_nbank_mc_refuse, c_sl_cell_nbank_ca_bad, c_sl_cell_nbank_ca_overdue, c_sl_cell_nbank_ca_fraud, 
+    c_sl_cell_nbank_ca_lost, c_sl_cell_nbank_ca_refuse, c_sl_cell_nbank_com_bad, c_sl_cell_nbank_com_overdue, 
+    c_sl_cell_nbank_com_fraud, c_sl_cell_nbank_com_lost, c_sl_cell_nbank_com_refuse, 
+    c_sl_cell_nbank_cf_bad, c_sl_cell_nbank_cf_overdue, c_sl_cell_nbank_cf_fraud, c_sl_cell_nbank_cf_lost, 
+    c_sl_cell_nbank_cf_refuse, c_sl_cell_nbank_other_bad, c_sl_cell_nbank_other_overdue, 
+    c_sl_cell_nbank_other_fraud, c_sl_cell_nbank_other_lost, c_sl_cell_nbank_other_refuse, 
+    c_sl_lm_cell_abnormal, c_sl_lm_cell_phone_overdue, c_sl_lm_cell_bank_bad, c_sl_lm_cell_bank_overdue, 
+    c_sl_lm_cell_bank_fraud, c_sl_lm_cell_bank_lost, c_sl_lm_cell_bank_refuse, c_sl_lm_cell_nbank_p2p_bad, 
+    c_sl_lm_cell_nbank_p2p_overdue, c_sl_lm_cell_nbank_p2p_fraud, c_sl_lm_cell_nbank_p2p_lost, 
+    c_sl_lm_cell_nbank_p2p_refuse, c_sl_lm_cell_nbank_mc_bad, c_sl_lm_cell_nbank_mc_overdue, 
+    c_sl_lm_cell_nbank_mc_fraud, c_sl_lm_cell_nbank_mc_lost, c_sl_lm_cell_nbank_mc_refuse, 
+    c_sl_lm_cell_nbank_ca_bad, c_sl_lm_cell_nbank_ca_overdue, c_sl_lm_cell_nbank_ca_fraud, 
+    c_sl_lm_cell_nbank_ca_lost, c_sl_lm_cell_nbank_ca_refuse, c_sl_lm_cell_nbank_com_bad, 
+    c_sl_lm_cell_nbank_com_overdue, c_sl_lm_cell_nbank_com_fraud, c_sl_lm_cell_nbank_com_lost, 
+    c_sl_lm_cell_nbank_com_refuse, c_sl_lm_cell_nbank_cf_bad, c_sl_lm_cell_nbank_cf_overdue, 
+    c_sl_lm_cell_nbank_cf_fraud, c_sl_lm_cell_nbank_cf_lost, c_sl_lm_cell_nbank_cf_refuse, 
+    c_sl_lm_cell_nbank_other_bad, c_sl_lm_cell_nbank_other_overdue, c_sl_lm_cell_nbank_other_fraud, 
+    c_sl_lm_cell_nbank_other_lost, c_sl_lm_cell_nbank_other_refuse, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrSpecialListExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_br_special_list
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_br_special_list
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_br_special_list
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrSpecialListExample" >
+    delete from t_third_br_special_list
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdBrSpecialList" >
+    insert into t_third_br_special_list (c_id, swift_number, c_linkman_cell, 
+      c_time_range, c_flag_specialList_c, c_sl_id_abnormal, 
+      c_sl_id_phone_overdue, c_sl_id_court_bad, c_sl_id_court_executed, 
+      c_sl_id_bank_bad, c_sl_id_bank_overdue, c_sl_id_bank_fraud, 
+      c_sl_id_bank_lost, c_sl_id_bank_refuse, c_sl_id_p2p_bad, 
+      c_sl_id_p2p_overdue, c_sl_id_p2p_fraud, c_sl_id_p2p_lost, 
+      c_sl_id_p2p_refuse, c_sl_id_nbank_p2p_bad, c_sl_id_nbank_p2p_overdue, 
+      c_sl_id_nbank_p2p_fraud, c_sl_id_nbank_p2p_lost, 
+      c_sl_id_nbank_p2p_refuse, c_sl_id_nbank_mc_bad, c_sl_id_nbank_mc_overdue, 
+      c_sl_id_nbank_mc_fraud, c_sl_id_nbank_mc_lost, c_sl_id_nbank_mc_refuse, 
+      c_sl_id_nbank_ca_bad, c_sl_id_nbank_ca_overdue, c_sl_id_nbank_ca_fraud, 
+      c_sl_id_nbank_ca_lost, c_sl_id_nbank_ca_refuse, c_sl_id_nbank_com_bad, 
+      c_sl_id_nbank_com_overdue, c_sl_id_nbank_com_fraud, 
+      c_sl_id_nbank_com_lost, c_sl_id_nbank_com_refuse, 
+      c_sl_id_nbank_cf_bad, c_sl_id_nbank_cf_overdue, c_sl_id_nbank_cf_fraud, 
+      c_sl_id_nbank_cf_lost, c_sl_id_nbank_cf_refuse, c_sl_id_nbank_other_bad, 
+      c_sl_id_nbank_other_overdue, c_sl_id_nbank_other_fraud, 
+      c_sl_id_nbank_other_lost, c_sl_id_nbank_other_refuse, 
+      c_sl_cell_abnormal, c_sl_cell_phone_overdue, c_sl_cell_bank_bad, 
+      c_sl_cell_bank_overdue, c_sl_cell_bank_fraud, c_sl_cell_bank_lost, 
+      c_sl_cell_bank_refuse, c_sl_cell_p2p_bad, c_sl_cell_p2p_overdue, 
+      c_sl_cell_p2p_fraud, c_sl_cell_p2p_lost, c_sl_cell_p2p_refuse, 
+      c_sl_cell_nbank_p2p_bad, c_sl_cell_nbank_p2p_overdue, 
+      c_sl_cell_nbank_p2p_fraud, c_sl_cell_nbank_p2p_lost, 
+      c_sl_cell_nbank_p2p_refuse, c_sl_cell_nbank_mc_bad, 
+      c_sl_cell_nbank_mc_overdue, c_sl_cell_nbank_mc_fraud, 
+      c_sl_cell_nbank_mc_lost, c_sl_cell_nbank_mc_refuse, 
+      c_sl_cell_nbank_ca_bad, c_sl_cell_nbank_ca_overdue, 
+      c_sl_cell_nbank_ca_fraud, c_sl_cell_nbank_ca_lost, 
+      c_sl_cell_nbank_ca_refuse, c_sl_cell_nbank_com_bad, 
+      c_sl_cell_nbank_com_overdue, c_sl_cell_nbank_com_fraud, 
+      c_sl_cell_nbank_com_lost, c_sl_cell_nbank_com_refuse, 
+      c_sl_cell_nbank_cf_bad, c_sl_cell_nbank_cf_overdue, 
+      c_sl_cell_nbank_cf_fraud, c_sl_cell_nbank_cf_lost, 
+      c_sl_cell_nbank_cf_refuse, c_sl_cell_nbank_other_bad, 
+      c_sl_cell_nbank_other_overdue, c_sl_cell_nbank_other_fraud, 
+      c_sl_cell_nbank_other_lost, c_sl_cell_nbank_other_refuse, 
+      c_sl_lm_cell_abnormal, c_sl_lm_cell_phone_overdue, 
+      c_sl_lm_cell_bank_bad, c_sl_lm_cell_bank_overdue, 
+      c_sl_lm_cell_bank_fraud, c_sl_lm_cell_bank_lost, 
+      c_sl_lm_cell_bank_refuse, c_sl_lm_cell_nbank_p2p_bad, 
+      c_sl_lm_cell_nbank_p2p_overdue, c_sl_lm_cell_nbank_p2p_fraud, 
+      c_sl_lm_cell_nbank_p2p_lost, c_sl_lm_cell_nbank_p2p_refuse, 
+      c_sl_lm_cell_nbank_mc_bad, c_sl_lm_cell_nbank_mc_overdue, 
+      c_sl_lm_cell_nbank_mc_fraud, c_sl_lm_cell_nbank_mc_lost, 
+      c_sl_lm_cell_nbank_mc_refuse, c_sl_lm_cell_nbank_ca_bad, 
+      c_sl_lm_cell_nbank_ca_overdue, c_sl_lm_cell_nbank_ca_fraud, 
+      c_sl_lm_cell_nbank_ca_lost, c_sl_lm_cell_nbank_ca_refuse, 
+      c_sl_lm_cell_nbank_com_bad, c_sl_lm_cell_nbank_com_overdue, 
+      c_sl_lm_cell_nbank_com_fraud, c_sl_lm_cell_nbank_com_lost, 
+      c_sl_lm_cell_nbank_com_refuse, c_sl_lm_cell_nbank_cf_bad, 
+      c_sl_lm_cell_nbank_cf_overdue, c_sl_lm_cell_nbank_cf_fraud, 
+      c_sl_lm_cell_nbank_cf_lost, c_sl_lm_cell_nbank_cf_refuse, 
+      c_sl_lm_cell_nbank_other_bad, c_sl_lm_cell_nbank_other_overdue, 
+      c_sl_lm_cell_nbank_other_fraud, c_sl_lm_cell_nbank_other_lost, 
+      c_sl_lm_cell_nbank_other_refuse, c_creatTime
+      )
+    values (#{cId,jdbcType=VARCHAR}, #{swiftNumber,jdbcType=VARCHAR}, #{cLinkmanCell,jdbcType=VARCHAR}, 
+      #{cTimeRange,jdbcType=VARCHAR}, #{cFlagSpeciallistC,jdbcType=VARCHAR}, #{cSlIdAbnormal,jdbcType=VARCHAR}, 
+      #{cSlIdPhoneOverdue,jdbcType=VARCHAR}, #{cSlIdCourtBad,jdbcType=VARCHAR}, #{cSlIdCourtExecuted,jdbcType=VARCHAR}, 
+      #{cSlIdBankBad,jdbcType=VARCHAR}, #{cSlIdBankOverdue,jdbcType=VARCHAR}, #{cSlIdBankFraud,jdbcType=VARCHAR}, 
+      #{cSlIdBankLost,jdbcType=VARCHAR}, #{cSlIdBankRefuse,jdbcType=VARCHAR}, #{cSlIdP2pBad,jdbcType=VARCHAR}, 
+      #{cSlIdP2pOverdue,jdbcType=VARCHAR}, #{cSlIdP2pFraud,jdbcType=VARCHAR}, #{cSlIdP2pLost,jdbcType=VARCHAR}, 
+      #{cSlIdP2pRefuse,jdbcType=VARCHAR}, #{cSlIdNbankP2pBad,jdbcType=VARCHAR}, #{cSlIdNbankP2pOverdue,jdbcType=VARCHAR}, 
+      #{cSlIdNbankP2pFraud,jdbcType=VARCHAR}, #{cSlIdNbankP2pLost,jdbcType=VARCHAR}, 
+      #{cSlIdNbankP2pRefuse,jdbcType=VARCHAR}, #{cSlIdNbankMcBad,jdbcType=VARCHAR}, #{cSlIdNbankMcOverdue,jdbcType=VARCHAR}, 
+      #{cSlIdNbankMcFraud,jdbcType=VARCHAR}, #{cSlIdNbankMcLost,jdbcType=VARCHAR}, #{cSlIdNbankMcRefuse,jdbcType=VARCHAR}, 
+      #{cSlIdNbankCaBad,jdbcType=VARCHAR}, #{cSlIdNbankCaOverdue,jdbcType=VARCHAR}, #{cSlIdNbankCaFraud,jdbcType=VARCHAR}, 
+      #{cSlIdNbankCaLost,jdbcType=VARCHAR}, #{cSlIdNbankCaRefuse,jdbcType=VARCHAR}, #{cSlIdNbankComBad,jdbcType=VARCHAR}, 
+      #{cSlIdNbankComOverdue,jdbcType=VARCHAR}, #{cSlIdNbankComFraud,jdbcType=VARCHAR}, 
+      #{cSlIdNbankComLost,jdbcType=VARCHAR}, #{cSlIdNbankComRefuse,jdbcType=VARCHAR}, 
+      #{cSlIdNbankCfBad,jdbcType=VARCHAR}, #{cSlIdNbankCfOverdue,jdbcType=VARCHAR}, #{cSlIdNbankCfFraud,jdbcType=VARCHAR}, 
+      #{cSlIdNbankCfLost,jdbcType=VARCHAR}, #{cSlIdNbankCfRefuse,jdbcType=VARCHAR}, #{cSlIdNbankOtherBad,jdbcType=VARCHAR}, 
+      #{cSlIdNbankOtherOverdue,jdbcType=VARCHAR}, #{cSlIdNbankOtherFraud,jdbcType=VARCHAR}, 
+      #{cSlIdNbankOtherLost,jdbcType=VARCHAR}, #{cSlIdNbankOtherRefuse,jdbcType=VARCHAR}, 
+      #{cSlCellAbnormal,jdbcType=VARCHAR}, #{cSlCellPhoneOverdue,jdbcType=VARCHAR}, #{cSlCellBankBad,jdbcType=VARCHAR}, 
+      #{cSlCellBankOverdue,jdbcType=VARCHAR}, #{cSlCellBankFraud,jdbcType=VARCHAR}, #{cSlCellBankLost,jdbcType=VARCHAR}, 
+      #{cSlCellBankRefuse,jdbcType=VARCHAR}, #{cSlCellP2pBad,jdbcType=VARCHAR}, #{cSlCellP2pOverdue,jdbcType=VARCHAR}, 
+      #{cSlCellP2pFraud,jdbcType=VARCHAR}, #{cSlCellP2pLost,jdbcType=VARCHAR}, #{cSlCellP2pRefuse,jdbcType=VARCHAR}, 
+      #{cSlCellNbankP2pBad,jdbcType=VARCHAR}, #{cSlCellNbankP2pOverdue,jdbcType=VARCHAR}, 
+      #{cSlCellNbankP2pFraud,jdbcType=VARCHAR}, #{cSlCellNbankP2pLost,jdbcType=VARCHAR}, 
+      #{cSlCellNbankP2pRefuse,jdbcType=VARCHAR}, #{cSlCellNbankMcBad,jdbcType=VARCHAR}, 
+      #{cSlCellNbankMcOverdue,jdbcType=VARCHAR}, #{cSlCellNbankMcFraud,jdbcType=VARCHAR}, 
+      #{cSlCellNbankMcLost,jdbcType=VARCHAR}, #{cSlCellNbankMcRefuse,jdbcType=VARCHAR}, 
+      #{cSlCellNbankCaBad,jdbcType=VARCHAR}, #{cSlCellNbankCaOverdue,jdbcType=VARCHAR}, 
+      #{cSlCellNbankCaFraud,jdbcType=VARCHAR}, #{cSlCellNbankCaLost,jdbcType=VARCHAR}, 
+      #{cSlCellNbankCaRefuse,jdbcType=VARCHAR}, #{cSlCellNbankComBad,jdbcType=VARCHAR}, 
+      #{cSlCellNbankComOverdue,jdbcType=VARCHAR}, #{cSlCellNbankComFraud,jdbcType=VARCHAR}, 
+      #{cSlCellNbankComLost,jdbcType=VARCHAR}, #{cSlCellNbankComRefuse,jdbcType=VARCHAR}, 
+      #{cSlCellNbankCfBad,jdbcType=VARCHAR}, #{cSlCellNbankCfOverdue,jdbcType=VARCHAR}, 
+      #{cSlCellNbankCfFraud,jdbcType=VARCHAR}, #{cSlCellNbankCfLost,jdbcType=VARCHAR}, 
+      #{cSlCellNbankCfRefuse,jdbcType=VARCHAR}, #{cSlCellNbankOtherBad,jdbcType=VARCHAR}, 
+      #{cSlCellNbankOtherOverdue,jdbcType=VARCHAR}, #{cSlCellNbankOtherFraud,jdbcType=VARCHAR}, 
+      #{cSlCellNbankOtherLost,jdbcType=VARCHAR}, #{cSlCellNbankOtherRefuse,jdbcType=VARCHAR}, 
+      #{cSlLmCellAbnormal,jdbcType=VARCHAR}, #{cSlLmCellPhoneOverdue,jdbcType=VARCHAR}, 
+      #{cSlLmCellBankBad,jdbcType=VARCHAR}, #{cSlLmCellBankOverdue,jdbcType=VARCHAR}, 
+      #{cSlLmCellBankFraud,jdbcType=VARCHAR}, #{cSlLmCellBankLost,jdbcType=VARCHAR}, 
+      #{cSlLmCellBankRefuse,jdbcType=VARCHAR}, #{cSlLmCellNbankP2pBad,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankP2pOverdue,jdbcType=VARCHAR}, #{cSlLmCellNbankP2pFraud,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankP2pLost,jdbcType=VARCHAR}, #{cSlLmCellNbankP2pRefuse,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankMcBad,jdbcType=VARCHAR}, #{cSlLmCellNbankMcOverdue,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankMcFraud,jdbcType=VARCHAR}, #{cSlLmCellNbankMcLost,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankMcRefuse,jdbcType=VARCHAR}, #{cSlLmCellNbankCaBad,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankCaOverdue,jdbcType=VARCHAR}, #{cSlLmCellNbankCaFraud,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankCaLost,jdbcType=VARCHAR}, #{cSlLmCellNbankCaRefuse,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankComBad,jdbcType=VARCHAR}, #{cSlLmCellNbankComOverdue,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankComFraud,jdbcType=VARCHAR}, #{cSlLmCellNbankComLost,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankComRefuse,jdbcType=VARCHAR}, #{cSlLmCellNbankCfBad,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankCfOverdue,jdbcType=VARCHAR}, #{cSlLmCellNbankCfFraud,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankCfLost,jdbcType=VARCHAR}, #{cSlLmCellNbankCfRefuse,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankOtherBad,jdbcType=VARCHAR}, #{cSlLmCellNbankOtherOverdue,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankOtherFraud,jdbcType=VARCHAR}, #{cSlLmCellNbankOtherLost,jdbcType=VARCHAR}, 
+      #{cSlLmCellNbankOtherRefuse,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrSpecialList" >
+    insert into t_third_br_special_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="swiftNumber != null" >
+        swift_number,
+      </if>
+      <if test="cLinkmanCell != null" >
+        c_linkman_cell,
+      </if>
+      <if test="cTimeRange != null" >
+        c_time_range,
+      </if>
+      <if test="cFlagSpeciallistC != null" >
+        c_flag_specialList_c,
+      </if>
+      <if test="cSlIdAbnormal != null" >
+        c_sl_id_abnormal,
+      </if>
+      <if test="cSlIdPhoneOverdue != null" >
+        c_sl_id_phone_overdue,
+      </if>
+      <if test="cSlIdCourtBad != null" >
+        c_sl_id_court_bad,
+      </if>
+      <if test="cSlIdCourtExecuted != null" >
+        c_sl_id_court_executed,
+      </if>
+      <if test="cSlIdBankBad != null" >
+        c_sl_id_bank_bad,
+      </if>
+      <if test="cSlIdBankOverdue != null" >
+        c_sl_id_bank_overdue,
+      </if>
+      <if test="cSlIdBankFraud != null" >
+        c_sl_id_bank_fraud,
+      </if>
+      <if test="cSlIdBankLost != null" >
+        c_sl_id_bank_lost,
+      </if>
+      <if test="cSlIdBankRefuse != null" >
+        c_sl_id_bank_refuse,
+      </if>
+      <if test="cSlIdP2pBad != null" >
+        c_sl_id_p2p_bad,
+      </if>
+      <if test="cSlIdP2pOverdue != null" >
+        c_sl_id_p2p_overdue,
+      </if>
+      <if test="cSlIdP2pFraud != null" >
+        c_sl_id_p2p_fraud,
+      </if>
+      <if test="cSlIdP2pLost != null" >
+        c_sl_id_p2p_lost,
+      </if>
+      <if test="cSlIdP2pRefuse != null" >
+        c_sl_id_p2p_refuse,
+      </if>
+      <if test="cSlIdNbankP2pBad != null" >
+        c_sl_id_nbank_p2p_bad,
+      </if>
+      <if test="cSlIdNbankP2pOverdue != null" >
+        c_sl_id_nbank_p2p_overdue,
+      </if>
+      <if test="cSlIdNbankP2pFraud != null" >
+        c_sl_id_nbank_p2p_fraud,
+      </if>
+      <if test="cSlIdNbankP2pLost != null" >
+        c_sl_id_nbank_p2p_lost,
+      </if>
+      <if test="cSlIdNbankP2pRefuse != null" >
+        c_sl_id_nbank_p2p_refuse,
+      </if>
+      <if test="cSlIdNbankMcBad != null" >
+        c_sl_id_nbank_mc_bad,
+      </if>
+      <if test="cSlIdNbankMcOverdue != null" >
+        c_sl_id_nbank_mc_overdue,
+      </if>
+      <if test="cSlIdNbankMcFraud != null" >
+        c_sl_id_nbank_mc_fraud,
+      </if>
+      <if test="cSlIdNbankMcLost != null" >
+        c_sl_id_nbank_mc_lost,
+      </if>
+      <if test="cSlIdNbankMcRefuse != null" >
+        c_sl_id_nbank_mc_refuse,
+      </if>
+      <if test="cSlIdNbankCaBad != null" >
+        c_sl_id_nbank_ca_bad,
+      </if>
+      <if test="cSlIdNbankCaOverdue != null" >
+        c_sl_id_nbank_ca_overdue,
+      </if>
+      <if test="cSlIdNbankCaFraud != null" >
+        c_sl_id_nbank_ca_fraud,
+      </if>
+      <if test="cSlIdNbankCaLost != null" >
+        c_sl_id_nbank_ca_lost,
+      </if>
+      <if test="cSlIdNbankCaRefuse != null" >
+        c_sl_id_nbank_ca_refuse,
+      </if>
+      <if test="cSlIdNbankComBad != null" >
+        c_sl_id_nbank_com_bad,
+      </if>
+      <if test="cSlIdNbankComOverdue != null" >
+        c_sl_id_nbank_com_overdue,
+      </if>
+      <if test="cSlIdNbankComFraud != null" >
+        c_sl_id_nbank_com_fraud,
+      </if>
+      <if test="cSlIdNbankComLost != null" >
+        c_sl_id_nbank_com_lost,
+      </if>
+      <if test="cSlIdNbankComRefuse != null" >
+        c_sl_id_nbank_com_refuse,
+      </if>
+      <if test="cSlIdNbankCfBad != null" >
+        c_sl_id_nbank_cf_bad,
+      </if>
+      <if test="cSlIdNbankCfOverdue != null" >
+        c_sl_id_nbank_cf_overdue,
+      </if>
+      <if test="cSlIdNbankCfFraud != null" >
+        c_sl_id_nbank_cf_fraud,
+      </if>
+      <if test="cSlIdNbankCfLost != null" >
+        c_sl_id_nbank_cf_lost,
+      </if>
+      <if test="cSlIdNbankCfRefuse != null" >
+        c_sl_id_nbank_cf_refuse,
+      </if>
+      <if test="cSlIdNbankOtherBad != null" >
+        c_sl_id_nbank_other_bad,
+      </if>
+      <if test="cSlIdNbankOtherOverdue != null" >
+        c_sl_id_nbank_other_overdue,
+      </if>
+      <if test="cSlIdNbankOtherFraud != null" >
+        c_sl_id_nbank_other_fraud,
+      </if>
+      <if test="cSlIdNbankOtherLost != null" >
+        c_sl_id_nbank_other_lost,
+      </if>
+      <if test="cSlIdNbankOtherRefuse != null" >
+        c_sl_id_nbank_other_refuse,
+      </if>
+      <if test="cSlCellAbnormal != null" >
+        c_sl_cell_abnormal,
+      </if>
+      <if test="cSlCellPhoneOverdue != null" >
+        c_sl_cell_phone_overdue,
+      </if>
+      <if test="cSlCellBankBad != null" >
+        c_sl_cell_bank_bad,
+      </if>
+      <if test="cSlCellBankOverdue != null" >
+        c_sl_cell_bank_overdue,
+      </if>
+      <if test="cSlCellBankFraud != null" >
+        c_sl_cell_bank_fraud,
+      </if>
+      <if test="cSlCellBankLost != null" >
+        c_sl_cell_bank_lost,
+      </if>
+      <if test="cSlCellBankRefuse != null" >
+        c_sl_cell_bank_refuse,
+      </if>
+      <if test="cSlCellP2pBad != null" >
+        c_sl_cell_p2p_bad,
+      </if>
+      <if test="cSlCellP2pOverdue != null" >
+        c_sl_cell_p2p_overdue,
+      </if>
+      <if test="cSlCellP2pFraud != null" >
+        c_sl_cell_p2p_fraud,
+      </if>
+      <if test="cSlCellP2pLost != null" >
+        c_sl_cell_p2p_lost,
+      </if>
+      <if test="cSlCellP2pRefuse != null" >
+        c_sl_cell_p2p_refuse,
+      </if>
+      <if test="cSlCellNbankP2pBad != null" >
+        c_sl_cell_nbank_p2p_bad,
+      </if>
+      <if test="cSlCellNbankP2pOverdue != null" >
+        c_sl_cell_nbank_p2p_overdue,
+      </if>
+      <if test="cSlCellNbankP2pFraud != null" >
+        c_sl_cell_nbank_p2p_fraud,
+      </if>
+      <if test="cSlCellNbankP2pLost != null" >
+        c_sl_cell_nbank_p2p_lost,
+      </if>
+      <if test="cSlCellNbankP2pRefuse != null" >
+        c_sl_cell_nbank_p2p_refuse,
+      </if>
+      <if test="cSlCellNbankMcBad != null" >
+        c_sl_cell_nbank_mc_bad,
+      </if>
+      <if test="cSlCellNbankMcOverdue != null" >
+        c_sl_cell_nbank_mc_overdue,
+      </if>
+      <if test="cSlCellNbankMcFraud != null" >
+        c_sl_cell_nbank_mc_fraud,
+      </if>
+      <if test="cSlCellNbankMcLost != null" >
+        c_sl_cell_nbank_mc_lost,
+      </if>
+      <if test="cSlCellNbankMcRefuse != null" >
+        c_sl_cell_nbank_mc_refuse,
+      </if>
+      <if test="cSlCellNbankCaBad != null" >
+        c_sl_cell_nbank_ca_bad,
+      </if>
+      <if test="cSlCellNbankCaOverdue != null" >
+        c_sl_cell_nbank_ca_overdue,
+      </if>
+      <if test="cSlCellNbankCaFraud != null" >
+        c_sl_cell_nbank_ca_fraud,
+      </if>
+      <if test="cSlCellNbankCaLost != null" >
+        c_sl_cell_nbank_ca_lost,
+      </if>
+      <if test="cSlCellNbankCaRefuse != null" >
+        c_sl_cell_nbank_ca_refuse,
+      </if>
+      <if test="cSlCellNbankComBad != null" >
+        c_sl_cell_nbank_com_bad,
+      </if>
+      <if test="cSlCellNbankComOverdue != null" >
+        c_sl_cell_nbank_com_overdue,
+      </if>
+      <if test="cSlCellNbankComFraud != null" >
+        c_sl_cell_nbank_com_fraud,
+      </if>
+      <if test="cSlCellNbankComLost != null" >
+        c_sl_cell_nbank_com_lost,
+      </if>
+      <if test="cSlCellNbankComRefuse != null" >
+        c_sl_cell_nbank_com_refuse,
+      </if>
+      <if test="cSlCellNbankCfBad != null" >
+        c_sl_cell_nbank_cf_bad,
+      </if>
+      <if test="cSlCellNbankCfOverdue != null" >
+        c_sl_cell_nbank_cf_overdue,
+      </if>
+      <if test="cSlCellNbankCfFraud != null" >
+        c_sl_cell_nbank_cf_fraud,
+      </if>
+      <if test="cSlCellNbankCfLost != null" >
+        c_sl_cell_nbank_cf_lost,
+      </if>
+      <if test="cSlCellNbankCfRefuse != null" >
+        c_sl_cell_nbank_cf_refuse,
+      </if>
+      <if test="cSlCellNbankOtherBad != null" >
+        c_sl_cell_nbank_other_bad,
+      </if>
+      <if test="cSlCellNbankOtherOverdue != null" >
+        c_sl_cell_nbank_other_overdue,
+      </if>
+      <if test="cSlCellNbankOtherFraud != null" >
+        c_sl_cell_nbank_other_fraud,
+      </if>
+      <if test="cSlCellNbankOtherLost != null" >
+        c_sl_cell_nbank_other_lost,
+      </if>
+      <if test="cSlCellNbankOtherRefuse != null" >
+        c_sl_cell_nbank_other_refuse,
+      </if>
+      <if test="cSlLmCellAbnormal != null" >
+        c_sl_lm_cell_abnormal,
+      </if>
+      <if test="cSlLmCellPhoneOverdue != null" >
+        c_sl_lm_cell_phone_overdue,
+      </if>
+      <if test="cSlLmCellBankBad != null" >
+        c_sl_lm_cell_bank_bad,
+      </if>
+      <if test="cSlLmCellBankOverdue != null" >
+        c_sl_lm_cell_bank_overdue,
+      </if>
+      <if test="cSlLmCellBankFraud != null" >
+        c_sl_lm_cell_bank_fraud,
+      </if>
+      <if test="cSlLmCellBankLost != null" >
+        c_sl_lm_cell_bank_lost,
+      </if>
+      <if test="cSlLmCellBankRefuse != null" >
+        c_sl_lm_cell_bank_refuse,
+      </if>
+      <if test="cSlLmCellNbankP2pBad != null" >
+        c_sl_lm_cell_nbank_p2p_bad,
+      </if>
+      <if test="cSlLmCellNbankP2pOverdue != null" >
+        c_sl_lm_cell_nbank_p2p_overdue,
+      </if>
+      <if test="cSlLmCellNbankP2pFraud != null" >
+        c_sl_lm_cell_nbank_p2p_fraud,
+      </if>
+      <if test="cSlLmCellNbankP2pLost != null" >
+        c_sl_lm_cell_nbank_p2p_lost,
+      </if>
+      <if test="cSlLmCellNbankP2pRefuse != null" >
+        c_sl_lm_cell_nbank_p2p_refuse,
+      </if>
+      <if test="cSlLmCellNbankMcBad != null" >
+        c_sl_lm_cell_nbank_mc_bad,
+      </if>
+      <if test="cSlLmCellNbankMcOverdue != null" >
+        c_sl_lm_cell_nbank_mc_overdue,
+      </if>
+      <if test="cSlLmCellNbankMcFraud != null" >
+        c_sl_lm_cell_nbank_mc_fraud,
+      </if>
+      <if test="cSlLmCellNbankMcLost != null" >
+        c_sl_lm_cell_nbank_mc_lost,
+      </if>
+      <if test="cSlLmCellNbankMcRefuse != null" >
+        c_sl_lm_cell_nbank_mc_refuse,
+      </if>
+      <if test="cSlLmCellNbankCaBad != null" >
+        c_sl_lm_cell_nbank_ca_bad,
+      </if>
+      <if test="cSlLmCellNbankCaOverdue != null" >
+        c_sl_lm_cell_nbank_ca_overdue,
+      </if>
+      <if test="cSlLmCellNbankCaFraud != null" >
+        c_sl_lm_cell_nbank_ca_fraud,
+      </if>
+      <if test="cSlLmCellNbankCaLost != null" >
+        c_sl_lm_cell_nbank_ca_lost,
+      </if>
+      <if test="cSlLmCellNbankCaRefuse != null" >
+        c_sl_lm_cell_nbank_ca_refuse,
+      </if>
+      <if test="cSlLmCellNbankComBad != null" >
+        c_sl_lm_cell_nbank_com_bad,
+      </if>
+      <if test="cSlLmCellNbankComOverdue != null" >
+        c_sl_lm_cell_nbank_com_overdue,
+      </if>
+      <if test="cSlLmCellNbankComFraud != null" >
+        c_sl_lm_cell_nbank_com_fraud,
+      </if>
+      <if test="cSlLmCellNbankComLost != null" >
+        c_sl_lm_cell_nbank_com_lost,
+      </if>
+      <if test="cSlLmCellNbankComRefuse != null" >
+        c_sl_lm_cell_nbank_com_refuse,
+      </if>
+      <if test="cSlLmCellNbankCfBad != null" >
+        c_sl_lm_cell_nbank_cf_bad,
+      </if>
+      <if test="cSlLmCellNbankCfOverdue != null" >
+        c_sl_lm_cell_nbank_cf_overdue,
+      </if>
+      <if test="cSlLmCellNbankCfFraud != null" >
+        c_sl_lm_cell_nbank_cf_fraud,
+      </if>
+      <if test="cSlLmCellNbankCfLost != null" >
+        c_sl_lm_cell_nbank_cf_lost,
+      </if>
+      <if test="cSlLmCellNbankCfRefuse != null" >
+        c_sl_lm_cell_nbank_cf_refuse,
+      </if>
+      <if test="cSlLmCellNbankOtherBad != null" >
+        c_sl_lm_cell_nbank_other_bad,
+      </if>
+      <if test="cSlLmCellNbankOtherOverdue != null" >
+        c_sl_lm_cell_nbank_other_overdue,
+      </if>
+      <if test="cSlLmCellNbankOtherFraud != null" >
+        c_sl_lm_cell_nbank_other_fraud,
+      </if>
+      <if test="cSlLmCellNbankOtherLost != null" >
+        c_sl_lm_cell_nbank_other_lost,
+      </if>
+      <if test="cSlLmCellNbankOtherRefuse != null" >
+        c_sl_lm_cell_nbank_other_refuse,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="swiftNumber != null" >
+        #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cLinkmanCell != null" >
+        #{cLinkmanCell,jdbcType=VARCHAR},
+      </if>
+      <if test="cTimeRange != null" >
+        #{cTimeRange,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagSpeciallistC != null" >
+        #{cFlagSpeciallistC,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdAbnormal != null" >
+        #{cSlIdAbnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdPhoneOverdue != null" >
+        #{cSlIdPhoneOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdCourtBad != null" >
+        #{cSlIdCourtBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdCourtExecuted != null" >
+        #{cSlIdCourtExecuted,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdBankBad != null" >
+        #{cSlIdBankBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdBankOverdue != null" >
+        #{cSlIdBankOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdBankFraud != null" >
+        #{cSlIdBankFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdBankLost != null" >
+        #{cSlIdBankLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdBankRefuse != null" >
+        #{cSlIdBankRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdP2pBad != null" >
+        #{cSlIdP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdP2pOverdue != null" >
+        #{cSlIdP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdP2pFraud != null" >
+        #{cSlIdP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdP2pLost != null" >
+        #{cSlIdP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdP2pRefuse != null" >
+        #{cSlIdP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankP2pBad != null" >
+        #{cSlIdNbankP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankP2pOverdue != null" >
+        #{cSlIdNbankP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankP2pFraud != null" >
+        #{cSlIdNbankP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankP2pLost != null" >
+        #{cSlIdNbankP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankP2pRefuse != null" >
+        #{cSlIdNbankP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankMcBad != null" >
+        #{cSlIdNbankMcBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankMcOverdue != null" >
+        #{cSlIdNbankMcOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankMcFraud != null" >
+        #{cSlIdNbankMcFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankMcLost != null" >
+        #{cSlIdNbankMcLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankMcRefuse != null" >
+        #{cSlIdNbankMcRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCaBad != null" >
+        #{cSlIdNbankCaBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCaOverdue != null" >
+        #{cSlIdNbankCaOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCaFraud != null" >
+        #{cSlIdNbankCaFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCaLost != null" >
+        #{cSlIdNbankCaLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCaRefuse != null" >
+        #{cSlIdNbankCaRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankComBad != null" >
+        #{cSlIdNbankComBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankComOverdue != null" >
+        #{cSlIdNbankComOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankComFraud != null" >
+        #{cSlIdNbankComFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankComLost != null" >
+        #{cSlIdNbankComLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankComRefuse != null" >
+        #{cSlIdNbankComRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCfBad != null" >
+        #{cSlIdNbankCfBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCfOverdue != null" >
+        #{cSlIdNbankCfOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCfFraud != null" >
+        #{cSlIdNbankCfFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCfLost != null" >
+        #{cSlIdNbankCfLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCfRefuse != null" >
+        #{cSlIdNbankCfRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankOtherBad != null" >
+        #{cSlIdNbankOtherBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankOtherOverdue != null" >
+        #{cSlIdNbankOtherOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankOtherFraud != null" >
+        #{cSlIdNbankOtherFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankOtherLost != null" >
+        #{cSlIdNbankOtherLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankOtherRefuse != null" >
+        #{cSlIdNbankOtherRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellAbnormal != null" >
+        #{cSlCellAbnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellPhoneOverdue != null" >
+        #{cSlCellPhoneOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellBankBad != null" >
+        #{cSlCellBankBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellBankOverdue != null" >
+        #{cSlCellBankOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellBankFraud != null" >
+        #{cSlCellBankFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellBankLost != null" >
+        #{cSlCellBankLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellBankRefuse != null" >
+        #{cSlCellBankRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellP2pBad != null" >
+        #{cSlCellP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellP2pOverdue != null" >
+        #{cSlCellP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellP2pFraud != null" >
+        #{cSlCellP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellP2pLost != null" >
+        #{cSlCellP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellP2pRefuse != null" >
+        #{cSlCellP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankP2pBad != null" >
+        #{cSlCellNbankP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankP2pOverdue != null" >
+        #{cSlCellNbankP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankP2pFraud != null" >
+        #{cSlCellNbankP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankP2pLost != null" >
+        #{cSlCellNbankP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankP2pRefuse != null" >
+        #{cSlCellNbankP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankMcBad != null" >
+        #{cSlCellNbankMcBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankMcOverdue != null" >
+        #{cSlCellNbankMcOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankMcFraud != null" >
+        #{cSlCellNbankMcFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankMcLost != null" >
+        #{cSlCellNbankMcLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankMcRefuse != null" >
+        #{cSlCellNbankMcRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCaBad != null" >
+        #{cSlCellNbankCaBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCaOverdue != null" >
+        #{cSlCellNbankCaOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCaFraud != null" >
+        #{cSlCellNbankCaFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCaLost != null" >
+        #{cSlCellNbankCaLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCaRefuse != null" >
+        #{cSlCellNbankCaRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankComBad != null" >
+        #{cSlCellNbankComBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankComOverdue != null" >
+        #{cSlCellNbankComOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankComFraud != null" >
+        #{cSlCellNbankComFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankComLost != null" >
+        #{cSlCellNbankComLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankComRefuse != null" >
+        #{cSlCellNbankComRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCfBad != null" >
+        #{cSlCellNbankCfBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCfOverdue != null" >
+        #{cSlCellNbankCfOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCfFraud != null" >
+        #{cSlCellNbankCfFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCfLost != null" >
+        #{cSlCellNbankCfLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCfRefuse != null" >
+        #{cSlCellNbankCfRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankOtherBad != null" >
+        #{cSlCellNbankOtherBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankOtherOverdue != null" >
+        #{cSlCellNbankOtherOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankOtherFraud != null" >
+        #{cSlCellNbankOtherFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankOtherLost != null" >
+        #{cSlCellNbankOtherLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankOtherRefuse != null" >
+        #{cSlCellNbankOtherRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellAbnormal != null" >
+        #{cSlLmCellAbnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellPhoneOverdue != null" >
+        #{cSlLmCellPhoneOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellBankBad != null" >
+        #{cSlLmCellBankBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellBankOverdue != null" >
+        #{cSlLmCellBankOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellBankFraud != null" >
+        #{cSlLmCellBankFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellBankLost != null" >
+        #{cSlLmCellBankLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellBankRefuse != null" >
+        #{cSlLmCellBankRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankP2pBad != null" >
+        #{cSlLmCellNbankP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankP2pOverdue != null" >
+        #{cSlLmCellNbankP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankP2pFraud != null" >
+        #{cSlLmCellNbankP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankP2pLost != null" >
+        #{cSlLmCellNbankP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankP2pRefuse != null" >
+        #{cSlLmCellNbankP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankMcBad != null" >
+        #{cSlLmCellNbankMcBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankMcOverdue != null" >
+        #{cSlLmCellNbankMcOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankMcFraud != null" >
+        #{cSlLmCellNbankMcFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankMcLost != null" >
+        #{cSlLmCellNbankMcLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankMcRefuse != null" >
+        #{cSlLmCellNbankMcRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCaBad != null" >
+        #{cSlLmCellNbankCaBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCaOverdue != null" >
+        #{cSlLmCellNbankCaOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCaFraud != null" >
+        #{cSlLmCellNbankCaFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCaLost != null" >
+        #{cSlLmCellNbankCaLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCaRefuse != null" >
+        #{cSlLmCellNbankCaRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankComBad != null" >
+        #{cSlLmCellNbankComBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankComOverdue != null" >
+        #{cSlLmCellNbankComOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankComFraud != null" >
+        #{cSlLmCellNbankComFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankComLost != null" >
+        #{cSlLmCellNbankComLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankComRefuse != null" >
+        #{cSlLmCellNbankComRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCfBad != null" >
+        #{cSlLmCellNbankCfBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCfOverdue != null" >
+        #{cSlLmCellNbankCfOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCfFraud != null" >
+        #{cSlLmCellNbankCfFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCfLost != null" >
+        #{cSlLmCellNbankCfLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCfRefuse != null" >
+        #{cSlLmCellNbankCfRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankOtherBad != null" >
+        #{cSlLmCellNbankOtherBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankOtherOverdue != null" >
+        #{cSlLmCellNbankOtherOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankOtherFraud != null" >
+        #{cSlLmCellNbankOtherFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankOtherLost != null" >
+        #{cSlLmCellNbankOtherLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankOtherRefuse != null" >
+        #{cSlLmCellNbankOtherRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrSpecialListExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_br_special_list
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_br_special_list
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.swiftNumber != null" >
+        swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cLinkmanCell != null" >
+        c_linkman_cell = #{record.cLinkmanCell,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTimeRange != null" >
+        c_time_range = #{record.cTimeRange,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagSpeciallistC != null" >
+        c_flag_specialList_c = #{record.cFlagSpeciallistC,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdAbnormal != null" >
+        c_sl_id_abnormal = #{record.cSlIdAbnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdPhoneOverdue != null" >
+        c_sl_id_phone_overdue = #{record.cSlIdPhoneOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdCourtBad != null" >
+        c_sl_id_court_bad = #{record.cSlIdCourtBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdCourtExecuted != null" >
+        c_sl_id_court_executed = #{record.cSlIdCourtExecuted,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdBankBad != null" >
+        c_sl_id_bank_bad = #{record.cSlIdBankBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdBankOverdue != null" >
+        c_sl_id_bank_overdue = #{record.cSlIdBankOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdBankFraud != null" >
+        c_sl_id_bank_fraud = #{record.cSlIdBankFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdBankLost != null" >
+        c_sl_id_bank_lost = #{record.cSlIdBankLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdBankRefuse != null" >
+        c_sl_id_bank_refuse = #{record.cSlIdBankRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdP2pBad != null" >
+        c_sl_id_p2p_bad = #{record.cSlIdP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdP2pOverdue != null" >
+        c_sl_id_p2p_overdue = #{record.cSlIdP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdP2pFraud != null" >
+        c_sl_id_p2p_fraud = #{record.cSlIdP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdP2pLost != null" >
+        c_sl_id_p2p_lost = #{record.cSlIdP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdP2pRefuse != null" >
+        c_sl_id_p2p_refuse = #{record.cSlIdP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankP2pBad != null" >
+        c_sl_id_nbank_p2p_bad = #{record.cSlIdNbankP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankP2pOverdue != null" >
+        c_sl_id_nbank_p2p_overdue = #{record.cSlIdNbankP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankP2pFraud != null" >
+        c_sl_id_nbank_p2p_fraud = #{record.cSlIdNbankP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankP2pLost != null" >
+        c_sl_id_nbank_p2p_lost = #{record.cSlIdNbankP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankP2pRefuse != null" >
+        c_sl_id_nbank_p2p_refuse = #{record.cSlIdNbankP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankMcBad != null" >
+        c_sl_id_nbank_mc_bad = #{record.cSlIdNbankMcBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankMcOverdue != null" >
+        c_sl_id_nbank_mc_overdue = #{record.cSlIdNbankMcOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankMcFraud != null" >
+        c_sl_id_nbank_mc_fraud = #{record.cSlIdNbankMcFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankMcLost != null" >
+        c_sl_id_nbank_mc_lost = #{record.cSlIdNbankMcLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankMcRefuse != null" >
+        c_sl_id_nbank_mc_refuse = #{record.cSlIdNbankMcRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankCaBad != null" >
+        c_sl_id_nbank_ca_bad = #{record.cSlIdNbankCaBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankCaOverdue != null" >
+        c_sl_id_nbank_ca_overdue = #{record.cSlIdNbankCaOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankCaFraud != null" >
+        c_sl_id_nbank_ca_fraud = #{record.cSlIdNbankCaFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankCaLost != null" >
+        c_sl_id_nbank_ca_lost = #{record.cSlIdNbankCaLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankCaRefuse != null" >
+        c_sl_id_nbank_ca_refuse = #{record.cSlIdNbankCaRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankComBad != null" >
+        c_sl_id_nbank_com_bad = #{record.cSlIdNbankComBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankComOverdue != null" >
+        c_sl_id_nbank_com_overdue = #{record.cSlIdNbankComOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankComFraud != null" >
+        c_sl_id_nbank_com_fraud = #{record.cSlIdNbankComFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankComLost != null" >
+        c_sl_id_nbank_com_lost = #{record.cSlIdNbankComLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankComRefuse != null" >
+        c_sl_id_nbank_com_refuse = #{record.cSlIdNbankComRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankCfBad != null" >
+        c_sl_id_nbank_cf_bad = #{record.cSlIdNbankCfBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankCfOverdue != null" >
+        c_sl_id_nbank_cf_overdue = #{record.cSlIdNbankCfOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankCfFraud != null" >
+        c_sl_id_nbank_cf_fraud = #{record.cSlIdNbankCfFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankCfLost != null" >
+        c_sl_id_nbank_cf_lost = #{record.cSlIdNbankCfLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankCfRefuse != null" >
+        c_sl_id_nbank_cf_refuse = #{record.cSlIdNbankCfRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankOtherBad != null" >
+        c_sl_id_nbank_other_bad = #{record.cSlIdNbankOtherBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankOtherOverdue != null" >
+        c_sl_id_nbank_other_overdue = #{record.cSlIdNbankOtherOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankOtherFraud != null" >
+        c_sl_id_nbank_other_fraud = #{record.cSlIdNbankOtherFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankOtherLost != null" >
+        c_sl_id_nbank_other_lost = #{record.cSlIdNbankOtherLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlIdNbankOtherRefuse != null" >
+        c_sl_id_nbank_other_refuse = #{record.cSlIdNbankOtherRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellAbnormal != null" >
+        c_sl_cell_abnormal = #{record.cSlCellAbnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellPhoneOverdue != null" >
+        c_sl_cell_phone_overdue = #{record.cSlCellPhoneOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellBankBad != null" >
+        c_sl_cell_bank_bad = #{record.cSlCellBankBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellBankOverdue != null" >
+        c_sl_cell_bank_overdue = #{record.cSlCellBankOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellBankFraud != null" >
+        c_sl_cell_bank_fraud = #{record.cSlCellBankFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellBankLost != null" >
+        c_sl_cell_bank_lost = #{record.cSlCellBankLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellBankRefuse != null" >
+        c_sl_cell_bank_refuse = #{record.cSlCellBankRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellP2pBad != null" >
+        c_sl_cell_p2p_bad = #{record.cSlCellP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellP2pOverdue != null" >
+        c_sl_cell_p2p_overdue = #{record.cSlCellP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellP2pFraud != null" >
+        c_sl_cell_p2p_fraud = #{record.cSlCellP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellP2pLost != null" >
+        c_sl_cell_p2p_lost = #{record.cSlCellP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellP2pRefuse != null" >
+        c_sl_cell_p2p_refuse = #{record.cSlCellP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankP2pBad != null" >
+        c_sl_cell_nbank_p2p_bad = #{record.cSlCellNbankP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankP2pOverdue != null" >
+        c_sl_cell_nbank_p2p_overdue = #{record.cSlCellNbankP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankP2pFraud != null" >
+        c_sl_cell_nbank_p2p_fraud = #{record.cSlCellNbankP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankP2pLost != null" >
+        c_sl_cell_nbank_p2p_lost = #{record.cSlCellNbankP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankP2pRefuse != null" >
+        c_sl_cell_nbank_p2p_refuse = #{record.cSlCellNbankP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankMcBad != null" >
+        c_sl_cell_nbank_mc_bad = #{record.cSlCellNbankMcBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankMcOverdue != null" >
+        c_sl_cell_nbank_mc_overdue = #{record.cSlCellNbankMcOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankMcFraud != null" >
+        c_sl_cell_nbank_mc_fraud = #{record.cSlCellNbankMcFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankMcLost != null" >
+        c_sl_cell_nbank_mc_lost = #{record.cSlCellNbankMcLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankMcRefuse != null" >
+        c_sl_cell_nbank_mc_refuse = #{record.cSlCellNbankMcRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankCaBad != null" >
+        c_sl_cell_nbank_ca_bad = #{record.cSlCellNbankCaBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankCaOverdue != null" >
+        c_sl_cell_nbank_ca_overdue = #{record.cSlCellNbankCaOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankCaFraud != null" >
+        c_sl_cell_nbank_ca_fraud = #{record.cSlCellNbankCaFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankCaLost != null" >
+        c_sl_cell_nbank_ca_lost = #{record.cSlCellNbankCaLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankCaRefuse != null" >
+        c_sl_cell_nbank_ca_refuse = #{record.cSlCellNbankCaRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankComBad != null" >
+        c_sl_cell_nbank_com_bad = #{record.cSlCellNbankComBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankComOverdue != null" >
+        c_sl_cell_nbank_com_overdue = #{record.cSlCellNbankComOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankComFraud != null" >
+        c_sl_cell_nbank_com_fraud = #{record.cSlCellNbankComFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankComLost != null" >
+        c_sl_cell_nbank_com_lost = #{record.cSlCellNbankComLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankComRefuse != null" >
+        c_sl_cell_nbank_com_refuse = #{record.cSlCellNbankComRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankCfBad != null" >
+        c_sl_cell_nbank_cf_bad = #{record.cSlCellNbankCfBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankCfOverdue != null" >
+        c_sl_cell_nbank_cf_overdue = #{record.cSlCellNbankCfOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankCfFraud != null" >
+        c_sl_cell_nbank_cf_fraud = #{record.cSlCellNbankCfFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankCfLost != null" >
+        c_sl_cell_nbank_cf_lost = #{record.cSlCellNbankCfLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankCfRefuse != null" >
+        c_sl_cell_nbank_cf_refuse = #{record.cSlCellNbankCfRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankOtherBad != null" >
+        c_sl_cell_nbank_other_bad = #{record.cSlCellNbankOtherBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankOtherOverdue != null" >
+        c_sl_cell_nbank_other_overdue = #{record.cSlCellNbankOtherOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankOtherFraud != null" >
+        c_sl_cell_nbank_other_fraud = #{record.cSlCellNbankOtherFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankOtherLost != null" >
+        c_sl_cell_nbank_other_lost = #{record.cSlCellNbankOtherLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlCellNbankOtherRefuse != null" >
+        c_sl_cell_nbank_other_refuse = #{record.cSlCellNbankOtherRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellAbnormal != null" >
+        c_sl_lm_cell_abnormal = #{record.cSlLmCellAbnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellPhoneOverdue != null" >
+        c_sl_lm_cell_phone_overdue = #{record.cSlLmCellPhoneOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellBankBad != null" >
+        c_sl_lm_cell_bank_bad = #{record.cSlLmCellBankBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellBankOverdue != null" >
+        c_sl_lm_cell_bank_overdue = #{record.cSlLmCellBankOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellBankFraud != null" >
+        c_sl_lm_cell_bank_fraud = #{record.cSlLmCellBankFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellBankLost != null" >
+        c_sl_lm_cell_bank_lost = #{record.cSlLmCellBankLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellBankRefuse != null" >
+        c_sl_lm_cell_bank_refuse = #{record.cSlLmCellBankRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankP2pBad != null" >
+        c_sl_lm_cell_nbank_p2p_bad = #{record.cSlLmCellNbankP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankP2pOverdue != null" >
+        c_sl_lm_cell_nbank_p2p_overdue = #{record.cSlLmCellNbankP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankP2pFraud != null" >
+        c_sl_lm_cell_nbank_p2p_fraud = #{record.cSlLmCellNbankP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankP2pLost != null" >
+        c_sl_lm_cell_nbank_p2p_lost = #{record.cSlLmCellNbankP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankP2pRefuse != null" >
+        c_sl_lm_cell_nbank_p2p_refuse = #{record.cSlLmCellNbankP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankMcBad != null" >
+        c_sl_lm_cell_nbank_mc_bad = #{record.cSlLmCellNbankMcBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankMcOverdue != null" >
+        c_sl_lm_cell_nbank_mc_overdue = #{record.cSlLmCellNbankMcOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankMcFraud != null" >
+        c_sl_lm_cell_nbank_mc_fraud = #{record.cSlLmCellNbankMcFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankMcLost != null" >
+        c_sl_lm_cell_nbank_mc_lost = #{record.cSlLmCellNbankMcLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankMcRefuse != null" >
+        c_sl_lm_cell_nbank_mc_refuse = #{record.cSlLmCellNbankMcRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankCaBad != null" >
+        c_sl_lm_cell_nbank_ca_bad = #{record.cSlLmCellNbankCaBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankCaOverdue != null" >
+        c_sl_lm_cell_nbank_ca_overdue = #{record.cSlLmCellNbankCaOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankCaFraud != null" >
+        c_sl_lm_cell_nbank_ca_fraud = #{record.cSlLmCellNbankCaFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankCaLost != null" >
+        c_sl_lm_cell_nbank_ca_lost = #{record.cSlLmCellNbankCaLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankCaRefuse != null" >
+        c_sl_lm_cell_nbank_ca_refuse = #{record.cSlLmCellNbankCaRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankComBad != null" >
+        c_sl_lm_cell_nbank_com_bad = #{record.cSlLmCellNbankComBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankComOverdue != null" >
+        c_sl_lm_cell_nbank_com_overdue = #{record.cSlLmCellNbankComOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankComFraud != null" >
+        c_sl_lm_cell_nbank_com_fraud = #{record.cSlLmCellNbankComFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankComLost != null" >
+        c_sl_lm_cell_nbank_com_lost = #{record.cSlLmCellNbankComLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankComRefuse != null" >
+        c_sl_lm_cell_nbank_com_refuse = #{record.cSlLmCellNbankComRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankCfBad != null" >
+        c_sl_lm_cell_nbank_cf_bad = #{record.cSlLmCellNbankCfBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankCfOverdue != null" >
+        c_sl_lm_cell_nbank_cf_overdue = #{record.cSlLmCellNbankCfOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankCfFraud != null" >
+        c_sl_lm_cell_nbank_cf_fraud = #{record.cSlLmCellNbankCfFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankCfLost != null" >
+        c_sl_lm_cell_nbank_cf_lost = #{record.cSlLmCellNbankCfLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankCfRefuse != null" >
+        c_sl_lm_cell_nbank_cf_refuse = #{record.cSlLmCellNbankCfRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankOtherBad != null" >
+        c_sl_lm_cell_nbank_other_bad = #{record.cSlLmCellNbankOtherBad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankOtherOverdue != null" >
+        c_sl_lm_cell_nbank_other_overdue = #{record.cSlLmCellNbankOtherOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankOtherFraud != null" >
+        c_sl_lm_cell_nbank_other_fraud = #{record.cSlLmCellNbankOtherFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankOtherLost != null" >
+        c_sl_lm_cell_nbank_other_lost = #{record.cSlLmCellNbankOtherLost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSlLmCellNbankOtherRefuse != null" >
+        c_sl_lm_cell_nbank_other_refuse = #{record.cSlLmCellNbankOtherRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_br_special_list
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      c_linkman_cell = #{record.cLinkmanCell,jdbcType=VARCHAR},
+      c_time_range = #{record.cTimeRange,jdbcType=VARCHAR},
+      c_flag_specialList_c = #{record.cFlagSpeciallistC,jdbcType=VARCHAR},
+      c_sl_id_abnormal = #{record.cSlIdAbnormal,jdbcType=VARCHAR},
+      c_sl_id_phone_overdue = #{record.cSlIdPhoneOverdue,jdbcType=VARCHAR},
+      c_sl_id_court_bad = #{record.cSlIdCourtBad,jdbcType=VARCHAR},
+      c_sl_id_court_executed = #{record.cSlIdCourtExecuted,jdbcType=VARCHAR},
+      c_sl_id_bank_bad = #{record.cSlIdBankBad,jdbcType=VARCHAR},
+      c_sl_id_bank_overdue = #{record.cSlIdBankOverdue,jdbcType=VARCHAR},
+      c_sl_id_bank_fraud = #{record.cSlIdBankFraud,jdbcType=VARCHAR},
+      c_sl_id_bank_lost = #{record.cSlIdBankLost,jdbcType=VARCHAR},
+      c_sl_id_bank_refuse = #{record.cSlIdBankRefuse,jdbcType=VARCHAR},
+      c_sl_id_p2p_bad = #{record.cSlIdP2pBad,jdbcType=VARCHAR},
+      c_sl_id_p2p_overdue = #{record.cSlIdP2pOverdue,jdbcType=VARCHAR},
+      c_sl_id_p2p_fraud = #{record.cSlIdP2pFraud,jdbcType=VARCHAR},
+      c_sl_id_p2p_lost = #{record.cSlIdP2pLost,jdbcType=VARCHAR},
+      c_sl_id_p2p_refuse = #{record.cSlIdP2pRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_p2p_bad = #{record.cSlIdNbankP2pBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_p2p_overdue = #{record.cSlIdNbankP2pOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_p2p_fraud = #{record.cSlIdNbankP2pFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_p2p_lost = #{record.cSlIdNbankP2pLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_p2p_refuse = #{record.cSlIdNbankP2pRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_mc_bad = #{record.cSlIdNbankMcBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_mc_overdue = #{record.cSlIdNbankMcOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_mc_fraud = #{record.cSlIdNbankMcFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_mc_lost = #{record.cSlIdNbankMcLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_mc_refuse = #{record.cSlIdNbankMcRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_ca_bad = #{record.cSlIdNbankCaBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_ca_overdue = #{record.cSlIdNbankCaOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_ca_fraud = #{record.cSlIdNbankCaFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_ca_lost = #{record.cSlIdNbankCaLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_ca_refuse = #{record.cSlIdNbankCaRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_com_bad = #{record.cSlIdNbankComBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_com_overdue = #{record.cSlIdNbankComOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_com_fraud = #{record.cSlIdNbankComFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_com_lost = #{record.cSlIdNbankComLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_com_refuse = #{record.cSlIdNbankComRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_cf_bad = #{record.cSlIdNbankCfBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_cf_overdue = #{record.cSlIdNbankCfOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_cf_fraud = #{record.cSlIdNbankCfFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_cf_lost = #{record.cSlIdNbankCfLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_cf_refuse = #{record.cSlIdNbankCfRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_other_bad = #{record.cSlIdNbankOtherBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_other_overdue = #{record.cSlIdNbankOtherOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_other_fraud = #{record.cSlIdNbankOtherFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_other_lost = #{record.cSlIdNbankOtherLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_other_refuse = #{record.cSlIdNbankOtherRefuse,jdbcType=VARCHAR},
+      c_sl_cell_abnormal = #{record.cSlCellAbnormal,jdbcType=VARCHAR},
+      c_sl_cell_phone_overdue = #{record.cSlCellPhoneOverdue,jdbcType=VARCHAR},
+      c_sl_cell_bank_bad = #{record.cSlCellBankBad,jdbcType=VARCHAR},
+      c_sl_cell_bank_overdue = #{record.cSlCellBankOverdue,jdbcType=VARCHAR},
+      c_sl_cell_bank_fraud = #{record.cSlCellBankFraud,jdbcType=VARCHAR},
+      c_sl_cell_bank_lost = #{record.cSlCellBankLost,jdbcType=VARCHAR},
+      c_sl_cell_bank_refuse = #{record.cSlCellBankRefuse,jdbcType=VARCHAR},
+      c_sl_cell_p2p_bad = #{record.cSlCellP2pBad,jdbcType=VARCHAR},
+      c_sl_cell_p2p_overdue = #{record.cSlCellP2pOverdue,jdbcType=VARCHAR},
+      c_sl_cell_p2p_fraud = #{record.cSlCellP2pFraud,jdbcType=VARCHAR},
+      c_sl_cell_p2p_lost = #{record.cSlCellP2pLost,jdbcType=VARCHAR},
+      c_sl_cell_p2p_refuse = #{record.cSlCellP2pRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_p2p_bad = #{record.cSlCellNbankP2pBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_p2p_overdue = #{record.cSlCellNbankP2pOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_p2p_fraud = #{record.cSlCellNbankP2pFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_p2p_lost = #{record.cSlCellNbankP2pLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_p2p_refuse = #{record.cSlCellNbankP2pRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_mc_bad = #{record.cSlCellNbankMcBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_mc_overdue = #{record.cSlCellNbankMcOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_mc_fraud = #{record.cSlCellNbankMcFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_mc_lost = #{record.cSlCellNbankMcLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_mc_refuse = #{record.cSlCellNbankMcRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_ca_bad = #{record.cSlCellNbankCaBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_ca_overdue = #{record.cSlCellNbankCaOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_ca_fraud = #{record.cSlCellNbankCaFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_ca_lost = #{record.cSlCellNbankCaLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_ca_refuse = #{record.cSlCellNbankCaRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_com_bad = #{record.cSlCellNbankComBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_com_overdue = #{record.cSlCellNbankComOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_com_fraud = #{record.cSlCellNbankComFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_com_lost = #{record.cSlCellNbankComLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_com_refuse = #{record.cSlCellNbankComRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_cf_bad = #{record.cSlCellNbankCfBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_cf_overdue = #{record.cSlCellNbankCfOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_cf_fraud = #{record.cSlCellNbankCfFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_cf_lost = #{record.cSlCellNbankCfLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_cf_refuse = #{record.cSlCellNbankCfRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_other_bad = #{record.cSlCellNbankOtherBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_other_overdue = #{record.cSlCellNbankOtherOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_other_fraud = #{record.cSlCellNbankOtherFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_other_lost = #{record.cSlCellNbankOtherLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_other_refuse = #{record.cSlCellNbankOtherRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_abnormal = #{record.cSlLmCellAbnormal,jdbcType=VARCHAR},
+      c_sl_lm_cell_phone_overdue = #{record.cSlLmCellPhoneOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_bank_bad = #{record.cSlLmCellBankBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_bank_overdue = #{record.cSlLmCellBankOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_bank_fraud = #{record.cSlLmCellBankFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_bank_lost = #{record.cSlLmCellBankLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_bank_refuse = #{record.cSlLmCellBankRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_p2p_bad = #{record.cSlLmCellNbankP2pBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_p2p_overdue = #{record.cSlLmCellNbankP2pOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_p2p_fraud = #{record.cSlLmCellNbankP2pFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_p2p_lost = #{record.cSlLmCellNbankP2pLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_p2p_refuse = #{record.cSlLmCellNbankP2pRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_mc_bad = #{record.cSlLmCellNbankMcBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_mc_overdue = #{record.cSlLmCellNbankMcOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_mc_fraud = #{record.cSlLmCellNbankMcFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_mc_lost = #{record.cSlLmCellNbankMcLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_mc_refuse = #{record.cSlLmCellNbankMcRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_ca_bad = #{record.cSlLmCellNbankCaBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_ca_overdue = #{record.cSlLmCellNbankCaOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_ca_fraud = #{record.cSlLmCellNbankCaFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_ca_lost = #{record.cSlLmCellNbankCaLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_ca_refuse = #{record.cSlLmCellNbankCaRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_com_bad = #{record.cSlLmCellNbankComBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_com_overdue = #{record.cSlLmCellNbankComOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_com_fraud = #{record.cSlLmCellNbankComFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_com_lost = #{record.cSlLmCellNbankComLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_com_refuse = #{record.cSlLmCellNbankComRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_cf_bad = #{record.cSlLmCellNbankCfBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_cf_overdue = #{record.cSlLmCellNbankCfOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_cf_fraud = #{record.cSlLmCellNbankCfFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_cf_lost = #{record.cSlLmCellNbankCfLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_cf_refuse = #{record.cSlLmCellNbankCfRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_other_bad = #{record.cSlLmCellNbankOtherBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_other_overdue = #{record.cSlLmCellNbankOtherOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_other_fraud = #{record.cSlLmCellNbankOtherFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_other_lost = #{record.cSlLmCellNbankOtherLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_other_refuse = #{record.cSlLmCellNbankOtherRefuse,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrSpecialList" >
+    update t_third_br_special_list
+    <set >
+      <if test="swiftNumber != null" >
+        swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cLinkmanCell != null" >
+        c_linkman_cell = #{cLinkmanCell,jdbcType=VARCHAR},
+      </if>
+      <if test="cTimeRange != null" >
+        c_time_range = #{cTimeRange,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagSpeciallistC != null" >
+        c_flag_specialList_c = #{cFlagSpeciallistC,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdAbnormal != null" >
+        c_sl_id_abnormal = #{cSlIdAbnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdPhoneOverdue != null" >
+        c_sl_id_phone_overdue = #{cSlIdPhoneOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdCourtBad != null" >
+        c_sl_id_court_bad = #{cSlIdCourtBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdCourtExecuted != null" >
+        c_sl_id_court_executed = #{cSlIdCourtExecuted,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdBankBad != null" >
+        c_sl_id_bank_bad = #{cSlIdBankBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdBankOverdue != null" >
+        c_sl_id_bank_overdue = #{cSlIdBankOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdBankFraud != null" >
+        c_sl_id_bank_fraud = #{cSlIdBankFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdBankLost != null" >
+        c_sl_id_bank_lost = #{cSlIdBankLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdBankRefuse != null" >
+        c_sl_id_bank_refuse = #{cSlIdBankRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdP2pBad != null" >
+        c_sl_id_p2p_bad = #{cSlIdP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdP2pOverdue != null" >
+        c_sl_id_p2p_overdue = #{cSlIdP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdP2pFraud != null" >
+        c_sl_id_p2p_fraud = #{cSlIdP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdP2pLost != null" >
+        c_sl_id_p2p_lost = #{cSlIdP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdP2pRefuse != null" >
+        c_sl_id_p2p_refuse = #{cSlIdP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankP2pBad != null" >
+        c_sl_id_nbank_p2p_bad = #{cSlIdNbankP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankP2pOverdue != null" >
+        c_sl_id_nbank_p2p_overdue = #{cSlIdNbankP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankP2pFraud != null" >
+        c_sl_id_nbank_p2p_fraud = #{cSlIdNbankP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankP2pLost != null" >
+        c_sl_id_nbank_p2p_lost = #{cSlIdNbankP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankP2pRefuse != null" >
+        c_sl_id_nbank_p2p_refuse = #{cSlIdNbankP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankMcBad != null" >
+        c_sl_id_nbank_mc_bad = #{cSlIdNbankMcBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankMcOverdue != null" >
+        c_sl_id_nbank_mc_overdue = #{cSlIdNbankMcOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankMcFraud != null" >
+        c_sl_id_nbank_mc_fraud = #{cSlIdNbankMcFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankMcLost != null" >
+        c_sl_id_nbank_mc_lost = #{cSlIdNbankMcLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankMcRefuse != null" >
+        c_sl_id_nbank_mc_refuse = #{cSlIdNbankMcRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCaBad != null" >
+        c_sl_id_nbank_ca_bad = #{cSlIdNbankCaBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCaOverdue != null" >
+        c_sl_id_nbank_ca_overdue = #{cSlIdNbankCaOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCaFraud != null" >
+        c_sl_id_nbank_ca_fraud = #{cSlIdNbankCaFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCaLost != null" >
+        c_sl_id_nbank_ca_lost = #{cSlIdNbankCaLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCaRefuse != null" >
+        c_sl_id_nbank_ca_refuse = #{cSlIdNbankCaRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankComBad != null" >
+        c_sl_id_nbank_com_bad = #{cSlIdNbankComBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankComOverdue != null" >
+        c_sl_id_nbank_com_overdue = #{cSlIdNbankComOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankComFraud != null" >
+        c_sl_id_nbank_com_fraud = #{cSlIdNbankComFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankComLost != null" >
+        c_sl_id_nbank_com_lost = #{cSlIdNbankComLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankComRefuse != null" >
+        c_sl_id_nbank_com_refuse = #{cSlIdNbankComRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCfBad != null" >
+        c_sl_id_nbank_cf_bad = #{cSlIdNbankCfBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCfOverdue != null" >
+        c_sl_id_nbank_cf_overdue = #{cSlIdNbankCfOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCfFraud != null" >
+        c_sl_id_nbank_cf_fraud = #{cSlIdNbankCfFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCfLost != null" >
+        c_sl_id_nbank_cf_lost = #{cSlIdNbankCfLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankCfRefuse != null" >
+        c_sl_id_nbank_cf_refuse = #{cSlIdNbankCfRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankOtherBad != null" >
+        c_sl_id_nbank_other_bad = #{cSlIdNbankOtherBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankOtherOverdue != null" >
+        c_sl_id_nbank_other_overdue = #{cSlIdNbankOtherOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankOtherFraud != null" >
+        c_sl_id_nbank_other_fraud = #{cSlIdNbankOtherFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankOtherLost != null" >
+        c_sl_id_nbank_other_lost = #{cSlIdNbankOtherLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlIdNbankOtherRefuse != null" >
+        c_sl_id_nbank_other_refuse = #{cSlIdNbankOtherRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellAbnormal != null" >
+        c_sl_cell_abnormal = #{cSlCellAbnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellPhoneOverdue != null" >
+        c_sl_cell_phone_overdue = #{cSlCellPhoneOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellBankBad != null" >
+        c_sl_cell_bank_bad = #{cSlCellBankBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellBankOverdue != null" >
+        c_sl_cell_bank_overdue = #{cSlCellBankOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellBankFraud != null" >
+        c_sl_cell_bank_fraud = #{cSlCellBankFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellBankLost != null" >
+        c_sl_cell_bank_lost = #{cSlCellBankLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellBankRefuse != null" >
+        c_sl_cell_bank_refuse = #{cSlCellBankRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellP2pBad != null" >
+        c_sl_cell_p2p_bad = #{cSlCellP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellP2pOverdue != null" >
+        c_sl_cell_p2p_overdue = #{cSlCellP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellP2pFraud != null" >
+        c_sl_cell_p2p_fraud = #{cSlCellP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellP2pLost != null" >
+        c_sl_cell_p2p_lost = #{cSlCellP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellP2pRefuse != null" >
+        c_sl_cell_p2p_refuse = #{cSlCellP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankP2pBad != null" >
+        c_sl_cell_nbank_p2p_bad = #{cSlCellNbankP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankP2pOverdue != null" >
+        c_sl_cell_nbank_p2p_overdue = #{cSlCellNbankP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankP2pFraud != null" >
+        c_sl_cell_nbank_p2p_fraud = #{cSlCellNbankP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankP2pLost != null" >
+        c_sl_cell_nbank_p2p_lost = #{cSlCellNbankP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankP2pRefuse != null" >
+        c_sl_cell_nbank_p2p_refuse = #{cSlCellNbankP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankMcBad != null" >
+        c_sl_cell_nbank_mc_bad = #{cSlCellNbankMcBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankMcOverdue != null" >
+        c_sl_cell_nbank_mc_overdue = #{cSlCellNbankMcOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankMcFraud != null" >
+        c_sl_cell_nbank_mc_fraud = #{cSlCellNbankMcFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankMcLost != null" >
+        c_sl_cell_nbank_mc_lost = #{cSlCellNbankMcLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankMcRefuse != null" >
+        c_sl_cell_nbank_mc_refuse = #{cSlCellNbankMcRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCaBad != null" >
+        c_sl_cell_nbank_ca_bad = #{cSlCellNbankCaBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCaOverdue != null" >
+        c_sl_cell_nbank_ca_overdue = #{cSlCellNbankCaOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCaFraud != null" >
+        c_sl_cell_nbank_ca_fraud = #{cSlCellNbankCaFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCaLost != null" >
+        c_sl_cell_nbank_ca_lost = #{cSlCellNbankCaLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCaRefuse != null" >
+        c_sl_cell_nbank_ca_refuse = #{cSlCellNbankCaRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankComBad != null" >
+        c_sl_cell_nbank_com_bad = #{cSlCellNbankComBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankComOverdue != null" >
+        c_sl_cell_nbank_com_overdue = #{cSlCellNbankComOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankComFraud != null" >
+        c_sl_cell_nbank_com_fraud = #{cSlCellNbankComFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankComLost != null" >
+        c_sl_cell_nbank_com_lost = #{cSlCellNbankComLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankComRefuse != null" >
+        c_sl_cell_nbank_com_refuse = #{cSlCellNbankComRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCfBad != null" >
+        c_sl_cell_nbank_cf_bad = #{cSlCellNbankCfBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCfOverdue != null" >
+        c_sl_cell_nbank_cf_overdue = #{cSlCellNbankCfOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCfFraud != null" >
+        c_sl_cell_nbank_cf_fraud = #{cSlCellNbankCfFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCfLost != null" >
+        c_sl_cell_nbank_cf_lost = #{cSlCellNbankCfLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankCfRefuse != null" >
+        c_sl_cell_nbank_cf_refuse = #{cSlCellNbankCfRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankOtherBad != null" >
+        c_sl_cell_nbank_other_bad = #{cSlCellNbankOtherBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankOtherOverdue != null" >
+        c_sl_cell_nbank_other_overdue = #{cSlCellNbankOtherOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankOtherFraud != null" >
+        c_sl_cell_nbank_other_fraud = #{cSlCellNbankOtherFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankOtherLost != null" >
+        c_sl_cell_nbank_other_lost = #{cSlCellNbankOtherLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlCellNbankOtherRefuse != null" >
+        c_sl_cell_nbank_other_refuse = #{cSlCellNbankOtherRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellAbnormal != null" >
+        c_sl_lm_cell_abnormal = #{cSlLmCellAbnormal,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellPhoneOverdue != null" >
+        c_sl_lm_cell_phone_overdue = #{cSlLmCellPhoneOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellBankBad != null" >
+        c_sl_lm_cell_bank_bad = #{cSlLmCellBankBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellBankOverdue != null" >
+        c_sl_lm_cell_bank_overdue = #{cSlLmCellBankOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellBankFraud != null" >
+        c_sl_lm_cell_bank_fraud = #{cSlLmCellBankFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellBankLost != null" >
+        c_sl_lm_cell_bank_lost = #{cSlLmCellBankLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellBankRefuse != null" >
+        c_sl_lm_cell_bank_refuse = #{cSlLmCellBankRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankP2pBad != null" >
+        c_sl_lm_cell_nbank_p2p_bad = #{cSlLmCellNbankP2pBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankP2pOverdue != null" >
+        c_sl_lm_cell_nbank_p2p_overdue = #{cSlLmCellNbankP2pOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankP2pFraud != null" >
+        c_sl_lm_cell_nbank_p2p_fraud = #{cSlLmCellNbankP2pFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankP2pLost != null" >
+        c_sl_lm_cell_nbank_p2p_lost = #{cSlLmCellNbankP2pLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankP2pRefuse != null" >
+        c_sl_lm_cell_nbank_p2p_refuse = #{cSlLmCellNbankP2pRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankMcBad != null" >
+        c_sl_lm_cell_nbank_mc_bad = #{cSlLmCellNbankMcBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankMcOverdue != null" >
+        c_sl_lm_cell_nbank_mc_overdue = #{cSlLmCellNbankMcOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankMcFraud != null" >
+        c_sl_lm_cell_nbank_mc_fraud = #{cSlLmCellNbankMcFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankMcLost != null" >
+        c_sl_lm_cell_nbank_mc_lost = #{cSlLmCellNbankMcLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankMcRefuse != null" >
+        c_sl_lm_cell_nbank_mc_refuse = #{cSlLmCellNbankMcRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCaBad != null" >
+        c_sl_lm_cell_nbank_ca_bad = #{cSlLmCellNbankCaBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCaOverdue != null" >
+        c_sl_lm_cell_nbank_ca_overdue = #{cSlLmCellNbankCaOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCaFraud != null" >
+        c_sl_lm_cell_nbank_ca_fraud = #{cSlLmCellNbankCaFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCaLost != null" >
+        c_sl_lm_cell_nbank_ca_lost = #{cSlLmCellNbankCaLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCaRefuse != null" >
+        c_sl_lm_cell_nbank_ca_refuse = #{cSlLmCellNbankCaRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankComBad != null" >
+        c_sl_lm_cell_nbank_com_bad = #{cSlLmCellNbankComBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankComOverdue != null" >
+        c_sl_lm_cell_nbank_com_overdue = #{cSlLmCellNbankComOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankComFraud != null" >
+        c_sl_lm_cell_nbank_com_fraud = #{cSlLmCellNbankComFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankComLost != null" >
+        c_sl_lm_cell_nbank_com_lost = #{cSlLmCellNbankComLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankComRefuse != null" >
+        c_sl_lm_cell_nbank_com_refuse = #{cSlLmCellNbankComRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCfBad != null" >
+        c_sl_lm_cell_nbank_cf_bad = #{cSlLmCellNbankCfBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCfOverdue != null" >
+        c_sl_lm_cell_nbank_cf_overdue = #{cSlLmCellNbankCfOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCfFraud != null" >
+        c_sl_lm_cell_nbank_cf_fraud = #{cSlLmCellNbankCfFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCfLost != null" >
+        c_sl_lm_cell_nbank_cf_lost = #{cSlLmCellNbankCfLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankCfRefuse != null" >
+        c_sl_lm_cell_nbank_cf_refuse = #{cSlLmCellNbankCfRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankOtherBad != null" >
+        c_sl_lm_cell_nbank_other_bad = #{cSlLmCellNbankOtherBad,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankOtherOverdue != null" >
+        c_sl_lm_cell_nbank_other_overdue = #{cSlLmCellNbankOtherOverdue,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankOtherFraud != null" >
+        c_sl_lm_cell_nbank_other_fraud = #{cSlLmCellNbankOtherFraud,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankOtherLost != null" >
+        c_sl_lm_cell_nbank_other_lost = #{cSlLmCellNbankOtherLost,jdbcType=VARCHAR},
+      </if>
+      <if test="cSlLmCellNbankOtherRefuse != null" >
+        c_sl_lm_cell_nbank_other_refuse = #{cSlLmCellNbankOtherRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdBrSpecialList" >
+    update t_third_br_special_list
+    set swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      c_linkman_cell = #{cLinkmanCell,jdbcType=VARCHAR},
+      c_time_range = #{cTimeRange,jdbcType=VARCHAR},
+      c_flag_specialList_c = #{cFlagSpeciallistC,jdbcType=VARCHAR},
+      c_sl_id_abnormal = #{cSlIdAbnormal,jdbcType=VARCHAR},
+      c_sl_id_phone_overdue = #{cSlIdPhoneOverdue,jdbcType=VARCHAR},
+      c_sl_id_court_bad = #{cSlIdCourtBad,jdbcType=VARCHAR},
+      c_sl_id_court_executed = #{cSlIdCourtExecuted,jdbcType=VARCHAR},
+      c_sl_id_bank_bad = #{cSlIdBankBad,jdbcType=VARCHAR},
+      c_sl_id_bank_overdue = #{cSlIdBankOverdue,jdbcType=VARCHAR},
+      c_sl_id_bank_fraud = #{cSlIdBankFraud,jdbcType=VARCHAR},
+      c_sl_id_bank_lost = #{cSlIdBankLost,jdbcType=VARCHAR},
+      c_sl_id_bank_refuse = #{cSlIdBankRefuse,jdbcType=VARCHAR},
+      c_sl_id_p2p_bad = #{cSlIdP2pBad,jdbcType=VARCHAR},
+      c_sl_id_p2p_overdue = #{cSlIdP2pOverdue,jdbcType=VARCHAR},
+      c_sl_id_p2p_fraud = #{cSlIdP2pFraud,jdbcType=VARCHAR},
+      c_sl_id_p2p_lost = #{cSlIdP2pLost,jdbcType=VARCHAR},
+      c_sl_id_p2p_refuse = #{cSlIdP2pRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_p2p_bad = #{cSlIdNbankP2pBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_p2p_overdue = #{cSlIdNbankP2pOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_p2p_fraud = #{cSlIdNbankP2pFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_p2p_lost = #{cSlIdNbankP2pLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_p2p_refuse = #{cSlIdNbankP2pRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_mc_bad = #{cSlIdNbankMcBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_mc_overdue = #{cSlIdNbankMcOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_mc_fraud = #{cSlIdNbankMcFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_mc_lost = #{cSlIdNbankMcLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_mc_refuse = #{cSlIdNbankMcRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_ca_bad = #{cSlIdNbankCaBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_ca_overdue = #{cSlIdNbankCaOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_ca_fraud = #{cSlIdNbankCaFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_ca_lost = #{cSlIdNbankCaLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_ca_refuse = #{cSlIdNbankCaRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_com_bad = #{cSlIdNbankComBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_com_overdue = #{cSlIdNbankComOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_com_fraud = #{cSlIdNbankComFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_com_lost = #{cSlIdNbankComLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_com_refuse = #{cSlIdNbankComRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_cf_bad = #{cSlIdNbankCfBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_cf_overdue = #{cSlIdNbankCfOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_cf_fraud = #{cSlIdNbankCfFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_cf_lost = #{cSlIdNbankCfLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_cf_refuse = #{cSlIdNbankCfRefuse,jdbcType=VARCHAR},
+      c_sl_id_nbank_other_bad = #{cSlIdNbankOtherBad,jdbcType=VARCHAR},
+      c_sl_id_nbank_other_overdue = #{cSlIdNbankOtherOverdue,jdbcType=VARCHAR},
+      c_sl_id_nbank_other_fraud = #{cSlIdNbankOtherFraud,jdbcType=VARCHAR},
+      c_sl_id_nbank_other_lost = #{cSlIdNbankOtherLost,jdbcType=VARCHAR},
+      c_sl_id_nbank_other_refuse = #{cSlIdNbankOtherRefuse,jdbcType=VARCHAR},
+      c_sl_cell_abnormal = #{cSlCellAbnormal,jdbcType=VARCHAR},
+      c_sl_cell_phone_overdue = #{cSlCellPhoneOverdue,jdbcType=VARCHAR},
+      c_sl_cell_bank_bad = #{cSlCellBankBad,jdbcType=VARCHAR},
+      c_sl_cell_bank_overdue = #{cSlCellBankOverdue,jdbcType=VARCHAR},
+      c_sl_cell_bank_fraud = #{cSlCellBankFraud,jdbcType=VARCHAR},
+      c_sl_cell_bank_lost = #{cSlCellBankLost,jdbcType=VARCHAR},
+      c_sl_cell_bank_refuse = #{cSlCellBankRefuse,jdbcType=VARCHAR},
+      c_sl_cell_p2p_bad = #{cSlCellP2pBad,jdbcType=VARCHAR},
+      c_sl_cell_p2p_overdue = #{cSlCellP2pOverdue,jdbcType=VARCHAR},
+      c_sl_cell_p2p_fraud = #{cSlCellP2pFraud,jdbcType=VARCHAR},
+      c_sl_cell_p2p_lost = #{cSlCellP2pLost,jdbcType=VARCHAR},
+      c_sl_cell_p2p_refuse = #{cSlCellP2pRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_p2p_bad = #{cSlCellNbankP2pBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_p2p_overdue = #{cSlCellNbankP2pOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_p2p_fraud = #{cSlCellNbankP2pFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_p2p_lost = #{cSlCellNbankP2pLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_p2p_refuse = #{cSlCellNbankP2pRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_mc_bad = #{cSlCellNbankMcBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_mc_overdue = #{cSlCellNbankMcOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_mc_fraud = #{cSlCellNbankMcFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_mc_lost = #{cSlCellNbankMcLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_mc_refuse = #{cSlCellNbankMcRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_ca_bad = #{cSlCellNbankCaBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_ca_overdue = #{cSlCellNbankCaOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_ca_fraud = #{cSlCellNbankCaFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_ca_lost = #{cSlCellNbankCaLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_ca_refuse = #{cSlCellNbankCaRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_com_bad = #{cSlCellNbankComBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_com_overdue = #{cSlCellNbankComOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_com_fraud = #{cSlCellNbankComFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_com_lost = #{cSlCellNbankComLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_com_refuse = #{cSlCellNbankComRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_cf_bad = #{cSlCellNbankCfBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_cf_overdue = #{cSlCellNbankCfOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_cf_fraud = #{cSlCellNbankCfFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_cf_lost = #{cSlCellNbankCfLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_cf_refuse = #{cSlCellNbankCfRefuse,jdbcType=VARCHAR},
+      c_sl_cell_nbank_other_bad = #{cSlCellNbankOtherBad,jdbcType=VARCHAR},
+      c_sl_cell_nbank_other_overdue = #{cSlCellNbankOtherOverdue,jdbcType=VARCHAR},
+      c_sl_cell_nbank_other_fraud = #{cSlCellNbankOtherFraud,jdbcType=VARCHAR},
+      c_sl_cell_nbank_other_lost = #{cSlCellNbankOtherLost,jdbcType=VARCHAR},
+      c_sl_cell_nbank_other_refuse = #{cSlCellNbankOtherRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_abnormal = #{cSlLmCellAbnormal,jdbcType=VARCHAR},
+      c_sl_lm_cell_phone_overdue = #{cSlLmCellPhoneOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_bank_bad = #{cSlLmCellBankBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_bank_overdue = #{cSlLmCellBankOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_bank_fraud = #{cSlLmCellBankFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_bank_lost = #{cSlLmCellBankLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_bank_refuse = #{cSlLmCellBankRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_p2p_bad = #{cSlLmCellNbankP2pBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_p2p_overdue = #{cSlLmCellNbankP2pOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_p2p_fraud = #{cSlLmCellNbankP2pFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_p2p_lost = #{cSlLmCellNbankP2pLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_p2p_refuse = #{cSlLmCellNbankP2pRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_mc_bad = #{cSlLmCellNbankMcBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_mc_overdue = #{cSlLmCellNbankMcOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_mc_fraud = #{cSlLmCellNbankMcFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_mc_lost = #{cSlLmCellNbankMcLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_mc_refuse = #{cSlLmCellNbankMcRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_ca_bad = #{cSlLmCellNbankCaBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_ca_overdue = #{cSlLmCellNbankCaOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_ca_fraud = #{cSlLmCellNbankCaFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_ca_lost = #{cSlLmCellNbankCaLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_ca_refuse = #{cSlLmCellNbankCaRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_com_bad = #{cSlLmCellNbankComBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_com_overdue = #{cSlLmCellNbankComOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_com_fraud = #{cSlLmCellNbankComFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_com_lost = #{cSlLmCellNbankComLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_com_refuse = #{cSlLmCellNbankComRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_cf_bad = #{cSlLmCellNbankCfBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_cf_overdue = #{cSlLmCellNbankCfOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_cf_fraud = #{cSlLmCellNbankCfFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_cf_lost = #{cSlLmCellNbankCfLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_cf_refuse = #{cSlLmCellNbankCfRefuse,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_other_bad = #{cSlLmCellNbankOtherBad,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_other_overdue = #{cSlLmCellNbankOtherOverdue,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_other_fraud = #{cSlLmCellNbankOtherFraud,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_other_lost = #{cSlLmCellNbankOtherLost,jdbcType=VARCHAR},
+      c_sl_lm_cell_nbank_other_refuse = #{cSlLmCellNbankOtherRefuse,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

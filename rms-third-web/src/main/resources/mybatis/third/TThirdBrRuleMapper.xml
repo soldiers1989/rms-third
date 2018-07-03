@@ -1,0 +1,917 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.rms.third.persistence.mapper.TThirdBrRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.jzfq.rms.third.common.domain.TThirdBrRule" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="swift_number" property="swiftNumber" jdbcType="VARCHAR" />
+    <result column="c_flag_rulespeciallist" property="cFlagRulespeciallist" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleapplyloan_revoloan" property="cFlagRuleapplyloanRevoloan" jdbcType="VARCHAR" />
+    <result column="c_flag_RuleApplyLoan_autofin" property="cFlagRuleapplyloanAutofin" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleapplyloan_consoff" property="cFlagRuleapplyloanConsoff" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleapplyloan_cashon" property="cFlagRuleapplyloanCashon" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleapplyloan_pdl" property="cFlagRuleapplyloanPdl" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleapplyloan_cashoff" property="cFlagRuleapplyloanCashoff" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleexecution" property="cFlagRuleexecution" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleinforelation_revoloan" property="cFlagRuleinforelationRevoloan" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleinforelation_cashoff" property="cFlagRuleinforelationCashoff" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleinforelation_pdl" property="cFlagRuleinforelationPdl" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleinforelation_cashon" property="cFlagRuleinforelationCashon" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleinforelation_consoff" property="cFlagRuleinforelationConsoff" jdbcType="VARCHAR" />
+    <result column="c_flag_ruleinforelation_autofin" property="cFlagRuleinforelationAutofin" jdbcType="VARCHAR" />
+    <result column="c_Rule_final_decision" property="cRuleFinalDecision" jdbcType="VARCHAR" />
+    <result column="c_Rule_final_weight" property="cRuleFinalWeight" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_QJS010" property="cRuleNameQjs010" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_QJS010" property="cRuleWeightQjs010" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CAB001" property="cRuleNameCab001" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CAB001" property="cRuleWeightCab001" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CAC001" property="cRuleNameCac001" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CAC001" property="cRuleWeightCac001" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CAD001" property="cRuleNameCad001" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CAD001" property="cRuleWeightCad001" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CAE001" property="cRuleNameCae001" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CAE001" property="cRuleWeightCae001" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CAF001" property="cRuleNameCaf001" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CAF001" property="cRuleWeightCaf001" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CAG001" property="cRuleNameCag001" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CAG001" property="cRuleWeightCag001" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_QJE010" property="cRuleNameQje010" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_QJE010" property="cRuleWeightQje010" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_QJE020" property="cRuleNameQje020" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_QJE020" property="cRuleWeightQje020" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CBB001" property="cRuleNameCbb001" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CBB001" property="cRuleWeightCbb001" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CBG003" property="cRuleNameCbg003" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CBG003" property="cRuleWeightCbg003" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CBF001" property="cRuleNameCbf001" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CBF001" property="cRuleWeightCbf001" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CBE001" property="cRuleNameCbe001" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CBE001" property="cRuleWeightCbe001" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CBD003" property="cRuleNameCbd003" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CBD003" property="cRuleWeightCbd003" jdbcType="VARCHAR" />
+    <result column="c_Rule_name_CBC003" property="cRuleNameCbc003" jdbcType="VARCHAR" />
+    <result column="c_Rule_weight_CBC003" property="cRuleWeightCbc003" jdbcType="VARCHAR" />
+    <result column="c_creatTime" property="cCreattime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    c_id, swift_number, c_flag_rulespeciallist, c_flag_ruleapplyloan_revoloan, c_flag_RuleApplyLoan_autofin, 
+    c_flag_ruleapplyloan_consoff, c_flag_ruleapplyloan_cashon, c_flag_ruleapplyloan_pdl, 
+    c_flag_ruleapplyloan_cashoff, c_flag_ruleexecution, c_flag_ruleinforelation_revoloan, 
+    c_flag_ruleinforelation_cashoff, c_flag_ruleinforelation_pdl, c_flag_ruleinforelation_cashon, 
+    c_flag_ruleinforelation_consoff, c_flag_ruleinforelation_autofin, c_Rule_final_decision, 
+    c_Rule_final_weight, c_Rule_name_QJS010, c_Rule_weight_QJS010, c_Rule_name_CAB001, 
+    c_Rule_weight_CAB001, c_Rule_name_CAC001, c_Rule_weight_CAC001, c_Rule_name_CAD001, 
+    c_Rule_weight_CAD001, c_Rule_name_CAE001, c_Rule_weight_CAE001, c_Rule_name_CAF001, 
+    c_Rule_weight_CAF001, c_Rule_name_CAG001, c_Rule_weight_CAG001, c_Rule_name_QJE010, 
+    c_Rule_weight_QJE010, c_Rule_name_QJE020, c_Rule_weight_QJE020, c_Rule_name_CBB001, 
+    c_Rule_weight_CBB001, c_Rule_name_CBG003, c_Rule_weight_CBG003, c_Rule_name_CBF001, 
+    c_Rule_weight_CBF001, c_Rule_name_CBE001, c_Rule_weight_CBE001, c_Rule_name_CBD003, 
+    c_Rule_weight_CBD003, c_Rule_name_CBC003, c_Rule_weight_CBC003, c_creatTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrRuleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_third_br_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_third_br_rule
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_third_br_rule
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrRuleExample" >
+    delete from t_third_br_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jzfq.rms.third.common.domain.TThirdBrRule" >
+    insert into t_third_br_rule (c_id, swift_number, c_flag_rulespeciallist, 
+      c_flag_ruleapplyloan_revoloan, c_flag_RuleApplyLoan_autofin, 
+      c_flag_ruleapplyloan_consoff, c_flag_ruleapplyloan_cashon, 
+      c_flag_ruleapplyloan_pdl, c_flag_ruleapplyloan_cashoff, 
+      c_flag_ruleexecution, c_flag_ruleinforelation_revoloan, 
+      c_flag_ruleinforelation_cashoff, c_flag_ruleinforelation_pdl, 
+      c_flag_ruleinforelation_cashon, c_flag_ruleinforelation_consoff, 
+      c_flag_ruleinforelation_autofin, c_Rule_final_decision, 
+      c_Rule_final_weight, c_Rule_name_QJS010, c_Rule_weight_QJS010, 
+      c_Rule_name_CAB001, c_Rule_weight_CAB001, c_Rule_name_CAC001, 
+      c_Rule_weight_CAC001, c_Rule_name_CAD001, c_Rule_weight_CAD001, 
+      c_Rule_name_CAE001, c_Rule_weight_CAE001, c_Rule_name_CAF001, 
+      c_Rule_weight_CAF001, c_Rule_name_CAG001, c_Rule_weight_CAG001, 
+      c_Rule_name_QJE010, c_Rule_weight_QJE010, c_Rule_name_QJE020, 
+      c_Rule_weight_QJE020, c_Rule_name_CBB001, c_Rule_weight_CBB001, 
+      c_Rule_name_CBG003, c_Rule_weight_CBG003, c_Rule_name_CBF001, 
+      c_Rule_weight_CBF001, c_Rule_name_CBE001, c_Rule_weight_CBE001, 
+      c_Rule_name_CBD003, c_Rule_weight_CBD003, c_Rule_name_CBC003, 
+      c_Rule_weight_CBC003, c_creatTime)
+    values (#{cId,jdbcType=VARCHAR}, #{swiftNumber,jdbcType=VARCHAR}, #{cFlagRulespeciallist,jdbcType=VARCHAR}, 
+      #{cFlagRuleapplyloanRevoloan,jdbcType=VARCHAR}, #{cFlagRuleapplyloanAutofin,jdbcType=VARCHAR}, 
+      #{cFlagRuleapplyloanConsoff,jdbcType=VARCHAR}, #{cFlagRuleapplyloanCashon,jdbcType=VARCHAR}, 
+      #{cFlagRuleapplyloanPdl,jdbcType=VARCHAR}, #{cFlagRuleapplyloanCashoff,jdbcType=VARCHAR}, 
+      #{cFlagRuleexecution,jdbcType=VARCHAR}, #{cFlagRuleinforelationRevoloan,jdbcType=VARCHAR}, 
+      #{cFlagRuleinforelationCashoff,jdbcType=VARCHAR}, #{cFlagRuleinforelationPdl,jdbcType=VARCHAR}, 
+      #{cFlagRuleinforelationCashon,jdbcType=VARCHAR}, #{cFlagRuleinforelationConsoff,jdbcType=VARCHAR}, 
+      #{cFlagRuleinforelationAutofin,jdbcType=VARCHAR}, #{cRuleFinalDecision,jdbcType=VARCHAR}, 
+      #{cRuleFinalWeight,jdbcType=VARCHAR}, #{cRuleNameQjs010,jdbcType=VARCHAR}, #{cRuleWeightQjs010,jdbcType=VARCHAR}, 
+      #{cRuleNameCab001,jdbcType=VARCHAR}, #{cRuleWeightCab001,jdbcType=VARCHAR}, #{cRuleNameCac001,jdbcType=VARCHAR}, 
+      #{cRuleWeightCac001,jdbcType=VARCHAR}, #{cRuleNameCad001,jdbcType=VARCHAR}, #{cRuleWeightCad001,jdbcType=VARCHAR}, 
+      #{cRuleNameCae001,jdbcType=VARCHAR}, #{cRuleWeightCae001,jdbcType=VARCHAR}, #{cRuleNameCaf001,jdbcType=VARCHAR}, 
+      #{cRuleWeightCaf001,jdbcType=VARCHAR}, #{cRuleNameCag001,jdbcType=VARCHAR}, #{cRuleWeightCag001,jdbcType=VARCHAR}, 
+      #{cRuleNameQje010,jdbcType=VARCHAR}, #{cRuleWeightQje010,jdbcType=VARCHAR}, #{cRuleNameQje020,jdbcType=VARCHAR}, 
+      #{cRuleWeightQje020,jdbcType=VARCHAR}, #{cRuleNameCbb001,jdbcType=VARCHAR}, #{cRuleWeightCbb001,jdbcType=VARCHAR}, 
+      #{cRuleNameCbg003,jdbcType=VARCHAR}, #{cRuleWeightCbg003,jdbcType=VARCHAR}, #{cRuleNameCbf001,jdbcType=VARCHAR}, 
+      #{cRuleWeightCbf001,jdbcType=VARCHAR}, #{cRuleNameCbe001,jdbcType=VARCHAR}, #{cRuleWeightCbe001,jdbcType=VARCHAR}, 
+      #{cRuleNameCbd003,jdbcType=VARCHAR}, #{cRuleWeightCbd003,jdbcType=VARCHAR}, #{cRuleNameCbc003,jdbcType=VARCHAR}, 
+      #{cRuleWeightCbc003,jdbcType=VARCHAR}, #{cCreattime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrRule" >
+    insert into t_third_br_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="swiftNumber != null" >
+        swift_number,
+      </if>
+      <if test="cFlagRulespeciallist != null" >
+        c_flag_rulespeciallist,
+      </if>
+      <if test="cFlagRuleapplyloanRevoloan != null" >
+        c_flag_ruleapplyloan_revoloan,
+      </if>
+      <if test="cFlagRuleapplyloanAutofin != null" >
+        c_flag_RuleApplyLoan_autofin,
+      </if>
+      <if test="cFlagRuleapplyloanConsoff != null" >
+        c_flag_ruleapplyloan_consoff,
+      </if>
+      <if test="cFlagRuleapplyloanCashon != null" >
+        c_flag_ruleapplyloan_cashon,
+      </if>
+      <if test="cFlagRuleapplyloanPdl != null" >
+        c_flag_ruleapplyloan_pdl,
+      </if>
+      <if test="cFlagRuleapplyloanCashoff != null" >
+        c_flag_ruleapplyloan_cashoff,
+      </if>
+      <if test="cFlagRuleexecution != null" >
+        c_flag_ruleexecution,
+      </if>
+      <if test="cFlagRuleinforelationRevoloan != null" >
+        c_flag_ruleinforelation_revoloan,
+      </if>
+      <if test="cFlagRuleinforelationCashoff != null" >
+        c_flag_ruleinforelation_cashoff,
+      </if>
+      <if test="cFlagRuleinforelationPdl != null" >
+        c_flag_ruleinforelation_pdl,
+      </if>
+      <if test="cFlagRuleinforelationCashon != null" >
+        c_flag_ruleinforelation_cashon,
+      </if>
+      <if test="cFlagRuleinforelationConsoff != null" >
+        c_flag_ruleinforelation_consoff,
+      </if>
+      <if test="cFlagRuleinforelationAutofin != null" >
+        c_flag_ruleinforelation_autofin,
+      </if>
+      <if test="cRuleFinalDecision != null" >
+        c_Rule_final_decision,
+      </if>
+      <if test="cRuleFinalWeight != null" >
+        c_Rule_final_weight,
+      </if>
+      <if test="cRuleNameQjs010 != null" >
+        c_Rule_name_QJS010,
+      </if>
+      <if test="cRuleWeightQjs010 != null" >
+        c_Rule_weight_QJS010,
+      </if>
+      <if test="cRuleNameCab001 != null" >
+        c_Rule_name_CAB001,
+      </if>
+      <if test="cRuleWeightCab001 != null" >
+        c_Rule_weight_CAB001,
+      </if>
+      <if test="cRuleNameCac001 != null" >
+        c_Rule_name_CAC001,
+      </if>
+      <if test="cRuleWeightCac001 != null" >
+        c_Rule_weight_CAC001,
+      </if>
+      <if test="cRuleNameCad001 != null" >
+        c_Rule_name_CAD001,
+      </if>
+      <if test="cRuleWeightCad001 != null" >
+        c_Rule_weight_CAD001,
+      </if>
+      <if test="cRuleNameCae001 != null" >
+        c_Rule_name_CAE001,
+      </if>
+      <if test="cRuleWeightCae001 != null" >
+        c_Rule_weight_CAE001,
+      </if>
+      <if test="cRuleNameCaf001 != null" >
+        c_Rule_name_CAF001,
+      </if>
+      <if test="cRuleWeightCaf001 != null" >
+        c_Rule_weight_CAF001,
+      </if>
+      <if test="cRuleNameCag001 != null" >
+        c_Rule_name_CAG001,
+      </if>
+      <if test="cRuleWeightCag001 != null" >
+        c_Rule_weight_CAG001,
+      </if>
+      <if test="cRuleNameQje010 != null" >
+        c_Rule_name_QJE010,
+      </if>
+      <if test="cRuleWeightQje010 != null" >
+        c_Rule_weight_QJE010,
+      </if>
+      <if test="cRuleNameQje020 != null" >
+        c_Rule_name_QJE020,
+      </if>
+      <if test="cRuleWeightQje020 != null" >
+        c_Rule_weight_QJE020,
+      </if>
+      <if test="cRuleNameCbb001 != null" >
+        c_Rule_name_CBB001,
+      </if>
+      <if test="cRuleWeightCbb001 != null" >
+        c_Rule_weight_CBB001,
+      </if>
+      <if test="cRuleNameCbg003 != null" >
+        c_Rule_name_CBG003,
+      </if>
+      <if test="cRuleWeightCbg003 != null" >
+        c_Rule_weight_CBG003,
+      </if>
+      <if test="cRuleNameCbf001 != null" >
+        c_Rule_name_CBF001,
+      </if>
+      <if test="cRuleWeightCbf001 != null" >
+        c_Rule_weight_CBF001,
+      </if>
+      <if test="cRuleNameCbe001 != null" >
+        c_Rule_name_CBE001,
+      </if>
+      <if test="cRuleWeightCbe001 != null" >
+        c_Rule_weight_CBE001,
+      </if>
+      <if test="cRuleNameCbd003 != null" >
+        c_Rule_name_CBD003,
+      </if>
+      <if test="cRuleWeightCbd003 != null" >
+        c_Rule_weight_CBD003,
+      </if>
+      <if test="cRuleNameCbc003 != null" >
+        c_Rule_name_CBC003,
+      </if>
+      <if test="cRuleWeightCbc003 != null" >
+        c_Rule_weight_CBC003,
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="swiftNumber != null" >
+        #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRulespeciallist != null" >
+        #{cFlagRulespeciallist,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanRevoloan != null" >
+        #{cFlagRuleapplyloanRevoloan,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanAutofin != null" >
+        #{cFlagRuleapplyloanAutofin,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanConsoff != null" >
+        #{cFlagRuleapplyloanConsoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanCashon != null" >
+        #{cFlagRuleapplyloanCashon,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanPdl != null" >
+        #{cFlagRuleapplyloanPdl,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanCashoff != null" >
+        #{cFlagRuleapplyloanCashoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleexecution != null" >
+        #{cFlagRuleexecution,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationRevoloan != null" >
+        #{cFlagRuleinforelationRevoloan,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationCashoff != null" >
+        #{cFlagRuleinforelationCashoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationPdl != null" >
+        #{cFlagRuleinforelationPdl,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationCashon != null" >
+        #{cFlagRuleinforelationCashon,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationConsoff != null" >
+        #{cFlagRuleinforelationConsoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationAutofin != null" >
+        #{cFlagRuleinforelationAutofin,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleFinalDecision != null" >
+        #{cRuleFinalDecision,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleFinalWeight != null" >
+        #{cRuleFinalWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameQjs010 != null" >
+        #{cRuleNameQjs010,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightQjs010 != null" >
+        #{cRuleWeightQjs010,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCab001 != null" >
+        #{cRuleNameCab001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCab001 != null" >
+        #{cRuleWeightCab001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCac001 != null" >
+        #{cRuleNameCac001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCac001 != null" >
+        #{cRuleWeightCac001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCad001 != null" >
+        #{cRuleNameCad001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCad001 != null" >
+        #{cRuleWeightCad001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCae001 != null" >
+        #{cRuleNameCae001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCae001 != null" >
+        #{cRuleWeightCae001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCaf001 != null" >
+        #{cRuleNameCaf001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCaf001 != null" >
+        #{cRuleWeightCaf001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCag001 != null" >
+        #{cRuleNameCag001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCag001 != null" >
+        #{cRuleWeightCag001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameQje010 != null" >
+        #{cRuleNameQje010,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightQje010 != null" >
+        #{cRuleWeightQje010,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameQje020 != null" >
+        #{cRuleNameQje020,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightQje020 != null" >
+        #{cRuleWeightQje020,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbb001 != null" >
+        #{cRuleNameCbb001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbb001 != null" >
+        #{cRuleWeightCbb001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbg003 != null" >
+        #{cRuleNameCbg003,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbg003 != null" >
+        #{cRuleWeightCbg003,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbf001 != null" >
+        #{cRuleNameCbf001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbf001 != null" >
+        #{cRuleWeightCbf001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbe001 != null" >
+        #{cRuleNameCbe001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbe001 != null" >
+        #{cRuleWeightCbe001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbd003 != null" >
+        #{cRuleNameCbd003,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbd003 != null" >
+        #{cRuleWeightCbd003,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbc003 != null" >
+        #{cRuleNameCbc003,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbc003 != null" >
+        #{cRuleWeightCbc003,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jzfq.rms.third.common.domain.example.TThirdBrRuleExample" resultType="java.lang.Integer" >
+    select count(*) from t_third_br_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_third_br_rule
+    <set >
+      <if test="record.cId != null" >
+        c_id = #{record.cId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.swiftNumber != null" >
+        swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRulespeciallist != null" >
+        c_flag_rulespeciallist = #{record.cFlagRulespeciallist,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleapplyloanRevoloan != null" >
+        c_flag_ruleapplyloan_revoloan = #{record.cFlagRuleapplyloanRevoloan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleapplyloanAutofin != null" >
+        c_flag_RuleApplyLoan_autofin = #{record.cFlagRuleapplyloanAutofin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleapplyloanConsoff != null" >
+        c_flag_ruleapplyloan_consoff = #{record.cFlagRuleapplyloanConsoff,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleapplyloanCashon != null" >
+        c_flag_ruleapplyloan_cashon = #{record.cFlagRuleapplyloanCashon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleapplyloanPdl != null" >
+        c_flag_ruleapplyloan_pdl = #{record.cFlagRuleapplyloanPdl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleapplyloanCashoff != null" >
+        c_flag_ruleapplyloan_cashoff = #{record.cFlagRuleapplyloanCashoff,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleexecution != null" >
+        c_flag_ruleexecution = #{record.cFlagRuleexecution,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleinforelationRevoloan != null" >
+        c_flag_ruleinforelation_revoloan = #{record.cFlagRuleinforelationRevoloan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleinforelationCashoff != null" >
+        c_flag_ruleinforelation_cashoff = #{record.cFlagRuleinforelationCashoff,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleinforelationPdl != null" >
+        c_flag_ruleinforelation_pdl = #{record.cFlagRuleinforelationPdl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleinforelationCashon != null" >
+        c_flag_ruleinforelation_cashon = #{record.cFlagRuleinforelationCashon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleinforelationConsoff != null" >
+        c_flag_ruleinforelation_consoff = #{record.cFlagRuleinforelationConsoff,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cFlagRuleinforelationAutofin != null" >
+        c_flag_ruleinforelation_autofin = #{record.cFlagRuleinforelationAutofin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleFinalDecision != null" >
+        c_Rule_final_decision = #{record.cRuleFinalDecision,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleFinalWeight != null" >
+        c_Rule_final_weight = #{record.cRuleFinalWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameQjs010 != null" >
+        c_Rule_name_QJS010 = #{record.cRuleNameQjs010,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightQjs010 != null" >
+        c_Rule_weight_QJS010 = #{record.cRuleWeightQjs010,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCab001 != null" >
+        c_Rule_name_CAB001 = #{record.cRuleNameCab001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCab001 != null" >
+        c_Rule_weight_CAB001 = #{record.cRuleWeightCab001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCac001 != null" >
+        c_Rule_name_CAC001 = #{record.cRuleNameCac001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCac001 != null" >
+        c_Rule_weight_CAC001 = #{record.cRuleWeightCac001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCad001 != null" >
+        c_Rule_name_CAD001 = #{record.cRuleNameCad001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCad001 != null" >
+        c_Rule_weight_CAD001 = #{record.cRuleWeightCad001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCae001 != null" >
+        c_Rule_name_CAE001 = #{record.cRuleNameCae001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCae001 != null" >
+        c_Rule_weight_CAE001 = #{record.cRuleWeightCae001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCaf001 != null" >
+        c_Rule_name_CAF001 = #{record.cRuleNameCaf001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCaf001 != null" >
+        c_Rule_weight_CAF001 = #{record.cRuleWeightCaf001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCag001 != null" >
+        c_Rule_name_CAG001 = #{record.cRuleNameCag001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCag001 != null" >
+        c_Rule_weight_CAG001 = #{record.cRuleWeightCag001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameQje010 != null" >
+        c_Rule_name_QJE010 = #{record.cRuleNameQje010,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightQje010 != null" >
+        c_Rule_weight_QJE010 = #{record.cRuleWeightQje010,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameQje020 != null" >
+        c_Rule_name_QJE020 = #{record.cRuleNameQje020,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightQje020 != null" >
+        c_Rule_weight_QJE020 = #{record.cRuleWeightQje020,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCbb001 != null" >
+        c_Rule_name_CBB001 = #{record.cRuleNameCbb001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCbb001 != null" >
+        c_Rule_weight_CBB001 = #{record.cRuleWeightCbb001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCbg003 != null" >
+        c_Rule_name_CBG003 = #{record.cRuleNameCbg003,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCbg003 != null" >
+        c_Rule_weight_CBG003 = #{record.cRuleWeightCbg003,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCbf001 != null" >
+        c_Rule_name_CBF001 = #{record.cRuleNameCbf001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCbf001 != null" >
+        c_Rule_weight_CBF001 = #{record.cRuleWeightCbf001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCbe001 != null" >
+        c_Rule_name_CBE001 = #{record.cRuleNameCbe001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCbe001 != null" >
+        c_Rule_weight_CBE001 = #{record.cRuleWeightCbe001,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCbd003 != null" >
+        c_Rule_name_CBD003 = #{record.cRuleNameCbd003,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCbd003 != null" >
+        c_Rule_weight_CBD003 = #{record.cRuleWeightCbd003,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleNameCbc003 != null" >
+        c_Rule_name_CBC003 = #{record.cRuleNameCbc003,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cRuleWeightCbc003 != null" >
+        c_Rule_weight_CBC003 = #{record.cRuleWeightCbc003,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cCreattime != null" >
+        c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_third_br_rule
+    set c_id = #{record.cId,jdbcType=VARCHAR},
+      swift_number = #{record.swiftNumber,jdbcType=VARCHAR},
+      c_flag_rulespeciallist = #{record.cFlagRulespeciallist,jdbcType=VARCHAR},
+      c_flag_ruleapplyloan_revoloan = #{record.cFlagRuleapplyloanRevoloan,jdbcType=VARCHAR},
+      c_flag_RuleApplyLoan_autofin = #{record.cFlagRuleapplyloanAutofin,jdbcType=VARCHAR},
+      c_flag_ruleapplyloan_consoff = #{record.cFlagRuleapplyloanConsoff,jdbcType=VARCHAR},
+      c_flag_ruleapplyloan_cashon = #{record.cFlagRuleapplyloanCashon,jdbcType=VARCHAR},
+      c_flag_ruleapplyloan_pdl = #{record.cFlagRuleapplyloanPdl,jdbcType=VARCHAR},
+      c_flag_ruleapplyloan_cashoff = #{record.cFlagRuleapplyloanCashoff,jdbcType=VARCHAR},
+      c_flag_ruleexecution = #{record.cFlagRuleexecution,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_revoloan = #{record.cFlagRuleinforelationRevoloan,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_cashoff = #{record.cFlagRuleinforelationCashoff,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_pdl = #{record.cFlagRuleinforelationPdl,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_cashon = #{record.cFlagRuleinforelationCashon,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_consoff = #{record.cFlagRuleinforelationConsoff,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_autofin = #{record.cFlagRuleinforelationAutofin,jdbcType=VARCHAR},
+      c_Rule_final_decision = #{record.cRuleFinalDecision,jdbcType=VARCHAR},
+      c_Rule_final_weight = #{record.cRuleFinalWeight,jdbcType=VARCHAR},
+      c_Rule_name_QJS010 = #{record.cRuleNameQjs010,jdbcType=VARCHAR},
+      c_Rule_weight_QJS010 = #{record.cRuleWeightQjs010,jdbcType=VARCHAR},
+      c_Rule_name_CAB001 = #{record.cRuleNameCab001,jdbcType=VARCHAR},
+      c_Rule_weight_CAB001 = #{record.cRuleWeightCab001,jdbcType=VARCHAR},
+      c_Rule_name_CAC001 = #{record.cRuleNameCac001,jdbcType=VARCHAR},
+      c_Rule_weight_CAC001 = #{record.cRuleWeightCac001,jdbcType=VARCHAR},
+      c_Rule_name_CAD001 = #{record.cRuleNameCad001,jdbcType=VARCHAR},
+      c_Rule_weight_CAD001 = #{record.cRuleWeightCad001,jdbcType=VARCHAR},
+      c_Rule_name_CAE001 = #{record.cRuleNameCae001,jdbcType=VARCHAR},
+      c_Rule_weight_CAE001 = #{record.cRuleWeightCae001,jdbcType=VARCHAR},
+      c_Rule_name_CAF001 = #{record.cRuleNameCaf001,jdbcType=VARCHAR},
+      c_Rule_weight_CAF001 = #{record.cRuleWeightCaf001,jdbcType=VARCHAR},
+      c_Rule_name_CAG001 = #{record.cRuleNameCag001,jdbcType=VARCHAR},
+      c_Rule_weight_CAG001 = #{record.cRuleWeightCag001,jdbcType=VARCHAR},
+      c_Rule_name_QJE010 = #{record.cRuleNameQje010,jdbcType=VARCHAR},
+      c_Rule_weight_QJE010 = #{record.cRuleWeightQje010,jdbcType=VARCHAR},
+      c_Rule_name_QJE020 = #{record.cRuleNameQje020,jdbcType=VARCHAR},
+      c_Rule_weight_QJE020 = #{record.cRuleWeightQje020,jdbcType=VARCHAR},
+      c_Rule_name_CBB001 = #{record.cRuleNameCbb001,jdbcType=VARCHAR},
+      c_Rule_weight_CBB001 = #{record.cRuleWeightCbb001,jdbcType=VARCHAR},
+      c_Rule_name_CBG003 = #{record.cRuleNameCbg003,jdbcType=VARCHAR},
+      c_Rule_weight_CBG003 = #{record.cRuleWeightCbg003,jdbcType=VARCHAR},
+      c_Rule_name_CBF001 = #{record.cRuleNameCbf001,jdbcType=VARCHAR},
+      c_Rule_weight_CBF001 = #{record.cRuleWeightCbf001,jdbcType=VARCHAR},
+      c_Rule_name_CBE001 = #{record.cRuleNameCbe001,jdbcType=VARCHAR},
+      c_Rule_weight_CBE001 = #{record.cRuleWeightCbe001,jdbcType=VARCHAR},
+      c_Rule_name_CBD003 = #{record.cRuleNameCbd003,jdbcType=VARCHAR},
+      c_Rule_weight_CBD003 = #{record.cRuleWeightCbd003,jdbcType=VARCHAR},
+      c_Rule_name_CBC003 = #{record.cRuleNameCbc003,jdbcType=VARCHAR},
+      c_Rule_weight_CBC003 = #{record.cRuleWeightCbc003,jdbcType=VARCHAR},
+      c_creatTime = #{record.cCreattime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jzfq.rms.third.common.domain.TThirdBrRule" >
+    update t_third_br_rule
+    <set >
+      <if test="swiftNumber != null" >
+        swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRulespeciallist != null" >
+        c_flag_rulespeciallist = #{cFlagRulespeciallist,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanRevoloan != null" >
+        c_flag_ruleapplyloan_revoloan = #{cFlagRuleapplyloanRevoloan,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanAutofin != null" >
+        c_flag_RuleApplyLoan_autofin = #{cFlagRuleapplyloanAutofin,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanConsoff != null" >
+        c_flag_ruleapplyloan_consoff = #{cFlagRuleapplyloanConsoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanCashon != null" >
+        c_flag_ruleapplyloan_cashon = #{cFlagRuleapplyloanCashon,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanPdl != null" >
+        c_flag_ruleapplyloan_pdl = #{cFlagRuleapplyloanPdl,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleapplyloanCashoff != null" >
+        c_flag_ruleapplyloan_cashoff = #{cFlagRuleapplyloanCashoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleexecution != null" >
+        c_flag_ruleexecution = #{cFlagRuleexecution,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationRevoloan != null" >
+        c_flag_ruleinforelation_revoloan = #{cFlagRuleinforelationRevoloan,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationCashoff != null" >
+        c_flag_ruleinforelation_cashoff = #{cFlagRuleinforelationCashoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationPdl != null" >
+        c_flag_ruleinforelation_pdl = #{cFlagRuleinforelationPdl,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationCashon != null" >
+        c_flag_ruleinforelation_cashon = #{cFlagRuleinforelationCashon,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationConsoff != null" >
+        c_flag_ruleinforelation_consoff = #{cFlagRuleinforelationConsoff,jdbcType=VARCHAR},
+      </if>
+      <if test="cFlagRuleinforelationAutofin != null" >
+        c_flag_ruleinforelation_autofin = #{cFlagRuleinforelationAutofin,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleFinalDecision != null" >
+        c_Rule_final_decision = #{cRuleFinalDecision,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleFinalWeight != null" >
+        c_Rule_final_weight = #{cRuleFinalWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameQjs010 != null" >
+        c_Rule_name_QJS010 = #{cRuleNameQjs010,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightQjs010 != null" >
+        c_Rule_weight_QJS010 = #{cRuleWeightQjs010,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCab001 != null" >
+        c_Rule_name_CAB001 = #{cRuleNameCab001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCab001 != null" >
+        c_Rule_weight_CAB001 = #{cRuleWeightCab001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCac001 != null" >
+        c_Rule_name_CAC001 = #{cRuleNameCac001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCac001 != null" >
+        c_Rule_weight_CAC001 = #{cRuleWeightCac001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCad001 != null" >
+        c_Rule_name_CAD001 = #{cRuleNameCad001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCad001 != null" >
+        c_Rule_weight_CAD001 = #{cRuleWeightCad001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCae001 != null" >
+        c_Rule_name_CAE001 = #{cRuleNameCae001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCae001 != null" >
+        c_Rule_weight_CAE001 = #{cRuleWeightCae001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCaf001 != null" >
+        c_Rule_name_CAF001 = #{cRuleNameCaf001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCaf001 != null" >
+        c_Rule_weight_CAF001 = #{cRuleWeightCaf001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCag001 != null" >
+        c_Rule_name_CAG001 = #{cRuleNameCag001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCag001 != null" >
+        c_Rule_weight_CAG001 = #{cRuleWeightCag001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameQje010 != null" >
+        c_Rule_name_QJE010 = #{cRuleNameQje010,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightQje010 != null" >
+        c_Rule_weight_QJE010 = #{cRuleWeightQje010,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameQje020 != null" >
+        c_Rule_name_QJE020 = #{cRuleNameQje020,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightQje020 != null" >
+        c_Rule_weight_QJE020 = #{cRuleWeightQje020,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbb001 != null" >
+        c_Rule_name_CBB001 = #{cRuleNameCbb001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbb001 != null" >
+        c_Rule_weight_CBB001 = #{cRuleWeightCbb001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbg003 != null" >
+        c_Rule_name_CBG003 = #{cRuleNameCbg003,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbg003 != null" >
+        c_Rule_weight_CBG003 = #{cRuleWeightCbg003,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbf001 != null" >
+        c_Rule_name_CBF001 = #{cRuleNameCbf001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbf001 != null" >
+        c_Rule_weight_CBF001 = #{cRuleWeightCbf001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbe001 != null" >
+        c_Rule_name_CBE001 = #{cRuleNameCbe001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbe001 != null" >
+        c_Rule_weight_CBE001 = #{cRuleWeightCbe001,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbd003 != null" >
+        c_Rule_name_CBD003 = #{cRuleNameCbd003,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbd003 != null" >
+        c_Rule_weight_CBD003 = #{cRuleWeightCbd003,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleNameCbc003 != null" >
+        c_Rule_name_CBC003 = #{cRuleNameCbc003,jdbcType=VARCHAR},
+      </if>
+      <if test="cRuleWeightCbc003 != null" >
+        c_Rule_weight_CBC003 = #{cRuleWeightCbc003,jdbcType=VARCHAR},
+      </if>
+      <if test="cCreattime != null" >
+        c_creatTime = #{cCreattime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jzfq.rms.third.common.domain.TThirdBrRule" >
+    update t_third_br_rule
+    set swift_number = #{swiftNumber,jdbcType=VARCHAR},
+      c_flag_rulespeciallist = #{cFlagRulespeciallist,jdbcType=VARCHAR},
+      c_flag_ruleapplyloan_revoloan = #{cFlagRuleapplyloanRevoloan,jdbcType=VARCHAR},
+      c_flag_RuleApplyLoan_autofin = #{cFlagRuleapplyloanAutofin,jdbcType=VARCHAR},
+      c_flag_ruleapplyloan_consoff = #{cFlagRuleapplyloanConsoff,jdbcType=VARCHAR},
+      c_flag_ruleapplyloan_cashon = #{cFlagRuleapplyloanCashon,jdbcType=VARCHAR},
+      c_flag_ruleapplyloan_pdl = #{cFlagRuleapplyloanPdl,jdbcType=VARCHAR},
+      c_flag_ruleapplyloan_cashoff = #{cFlagRuleapplyloanCashoff,jdbcType=VARCHAR},
+      c_flag_ruleexecution = #{cFlagRuleexecution,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_revoloan = #{cFlagRuleinforelationRevoloan,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_cashoff = #{cFlagRuleinforelationCashoff,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_pdl = #{cFlagRuleinforelationPdl,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_cashon = #{cFlagRuleinforelationCashon,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_consoff = #{cFlagRuleinforelationConsoff,jdbcType=VARCHAR},
+      c_flag_ruleinforelation_autofin = #{cFlagRuleinforelationAutofin,jdbcType=VARCHAR},
+      c_Rule_final_decision = #{cRuleFinalDecision,jdbcType=VARCHAR},
+      c_Rule_final_weight = #{cRuleFinalWeight,jdbcType=VARCHAR},
+      c_Rule_name_QJS010 = #{cRuleNameQjs010,jdbcType=VARCHAR},
+      c_Rule_weight_QJS010 = #{cRuleWeightQjs010,jdbcType=VARCHAR},
+      c_Rule_name_CAB001 = #{cRuleNameCab001,jdbcType=VARCHAR},
+      c_Rule_weight_CAB001 = #{cRuleWeightCab001,jdbcType=VARCHAR},
+      c_Rule_name_CAC001 = #{cRuleNameCac001,jdbcType=VARCHAR},
+      c_Rule_weight_CAC001 = #{cRuleWeightCac001,jdbcType=VARCHAR},
+      c_Rule_name_CAD001 = #{cRuleNameCad001,jdbcType=VARCHAR},
+      c_Rule_weight_CAD001 = #{cRuleWeightCad001,jdbcType=VARCHAR},
+      c_Rule_name_CAE001 = #{cRuleNameCae001,jdbcType=VARCHAR},
+      c_Rule_weight_CAE001 = #{cRuleWeightCae001,jdbcType=VARCHAR},
+      c_Rule_name_CAF001 = #{cRuleNameCaf001,jdbcType=VARCHAR},
+      c_Rule_weight_CAF001 = #{cRuleWeightCaf001,jdbcType=VARCHAR},
+      c_Rule_name_CAG001 = #{cRuleNameCag001,jdbcType=VARCHAR},
+      c_Rule_weight_CAG001 = #{cRuleWeightCag001,jdbcType=VARCHAR},
+      c_Rule_name_QJE010 = #{cRuleNameQje010,jdbcType=VARCHAR},
+      c_Rule_weight_QJE010 = #{cRuleWeightQje010,jdbcType=VARCHAR},
+      c_Rule_name_QJE020 = #{cRuleNameQje020,jdbcType=VARCHAR},
+      c_Rule_weight_QJE020 = #{cRuleWeightQje020,jdbcType=VARCHAR},
+      c_Rule_name_CBB001 = #{cRuleNameCbb001,jdbcType=VARCHAR},
+      c_Rule_weight_CBB001 = #{cRuleWeightCbb001,jdbcType=VARCHAR},
+      c_Rule_name_CBG003 = #{cRuleNameCbg003,jdbcType=VARCHAR},
+      c_Rule_weight_CBG003 = #{cRuleWeightCbg003,jdbcType=VARCHAR},
+      c_Rule_name_CBF001 = #{cRuleNameCbf001,jdbcType=VARCHAR},
+      c_Rule_weight_CBF001 = #{cRuleWeightCbf001,jdbcType=VARCHAR},
+      c_Rule_name_CBE001 = #{cRuleNameCbe001,jdbcType=VARCHAR},
+      c_Rule_weight_CBE001 = #{cRuleWeightCbe001,jdbcType=VARCHAR},
+      c_Rule_name_CBD003 = #{cRuleNameCbd003,jdbcType=VARCHAR},
+      c_Rule_weight_CBD003 = #{cRuleWeightCbd003,jdbcType=VARCHAR},
+      c_Rule_name_CBC003 = #{cRuleNameCbc003,jdbcType=VARCHAR},
+      c_Rule_weight_CBC003 = #{cRuleWeightCbc003,jdbcType=VARCHAR},
+      c_creatTime = #{cCreattime,jdbcType=TIMESTAMP}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>

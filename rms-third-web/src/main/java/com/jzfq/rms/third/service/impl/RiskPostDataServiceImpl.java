@@ -420,6 +420,21 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
 
 
     @Override
+    public PageModel<BairongData> getAllData(PageModel<BairongData> page) {
+        List<BairongData> datas = mongoTemplate.find(new Query().skip(page.getSkip()).limit(page.getPageSize()), BairongData.class);
+        page.setDatas(datas);
+        return page;
+    }
+
+
+    @Override
+    public int getCount() {
+        //计算总数
+        int count = (int)mongoTemplate.count(null,BairongData.class);
+        return count;
+    }
+
+    @Override
     public BrPostData getLastBrPostData(String taskId) {
         List<BrPostData> datas = mongoTemplate.find(new Query(Criteria.where("taskId").is(taskId)
                 .and("desc").is("拉取数据集合信息信息")).with(new Sort(Sort.Direction.DESC, "createTime")), BrPostData.class);

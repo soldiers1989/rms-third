@@ -234,24 +234,24 @@ public class JaoParser {
                 jsonRsult = PhoneNetworkLengthEnum.OTHER.getCode();
             } else if (interfaceType.equals(PhoneDataTypeEnum.NETWORK_STATUS.getCode())) {
                 //在网状态
-                if ("0".equals(jsonRsult)) {
+                if ("0".equals(jsonRsult0)) {
                     jsonRsult = PhoneStatusEnum.NORMAL.getCode();
                 }
-                if ("1".equals(jsonRsult)) {
+                if ("1".equals(jsonRsult0)) {
                     jsonRsult = PhoneStatusEnum.UNNORMAL.getCode();
                 }
-                if ("2".equals(jsonRsult)) {
+                if ("2".equals(jsonRsult0)) {
                     jsonRsult = PhoneStatusEnum.UNNORMAL.getCode();
                 }
-                if ("3".equals(jsonRsult)) {
+                if ("3".equals(jsonRsult0)) {
                     jsonRsult = PhoneStatusEnum.UNNORMAL.getCode();
                 }
-                if ("4".equals(jsonRsult)) {
+                if ("4".equals(jsonRsult0)) {
                     jsonRsult = PhoneStatusEnum.UNNORMAL.getCode();
                 }
             }
             String desc = jsonObject6.getString("desc");
-            data.setcRslCode(jsonRsult);
+            data.setcRslCode(jsonRsult0);
             data.setcRslDesc(desc);
         }
 

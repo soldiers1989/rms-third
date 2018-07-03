@@ -98,18 +98,7 @@ public class Request1011Handler extends AbstractRequestHandler {
      * @return
      */
     private ResponseResult handler01(AbstractRequest request) throws Exception {
-
-
         String traceId = TraceIDThreadLocal.getTraceID();
-        if (1==1) {
-            JSONObject resultJson = new JSONObject();
-            resultJson.put("score", "");
-            resultJson.put("weight", "");
-            return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, resultJson);
-        }
-
-
-//        String traceId = TraceIDThreadLocal.getTraceID();
         String orderNo = request.getParam("orderNo").toString();
         String customerType = (String) request.getParam("customerType");
         String channelId = (String) request.getParam("channelId");

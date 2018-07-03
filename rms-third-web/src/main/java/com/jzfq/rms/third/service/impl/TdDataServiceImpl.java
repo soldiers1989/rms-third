@@ -204,18 +204,18 @@ public class TdDataServiceImpl implements ITdDataService {
 
 
     @Override
-    public void saveNewResult(FraudApiResponse apiResponse, String orderNo, String traceId, String name, String idCard, String phone) {
+    public void saveNewResult(FraudApiResponse apiResponse, String orderNo, String traceId, String name, String idCard, String phone,Date requstTime) {
         ThreadProvider.getThreadPool().execute(() -> {
             //关联表信息
-            saveNewSeqData(TdParser.getSeqData(apiResponse, orderNo, traceId, name, idCard, phone));
+            saveNewSeqData(TdParser.getSeqData(apiResponse, orderNo, traceId, name, idCard, phone,requstTime));
             //主表
-            saveNewMainData(TdParser.getMainData(apiResponse));
+            saveNewMainData(TdParser.getMainData(apiResponse,requstTime));
             //地理信息表
-            saveNewGeoData(TdParser.getGeoInfoData(apiResponse));
+            saveNewGeoData(TdParser.getGeoInfoData(apiResponse,requstTime));
             //手机信息表
-            saveNewPhoneData(TdParser.getAttrInfoData(apiResponse));
+            saveNewPhoneData(TdParser.getAttrInfoData(apiResponse,requstTime));
             //命中策略信息IAO
-            List<TThirdTdPolicySetData> policySetDataList = TdParser.getPolicySetInfoData(apiResponse);
+            List<TThirdTdPolicySetData> policySetDataList = TdParser.getPolicySetInfoData(apiResponse,requstTime);
             if (null != policySetDataList && policySetDataList.size() > 0) {
                 for (TThirdTdPolicySetData data : policySetDataList) {
                     saveNewPolisetData(data);
@@ -227,11 +227,11 @@ public class TdDataServiceImpl implements ITdDataService {
                 }
             }
             //h5 信息表
-            saveNewH5Data(TdParser.getH5InfoData(apiResponse));
+            saveNewH5Data(TdParser.getH5InfoData(apiResponse,requstTime));
             //andriod信息表
-            saveNewAndriodData(TdParser.getAndriodInfoData(apiResponse));
+            saveNewAndriodData(TdParser.getAndriodInfoData(apiResponse,requstTime));
             //ios信息表
-            saveNewIOSData(TdParser.getIOSInfoData(apiResponse));
+            saveNewIOSData(TdParser.getIOSInfoData(apiResponse,requstTime));
 
         });
     }

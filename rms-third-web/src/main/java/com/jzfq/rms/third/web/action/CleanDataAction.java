@@ -64,21 +64,21 @@ public class CleanDataAction {
 //        //集奥三要素
         if (null != dataThreeList && dataThreeList.size() > 0) {
             for (JiaoData dataThree : dataThreeList) {
-                iJaoService.saveNewDatas(JaoParser.getValueOfRmsPull(dataThree.getData(),dataThree.getIdCard(),dataThree.getPhone(),dataThree.getName(),"1111","123"));
+                iJaoService.saveNewDatas(JaoParser.getValueOfRmsPull(dataThree.getData(), dataThree.getIdCard(), dataThree.getPhone(), dataThree.getName(), "1111", "123", dataThree.getCreateTime()));
             }
         }
 //
 //        //集奥在网时长
         if (null != dataLengthList && dataLengthList.size() > 0) {
             for (JiaoData dataLength : dataLengthList) {
-                iJaoService.saveNewDatas(JaoParser.getValueOfRmsPull(dataLength.getData(),dataLength.getIdCard(),dataLength.getPhone(),dataLength.getName(),"1111","123"));
+                iJaoService.saveNewDatas(JaoParser.getValueOfRmsPull(dataLength.getData(), dataLength.getIdCard(), dataLength.getPhone(), dataLength.getName(), "1111", "123", dataLength.getCreateTime()));
             }
         }
 //
 //        //集奥在网状态
         if (null != dataStatusList && dataStatusList.size() > 0) {
             for (JiaoData dataStatus : dataStatusList) {
-                iJaoService.saveNewDatas(JaoParser.getValueOfRmsPull(dataStatus.getData(),dataStatus.getIdCard(),dataStatus.getPhone(),dataStatus.getName(),"1111","123"));
+                iJaoService.saveNewDatas(JaoParser.getValueOfRmsPull(dataStatus.getData(), dataStatus.getIdCard(), dataStatus.getPhone(), dataStatus.getName(), "1111", "123", dataStatus.getCreateTime()));
             }
         }
 
@@ -87,8 +87,8 @@ public class CleanDataAction {
         List<GongPingJiaData> gpjList = iGongPingjiaService.queryGaopingjiaDatas();
         if (null != gpjList && gpjList.size() > 0) {
             for (GongPingJiaData gpjData : gpjList) {
-                ResponseResult result = new ResponseResult("111", ReturnCode.REQUEST_SUCCESS,gpjData.getData());
-                iGongPingjiaService.saveNewGongPingJiaData(GpingjiaParser.getHistGongPingJiaData(result,"111","111","111","111","9999","123"));
+                ResponseResult result = new ResponseResult("111", ReturnCode.REQUEST_SUCCESS, gpjData.getData());
+                iGongPingjiaService.saveNewGongPingJiaData(GpingjiaParser.getHistGongPingJiaData(result, "111", gpjData.getVin(), "111", gpjData.getPlantNo(), gpjData.getValue(), "123", gpjData.getCreateTime()));
             }
         }
 
@@ -118,7 +118,7 @@ public class CleanDataAction {
                     for (TongDunStringData tdData : tdList.getDatas()) {
                         if (StringUtils.isNotBlank(tdData.getApiResp())) {
                             FraudApiResponse apiResp = (FraudApiResponse) com.alibaba.fastjson.JSON.parseObject(tdData.getApiResp(), FraudApiResponse.class);
-                            iTdDataService.saveNewResult(apiResp, tdData.getOrderNo(), "1111", "111", "1111", "111");
+                            iTdDataService.saveNewResult(apiResp, tdData.getOrderNo(), "1111", "111", "1111", "111", tdData.getCreateTime());
                         }
                     }
                 }
@@ -141,7 +141,7 @@ public class CleanDataAction {
                 if (null != tdList.getDatas() && tdList.getDatas().size() > 0) {
                     for (BairongData brData : tdList.getDatas()) {
                         if (StringUtils.isNotBlank(brData.getData())) {
-                            iRiskPostDataService.saveNewData(JSONObject.parseObject(brData.getData()), "1111", "1111", brData.getName(), brData.getCertCardNo(), brData.getMobile());
+                            iRiskPostDataService.saveNewData(JSONObject.parseObject(brData.getData()), "1111", "1111", brData.getName(), brData.getCertCardNo(), brData.getMobile(), brData.getCreateTime());
                         }
                     }
                 }

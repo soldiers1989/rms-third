@@ -118,7 +118,7 @@ public interface IRiskPostDataService {
 
 
 
-    void saveNewData(JSONObject json, String orderNo, String traceId, String name, String idCard, String phone);
+    void saveNewData(JSONObject json, String orderNo, String traceId, String name, String idCard, String phone,Date requestTime);
 
     /**
      * @param name

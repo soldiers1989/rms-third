@@ -17,7 +17,7 @@ public class TdParser {
      * @return
      */
 
-    public static TThirdTdSeqOrderData getSeqData(FraudApiResponse apiResp, String orderNo, String traceId, String name, String idCard, String phone) {
+    public static TThirdTdSeqOrderData getSeqData(FraudApiResponse apiResp, String orderNo, String traceId, String name, String idCard, String phone,Date requstTime) {
         TThirdTdSeqOrderData data = new TThirdTdSeqOrderData();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setcSeqId(apiResp.getSeq_id());
@@ -26,7 +26,7 @@ public class TdParser {
         data.setcName(name);
         data.setcIdCard(idCard);
         data.setcPhone(phone);
-        data.setcCreattime(new Date());
+        data.setcCreattime(requstTime);
         return data;
     }
 
@@ -38,7 +38,7 @@ public class TdParser {
      * @return
      */
 
-    public static TThirdTdMainData getMainData(FraudApiResponse apiResp) {
+    public static TThirdTdMainData getMainData(FraudApiResponse apiResp,Date requestTime) {
         TThirdTdMainData data = new TThirdTdMainData();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setcSeqId(apiResp.getSeq_id());
@@ -48,7 +48,7 @@ public class TdParser {
         data.setcPolicySetName(apiResp.getPolicy_set_name());
         data.setcFinalScore(apiResp.getFinal_score().toString());
         data.setcFinalDecision(apiResp.getFinal_decision());
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 
@@ -59,7 +59,7 @@ public class TdParser {
      * @return
      */
 
-    public static TThirdTdGeoipInfoData getGeoInfoData(FraudApiResponse apiResp) {
+    public static TThirdTdGeoipInfoData getGeoInfoData(FraudApiResponse apiResp,Date requestTime) {
         TThirdTdGeoipInfoData data = new TThirdTdGeoipInfoData();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setcSeqId(apiResp.getSeq_id());
@@ -76,7 +76,7 @@ public class TdParser {
         data.setcLatitude(map.get("latitude"));
         data.setcLongitude(map.get("longitude"));
         data.setcLip(map.get("lip"));
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 
@@ -88,7 +88,7 @@ public class TdParser {
      * @return
      */
 
-    public static TThirdTdAttributionData getAttrInfoData(FraudApiResponse apiResp) {
+    public static TThirdTdAttributionData getAttrInfoData(FraudApiResponse apiResp,Date requestTime) {
         TThirdTdAttributionData data = new TThirdTdAttributionData();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setcSeqId(apiResp.getSeq_id());
@@ -98,7 +98,7 @@ public class TdParser {
         data.setcCounty(map.get("country"));
         data.setcMobileAddressProvince(map.get("mobileAddressProvince"));
         data.setcMobileAddressCity(map.get("mobileAddressCity"));
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 
@@ -110,7 +110,7 @@ public class TdParser {
      * @return
      */
 
-    public static List<TThirdTdPolicySetData> getPolicySetInfoData(FraudApiResponse apiResp) {
+    public static List<TThirdTdPolicySetData> getPolicySetInfoData(FraudApiResponse apiResp,Date requestTime) {
         List<TThirdTdPolicySetData> list = new ArrayList<>();
         if (null != apiResp.getPolicy_set() && apiResp.getPolicy_set().size() > 0) {
             for (Policy cy : apiResp.getPolicy_set()) {
@@ -123,8 +123,8 @@ public class TdParser {
                 data.setcPolicyScore(String.valueOf(cy.getPolicy_score()));
                 data.setcPolicyName(cy.getPolicy_name());
                 data.setcRiskType(cy.getRisk_type());
-                data.setRuleDatas(getRulesInfoData(cy.getHit_rules(),cy.getPolicy_uuid()));
-                data.setcCreattime(new Date());
+                data.setRuleDatas(getRulesInfoData(cy.getHit_rules(),cy.getPolicy_uuid(),requestTime));
+                data.setcCreattime(requestTime);
                 list.add(data);
             }
         }
@@ -139,7 +139,7 @@ public class TdParser {
      * @return
      */
 
-    public static List<TThirdTdHitRulesData> getRulesInfoData(List<HitRule> rules, String policyId) {
+    public static List<TThirdTdHitRulesData> getRulesInfoData(List<HitRule> rules, String policyId,Date requestTime) {
         List<TThirdTdHitRulesData> list = new ArrayList<>();
         if (null != rules && rules.size() > 0) {
             for (HitRule rule : rules) {
@@ -152,7 +152,7 @@ public class TdParser {
                 data.setcScore(String.valueOf(rule.getScore()));
                 //关联规则集id
                 data.setcPolicyUuid(policyId);
-                data.setcCreattime(new Date());
+                data.setcCreattime(requestTime);
                 list.add(data);
             }
         }
@@ -169,7 +169,7 @@ public class TdParser {
      * @return
      */
 
-    public static TThirdTdH5Data getH5InfoData(FraudApiResponse apiResp) {
+    public static TThirdTdH5Data getH5InfoData(FraudApiResponse apiResp,Date requestTime) {
         TThirdTdH5Data data = new TThirdTdH5Data();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setcSeqId(apiResp.getSeq_id());
@@ -195,7 +195,7 @@ public class TdParser {
             data.setcBrowserType(map.get("browserType") == null ? "" :map.get("browserType").toString());
             data.setcTcpOs(map.get("tcpOs") == null ? "" :map.get("tcpOs").toString());
             data.setcBrowserVersion(map.get("browserVersion") == null ? "" :map.get("browserVersion").toString());
-            data.setcCreattime(new Date());
+            data.setcCreattime(requestTime);
         }
         return data;
     }
@@ -208,7 +208,7 @@ public class TdParser {
      * @return
      */
 
-    public static TThirdTdAndriodData getAndriodInfoData(FraudApiResponse apiResp) {
+    public static TThirdTdAndriodData getAndriodInfoData(FraudApiResponse apiResp,Date requestTime) {
         TThirdTdAndriodData data = new TThirdTdAndriodData();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setcSeqId(apiResp.getSeq_id());
@@ -275,7 +275,7 @@ public class TdParser {
             data.setcVpnip(map.get("vpnIp") == null ? "" :map.get("vpnIp").toString());
             data.setcWifiip(map.get("wifiIp") == null ? "" :map.get("wifiIp").toString());
             data.setcWifimac(map.get("wifiMac") == null ? "" :map.get("wifiMac").toString());
-            data.setcCreattime(new Date());
+            data.setcCreattime(requestTime);
         }
         return data;
     }
@@ -291,7 +291,7 @@ public class TdParser {
      * @return
      */
 
-    public static TThirdTdIosData getIOSInfoData(FraudApiResponse apiResp) {
+    public static TThirdTdIosData getIOSInfoData(FraudApiResponse apiResp,Date requestTime) {
         TThirdTdIosData data = new TThirdTdIosData();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setcSeqId(apiResp.getSeq_id());
@@ -335,7 +335,7 @@ public class TdParser {
             data.setLanguages(map.get("languages") == null ? "" :map.get("languages").toString());
             data.setTrueip(map.get("trueIp") == null ? "" :map.get("trueIp").toString());
             data.setcTotalspace(map.get("totalSpaceFree") == null ? "" :map.get("totalSpaceFree").toString());
-            data.setcCreattime(new Date());
+            data.setcCreattime(requestTime);
         }
         return data;
     }

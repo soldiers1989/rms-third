@@ -6,6 +6,7 @@ import com.jzfq.rms.third.common.mongo.TongDunStringData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.web.action.util.PageModel;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -98,7 +99,7 @@ public interface ITdDataService {
      *
      * @param orderNo
      */
-    void saveNewResult(FraudApiResponse apiResponse, String orderNo, String traceId, String name, String idCard, String phone);
+    void saveNewResult(FraudApiResponse apiResponse, String orderNo, String traceId, String name, String idCard, String phone,Date requstTime);
 
     /**
      *  获取全部同盾数据

@@ -132,24 +132,24 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
 
 
     @Override
-    public void saveNewData(JSONObject json, String orderNo, String traceId, String name, String idCard, String phone) {
+    public void saveNewData(JSONObject json, String orderNo, String traceId, String name, String idCard, String phone,Date requestTime) {
         ThreadProvider.getThreadPool().execute(() -> {
             //关联信息
-            saveNewBrSwiftData(BrParser.getBrSwiftData(json,orderNo,traceId,name,idCard,phone));
+            saveNewBrSwiftData(BrParser.getBrSwiftData(json,orderNo,traceId,name,idCard,phone,requestTime));
             //百融分
-            saveNewBrScoreData(BrParser.getScoreInfoData(json));
+            saveNewBrScoreData(BrParser.getScoreInfoData(json,requestTime));
             //百融规则
-            saveNewRuleData(BrParser.getBrRuleInfoData(json));
+            saveNewRuleData(BrParser.getBrRuleInfoData(json,requestTime));
             //百融特殊名单
-            saveNewSpecialData(BrParser.getBrSpeciaInfoData(json));
+            saveNewSpecialData(BrParser.getBrSpeciaInfoData(json,requestTime));
             //百融实名认证信息
-            saveNewRealData(BrParser.getBrRealInfoData(json));
+            saveNewRealData(BrParser.getBrRealInfoData(json,requestTime));
             //百融被执行人
-            saveNewExcuteData(BrParser.getBrExecutInfoData(json));
+            saveNewExcuteData(BrParser.getBrExecutInfoData(json,requestTime));
             //百融稳定性指数
-            saveNewStabData(BrParser.getBrStabInfoData(json));
+            saveNewStabData(BrParser.getBrStabInfoData(json,requestTime));
             //百融消费评估
-            saveNewConsData(BrParser.getBrConsInfoData(json));
+            saveNewConsData(BrParser.getBrConsInfoData(json,requestTime));
         });
     }
 

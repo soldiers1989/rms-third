@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public class JaoParser {
      * @param json
      * @return
      */
-    public static TThirdJiaoData getValueOfRmsPull(JSONObject json,String idCard,String phone,String name,String orderNo,String traceId) throws Exception {
+    public static TThirdJiaoData getValueOfRmsPull(JSONObject json, String idCard, String phone, String name, String orderNo, String traceId, Date requestTime) throws Exception {
         try {
             logger.info("手机三要素接口返回数据集奥data：" + json.toJSONString());
             String result = json.getString("data");
@@ -39,7 +40,7 @@ public class JaoParser {
                 JSONArray jsonObjectRsl = jsonObject.getJSONArray("RSL");
                 //运营商信息
                 JSONObject jsonObjectIsp = jsonObject.getJSONObject("ISPNUM");
-                return getData(json, jsonObjectEcl, jsonObjectRsl, jsonObjectIsp, PhoneDataTypeEnum.THREE_ITEM.getCode(),idCard,phone,name,orderNo,traceId);
+                return getData(json, jsonObjectEcl, jsonObjectRsl, jsonObjectIsp, PhoneDataTypeEnum.THREE_ITEM.getCode(),idCard,phone,name,orderNo,traceId,requestTime);
             }
             return null;
         } catch (Exception e) {
@@ -70,7 +71,7 @@ public class JaoParser {
      * @param json
      * @return
      */
-    public static TThirdJiaoData getNetworkLengthOfRmsPull(JSONObject json,String idCard,String phone,String name,String orderNo,String traceId) throws Exception {
+    public static TThirdJiaoData getNetworkLengthOfRmsPull(JSONObject json,String idCard,String phone,String name,String orderNo,String traceId,Date requestTime) throws Exception {
         String jsonRsult = "";
         try {
             logger.info("v手机在网时长接口返回数据集奥data：" + json.toJSONString());
@@ -84,7 +85,7 @@ public class JaoParser {
                 JSONArray jsonObjectRsl = jsonObject0.getJSONArray("RSL");
                 //运营商信息
                 JSONObject jsonObjectIsp = jsonObject0.getJSONObject("ISPNUM");
-                return getData(json, jsonObjectEcl, jsonObjectRsl, jsonObjectIsp, PhoneDataTypeEnum.NETWORK_LENGTH.getCode(),idCard,phone,name,orderNo,traceId);
+                return getData(json, jsonObjectEcl, jsonObjectRsl, jsonObjectIsp, PhoneDataTypeEnum.NETWORK_LENGTH.getCode(),idCard,phone,name,orderNo,traceId,requestTime);
             }
             return null;
         } catch (Exception e) {
@@ -132,7 +133,7 @@ public class JaoParser {
      * @param json
      * @return
      */
-    public static TThirdJiaoData getStatusOfRmsPull(JSONObject json,String idCard,String phone,String name,String orderNo,String traceId) throws Exception {
+    public static TThirdJiaoData getStatusOfRmsPull(JSONObject json,String idCard,String phone,String name,String orderNo,String traceId,Date requestTime) throws Exception {
         try {
             String jsonRsult = "";
             logger.info("手机在网状态接口返回数据集奥data：" + json.toJSONString());
@@ -144,7 +145,7 @@ public class JaoParser {
                 JSONArray jsonObjectRsl = jsonObject0.getJSONArray("RSL");
                 //运营商信息
                 JSONObject jsonObjectIsp = jsonObject0.getJSONObject("ISPNUM");
-                return getData(json, jsonObjectEcl, jsonObjectRsl, jsonObjectIsp, PhoneDataTypeEnum.NETWORK_STATUS.getCode(),idCard,phone,name,orderNo,traceId);
+                return getData(json, jsonObjectEcl, jsonObjectRsl, jsonObjectIsp, PhoneDataTypeEnum.NETWORK_STATUS.getCode(),idCard,phone,name,orderNo,traceId,requestTime);
             }
             return null;
 
@@ -155,7 +156,7 @@ public class JaoParser {
     }
 
     public static TThirdJiaoData getData(JSONObject json, JSONArray jsonObjectEcl, JSONArray jsonObjectRsl, JSONObject jsonObjectIsp,
-                                         String interfaceType,String idCard,String phone,String name,String orderNo,String traceId) {
+                                         String interfaceType,String idCard,String phone,String name,String orderNo,String traceId,Date requestTime) {
         TThirdJiaoData data = new TThirdJiaoData();
         data.setcId(UUID.randomUUID().toString().replaceAll("-",""));
         data.setcInnerType(interfaceType);//接口类型
@@ -166,6 +167,7 @@ public class JaoParser {
         data.setcPhone(phone);//电话
         data.setcOrderNo(orderNo);//订单号
         data.setcTraceId(traceId);//流水号
+        data.setcCreateTime(requestTime);
         //校验code码 如果非200全部返回
         if (!"200".equals(data.getcCode())) {
             return data;

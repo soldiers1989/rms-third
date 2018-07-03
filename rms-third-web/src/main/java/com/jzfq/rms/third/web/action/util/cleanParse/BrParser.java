@@ -17,7 +17,7 @@ public class BrParser {
      * @return
      */
 
-    public static TThirdBrSwiftOrderData getBrSwiftData(JSONObject json, String orderNo, String traceId, String name, String idCard, String phone) {
+    public static TThirdBrSwiftOrderData getBrSwiftData(JSONObject json, String orderNo, String traceId, String name, String idCard, String phone,Date requestTime) {
         TThirdBrSwiftOrderData data = new TThirdBrSwiftOrderData();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setcSwiftNumber(json.getString("swift_number"));//流水号
@@ -26,7 +26,7 @@ public class BrParser {
         data.setcName(name);
         data.setcIdCard(idCard);
         data.setcPhone(phone);
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 
@@ -37,7 +37,7 @@ public class BrParser {
      * @return
      */
 
-    public static TThirdBrScore getScoreInfoData(JSONObject json) {
+    public static TThirdBrScore getScoreInfoData(JSONObject json,Date requestTime) {
         TThirdBrScore data = new TThirdBrScore();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setSwiftNumber(json.getString("swift_number"));
@@ -55,7 +55,7 @@ public class BrParser {
         data.setcScorelargecashv1(json.getString("scorelargecashv1"));
         data.setcScorelargecashv2(json.getString("scorelargecashv2"));
         data.setcScorecust(json.getString("scorecust"));
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 
@@ -67,7 +67,7 @@ public class BrParser {
      * @return
      */
 
-    public static TThirdBrRule getBrRuleInfoData(JSONObject json) {
+    public static TThirdBrRule getBrRuleInfoData(JSONObject json,Date requestTime) {
         TThirdBrRule data = new TThirdBrRule();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setSwiftNumber(json.getString("swift_number"));
@@ -117,7 +117,7 @@ public class BrParser {
         data.setcRuleWeightCbd003(json.getString("Rule_weight_CBD003"));
         data.setcRuleNameCbc003(json.getString("Rule_name_CBC003"));
         data.setcRuleWeightCbc003(json.getString("Rule_weight_CBC003"));
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 
@@ -129,7 +129,7 @@ public class BrParser {
      * @return
      */
 
-    public static TThirdBrSpecialList getBrSpeciaInfoData(JSONObject json) {
+    public static TThirdBrSpecialList getBrSpeciaInfoData(JSONObject json,Date requestTime) {
         TThirdBrSpecialList data = new TThirdBrSpecialList();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setSwiftNumber(json.getString("swift_number"));
@@ -221,7 +221,7 @@ public class BrParser {
         data.setcSlLmCellNbankOtherFraud(json.getString("Rule_name_CBC003"));
         data.setcSlLmCellNbankOtherLost(json.getString("Rule_name_CBC003"));
         data.setcSlLmCellNbankOtherRefuse(json.getString("Rule_name_CBC003"));
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 
@@ -233,7 +233,7 @@ public class BrParser {
      * @return
      */
 
-    public static TThirdBrRealInfo getBrRealInfoData(JSONObject json) {
+    public static TThirdBrRealInfo getBrRealInfoData(JSONObject json,Date requestTime) {
         TThirdBrRealInfo data = new TThirdBrRealInfo();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setSwiftNumber(json.getString("swift_number"));
@@ -340,7 +340,7 @@ public class BrParser {
         data.setcIrM12HomeAddrXIdCnt(json.getString("ir_m12_home_addr_x_id_cnt"));
         data.setcIrM12TelHomeXHomeAddrCnt(json.getString("ir_m12_tel_home_x_home_addr_cnt"));
         data.setcIrM12HomeAddrXTelHomeCnt(json.getString("ir_m12_home_addr_x_tel_home_cnt"));
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 
@@ -352,7 +352,7 @@ public class BrParser {
      * @return
      */
 
-    public static TThirdBrExecutInfo getBrExecutInfoData(JSONObject json) {
+    public static TThirdBrExecutInfo getBrExecutInfoData(JSONObject json,Date requestTime) {
         TThirdBrExecutInfo data = new TThirdBrExecutInfo();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setSwiftNumber(json.getString("swift_number"));
@@ -427,7 +427,7 @@ public class BrParser {
         data.setcExExecut10Statute(json.getString("ex_execut10_statute"));
         data.setcExExecut10Basic(json.getString("ex_execut10_basic"));
         data.setcExExecut10Basiccourt(json.getString("ex_execut10_basiccourt"));
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 
@@ -439,7 +439,7 @@ public class BrParser {
      * @return
      */
 
-    public static TThirdBrStabInfo getBrStabInfoData(JSONObject json) {
+    public static TThirdBrStabInfo getBrStabInfoData(JSONObject json,Date requestTime) {
         TThirdBrStabInfo data = new TThirdBrStabInfo();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setSwiftNumber(json.getString("swift_number"));
@@ -462,7 +462,7 @@ public class BrParser {
         data.setcStabNameNum(json.getString("stab_name_num"));
         data.setcStabTelNum(json.getString("stab_tel_num"));
         data.setcStabAddrNum(json.getString("stab_addr_num"));
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 
@@ -473,7 +473,7 @@ public class BrParser {
      * @return
      */
 
-    public static TThirdBrConsInfo getBrConsInfoData(JSONObject json) {
+    public static TThirdBrConsInfo getBrConsInfoData(JSONObject json,Date requestTime) {
         TThirdBrConsInfo data = new TThirdBrConsInfo();
         data.setcId(UUID.randomUUID().toString().replaceAll("-", ""));
         data.setSwiftNumber(json.getString("swift_number"));
@@ -509,7 +509,7 @@ public class BrParser {
         data.setcConsM12JydqPay(json.getString("cons_m12_JYDQ_pay"));
         data.setcConsM12MyypNum(json.getString("cons_m12_MYYP_num"));
         data.setcConsM12MyypPay(json.getString("cons_m12_MYYP_pay"));
-        data.setcCreattime(new Date());
+        data.setcCreattime(requestTime);
         return data;
     }
 

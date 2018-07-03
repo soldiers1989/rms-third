@@ -67,7 +67,7 @@ public class GpingjiaParser {
 
 
     public static List<TThirdGongpingjiaData> getHistGongPingJiaData(ResponseResult result, String orderNo, String vin,
-                                                                 String licensePlateNum, String licensePlatHeader, String evaluation, String traceId) {
+                                                                 String licensePlateNum, String licensePlatHeader, String evaluation, String traceId,Date requestTime) {
         List<Map<String, String>> datas = (List<Map<String, String>>) result.getData();
         if (CollectionUtils.isEmpty(datas)) {
             return null;
@@ -80,7 +80,7 @@ public class GpingjiaParser {
             gpj.setcStatus(String.valueOf(result.getCode()));
             gpj.setcMessage(result.getMsg());
             gpj.setGpjValue(evaluation);
-
+            gpj.setcCreateTime(requestTime);
             if (gpj != null) {
                 gpjList.add(gpj);
             }

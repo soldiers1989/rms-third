@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.mongo.TongDunStringData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
+import com.jzfq.rms.third.web.action.util.PageModel;
 
 import java.util.List;
 import java.util.Map;
@@ -92,6 +93,28 @@ public interface ITdDataService {
     ResponseResult queryTdDatasByParams(Map<String,Object> params) throws Exception;
 
 
+    /**
+     * 保存最新同盾信息
+     *
+     * @param orderNo
+     */
+    void saveNewResult(FraudApiResponse apiResponse, String orderNo, String traceId, String name, String idCard, String phone);
+
+    /**
+     *  获取全部同盾数据
+     *
+     * @param
+     * @return
+     */
+    PageModel<TongDunStringData> getAllData(PageModel<TongDunStringData> page);
+
+    /**
+     *  获取全部同盾数据count
+     *
+     * @param
+     * @return
+     */
+    int getCount();
 
 
 }

@@ -2,6 +2,7 @@ package com.jzfq.rms.third.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.domain.TPyCarCheck;
+import com.jzfq.rms.third.common.domain.TThirdPengyuanData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.enums.ReturnCode;
@@ -14,6 +15,7 @@ import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.persistence.dao.IPengYuanDao;
+import com.jzfq.rms.third.persistence.mapper.TThirdPengyuanDataMapper;
 import com.jzfq.rms.third.service.IPengYuanService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ISendMessageService;
@@ -24,7 +26,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -55,6 +59,8 @@ public class PengYuanServiceImpl implements IPengYuanService {
     @Autowired
     ISendMessageService sendMessegeService;
 
+    @Autowired
+    TThirdPengyuanDataMapper pengyuanDataMapper;
     @Autowired
     IConfigDao configCacheDao;
 
@@ -127,6 +133,20 @@ public class PengYuanServiceImpl implements IPengYuanService {
     }
 
     /**
+     * 获取 全部鹏元车辆数据
+     * @return
+     */
+    @Override
+    public List<PengYuan> getAllDatas() {
+        List<PengYuan> report = mongoTemplate.find(null,
+                PengYuan.class);
+        if (CollectionUtils.isEmpty(report)) {
+            return null;
+        }
+        return report;
+    }
+
+    /**
      * 保存 车辆审核信息
      *
      * @param result
@@ -156,6 +176,26 @@ public class PengYuanServiceImpl implements IPengYuanService {
             log.error("traceId={} 保存rms-third鹏元数据异常",traceId,e);
         }
     }
+
+
+    @Override
+    public void saveNewDatas(TThirdPengyuanData data) {
+        ThreadProvider.getThreadPool().execute(() -> {
+            saveNewData(data);
+        });
+    }
+
+
+    private void saveNewData(TThirdPengyuanData data) {
+        log.info("鹏元 mysql数据开始入库......");
+        try {
+            pengyuanDataMapper.insert(data);
+        } catch (Exception e) {
+            log.error("鹏元 mysql入库失败......", e);
+        }
+        log.info("鹏元 mysql数据入库结束......");
+    }
+
 
     @Autowired
     IRmsService rmsService;

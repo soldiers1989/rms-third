@@ -4,6 +4,7 @@ package com.jzfq.rms.third.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.mongo.BrPostData;
+import com.jzfq.rms.third.common.domain.TThirdJiaoData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.mongo.JiaoData;
@@ -14,6 +15,7 @@ import com.jzfq.rms.third.common.utils.JAoAuthCodeUtil;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
+import com.jzfq.rms.third.persistence.mapper.TThirdJiaoDataMapper;
 import com.jzfq.rms.third.service.*;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import org.apache.commons.lang3.StringUtils;
@@ -80,6 +82,9 @@ public class JaoServiceImpl implements IJaoService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private TThirdJiaoDataMapper jiaoDataMapper;
 
     /**
      * 是否是测试环境，测试环境会连接测试环境并打印debug信息,false:生产环境；true：沙箱环境
@@ -268,6 +273,16 @@ public class JaoServiceImpl implements IJaoService {
     public List<JiaoData> getJaoData(String interfaceId, PhoneDataTypeEnum type) {
         List<JiaoData> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())
                         .and("createTime").gte(DateUtils.str2Date("2018-06-15 00:00:00", DateUtils.DATE_FORMAT_LONG)).lt(new Date())).with(new Sort(Sort.Direction.DESC, "createTime")),
+                JiaoData.class);
+        if (CollectionUtils.isEmpty(report)) {
+            return null;
+        }
+        return report;
+    }
+
+    @Override
+    public List<JiaoData> getAllData(PhoneDataTypeEnum type) {
+        List<JiaoData> report = mongoTemplate.find(new Query(Criteria.where("type").is(type.getCode())),
                 JiaoData.class);
         if (CollectionUtils.isEmpty(report)) {
             return null;
@@ -480,6 +495,24 @@ public class JaoServiceImpl implements IJaoService {
         BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
                 .desc(desc).data(data).interfaceType(type).build();
         riskPostDataService.saveData(dataBean);
+    }
+
+
+    @Override
+    public void saveNewDatas(TThirdJiaoData data) {
+        ThreadProvider.getThreadPool().execute(() -> {
+            saveNewData(data);
+        });
+    }
+
+    private void saveNewData(TThirdJiaoData data){
+        log.info("集奥 mysql数据开始入库......");
+        try {
+            jiaoDataMapper.insert(data);
+        } catch (Exception e) {
+            log.error("集奥mysql入库失败......", e);
+        }
+        log.info("集奥 mysql数据入库结束......");
     }
 
     private void saveData(JiaoData data) {

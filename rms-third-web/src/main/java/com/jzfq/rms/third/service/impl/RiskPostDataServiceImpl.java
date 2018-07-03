@@ -12,6 +12,8 @@ import com.jzfq.rms.enums.BaiRongMapEnum;
 import com.jzfq.rms.enums.CustomerTypeEnum;
 import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.mongo.TdData;
+import com.jzfq.rms.third.common.domain.*;
+import com.jzfq.rms.third.common.domain.TThirdBrSpecialList;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.mongo.BairongData;
 import com.jzfq.rms.third.common.utils.DateUtils;
@@ -19,9 +21,12 @@ import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.constant.Constants;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
+import com.jzfq.rms.third.persistence.mapper.*;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
+import com.jzfq.rms.third.web.action.util.PageModel;
+import com.jzfq.rms.third.web.action.util.cleanParse.BrParser;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -54,6 +59,23 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
 
     @Autowired
     IConfigDao configCacheDao;
+    @Autowired
+    private TThirdBrSwiftOrderDataMapper brSwiftOrderDataMapper;
+    @Autowired
+    private TThirdBrScoreMapper brScoreMapper;
+    @Autowired
+    private TThirdBrRuleMapper brRuleMapper;
+    @Autowired
+    private TThirdBrSpecialListMapper specialListMapper;
+    @Autowired
+    private TThirdBrRealInfoMapper realInfoMapper;
+    @Autowired
+    private TThirdBrExecutInfoMapper executInfoMapper;
+    @Autowired
+    private TThirdBrStabInfoMapper stabInfoMapper;
+    @Autowired
+    private TThirdBrConsInfoMapper consInfoMapper;
+
 
     @Override
     public void saveData(Object data) {
@@ -107,6 +129,127 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
             log.error("traceId={} 保存rms百融数据出现异常", traceId, e);
         }
     }
+
+
+    @Override
+    public void saveNewData(JSONObject json, String orderNo, String traceId, String name, String idCard, String phone) {
+        ThreadProvider.getThreadPool().execute(() -> {
+            //关联信息
+            saveNewBrSwiftData(BrParser.getBrSwiftData(json,orderNo,traceId,name,idCard,phone));
+            //百融分
+            saveNewBrScoreData(BrParser.getScoreInfoData(json));
+            //百融规则
+            saveNewRuleData(BrParser.getBrRuleInfoData(json));
+            //百融特殊名单
+            saveNewSpecialData(BrParser.getBrSpeciaInfoData(json));
+            //百融实名认证信息
+            saveNewRealData(BrParser.getBrRealInfoData(json));
+            //百融被执行人
+            saveNewExcuteData(BrParser.getBrExecutInfoData(json));
+            //百融稳定性指数
+            saveNewStabData(BrParser.getBrStabInfoData(json));
+            //百融消费评估
+            saveNewConsData(BrParser.getBrConsInfoData(json));
+        });
+    }
+
+
+    private void saveNewBrSwiftData(TThirdBrSwiftOrderData data) {
+        log.info("百融关联表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                brSwiftOrderDataMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("百融关联表 mysql入库失败......", e);
+        }
+        log.info("百融关联表 mysql数据入库结束......");
+    }
+
+    private void saveNewBrScoreData(TThirdBrScore data) {
+        log.info("百融分表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                brScoreMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("百融分表 mysql入库失败......", e);
+        }
+        log.info("百融分表 mysql数据入库结束......");
+    }
+
+    private void saveNewRuleData(TThirdBrRule data) {
+        log.info("百融规则信息表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                brRuleMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("百融规则信息表 mysql入库失败......", e);
+        }
+        log.info("百融规则信息表 mysql数据入库结束......");
+    }
+
+    private void saveNewSpecialData(TThirdBrSpecialList data) {
+        log.info("百融特殊名单表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                specialListMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("百融特殊名单表 mysql入库失败......", e);
+        }
+        log.info("百融特殊名单表 mysql数据入库结束......");
+    }
+
+    private void saveNewRealData(TThirdBrRealInfo data) {
+        log.info("百融实名信息 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                realInfoMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("百融实名信息 mysql入库失败......", e);
+        }
+        log.info("百融实名信息 mysql数据入库结束......");
+    }
+
+    private void saveNewExcuteData(TThirdBrExecutInfo data) {
+        log.info("百融法院被执行一人 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                executInfoMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("百融法院被执行一人 mysql入库失败......", e);
+        }
+        log.info("百融法院被执行一人 mysql数据入库结束......");
+    }
+
+    private void saveNewStabData(TThirdBrStabInfo data) {
+        log.info("百融稳定性指数 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                stabInfoMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("百融稳定性指数 mysql入库失败......", e);
+        }
+        log.info("百融稳定性指数 mysql数据入库结束......");
+    }
+
+    private void saveNewConsData(TThirdBrConsInfo data) {
+        log.info("百融消费评估指数 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                consInfoMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("百融消费评估指数 mysql入库失败......", e);
+        }
+        log.info("百融消费评估指数 mysql数据入库结束......");
+    }
+
 
     @Override
     public void saveRmsThirdData(RiskPersonalInfo info, String customerType, String result) {

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.mongo.JxlData;
 import com.jzfq.rms.third.common.domain.GpjCarDetailModel;
 import com.jzfq.rms.third.common.domain.SysTask;
+import com.jzfq.rms.third.common.domain.TThirdGongpingjiaData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.mongo.GongPingJiaData;
@@ -19,6 +20,7 @@ import com.jzfq.rms.third.exception.BusinessException;
 import com.jzfq.rms.third.persistence.dao.IConfigDao;
 import com.jzfq.rms.third.persistence.mapper.GpjCarDetailModelMapper;
 import com.jzfq.rms.third.persistence.mapper.SysTaskMapper;
+import com.jzfq.rms.third.persistence.mapper.TThirdGongpingjiaDataMapper;
 import com.jzfq.rms.third.service.IGongPingjiaService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.support.cache.ICache;
@@ -67,6 +69,9 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private TThirdGongpingjiaDataMapper gongpingjiaDataMapper;
 
     public List<EvaluationInfoVo> queryGaopingjiaEvalation(String vin, String licensePlatHeader) {
         log.info("公平价接口调用[车架号=" + vin + "车牌头两位" + licensePlatHeader + "]-开始");
@@ -575,6 +580,34 @@ public class GongPingjiaServiceImpl implements IGongPingjiaService {
         result.setData(evaluation);
         return result;
     }
+
+    /**
+     * 保存mysql数据
+     *
+     * @param list
+     */
+    @Override
+    public void saveNewGongPingJiaData(List<TThirdGongpingjiaData> list) {
+        ThreadProvider.getThreadPool().execute(() -> {
+            if (null != list && list.size() > 0) {
+                for (TThirdGongpingjiaData data : list) {
+                    saveNewData(data);
+                }
+            }
+        });
+    }
+
+
+    private void saveNewData(TThirdGongpingjiaData data) {
+        log.info("公平价 mysql数据开始入库......");
+        try {
+            gongpingjiaDataMapper.insert(data);
+        } catch (Exception e) {
+            log.error("公平价 mysql入库失败......", e);
+        }
+        log.info("公平价 mysql数据入库结束......");
+    }
+
 
     @Autowired
     IConfigDao configCacheDao;

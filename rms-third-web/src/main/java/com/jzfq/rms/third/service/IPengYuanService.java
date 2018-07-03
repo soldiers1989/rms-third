@@ -2,7 +2,9 @@ package com.jzfq.rms.third.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.third.common.domain.TPyCarCheck;
+import com.jzfq.rms.third.common.domain.TThirdPengyuanData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.mongo.PengYuan;
 
 import java.util.List;
 import java.util.Map;
@@ -47,5 +49,19 @@ public interface IPengYuanService {
      * @param orderNo
      * @param result
      */
-    void saveRmsDatas(String orderNo, String result, Map<String,Object> carInfo,String value);
+    void saveRmsDatas(String orderNo, String result, Map<String, Object> carInfo, String value);
+
+    /**
+     * 保存清洗后的鹏元数据
+     *
+     * @param data
+     */
+    void saveNewDatas(TThirdPengyuanData data);
+
+    /**
+     * 查询鹏元全部数据
+     *
+     * @param data
+     */
+    List<PengYuan> getAllDatas();
 }

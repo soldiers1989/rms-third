@@ -1,6 +1,7 @@
 package com.jzfq.rms.third.service;
 
 import com.jzfq.rms.third.common.domain.SysTask;
+import com.jzfq.rms.third.common.domain.TThirdGongpingjiaData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.mongo.GongPingJiaData;
 import com.jzfq.rms.third.common.vo.EvaluationInfoVo;
@@ -68,5 +69,11 @@ public interface IGongPingjiaService {
      * @return
      */
     List<GongPingJiaData> queryGaopingjiaDatas();
+
+    /**
+     * 保存mysql数据
+     * @return
+     */
+    public void saveNewGongPingJiaData(List<TThirdGongpingjiaData> list) ;
 
 }

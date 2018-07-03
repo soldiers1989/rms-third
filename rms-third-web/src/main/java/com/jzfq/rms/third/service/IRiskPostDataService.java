@@ -5,6 +5,7 @@ import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.domain.RiskPostTask;
 import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.mongo.BairongData;
+import com.jzfq.rms.third.web.action.util.PageModel;
 
 import java.util.Date;
 import java.util.List;
@@ -116,6 +117,9 @@ public interface IRiskPostDataService {
     void saveRmsBrPostData(String name, String certCardNo, String mobile, String strategyId, String data, String taskId);
 
 
+
+    void saveNewData(JSONObject json, String orderNo, String traceId, String name, String idCard, String phone);
+
     /**
      * @param name
      * @param certCardNo
@@ -131,6 +135,23 @@ public interface IRiskPostDataService {
      * @return
      */
     List<BairongData> getHistDatas1();
+
+    /**
+     *  获取全部同盾数据
+     *
+     * @param
+     * @return
+     */
+    PageModel<BairongData> getAllData(PageModel<BairongData> page);
+
+    /**
+     *  获取全部同盾数据count
+     *
+     * @param
+     * @return
+     */
+    int getCount();
+
 
 
 }

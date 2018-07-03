@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.mongo.TdHitRuleData;
+import com.jzfq.rms.third.common.domain.*;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
 import com.jzfq.rms.third.common.mongo.TongDunStringData;
@@ -15,11 +16,14 @@ import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
 import com.jzfq.rms.third.persistence.dao.ITdDao;
+import com.jzfq.rms.third.persistence.mapper.*;
 import com.jzfq.rms.third.service.IRmsService;
 import com.jzfq.rms.third.service.ISendMessageService;
 import com.jzfq.rms.third.service.ITdDataService;
 import com.jzfq.rms.third.support.cache.ICache;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
+import com.jzfq.rms.third.web.action.util.PageModel;
+import com.jzfq.rms.third.web.action.util.cleanParse.TdParser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +82,25 @@ public class TdDataServiceImpl implements ITdDataService {
     private MongoTemplate mongoTemplate;
     @Autowired
     ITdDao tdDao;
+    @Autowired
+    private TThirdTdSeqOrderDataMapper seqOrderDataMapper;
+    @Autowired
+    private TThirdTdMainDataMapper mainDataMapper;
+    @Autowired
+    private TThirdTdGeoipInfoDataMapper geoipInfoDataMapper;
+    @Autowired
+    private TThirdTdAttributionDataMapper attributionDataMapper;
+    @Autowired
+    private TThirdTdPolicySetDataMapper policySetDataMapper;
+    @Autowired
+    private TThirdTdHitRulesDataMapper hitRulesDataMapper;
+    @Autowired
+    private TThirdTdH5DataMapper h5DataMapper;
+    @Autowired
+    private TThirdTdAndriodDataMapper andriodDataMapper;
+    @Autowired
+    private TThirdTdIosDataMapper iosDataMapper;
+
 
     private String eventId;
 
@@ -179,6 +202,149 @@ public class TdDataServiceImpl implements ITdDataService {
         }
     }
 
+
+    @Override
+    public void saveNewResult(FraudApiResponse apiResponse, String orderNo, String traceId, String name, String idCard, String phone) {
+        ThreadProvider.getThreadPool().execute(() -> {
+            //关联表信息
+            saveNewSeqData(TdParser.getSeqData(apiResponse, orderNo, traceId, name, idCard, phone));
+            //主表
+            saveNewMainData(TdParser.getMainData(apiResponse));
+            //地理信息表
+            saveNewGeoData(TdParser.getGeoInfoData(apiResponse));
+            //手机信息表
+            saveNewPhoneData(TdParser.getAttrInfoData(apiResponse));
+            //命中策略信息IAO
+            List<TThirdTdPolicySetData> policySetDataList = TdParser.getPolicySetInfoData(apiResponse);
+            if (null != policySetDataList && policySetDataList.size() > 0) {
+                for (TThirdTdPolicySetData data : policySetDataList) {
+                    saveNewPolisetData(data);
+                    if (null != data.getRuleDatas() && data.getRuleDatas().size() > 0) {
+                        for (TThirdTdHitRulesData rule : data.getRuleDatas()) {
+                            saveNewHitData(rule);
+                        }
+                    }
+                }
+            }
+            //h5 信息表
+            saveNewH5Data(TdParser.getH5InfoData(apiResponse));
+            //andriod信息表
+            saveNewAndriodData(TdParser.getAndriodInfoData(apiResponse));
+            //ios信息表
+            saveNewIOSData(TdParser.getIOSInfoData(apiResponse));
+
+        });
+    }
+
+    private void saveNewSeqData(TThirdTdSeqOrderData data) {
+        log.info("同盾关联表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                seqOrderDataMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("同盾关联表 mysql入库失败......", e);
+        }
+        log.info("同盾关联表 mysql数据入库结束......");
+    }
+
+    private void saveNewMainData(TThirdTdMainData data) {
+        log.info("同盾主表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                mainDataMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("同盾主表 mysql入库失败......", e);
+        }
+        log.info("同盾主表 mysql数据入库结束......");
+    }
+
+    private void saveNewGeoData(TThirdTdGeoipInfoData data) {
+        log.info("同盾地理信息表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                geoipInfoDataMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("同盾地理信息表 mysql入库失败......", e);
+        }
+        log.info("同盾地理信息表 mysql数据入库结束......");
+    }
+
+    private void saveNewPhoneData(TThirdTdAttributionData data) {
+        log.info("同盾手机号表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                attributionDataMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("同盾手机号表 mysql入库失败......", e);
+        }
+        log.info("同盾关手机号表 mysql数据入库结束......");
+    }
+
+    private void saveNewPolisetData(TThirdTdPolicySetData data) {
+        log.info("同盾命中规则表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                policySetDataMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("同盾命中规则表 mysql入库失败......", e);
+        }
+        log.info("同盾命中规则的表 mysql数据入库结束......");
+    }
+
+    private void saveNewHitData(TThirdTdHitRulesData data) {
+        log.info("同盾规则表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                hitRulesDataMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("同盾规则表 mysql入库失败......", e);
+        }
+        log.info("同盾规则表 mysql数据入库结束......");
+    }
+
+    private void saveNewH5Data(TThirdTdH5Data data) {
+        log.info("同盾H5表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                h5DataMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("同盾H5表 mysql入库失败......", e);
+        }
+        log.info("同盾H5表 mysql数据入库结束......");
+    }
+
+    private void saveNewAndriodData(TThirdTdAndriodData data) {
+        log.info("同盾andriod表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                andriodDataMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("同盾andriod表 mysql入库失败......", e);
+        }
+        log.info("同盾andriod表 mysql数据入库结束......");
+    }
+
+    private void saveNewIOSData(TThirdTdIosData data) {
+        log.info("同盾IOS表 mysql数据开始入库......");
+        try {
+            if (null != data) {
+                iosDataMapper.insert(data);
+            }
+        } catch (Exception e) {
+            log.error("同盾IOS表 mysql入库失败......", e);
+        }
+        log.info("同盾IOS表 mysql数据入库结束......");
+    }
+
+
     /**
      * 根据订单号 获取同盾数据
      *
@@ -204,6 +370,20 @@ public class TdDataServiceImpl implements ITdDataService {
         List<TongDunStringData> datas = mongoTemplate.find(new Query(Criteria.where("orderNo").is(orderNo).and("eventId").is(eventId)).with(new Sort(Sort.Direction.DESC, "createTime"))
                 , TongDunStringData.class);
         return datas;
+    }
+
+    @Override
+    public PageModel<TongDunStringData> getAllData(PageModel<TongDunStringData> page) {
+        List<TongDunStringData> datas = mongoTemplate.find(new Query().skip(page.getSkip()).limit(page.getPageSize()), TongDunStringData.class);
+        page.setDatas(datas);
+        return page;
+    }
+
+    @Override
+    public int getCount() {
+        //计算总数
+        int count = (int)mongoTemplate.count(null,TongDunStringData.class);
+        return count;
     }
 
     /**

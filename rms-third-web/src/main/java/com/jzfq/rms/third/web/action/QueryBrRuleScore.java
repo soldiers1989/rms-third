@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jzfq.rms.domain.RiskPersonalInfo;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.ReturnCode;
+import com.jzfq.rms.third.common.mongo.BairongData;
 import com.jzfq.rms.third.common.pojo.tongdun.FraudApiResponse;
 import com.jzfq.rms.third.service.IRiskPostDataService;
 import com.jzfq.rms.third.service.ITdDataService;
@@ -65,6 +66,25 @@ public class QueryBrRuleScore {
         ExportExcelUtil.export0629(result, rootExport);
 
     }
+
+
+    @RequestMapping("/export1")
+    public void export1(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String root = QueryBrRuleScore.class.getClassLoader().getResource("excel/queryBr.xlsx").getPath();
+//        File file = new File(root);
+//        //生成数据 old
+//        List<Run200Model> result = readExcelXLSX(new FileInputStream(file));
+
+        //生成数据 old
+//        List<Run200Model> resultNew = readExcelXLSXNew(new FileInputStream(file));
+        List<BairongData> datas = riskPostDataService.getHistDatas1();
+        String rootExport = RequestBrTdGeoAction.class.getClassLoader().getResource("excel/0702.xlsx").getPath();
+        //导出数据
+        ExportExcelUtil.export0702(datas, rootExport,riskPostDataService);
+
+    }
+
+
 
 
     public List<Run200Model> readExcelXLSX(FileInputStream in) {

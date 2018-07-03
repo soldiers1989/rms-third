@@ -14,6 +14,7 @@ import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.mongo.TdData;
 import com.jzfq.rms.third.common.enums.InterfaceIdEnum;
 import com.jzfq.rms.third.common.mongo.BairongData;
+import com.jzfq.rms.third.common.utils.DateUtils;
 import com.jzfq.rms.third.common.utils.StringUtil;
 import com.jzfq.rms.third.constant.Constants;
 import com.jzfq.rms.third.context.TraceIDThreadLocal;
@@ -231,6 +232,18 @@ public class RiskPostDataServiceImpl implements IRiskPostDataService {
             return null;
         }
         return JSONObject.parseObject(data);
+    }
+
+
+    @Override
+    public List<BairongData> getHistDatas1() {
+        List<BairongData> datas = mongoTemplate.find(new Query(Criteria.where("createTime")
+                .gte(DateUtils.str2Date("2018-06-25 00:00:00", DateUtils.DATE_FORMAT_LONG)).lt(new Date())
+        ), BairongData.class);
+        if (CollectionUtils.isEmpty(datas)) {
+            return null;
+        }
+        return datas;
     }
 
     /**

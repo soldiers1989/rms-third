@@ -370,19 +370,19 @@ public class ExportExcelUtil {
 
 
         //第一步创建workbook
-        HSSFWorkbook wb = new HSSFWorkbook();
+        XSSFWorkbook wb = new XSSFWorkbook();
 
         //第二步创建sheet
-        HSSFSheet sheet = wb.createSheet("0702");
+        XSSFSheet sheet = wb.createSheet("0702");
 
         //第三步创建行row:添加表头0行
-        HSSFRow row = sheet.createRow(0);
-        HSSFCellStyle style = wb.createCellStyle();
+        XSSFRow row = sheet.createRow(0);
+        XSSFCellStyle style = wb.createCellStyle();
         //style.setAlignment(HSSFCellStyle.ALIGN_CENTER);  //居中
 
 
         //第四步创建单元格
-        HSSFCell cell = row.createCell(0); //第一个单元格
+        XSSFCell cell = row.createCell(0); //第一个单元格
         cell.setCellValue("手机号");
         cell.setCellStyle(style);
 
@@ -552,7 +552,7 @@ public class ExportExcelUtil {
                 row.createCell(1).setCellValue(info.getPhone());//手机号
                 row.createCell(2).setCellValue(info.getIdCard());//身份证
                 row.createCell(3).setCellValue(info.getValue());//值
-                row.createCell(3).setCellValue(info.getCreateTime());//创建时间
+                row.createCell(4).setCellValue(info.getCreateTime());//创建时间
             }
         }
         //第六步将生成excel文件保存到指定路径下

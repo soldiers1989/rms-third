@@ -62,11 +62,11 @@ public class CleanDataAction {
 
 
 //        //集奥三要素
-        if (null != dataThreeList && dataThreeList.size() > 0) {
-            for (JiaoData dataThree : dataThreeList) {
-                iJaoService.saveNewDatas(JaoParser.getValueOfRmsPull(dataThree.getData(), dataThree.getIdCard(), dataThree.getPhone(), dataThree.getName(), "1111", "123", dataThree.getCreateTime()));
-            }
-        }
+//        if (null != dataThreeList && dataThreeList.size() > 0) {
+//            for (JiaoData dataThree : dataThreeList) {
+//                iJaoService.saveNewDatas(JaoParser.getValueOfRmsPull(dataThree.getData(), dataThree.getIdCard(), dataThree.getPhone(), dataThree.getName(), "1111", "123", dataThree.getCreateTime()));
+//            }
+//        }
 //
 //        //集奥在网时长
         if (null != dataLengthList && dataLengthList.size() > 0) {

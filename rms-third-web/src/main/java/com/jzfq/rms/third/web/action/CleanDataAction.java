@@ -71,14 +71,14 @@ public class CleanDataAction {
 //        //集奥在网时长
         if (null != dataLengthList && dataLengthList.size() > 0) {
             for (JiaoData dataLength : dataLengthList) {
-                iJaoService.saveNewDatas(JaoParser.getValueOfRmsPull(dataLength.getData(), dataLength.getIdCard(), dataLength.getPhone(), dataLength.getName(), "1111", "123", dataLength.getCreateTime()));
+                iJaoService.saveNewDatas(JaoParser.getNetworkLengthOfRmsPull(dataLength.getData(), dataLength.getIdCard(), dataLength.getPhone(), dataLength.getName(), "1111", "123", dataLength.getCreateTime()));
             }
         }
 //
 //        //集奥在网状态
         if (null != dataStatusList && dataStatusList.size() > 0) {
             for (JiaoData dataStatus : dataStatusList) {
-                iJaoService.saveNewDatas(JaoParser.getValueOfRmsPull(dataStatus.getData(), dataStatus.getIdCard(), dataStatus.getPhone(), dataStatus.getName(), "1111", "123", dataStatus.getCreateTime()));
+                iJaoService.saveNewDatas(JaoParser.getStatusOfRmsPull(dataStatus.getData(), dataStatus.getIdCard(), dataStatus.getPhone(), dataStatus.getName(), "1111", "123", dataStatus.getCreateTime()));
             }
         }
 

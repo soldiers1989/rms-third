@@ -501,7 +501,11 @@ public class JaoServiceImpl implements IJaoService {
     @Override
     public void saveNewDatas(TThirdJiaoData data) {
         ThreadProvider.getThreadPool().execute(() -> {
-            saveNewData(data);
+            //判断概述桔库中是否存在
+            List<TThirdJiaoData> list = jiaoDataMapper.selectByCondis(data);
+            if (list.size() <= 0) {
+                saveNewData(data);
+            }
         });
     }
 

@@ -30,4 +30,7 @@ public interface TThirdJiaoDataMapper {
     int updateByPrimaryKeySelective(TThirdJiaoData record);
 
     int updateByPrimaryKey(TThirdJiaoData record);
+
+
+    List<TThirdJiaoData> selectByCondis(TThirdJiaoData record);
 }

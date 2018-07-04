@@ -193,7 +193,7 @@ public class JaoParser {
 
         //RSL 信息
         if (null != jsonObjectRsl) {
-            if (jsonObjectRsl.size() < 0) {
+            if (jsonObjectRsl.size() <= 0) {
                 data.setErrorCode(String.valueOf(ReturnCode.ERROR_RSLL_PARAMS_ERROR.code()));
                 return data;
             }

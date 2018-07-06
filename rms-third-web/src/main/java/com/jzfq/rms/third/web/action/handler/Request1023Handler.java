@@ -99,7 +99,7 @@ public class Request1023Handler extends AbstractRequestHandler {
         boolean isRpc = interfaceCountCache.isRequestOutInterface(isRepeatKey, time);
         log.info("traceId={} 获取极光反欺诈数据,缓存isRepeatKey={},是否重新拉取={}", traceId, isRepeatKey, isRpc);
         if (!isRpc) {
-            JSONObject value = iJiguangService.getData(info.getName(), info.getCertCardNo(), info.getMobile(), orderNo, channelId);
+            JSONObject value = iJiguangService.getData(info.getName(), info.getCertCardNo(), info.getMobile());
             if (null != value) {
                 log.info("traceId={} 获取极光反欺诈数据成功(mongodb),返回结果={}", traceId, new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, value)); //成功
                 return new ResponseResult(traceId, ReturnCode.REQUEST_SUCCESS, value);

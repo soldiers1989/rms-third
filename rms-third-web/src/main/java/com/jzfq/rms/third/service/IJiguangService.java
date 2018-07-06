@@ -17,7 +17,7 @@ public interface IJiguangService {
             , Map<String,String> resultMap);
 
 
-    JSONObject getData(String name, String idcard, String phone, String orderNo, String channelId);
+    JSONObject getData(String name, String idcard, String phone);
 
 
     ResponseResult getHttpData(String name, String idcard, String phone, String channelId);

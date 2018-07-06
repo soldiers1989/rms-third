@@ -52,14 +52,14 @@ public class JiguangServiceImpl implements IJiguangService {
 
     @Override
     public void saveData(RiskPersonalInfo info, JSONObject data, String orderNo, String channelId, String traceId
-            ,Map<String,String> resultMap) {
+            , Map<String, String> resultMap) {
         ThreadProvider.getThreadPool().execute(() -> {
-            saveData(getJiguangData(info, data, orderNo, channelId, traceId,resultMap));
+            saveData(getJiguangData(info, data, orderNo, channelId, traceId, resultMap));
         });
     }
 
     public JiguangData getJiguangData(RiskPersonalInfo info, JSONObject data, String orderNo, String channelId, String traceId
-            , Map<String,String> resultMap) {
+            , Map<String, String> resultMap) {
         JiguangData jiguangData = new JiguangData();
         jiguangData.setName(info.getName());
         jiguangData.setPhone(info.getMobile());
@@ -79,7 +79,7 @@ public class JiguangServiceImpl implements IJiguangService {
 
 
     public JiguangErrorData getErrorJiguangData(RiskPersonalInfo info, JSONObject data, String orderNo, String channelId, String traceId
-            , Map<String,String> resultMap,String errorCode) {
+            , Map<String, String> resultMap, String errorCode) {
         JiguangErrorData jiguangData = new JiguangErrorData();
         jiguangData.setName(info.getName());
         jiguangData.setPhone(info.getMobile());
@@ -94,7 +94,6 @@ public class JiguangServiceImpl implements IJiguangService {
     }
 
 
-
     @Override
     public ResponseResult getHttpData(String name, String idcard, String phone, String channelId) {
         phone = MD5Helper.encrypt(phone);//MD5加密手机号
@@ -103,24 +102,23 @@ public class JiguangServiceImpl implements IJiguangService {
         if ("1".equals(channelId)) {
             //桔子分期
             result = HttpConnectionManager.doGet(url, jiguang_jzfq_key, jiguang_jzfq_secret, "utf-8", "application/json");
-        }else if ("2".equals(channelId)) {
+        } else if ("2".equals(channelId)) {
             //车主白条
             result = HttpConnectionManager.doGet(url, jiguang_czbt_key, jiguang_czbt_secret, "utf-8", "application/json");
         }
-         return result;
+        return result;
     }
 
 
     @Override
-    public JSONObject getData(String name, String idcard, String phone, String orderNo, String channelId) {
+    public JSONObject getData(String name, String idcard, String phone) {
         List<JiguangData> datas = mongoTemplate.find(new Query(Criteria.where("name").is(name)
-                .and("idCard").is(idcard).and("phone").is(phone).and("channel").is(channelId)
-                .and("orderNo").is(orderNo)).with(new Sort(Sort.Direction.DESC, "createTime")), JiguangData.class);
+                .and("idCard").is(idcard).and("phone").is(phone)).with(new Sort(Sort.Direction.DESC, "createTime")), JiguangData.class);
         if (CollectionUtils.isEmpty(datas)) {
             return null;
         }
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("yqScore", datas.get(0).getYqScore() == null ? "0" :datas.get(0).getYqScore() );
+        jsonObject.put("yqScore", datas.get(0).getYqScore() == null ? "0" : datas.get(0).getYqScore());
         jsonObject.put("wyScore", datas.get(0).getWyScore() == null ? "0" : datas.get(0).getWyScore());
         jsonObject.put("gxfxScore", datas.get(0).getGxfxScore() == null ? "0" : datas.get(0).getGxfxScore());
         jsonObject.put("sumScore", datas.get(0).getSumScore() == null ? "0" : datas.get(0).getSumScore());
@@ -129,9 +127,9 @@ public class JiguangServiceImpl implements IJiguangService {
 
 
     @Override
-    public void saveErrorData(RiskPersonalInfo info, JSONObject data, String orderNo, String channelId, String traceId, Map<String, String> resultMap,String errorCode) {
+    public void saveErrorData(RiskPersonalInfo info, JSONObject data, String orderNo, String channelId, String traceId, Map<String, String> resultMap, String errorCode) {
         ThreadProvider.getThreadPool().execute(() -> {
-            saveErrorDataMongo(getErrorJiguangData(info, data, orderNo, channelId, traceId,resultMap,errorCode));
+            saveErrorDataMongo(getErrorJiguangData(info, data, orderNo, channelId, traceId, resultMap, errorCode));
         });
     }
 

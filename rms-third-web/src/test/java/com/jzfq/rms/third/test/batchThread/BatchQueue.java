@@ -8,9 +8,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
+/*
+* 多线程批处理方案
+*
+* */
 public class BatchQueue<T> {
-
-
     private final int batchSize;
     private final Consumer<List<T>> consumer;
     private final int timeoutInMs;
@@ -27,12 +29,12 @@ public class BatchQueue<T> {
     }
 
     public BatchQueue(int batchSize, Consumer<List<T>> consumer) {
-        this(batchSize, 500, consumer);
+        this(batchSize, 1000, consumer);
     }
 
     public boolean add(T t) {
         boolean result = queue.add(t);
-        if(!isLooping.get() && result) {
+        if (!isLooping.get() && result) {
             isLooping.set(true);
             startLoop();
         }
@@ -48,11 +50,11 @@ public class BatchQueue<T> {
     private void startLoop() {
         new Thread(() -> {
             start = new AtomicLong(System.currentTimeMillis());
-            while(true) {
-                long last = System.currentTimeMillis() - start.get() ;
+            while (true) {
+                long last = System.currentTimeMillis() - start.get();
                 if (queue.size() >= batchSize || (!queue.isEmpty() && last > timeoutInMs)) {
                     drainToConsume();
-                } else if(queue.isEmpty()) {
+                } else if (queue.isEmpty()) {
                     isLooping.set(false);
                     break;
                 }
@@ -63,13 +65,11 @@ public class BatchQueue<T> {
     private void drainToConsume() {
         List<T> drained = new ArrayList<>();
         int num = queue.drainTo(drained, batchSize);
-        if(num > 0) {
+        if (num > 0) {
             consumer.accept(drained);
             start.set(System.currentTimeMillis());
         }
     }
-
-
 
 
 }

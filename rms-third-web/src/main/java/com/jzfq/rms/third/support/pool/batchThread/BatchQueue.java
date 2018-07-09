@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 /*
- * 多线程批处理方案
+ * 多线程批处理存储数据库方案
  *
  * */
 public class BatchQueue<T> {
@@ -22,7 +22,7 @@ public class BatchQueue<T> {
     private final int timeoutInMs;
 
     private AtomicBoolean isLooping = new AtomicBoolean(false);//原子操作，使用线程安全,初始化设置从0开始
-    private BlockingQueue<T> queue = new LinkedBlockingQueue<>();
+    private BlockingQueue<T> queue = new LinkedBlockingQueue<>(1000);
 
     private AtomicLong start = new AtomicLong(System.currentTimeMillis());//原子操作，使用线程安全，使用当前秒作为预定值
 
@@ -83,6 +83,4 @@ public class BatchQueue<T> {
             start.set(System.currentTimeMillis());
         }
     }
-
-
 }

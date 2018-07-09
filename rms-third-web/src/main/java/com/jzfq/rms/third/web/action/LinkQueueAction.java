@@ -50,7 +50,7 @@ public class LinkQueueAction {
 ////        System.n.println("剩余队列数据量：" + ThreadProvider.queue.size());
 
 
-        BatchQueue<DemoObject> batchQueue = new BatchQueue<>(5, System.out::println,service);
+        BatchQueue<DemoObject> batchQueue = new BatchQueue<>(100, System.out::println,service);
 //        while (true) {
 //            String line = new Scanner(System.in).nextLine();
 //            if (line.equals("done")) {
@@ -61,7 +61,7 @@ public class LinkQueueAction {
 //        }
 
         //模拟500个任务数据
-        for (int i = 0; i < 17; i++) {
+        for (int i = 0; i < 1000; i++) {
 //            String str = "str" + i;
             batchQueue.add(new DemoObject("黄金酒:" + i, "1982"));
         }

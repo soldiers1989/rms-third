@@ -37,7 +37,7 @@ public class BatchQueue<T> {
 
     public BatchQueue(int batchSize, Consumer<List<T>> consumer, TestQueueService service) {
         //设置1秒后批量插入数据库 每次插入数据batchSize条  如果当queue 中数据大于batchSize  直接 分段 插入数据库  如果数据没达到batchSize 条，则判断是否超时时间
-        this(batchSize, 1000, consumer, service);
+        this(batchSize, 500, consumer, service);
     }
 
     public boolean add(T t) {

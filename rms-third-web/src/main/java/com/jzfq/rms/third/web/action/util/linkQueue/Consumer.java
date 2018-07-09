@@ -33,7 +33,7 @@ public class Consumer implements Runnable {
                 }
             }
             //开始进行批处理
-            service.save(list);
+//            service.save(list);
             System.out.println("消费者消费数据熟数量： " + list.size());
         } catch (Exception e) {
             System.out.println(e.getMessage());

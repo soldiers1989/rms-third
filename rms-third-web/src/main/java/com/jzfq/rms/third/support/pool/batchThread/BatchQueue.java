@@ -22,7 +22,7 @@ public class BatchQueue<T> {
     private final int timeoutInMs;
 
     private AtomicBoolean isLooping = new AtomicBoolean(false);//原子操作，使用线程安全,初始化设置从0开始
-    private BlockingQueue<T> queue = new LinkedBlockingQueue<>(1000);
+    private BlockingQueue<T> queue = new LinkedBlockingQueue<>();
 
     private AtomicLong start = new AtomicLong(System.currentTimeMillis());//原子操作，使用线程安全，使用当前秒作为预定值
 

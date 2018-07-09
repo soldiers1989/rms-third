@@ -32,6 +32,7 @@ public class BatchQueue<T> {
         this.batchSize = batchSize;
         this.timeoutInMs = timeoutInMs;
         this.consumer = consumer;
+        this.service = service;
     }
 
     public BatchQueue(int batchSize, Consumer<List<T>> consumer, TestQueueService service) {
@@ -78,8 +79,7 @@ public class BatchQueue<T> {
             consumer.accept(drained);
             System.out.println("当前线程：" + Thread.currentThread().getName() + "," + JSONObject.toJSON(drained));
             //开始进行批处理
-
-            service.save(drained);
+            service.save((List<DemoObject>) drained);
             start.set(System.currentTimeMillis());
         }
     }

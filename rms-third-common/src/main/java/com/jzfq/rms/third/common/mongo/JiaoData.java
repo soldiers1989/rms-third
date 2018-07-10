@@ -14,7 +14,7 @@ import java.util.Date;
  * @date 2017/12/1 15:25.
  **/
 @Document(collection = "jiao_data")
-public class JiaoData {
+public class JiaoData extends BaseData{
     @Id
     @JsonIgnore
     protected String id;

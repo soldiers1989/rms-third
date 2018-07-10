@@ -2,7 +2,10 @@ package com.jzfq.rms.third.web.action;
 
 
 import com.jzfq.rms.third.common.dto.ResponseResult;
+import com.jzfq.rms.third.common.mongo.BaseData;
 import com.jzfq.rms.third.common.mongo.DemoObject;
+import com.jzfq.rms.third.common.mongo.DemoObject1;
+import com.jzfq.rms.third.service.IMongoService;
 import com.jzfq.rms.third.service.TestQueueService;
 import com.jzfq.rms.third.support.pool.ThreadProvider;
 import com.jzfq.rms.third.support.pool.batchThread.BatchQueue;
@@ -25,6 +28,9 @@ public class LinkQueueAction {
 
     @Autowired
     TestQueueService service;
+
+    @Autowired
+    IMongoService mongoService;
 
 
     /**
@@ -49,8 +55,9 @@ public class LinkQueueAction {
 //        System.out.println("剩余队列数据量：" + ThreadProvider.queue.size());
 ////        System.n.println("剩余队列数据量：" + ThreadProvider.queue.size());
 
-
-        BatchQueue<DemoObject> batchQueue = new BatchQueue<>(100, System.out::println,service);
+//
+        BatchQueue<BaseData> batchQueue = new BatchQueue<>(1000, System.out::println, mongoService);
+        BatchQueue<BaseData> batchQueue1 = new BatchQueue<>(1000, System.out::println, mongoService);
 //        while (true) {
 //            String line = new Scanner(System.in).nextLine();
 //            if (line.equals("done")) {
@@ -59,14 +66,17 @@ public class LinkQueueAction {
 //            }
 //            batchQueue.add(line);
 //        }
-
         //模拟500个任务数据
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 100007; i++) {
 //            String str = "str" + i;
-            batchQueue.add(new DemoObject("黄金酒:" + i, "1982"));
+            batchQueue.add(new DemoObject("入库茅台酒d0:" + i, "d0"));
+            batchQueue1.add(new DemoObject1("入库茅台酒d1:" + i, "d1"));
         }
-
-        return new ResponseResult();
+        Thread.sleep(10000);
+        ResponseResult rs = new ResponseResult();
+        rs.setCode(200);
+        rs.setMsg("d0数量：" + mongoService.findCount(DemoObject.class) + ",d1数量：" + mongoService.findCount(DemoObject1.class));
+        return rs;
     }
 
 

@@ -1,6 +1,10 @@
 package com.jzfq.rms.third.support.pool;
 
+import com.jzfq.rms.third.common.mongo.BaseData;
 import com.jzfq.rms.third.common.mongo.DemoObject;
+import com.jzfq.rms.third.common.utils.SpringContextHolder;
+import com.jzfq.rms.third.service.IMongoService;
+import com.jzfq.rms.third.support.pool.batchThread.BatchQueue;
 import com.jzfq.rms.third.support.pool.factory.CustomThreadFactory;
 import com.jzfq.rms.third.support.pool.handler.CustomHandler;
 
@@ -21,16 +25,20 @@ public class ThreadProvider {
 
     private static final Integer threadCount = 20;
 
+
     public static LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(queueSize);
 
     // 队列只能存放1000瓶酒，
     public static LinkedBlockingQueue<DemoObject> queue = new LinkedBlockingQueue<DemoObject>(1000);
-
+    public static BatchQueue<BaseData> batchQueue;
+    public static BatchQueue<BaseData> batchQueue1;
 
     static {
 //        int threadCount = Runtime.getRuntime().availableProcessors() - 1;
 //        threadCount = threadCount > 20 ? 20 : threadCount;
-
+        IMongoService iMongoService = SpringContextHolder.getBean(IMongoService.class);
+        batchQueue = new BatchQueue<>(100, System.out::println, iMongoService);
+        batchQueue1 = new BatchQueue<>(100, System.out::println, iMongoService);
         executor = new ThreadPoolExecutor(threadCount, threadCount, 0L, TimeUnit.MILLISECONDS,
                 workQueue, new CustomThreadFactory(), new CustomHandler());
     }

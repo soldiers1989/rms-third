@@ -5,8 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "test_queue")
-public class DemoObject extends BaseData{
+@Document(collection = "test_queue1")
+public class DemoObject1 extends BaseData{
     @Id
     @JsonIgnore
     private String id;
@@ -16,7 +16,7 @@ public class DemoObject extends BaseData{
     private String age;
 
 
-    public DemoObject(String name, String age) {
+    public DemoObject1(String name, String age) {
         this.name = name;
         this.age = age;
 

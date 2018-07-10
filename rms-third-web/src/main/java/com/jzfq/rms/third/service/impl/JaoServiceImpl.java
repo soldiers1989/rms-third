@@ -3,13 +3,10 @@ package com.jzfq.rms.third.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.jzfq.rms.mongo.BrPostData;
 import com.jzfq.rms.third.common.domain.TThirdJiaoData;
 import com.jzfq.rms.third.common.dto.ResponseResult;
 import com.jzfq.rms.third.common.enums.*;
-import com.jzfq.rms.third.common.mongo.JiaoData;
-import com.jzfq.rms.third.common.mongo.JiaoErrorData;
-import com.jzfq.rms.third.common.mongo.Rong360Data;
+import com.jzfq.rms.third.common.mongo.*;
 import com.jzfq.rms.third.common.utils.DateUtils;
 import com.jzfq.rms.third.common.utils.JAoAuthCodeUtil;
 import com.jzfq.rms.third.context.CallSystemIDThreadLocal;
@@ -152,32 +149,34 @@ public class JaoServiceImpl implements IJaoService {
     @Override
     public void saveDatas(String orderNo, PhoneDataTypeEnum type, String value, JSONObject resultJson, Map<String, Object> bizData) {
         String traceId = TraceIDThreadLocal.getTraceID();
-        ThreadProvider.getThreadPool().execute(() -> {
-            String taskId = rmsService.queryByOrderNo(traceId, orderNo);
+//        ThreadProvider.getThreadPool().execute(() -> {
+        String taskId = rmsService.queryByOrderNo(traceId, orderNo);
 //            String taskId = "13154";
-            try {
-                // 保存数据 Rong360Data
-                saveData(new JiaoData((String) bizData.get("realName"), (String) bizData.get("idNumber")
-                        , (String) bizData.get("cid"), value, type, resultJson));
-                if (StringUtils.isBlank(taskId)) {
-                    return;
-                }
-                // 保存rms数据
-                String result = "";
-                if (StringUtils.equals(type.getCode(), PhoneDataTypeEnum.THREE_ITEM.getCode())) {
-                    result = changeBairongPhone3rdinfo(resultJson);
-                }
-                if (StringUtils.equals(type.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH.getCode())) {
-                    result = changeBairongPhoneNetworkLength(resultJson);
-                }
-                if (StringUtils.equals(type.getCode(), PhoneDataTypeEnum.NETWORK_STATUS.getCode())) {
-                    result = changeBairongPhonestatus(resultJson);
-                }
-                savePostData(taskId, type.getName(), result, (String) bizData.get("custumType"));
-            } catch (Exception e) {
-                log.error("traceId={} 保存{}异常", traceId, type.getName(), e);
+        try {
+//                saveData(new JiaoData((String) bizData.get("realName"), (String) bizData.get("idNumber")
+//                        , (String) bizData.get("cid"), value, type, resultJson));
+            //保存数据 jiao_data
+            ThreadProvider.batchQueue.add(new JiaoData((String) bizData.get("realName"), (String) bizData.get("idNumber")
+                    , (String) bizData.get("cid"), value, type, resultJson));
+            if (StringUtils.isBlank(taskId)) {
+                return;
             }
-        });
+            // 保存rms数据
+            String result = "";
+            if (StringUtils.equals(type.getCode(), PhoneDataTypeEnum.THREE_ITEM.getCode())) {
+                result = changeBairongPhone3rdinfo(resultJson);
+            }
+            if (StringUtils.equals(type.getCode(), PhoneDataTypeEnum.NETWORK_LENGTH.getCode())) {
+                result = changeBairongPhoneNetworkLength(resultJson);
+            }
+            if (StringUtils.equals(type.getCode(), PhoneDataTypeEnum.NETWORK_STATUS.getCode())) {
+                result = changeBairongPhonestatus(resultJson);
+            }
+            savePostData(taskId, type.getName(), result, (String) bizData.get("custumType"));
+        } catch (Exception e) {
+            log.error("traceId={} 保存{}异常", traceId, type.getName(), e);
+        }
+//        });
 
     }
 
@@ -494,7 +493,8 @@ public class JaoServiceImpl implements IJaoService {
     private void savePostData(String taskId, String desc, String data, String type) {
         BrPostData dataBean = new BrPostData.BrDataBuild().createTime(new Date()).taskId(taskId)
                 .desc(desc).data(data).interfaceType(type).build();
-        riskPostDataService.saveData(dataBean);
+//        riskPostDataService.saveData(dataBean);
+        ThreadProvider.batchQueue.add(dataBean);
     }
 
 
@@ -509,7 +509,7 @@ public class JaoServiceImpl implements IJaoService {
         });
     }
 
-    private void saveNewData(TThirdJiaoData data){
+    private void saveNewData(TThirdJiaoData data) {
         log.info("集奥 mysql数据开始入库......");
         try {
             jiaoDataMapper.insert(data);

@@ -56,8 +56,8 @@ public class LinkQueueAction {
 ////        System.n.println("剩余队列数据量：" + ThreadProvider.queue.size());
 
 //
-        BatchQueue<BaseData> batchQueue = new BatchQueue<>(1000, System.out::println, mongoService);
-        BatchQueue<BaseData> batchQueue1 = new BatchQueue<>(1000, System.out::println, mongoService);
+//        BatchQueue<BaseData> batchQueue = new BatchQueue<>(1000, System.out::println, mongoService);
+//        BatchQueue<BaseData> batchQueue1 = new BatchQueue<>(1000, System.out::println, mongoService);
 //        while (true) {
 //            String line = new Scanner(System.in).nextLine();
 //            if (line.equals("done")) {
@@ -69,8 +69,8 @@ public class LinkQueueAction {
         //模拟500个任务数据
         for (int i = 0; i < 100007; i++) {
 //            String str = "str" + i;
-            batchQueue.add(new DemoObject("入库茅台酒d0:" + i, "d0"));
-            batchQueue1.add(new DemoObject1("入库茅台酒d1:" + i, "d1"));
+            ThreadProvider.batchQueue.add(new DemoObject("入库茅台酒d0:" + i, "d0"));
+            ThreadProvider.batchQueue.add(new DemoObject1("入库茅台酒d1:" + i, "d1"));
         }
         Thread.sleep(10000);
         ResponseResult rs = new ResponseResult();

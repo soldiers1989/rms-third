@@ -31,14 +31,12 @@ public class ThreadProvider {
     // 队列只能存放1000瓶酒，
     public static LinkedBlockingQueue<DemoObject> queue = new LinkedBlockingQueue<DemoObject>(1000);
     public static BatchQueue<BaseData> batchQueue;
-    public static BatchQueue<BaseData> batchQueue1;
 
     static {
 //        int threadCount = Runtime.getRuntime().availableProcessors() - 1;
 //        threadCount = threadCount > 20 ? 20 : threadCount;
         IMongoService iMongoService = SpringContextHolder.getBean(IMongoService.class);
-        batchQueue = new BatchQueue<>(100, System.out::println, iMongoService);
-        batchQueue1 = new BatchQueue<>(100, System.out::println, iMongoService);
+        batchQueue = new BatchQueue<>(1000, System.out::println, iMongoService);
         executor = new ThreadPoolExecutor(threadCount, threadCount, 0L, TimeUnit.MILLISECONDS,
                 workQueue, new CustomThreadFactory(), new CustomHandler());
     }

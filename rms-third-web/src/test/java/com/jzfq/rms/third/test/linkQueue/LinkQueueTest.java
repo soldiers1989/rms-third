@@ -32,18 +32,18 @@
 //        System.out.println("第一个：当前生产者队列个数:" + queue.size());
 ////
 ////        //300ms 后消费一批队列数据
-////        Thread.sleep(300);
+//        Thread.sleep(300);
 ////        //消费了一个，看看，生成线程会不会恢复生产
-////        service.submit(new Consumer(queue, "酒鬼"));
+//        service.submit(new Consumer(queue, "酒鬼"));
 //
 //
 //        System.out.println("第二个：当前生产者队列个数:" + queue.size());
 //
 //        // 一个阻塞的线程恢复生产
 ////
-////        Thread.sleep(3000);
+//        Thread.sleep(3000);
 ////        //又消费了一个，
-////        service.submit(new Consumer(queue, "酒鬼"));
+//        service.submit(new Consumer(queue, "酒鬼"));
 //
 //
 //        System.out.println("第三个：当前生产者队列个数:" + queue.size());
@@ -66,12 +66,12 @@
 ////        // 命令行中，可以看到程序没有退出，因为有两个酒鬼在等待
 ////
 //        // 再生成两瓶酒，等待的两个酒鬼可喝到酒了
-//        for (int i = 0; i < 2; i++) {
-//            service.submit(new Producer(queue, "黄金酒" + i));
-//        }
-//
-//
-//        System.out.println("第五个：当前生产者队列个数:" + queue.size());
+////        for (int i = 0; i < 2; i++) {
+////            service.submit(new Producer(queue, "黄金酒" + i));
+////        }
+////
+////
+////        System.out.println("第五个：当前生产者队列个数:" + queue.size());
 //
 //
 ////
